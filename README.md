@@ -27,6 +27,10 @@ Maybe useful files
 * http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/fr/topical_concepts_unredirected_fr.ttl.bz2 : idem
 * http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/fr/redirects_fr.ttl.bz2
 
+API Colibri
+-----------
+https://code.google.com/p/colibri-java/
+
 Access to SPARQL endpoint
 -------------------------
 Pour ceux qui ont le vpn et qui veulent taper sur le serveur pour els requêtes suffit de faire une requête GET à l'url suivante: 
