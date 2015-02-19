@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>TestColibri</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>src/colibri/app</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/colibri-java/colibri/app</locationURI>
+		</link>
+		<link>
+			<name>src/colibri/io</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/colibri-java/colibri/io</locationURI>
+		</link>
+		<link>
+			<name>src/colibri/lib</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/colibri-java/colibri/lib</locationURI>
+		</link>
+		<link>
+			<name>src/colibri/util</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/colibri-java/colibri/util</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>
