@@ -1,7 +1,13 @@
 package LatticeCreation;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.json.simple.parser.ParseException;
+
+import ServerLink.AFileReader;
+import ServerLink.AJsonParser;
 import colibri.lib.Concept;
 import colibri.lib.HybridLattice;
 import colibri.lib.Lattice;
@@ -13,26 +19,63 @@ import colibri.lib.TreeRelation;
 public class ALattice {
 	
 	private Lattice lattice;
-
-	public ALattice()
+	
+	public ALattice() throws ParseException, IOException
 	{
 		Relation rel = new TreeRelation();
 		
-		// Object 1
-		AnObject object1 = new AnObject("Object1");
-		object1.addAttribute("att1");
-		object1.addAttribute("att12");
-		object1.addToRelation(rel);
-		
-		// Object 2
-		AnObject object2 = new AnObject("Object2");
-		object2.addAttribute("att2");
-		object2.addAttribute("att12");
-		object2.addToRelation(rel);
+		createLattice(rel);
 		
 		lattice = new HybridLattice(rel);
 	}
+	
+	public void createLattice(Relation rel) throws ParseException, IOException
+	{
+		// TODO : get the json from our server
+		// The current request :
+		// SELECT DISTINCT ?chose WHERE {?chose a owl:Thing}
+		AFileReader fileReader = new AFileReader("1Response.txt");
+		String jsonResponse = fileReader.readFile();
+		
+		// We parse it to get the different results
+		AJsonParser parser = new AJsonParser(jsonResponse);
+		ArrayList<String> results = parser.getResults("chose");
+		
+		// For each result
+		String request = "";
+		String response = "";
+		int i = 0;
+		for (i=0 ; i<results.size() ; i++)
+		{	
+			// We create an object
+			AnObject obj = new AnObject(results.get(i));
+			
+			request = parser.makeRequestAtt(results.get(i));
 
+			// TODO : run the request on the server and get the response
+			
+			// We get the response
+			fileReader.setNameFile("1"+i+"Response.txt");
+			response = fileReader.readFile();
+			
+			// We parse it to get the different attributes of the thing
+			parser.setStringToParse(response);
+			ArrayList<String> attributes = parser.getResults("att");
+			
+			int j = 0;
+			for (j=0 ; j<attributes.size() ; j++)
+			{
+				// We add the attributes to the object
+				obj.addAttribute(attributes.get(j));
+			}
+			
+
+			// We add the object to the lattice
+			obj.addToRelation(rel);
+			
+			System.out.println("----------------------");
+		}
+	}
 
 	public void execIterator()
 	{
@@ -43,7 +86,7 @@ public class ALattice {
 		    Concept c = it.next();
 		    
 		    // While we have 2 objects in 1 concept, we display it
-	        if (c.getObjects().size() >= 2)
+	        if (c.getObjects().size() >= 5)
 	        {
 	        	System.out.println(c);
 	        }

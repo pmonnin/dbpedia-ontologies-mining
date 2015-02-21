@@ -48,8 +48,6 @@ public class AJsonParser {
 		// The request is :
 		// SELECT DISTINCT ?att WHERE { <str> ?att ?other }
 		String request = "SELECT DISTINCT ?att WHERE { <"+link+"> ?att ?other }";
-		System.out.println("Request is : " + request);
-		System.out.println("");
 		
 		return request;
 	}
