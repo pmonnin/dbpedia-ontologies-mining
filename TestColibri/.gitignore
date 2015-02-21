@@ -3,6 +3,9 @@
 # Eclipse
 *.pydevproject
 .metadata
+.metadata/
+/.metadata/
+.metadata bordel !
 .gradle
 bin/
 tmp/
