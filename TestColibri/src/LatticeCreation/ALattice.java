@@ -1,6 +1,11 @@
 package LatticeCreation;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -8,6 +13,7 @@ import org.json.simple.parser.ParseException;
 
 import ServerLink.AFileReader;
 import ServerLink.AJsonParser;
+import ServerLink.AnURLReader;
 import colibri.lib.Concept;
 import colibri.lib.HybridLattice;
 import colibri.lib.Lattice;
@@ -19,9 +25,11 @@ import colibri.lib.TreeRelation;
 public class ALattice {
 	
 	private Lattice lattice;
+	private ArrayList<AnObject> objects;
 	
 	public ALattice() throws ParseException, IOException
 	{
+		objects = new ArrayList<AnObject>();
 		Relation rel = new TreeRelation();
 		
 		createLattice(rel);
@@ -31,11 +39,15 @@ public class ALattice {
 	
 	public void createLattice(Relation rel) throws ParseException, IOException
 	{
-		// TODO : get the json from our server
 		// The current request :
 		// SELECT DISTINCT ?chose WHERE {?chose a owl:Thing}
-		AFileReader fileReader = new AFileReader("1Response.txt");
-		String jsonResponse = fileReader.readFile();
+		
+		
+		//AFileReader fileReader = new AFileReader("1Response.txt");
+		//String jsonResponse = fileReader.readFile();
+		AnURLReader urlReader = new AnURLReader();
+		// String jsonResponse = urlReader.getJSON("select+distinct+%3Fchose+where+%7B%3Fchose+a+owl%3AThing%7D+LIMIT+10");
+		String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a owl:Thing } LIMIT 10", "UTF-8"));
 		
 		// We parse it to get the different results
 		AJsonParser parser = new AJsonParser(jsonResponse);
@@ -51,12 +63,11 @@ public class ALattice {
 			AnObject obj = new AnObject(results.get(i));
 			
 			request = parser.makeRequestAtt(results.get(i));
-
-			// TODO : run the request on the server and get the response
 			
 			// We get the response
-			fileReader.setNameFile("1"+i+"Response.txt");
-			response = fileReader.readFile();
+			response = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
+			// fileReader.setNameFile("1"+i+"Response.txt");
+			// response = fileReader.readFile();
 			
 			// We parse it to get the different attributes of the thing
 			parser.setStringToParse(response);
@@ -72,9 +83,40 @@ public class ALattice {
 
 			// We add the object to the lattice
 			obj.addToRelation(rel);
+			objects.add(obj);
 		}
 	}
 
+	public void deleteFirstIterationAttributes()
+	{
+		Iterator<Concept> it = lattice.conceptIterator(Traversal.TOP_OBJSIZE);
+		if (it.hasNext())
+		{
+			Concept c = it.next();
+			if (it.hasNext())
+				c = it.next();
+			
+			Iterator<Comparable> it2 = c.getAttributes().iterator();
+			
+			while (it2.hasNext())
+			{
+				Comparable att = it2.next();
+	
+				int i = 0;
+				for (i=0; i<objects.size(); i++)
+					objects.get(i).deleteAttribute(att.toString());
+			}
+		}
+		
+		Relation rel = new TreeRelation();
+		
+		int i = 0;
+		for (i=0; i<objects.size(); i++)
+			objects.get(i).addToRelation(rel);
+		
+		lattice = new HybridLattice(rel);
+	}
+	
 	public void execIterator()
 	{
 		Iterator<Concept> it = lattice.conceptIterator(Traversal.TOP_OBJSIZE);

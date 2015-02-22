@@ -17,6 +17,7 @@ public class AnObject {
 	
 	public void addAttribute(String att)
 	{
+		if (!att.split("/")[3].equals("ontology"))
 		this.attributes.add(att);
 	}
 	
@@ -27,5 +28,10 @@ public class AnObject {
 		{
 			rel.add(this.name, this.attributes.get(i));
 		}
+	}
+	
+	public void deleteAttribute(String att)
+	{
+		this.attributes.remove(att);
 	}
 }
