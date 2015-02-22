@@ -72,8 +72,6 @@ public class ALattice {
 
 			// We add the object to the lattice
 			obj.addToRelation(rel);
-			
-			System.out.println("----------------------");
 		}
 	}
 
@@ -84,14 +82,31 @@ public class ALattice {
 		while(it.hasNext())
 		{
 		    Concept c = it.next();
-		    
-		    // While we have 2 objects in 1 concept, we display it
-	        if (c.getObjects().size() >= 5)
+		    // While we have 2 objects in 1 concept and at least one attribute, 
+		    // we display it
+	        if (c.getObjects().size() >= 2 && c.getAttributes().size()>0)
 	        {
-	        	System.out.println(c);
+	        	//System.out.println(c.getObjects());
+	        	Iterator<Comparable> ite = c.getObjects().iterator();
+	        	System.out.println("OBJECTS______");
+	        	while (ite.hasNext())
+	        	{
+	        		Comparable comp = ite.next();
+		        	System.out.println(comp);
+	        	}
+	        	
+	        	ite = c.getAttributes().iterator();
+	        	System.out.println("ATTRIBUTES______");
+	        	while (ite.hasNext())
+	        	{
+	        		Comparable comp = ite.next();
+		        	System.out.println(comp);
+	        	}
+	        	System.out.println("---------------------------------");
+	        	System.out.println("");
 	        }
 	        // When we have less than 2 objects, we stop it
-	        else
+	        else if (c.getObjects().size() < 2)
 	        {
 	                break;
 	        }

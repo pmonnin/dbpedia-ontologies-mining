@@ -1,4 +1,4 @@
-Repository sbc-treillis
+﻿Repository sbc-treillis
 =======================
 
 For the SBC project at TELECOM Nancy
@@ -33,7 +33,7 @@ https://code.google.com/p/colibri-java/
 
 Access to SPARQL endpoint
 -------------------------
-Pour ceux qui ont le vpn et qui veulent taper sur le serveur pour els requêtes suffit de faire une requête GET à l'url suivante: 
+Pour ceux qui ont le vpn et qui veulent taper sur le serveur pour les requêtes, il suffit de faire une requête GET à l'url suivante: 
 
  GET http://sbc2015.telecomnancy.univ-lorraine.fr:10000/Project/query
 
