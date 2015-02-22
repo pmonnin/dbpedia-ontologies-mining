@@ -47,7 +47,7 @@ public class ALattice {
 		//String jsonResponse = fileReader.readFile();
 		AnURLReader urlReader = new AnURLReader();
 		// String jsonResponse = urlReader.getJSON("select+distinct+%3Fchose+where+%7B%3Fchose+a+owl%3AThing%7D+LIMIT+10");
-		String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a owl:Thing } LIMIT 10", "UTF-8"));
+		String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a owl:Thing } LIMIT 50", "UTF-8"));
 		
 		// We parse it to get the different results
 		AJsonParser parser = new AJsonParser(jsonResponse);
@@ -126,7 +126,7 @@ public class ALattice {
 		    Concept c = it.next();
 		    // While we have 2 objects in 1 concept and at least one attribute, 
 		    // we display it
-	        if (c.getObjects().size() >= 2 && c.getAttributes().size()>0)
+	        if (c.getObjects().size() >= 10 && c.getAttributes().size()>2)
 	        {
 	        	//System.out.println(c.getObjects());
 	        	Iterator<Comparable> ite = c.getObjects().iterator();

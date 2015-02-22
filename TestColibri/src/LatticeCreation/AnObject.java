@@ -17,16 +17,23 @@ public class AnObject {
 	
 	public void addAttribute(String att)
 	{
-		if (!att.split("/")[3].equals("ontology"))
-		this.attributes.add(att);
+		//if (!att.split("/")[3].equals("ontology"))
+		if (att.split("/")[3].equals("property"))
+			this.attributes.add(att);
 	}
 	
 	public void addToRelation(Relation rel)
 	{
+		String[] splittedName = name.split("/");
+		String nameToAdd = splittedName[splittedName.length - 1];
+		
 		int i = 0;
 		for (i=0 ; i<this.attributes.size() ; i++)
 		{
-			rel.add(this.name, this.attributes.get(i));
+			String[] splittedAtt = attributes.get(i).split("/");
+			String att = splittedAtt[splittedAtt.length - 1];
+			rel.add(nameToAdd, att);
+			// rel.add(this.name, this.attributes.get(i));
 		}
 	}
 	
