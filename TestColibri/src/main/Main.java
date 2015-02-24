@@ -35,7 +35,7 @@ public class Main {
 		
 		// We create the lattice
 		ALattice lattice = new ALattice();
-		// lattice.deleteFirstIterationAttributes();
+		//lattice.deleteFirstIterationAttributes();
 		lattice.execIterator();
 	}
 }

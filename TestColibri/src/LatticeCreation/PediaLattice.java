@@ -2,13 +2,19 @@ package LatticeCreation;
 
 import ServerLink.JsonParser;
 import ServerLink.URLReader;
-import colibri.lib.*;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
+import colibri.lib.Concept;
+import colibri.lib.Edge;
+import colibri.lib.HybridLattice;
+import colibri.lib.Lattice;
+import colibri.lib.Relation;
+import colibri.lib.Traversal;
+import colibri.lib.TreeRelation;
 
 public class PediaLattice {
 	
@@ -20,7 +26,16 @@ public class PediaLattice {
 		objects = new ArrayList<LatticeObject>();
 		Relation rel = new TreeRelation();
 		
-		createLattice(rel);
+		//createLattice(rel);
+		
+		rel.add("obj11",  "att1");
+		rel.add("obj11", "att11");
+		
+		rel.add("obj12", "att2");
+		rel.add("obj12", "att1");
+		
+		rel.add("obj21", "att2");
+		rel.add("obj21", "att21");
 		
 		lattice = new HybridLattice(rel);
 	}
@@ -35,7 +50,7 @@ public class PediaLattice {
 		//String jsonResponse = fileReader.readFile();
 		URLReader urlReader = new URLReader();
 		// String jsonResponse = urlReader.getJSON("select+distinct+%3Fchose+where+%7B%3Fchose+a+owl%3AThing%7D+LIMIT+10");
-		String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a owl:Thing } LIMIT 50", "UTF-8"));
+		String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a owl:Thing } LIMIT 10", "UTF-8"));
 		
 		// We parse it to get the different results
 		JsonParser parser = new JsonParser(jsonResponse);
@@ -107,40 +122,123 @@ public class PediaLattice {
 	
 	public void execIterator()
 	{
-		Iterator<Concept> it = lattice.conceptIterator(Traversal.TOP_OBJSIZE);
+		// Iterator<Concept> it = lattice.conceptIterator(Traversal.TOP_DEPTHFIRST);
+		//Iterator<Concept> it = lattice.conceptIterator(Traversal.);
+		Iterator<Edge> it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
 	
 		while(it.hasNext())
+		{
+			Edge e = it.next();
+			
+			// We take the 1st object
+			System.out.println("* * * * First * * * *");
+			Concept c = e.getUpper();
+			
+			Iterator<Comparable> ite = c.getObjects().iterator();
+        	System.out.println("---- OBJECTS ----");
+        	while (ite.hasNext())
+        	{
+        		String comp = (String) ite.next();
+        		
+        		//String[] splittedObj = comp.split("/");
+    			//String obj = splittedObj[splittedObj.length - 1];
+        		
+	        	//System.out.println(obj);
+        		System.out.println(comp);
+        	}
+        	
+        	ite = c.getAttributes().iterator();
+        	System.out.println("---- ATTRIBUTES ----");
+        	while (ite.hasNext())
+        	{
+        		String comp = (String) ite.next();
+	        	
+        		//String[] splittedAtt = comp.split("/");
+    			//String att = splittedAtt[splittedAtt.length - 1];
+        		
+        		//System.out.println(att);
+        		System.out.println(comp);
+        	}
+        	System.out.println("");
+			
+			// We take the 2nd object
+        	System.out.println("* * * * Second * * * *");
+			c = e.getLower();
+			
+			ite = c.getObjects().iterator();
+        	System.out.println("---- OBJECTS ----");
+        	while (ite.hasNext())
+        	{
+        		String comp = (String) ite.next();
+        		
+        		//String[] splittedObj = comp.split("/");
+    			//String obj = splittedObj[splittedObj.length - 1];
+        		
+	        	//System.out.println(obj);
+        		System.out.println(comp);
+        	}
+        	
+        	ite = c.getAttributes().iterator();
+        	System.out.println("---- ATTRIBUTES ----");
+        	while (ite.hasNext())
+        	{
+        		String comp = (String) ite.next();
+	        	
+        		//String[] splittedAtt = comp.split("/");
+    			//String att = splittedAtt[splittedAtt.length - 1];
+        		
+        		//System.out.println(att);
+        		System.out.println(comp);
+        	}
+        	System.out.println("---------------------------------");
+        	System.out.println("");
+        	System.out.println("");
+		}
+		
+		/*while(it.hasNext())
 		{
 		    Concept c = it.next();
 		    // While we have 2 objects in 1 concept and at least one attribute, 
 		    // we display it
-	        if (c.getObjects().size() >= 10 && c.getAttributes().size()>2)
+			
+			
+	        if (c.getObjects().size()>=1 && c.getAttributes().size() >= 1)
 	        {
 	        	//System.out.println(c.getObjects());
 	        	Iterator<Comparable> ite = c.getObjects().iterator();
 	        	System.out.println("OBJECTS______");
 	        	while (ite.hasNext())
 	        	{
-	        		Comparable comp = ite.next();
-		        	System.out.println(comp);
+	        		String comp = (String) ite.next();
+	        		
+	        		//String[] splittedObj = comp.split("/");
+	    			//String obj = splittedObj[splittedObj.length - 1];
+	        		
+		        	//System.out.println(obj);
+	        		System.out.println(comp);
 	        	}
 	        	
 	        	ite = c.getAttributes().iterator();
 	        	System.out.println("ATTRIBUTES______");
 	        	while (ite.hasNext())
 	        	{
-	        		Comparable comp = ite.next();
-		        	System.out.println(comp);
+	        		String comp = (String) ite.next();
+		        	
+	        		//String[] splittedAtt = comp.split("/");
+	    			//String att = splittedAtt[splittedAtt.length - 1];
+	        		
+	        		//System.out.println(att);
+	        		System.out.println(comp);
 	        	}
 	        	System.out.println("---------------------------------");
 	        	System.out.println("");
 	        }
 	        // When we have less than 2 objects, we stop it
-	        else if (c.getObjects().size() < 2)
-	        {
-	                break;
-	        }
-		}
+	        //else if (c.getObjects().size() < 2)
+	        //{
+	        //        break;
+	        //}
+		}*/
 	}
 	
 }

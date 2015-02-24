@@ -23,17 +23,11 @@ public class LatticeObject {
 	}
 	
 	public void addToRelation(Relation rel)
-	{
-		String[] splittedName = name.split("/");
-		String nameToAdd = splittedName[splittedName.length - 1];
-		
+	{	
 		int i = 0;
 		for (i=0 ; i<this.attributes.size() ; i++)
 		{
-			String[] splittedAtt = attributes.get(i).split("/");
-			String att = splittedAtt[splittedAtt.length - 1];
-			rel.add(nameToAdd, att);
-			// rel.add(this.name, this.attributes.get(i));
+			rel.add(this.name, this.attributes.get(i));
 		}
 	}
 	
