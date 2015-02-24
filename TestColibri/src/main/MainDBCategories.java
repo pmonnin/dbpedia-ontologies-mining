@@ -20,9 +20,9 @@ public class MainDBCategories {
 		URLReader urlReader = new URLReader();
 		String jsonResponse = urlReader
 				.getJSON(URLEncoder
-						.encode("select distinct ?Category ?Label where "
+						.encode("PREFIX dcterms:<http://purl.org/dc/terms/> PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> select distinct ?Category ?Label where "
 								+ "{ [] dcterms:subject ?Category . ?Category rdfs:label ?Label "
-								+ "} LIMIT 100", "UTF-8"));
+								+ "}", "UTF-8"));
 
 		// Get the categories
 		JsonParser parser = new JsonParser(jsonResponse);
@@ -40,7 +40,7 @@ public class MainDBCategories {
 				URLReader urlReader = new URLReader();
 				String jsonResponse = urlReader
 						.getJSON(URLEncoder
-								.encode("select distinct ?parent ?label where "
+								.encode("PREFIX dcterms:<http://purl.org/dc/terms/> select distinct ?parent ?label where "
 										+ " { "
 										+ "<" + cat.getUri() + "> skos:broader ?parent . "
 										+ "?parent rdfs:label ?label" + "}",
@@ -57,5 +57,7 @@ public class MainDBCategories {
 				}
 			}
 		}
+		
+		System.out.println(categories.size());
 	}
 }
