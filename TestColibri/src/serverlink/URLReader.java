@@ -21,8 +21,14 @@ public class URLReader {
 		String inputLine;
 		String jsonResponse = "";
 		inputLine = buff.readLine();
+		
+		int i = 0;
 		while ( inputLine != null)
 		{
+			if(i % 10000 == 0)
+				System.out.println("Ligne " + i);
+			i++;
+			
 			jsonResponse += inputLine;
 			inputLine = buff.readLine();
 		}

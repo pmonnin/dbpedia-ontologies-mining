@@ -17,6 +17,7 @@ public class MainDBCategories {
 	public static void main(String[] args) throws UnsupportedEncodingException,
 			IOException, ParseException {
 		// Ask for categories
+		System.out.println("Before server action");
 		URLReader urlReader = new URLReader();
 		String jsonResponse = urlReader
 				.getJSON(URLEncoder
@@ -24,12 +25,15 @@ public class MainDBCategories {
 								+ "{ [] dcterms:subject ?Category . ?Category rdfs:label ?Label "
 								+ "}", "UTF-8"));
 
+		System.out.println("After server action");
 		// Get the categories
 		JsonParser parser = new JsonParser(jsonResponse);
 		HashMap<String, DBCategory> categoriesList = parser.getDbPediaCategories();
+		System.out.println("After parser action");
+		computeParents(categoriesList);
 	}
 
-	void computeParents(HashMap<String, DBCategory> categories)
+	public static void computeParents(HashMap<String, DBCategory> categories)
 			throws UnsupportedEncodingException, IOException, ParseException {
 		Set<String> keys = categories.keySet();
 
