@@ -3,12 +3,14 @@ package main;
 import java.util.ArrayList;
 
 
-public class Concept {
+public class PediaConcept {
     private ArrayList<String> listeObjets, listeAttributs;
+    private ArrayList<PediaConcept> parents;
     
-    public Concept(ArrayList<String> objets, ArrayList<String> attributs){
+    public PediaConcept(ArrayList<String> objets, ArrayList<String> attributs){
         listeObjets = objets;
         listeAttributs = attributs;
+        parents = new ArrayList<>();
     }
 
     public ArrayList<String> getListeObjets() {
@@ -27,5 +29,7 @@ public class Concept {
         this.listeAttributs = listeAttributs;
     }
     
-    
+    public void addParentPediaConcept(PediaConcept parent){
+        parents.add(parent);
+    }
 }
