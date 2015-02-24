@@ -3,10 +3,10 @@ package main;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
+
+import org.json.simple.parser.ParseException;
 
 import serverlink.JsonParser;
 import serverlink.URLReader;
@@ -15,7 +15,7 @@ import dbpediaobjects.DBCategory;
 public class MainDBCategories {
 
 	public static void main(String[] args) throws UnsupportedEncodingException,
-			IOException {
+			IOException, ParseException {
 		// Ask for categories
 		URLReader urlReader = new URLReader();
 		String jsonResponse = urlReader
@@ -30,7 +30,7 @@ public class MainDBCategories {
 	}
 
 	void computeParents(HashMap<String, DBCategory> categories)
-			throws UnsupportedEncodingException, IOException {
+			throws UnsupportedEncodingException, IOException, ParseException {
 		Set<String> keys = categories.keySet();
 
 		for (String key : keys) {
