@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
-
 import org.xml.sax.SAXException;
 
 import colibri.io.lattice.ConceptWriterString;
