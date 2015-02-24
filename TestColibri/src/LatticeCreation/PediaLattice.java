@@ -1,35 +1,23 @@
 package LatticeCreation;
 
-import java.io.BufferedReader;
+import ServerLink.JsonParser;
+import ServerLink.URLReader;
+import colibri.lib.*;
+import org.json.simple.parser.ParseException;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.json.simple.parser.ParseException;
-
-import ServerLink.AFileReader;
-import ServerLink.AJsonParser;
-import ServerLink.AnURLReader;
-import colibri.lib.Concept;
-import colibri.lib.HybridLattice;
-import colibri.lib.Lattice;
-import colibri.lib.LatticeImpl;
-import colibri.lib.Relation;
-import colibri.lib.Traversal;
-import colibri.lib.TreeRelation;
-
-public class ALattice {
+public class PediaLattice {
 	
 	private Lattice lattice;
-	private ArrayList<AnObject> objects;
+	private ArrayList<LatticeObject> objects;
 	
-	public ALattice() throws ParseException, IOException
+	public PediaLattice() throws ParseException, IOException
 	{
-		objects = new ArrayList<AnObject>();
+		objects = new ArrayList<LatticeObject>();
 		Relation rel = new TreeRelation();
 		
 		createLattice(rel);
@@ -45,12 +33,12 @@ public class ALattice {
 		
 		//AFileReader fileReader = new AFileReader("1Response.txt");
 		//String jsonResponse = fileReader.readFile();
-		AnURLReader urlReader = new AnURLReader();
+		URLReader urlReader = new URLReader();
 		// String jsonResponse = urlReader.getJSON("select+distinct+%3Fchose+where+%7B%3Fchose+a+owl%3AThing%7D+LIMIT+10");
 		String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a owl:Thing } LIMIT 50", "UTF-8"));
 		
 		// We parse it to get the different results
-		AJsonParser parser = new AJsonParser(jsonResponse);
+		JsonParser parser = new JsonParser(jsonResponse);
 		ArrayList<String> results = parser.getResults("chose");
 		
 		// For each result
@@ -60,7 +48,7 @@ public class ALattice {
 		for (i=0 ; i<results.size() ; i++)
 		{	
 			// We create an object
-			AnObject obj = new AnObject(results.get(i));
+			LatticeObject obj = new LatticeObject(results.get(i));
 			
 			request = parser.makeRequestAtt(results.get(i));
 			

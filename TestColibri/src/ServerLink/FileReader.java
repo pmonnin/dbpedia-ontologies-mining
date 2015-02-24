@@ -7,11 +7,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 // Temporary class
-public class AFileReader {
+public class FileReader {
 
 	private String nameFile;
 	
-	public AFileReader(String nameFile)
+	public FileReader(String nameFile)
 	{
 		this.nameFile = nameFile;
 	}

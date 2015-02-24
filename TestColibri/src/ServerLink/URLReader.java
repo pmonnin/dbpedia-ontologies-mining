@@ -7,9 +7,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class AnURLReader {
+public class URLReader {
 	
-	public AnURLReader()
+	public URLReader()
 	{
 		
 	}

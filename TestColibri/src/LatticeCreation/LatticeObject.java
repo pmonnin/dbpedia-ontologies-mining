@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import colibri.lib.Relation;
 
-public class AnObject {
+public class LatticeObject {
 
 	private String name;
 	private ArrayList<String> attributes;
 	
-	public AnObject(String name)
+	public LatticeObject(String name)
 	{
 		this.name = name;
 		this.attributes = new ArrayList<String>();

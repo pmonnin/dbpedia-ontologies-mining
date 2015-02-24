@@ -7,11 +7,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class AJsonParser {
+public class JsonParser {
 
 	String stringToParse;
 	
-	public AJsonParser(String stringToParse)
+	public JsonParser(String stringToParse)
 	{
 		this.stringToParse = stringToParse;
 	}
