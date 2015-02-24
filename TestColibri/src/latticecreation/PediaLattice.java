@@ -25,7 +25,7 @@ public class PediaLattice {
 	
 	public PediaLattice() throws ParseException, IOException
 	{
-		objects = new ArrayList<LatticeObject>();
+		objects = new ArrayList<>();
 		Relation rel = new TreeRelation();
 		
 		//createLattice(rel);
@@ -61,8 +61,8 @@ public class PediaLattice {
 		// For each result
 		String request = "";
 		String response = "";
-		int i = 0;
-		for (i=0 ; i<results.size() ; i++)
+
+		for (int i=0 ; i<results.size() ; i++)
 		{	
 			// We create an object
 			LatticeObject obj = new LatticeObject(results.get(i));
