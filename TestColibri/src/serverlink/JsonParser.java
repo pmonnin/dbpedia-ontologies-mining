@@ -1,4 +1,4 @@
-package ServerLink;
+package serverlink;
 
 import java.util.ArrayList;
 import java.util.Map;

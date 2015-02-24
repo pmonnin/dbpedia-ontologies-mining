@@ -1,13 +1,15 @@
-package LatticeCreation;
+package latticecreation;
 
-import ServerLink.JsonParser;
-import ServerLink.URLReader;
 import org.json.simple.parser.ParseException;
+
+import serverlink.JsonParser;
+import serverlink.URLReader;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import colibri.lib.Concept;
 import colibri.lib.Edge;
 import colibri.lib.HybridLattice;

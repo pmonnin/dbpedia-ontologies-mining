@@ -1,4 +1,4 @@
-package LatticeCreation;
+package latticecreation;
 
 import java.util.ArrayList;
 
