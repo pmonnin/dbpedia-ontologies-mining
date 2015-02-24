@@ -1,11 +1,14 @@
 package serverlink;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import dbpediaobjects.DBCategory;
 
 public class JsonParser {
 
@@ -39,6 +42,11 @@ public class JsonParser {
 			returnArray.add(str);
 		}
 		return returnArray;
+	}
+	
+	public HashMap<String, DBCategory> getDbPediaCategories()
+	{
+		return null;
 	}
 	
 	public String makeRequestAtt(String link)
