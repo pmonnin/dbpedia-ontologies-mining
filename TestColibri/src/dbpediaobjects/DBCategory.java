@@ -1,11 +1,12 @@
 package dbpediaobjects;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class DBCategory {
 	private String name = "";
 	private String uri = "";
-	private ArrayList<DBCategory> parents;
+	private ArrayList<DBCategory> parents = new ArrayList<DBCategory>();
 	
 	public String getName() {
 		return name;
@@ -15,8 +16,8 @@ public class DBCategory {
 		return parents;
 	}
 
-	public void setParents(ArrayList<DBCategory> parents) {
-		this.parents = parents;
+	public void addParent(DBCategory parent) {
+		parents.add(parent);
 	}
 
 	public void setName(String name) {
@@ -29,5 +30,9 @@ public class DBCategory {
 	
 	public void setUri(String uri) {
 		this.uri = uri;
+	}
+	
+	public int getParentsNumber() {
+		return parents.size();
 	}
 }
