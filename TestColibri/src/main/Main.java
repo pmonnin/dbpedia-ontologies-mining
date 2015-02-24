@@ -1,24 +1,9 @@
 package main;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-
-import org.json.*;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import LatticeCreation.ALattice;
 import LatticeCreation.PediaLattice;
-import ServerLink.AFileReader;
-import ServerLink.AJsonParser;
 
 public class Main {
 
