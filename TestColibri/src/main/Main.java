@@ -16,6 +16,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import LatticeCreation.ALattice;
+import LatticeCreation.PediaLattice;
 import ServerLink.AFileReader;
 import ServerLink.AJsonParser;
 
@@ -31,10 +32,8 @@ public class Main {
 	
 	public static void main(String[] args) throws ParseException, IOException
 	{
-		
-		
 		// We create the lattice
-		ALattice lattice = new ALattice();
+		PediaLattice lattice = new PediaLattice();
 		//lattice.deleteFirstIterationAttributes();
 		lattice.execIterator();
 	}
