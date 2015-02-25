@@ -161,10 +161,16 @@ public class PediaLattice {
             System.out.println("---------------------------------\n\n");
             
             //On ne doit pas avoir plusieurs fois le même concept      
-            if(!res.contains(pc1))
+            if(!res.contains(pc1)){
+                //requête vers le serveur
+                //parseJSON pour récupérer les catégories
+                //pc1.addCategorie(res retourné par le parseJSON)
                 res.add(pc1);
-            
+            }
             if(!res.contains(pc2)){
+                //requête vers le serveur
+                //parseJSON pour récupérer les catégories
+                //pc1.
                 //pc2 a comme parent pc1
                 pc2.addParentPediaConcept(pc1);
                 res.add(pc2);
@@ -173,7 +179,7 @@ public class PediaLattice {
                  *lui ajoute pc1 dans sa liste de parents
                  */
                 res.get(res.indexOf(pc2)).addParentPediaConcept(pc1);               
-            }
+            }          
         }
         return res;
     }

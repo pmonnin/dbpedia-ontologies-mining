@@ -1,9 +1,11 @@
 package main;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import latticecreation.PediaLattice;
 
 import org.json.simple.parser.ParseException;
+import serverlink.JsonParser;
 
 public class Main {
 
@@ -16,8 +18,21 @@ public class Main {
 	public static void main(String[] args) throws ParseException, IOException
 	{
 		// We create the lattice
-		PediaLattice lattice = new PediaLattice();
+//		PediaLattice lattice = new PediaLattice();
 		//lattice.deleteFirstIterationAttributes();
-		lattice.execIterator();
+//		lattice.execIterator();
+            
+            
+            String stringToParse ="{ \"head\": { \"link\": [], \"vars\": [\"categ\"] },"
+                    + "\"results\": { \"distinct\": false, \"ordered\": true, \"bindings\": ["
+                    + "{ \"categ\": { \"type\": \"uri\", \"value\": \"http://www.w3.org/2002/07/owl#Thing\" }},"
+                    + "{ \"categ\": { \"type\": \"uri\", \"value\": \"http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#PhysicalBody\" }},"
+                    + "{ \"categ\": { \"type\": \"uri\", \"value\": \"http://dbpedia.org/ontology/CelestialBody\" }} ] } }";
+            
+            JsonParser jsp = new JsonParser(stringToParse);
+            ArrayList<String> res = jsp.getResults("categ");
+            for( String r : res)
+                System.out.println("categ :" +r);
+            
 	}
 }
