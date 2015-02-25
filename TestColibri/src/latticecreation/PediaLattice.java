@@ -107,7 +107,7 @@ public class PediaLattice {
         lattice = new HybridLattice(rel);
     }
 
-    public ArrayList<PediaConcept> execIterator() throws IOException {
+    public ArrayList<PediaConcept> execIterator() throws IOException, ParseException {
     	Iterator<Edge> it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
         ArrayList<PediaConcept> res = new ArrayList<>();
         
@@ -164,36 +164,36 @@ public class PediaLattice {
             System.out.println("---------------------------------\n\n");
             
             //On ne doit pas avoir plusieurs fois le même concept      
-            if(!res.contains(pc1))
-            {
-            	// TODO
-                
-                //requête vers le serveur
-                //parseJSON pour récupérer les catégories
-                //pc1.addCategorie(res retourné par le parseJSON)
-                
+            if(!res.contains(pc1)) {             
             	// We get the JSON of the shared categories
             	String request = pc1.makeRequestCategory();
             	URLReader urlReader = new URLReader();
             	String jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
-            	
+                
+                //parse jsonResponse to retrieve URIs to the concept
+            	JsonParser jsp = new JsonParser(jsonResponse);
+                ArrayList<String> listeUri = jsp.getResults("categ");
+                pc1.addCategoriesPediaConcept(listeUri);
+                
             	// We add it to the array of results
                 res.add(pc1);
             }
             
-            if(!res.contains(pc2)){
-            	// TODO
-                //requête vers le serveur
-                //parseJSON pour récupérer les catégories
-                //pc1.
-                
+            if(!res.contains(pc2)){        
             	// We get the JSON of the shared categories
-            	String request = pc1.makeRequestCategory();
+            	String request = pc2.makeRequestCategory();
             	URLReader urlReader = new URLReader();
             	String jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
             	
+                //parse jsonResponse to retrieve URIs to the concept
+            	JsonParser jsp = new JsonParser(jsonResponse);
+                ArrayList<String> listeUri = jsp.getResults("categ");
+                pc2.addCategoriesPediaConcept(listeUri);
+                
                 //pc2 a comme parent pc1
                 pc2.addParentPediaConcept(pc1);
+                
+                // We add it to the array of results
                 res.add(pc2);
             }else{
                 /*si pc2 est deja contenu dans la liste, on le récupère et on
