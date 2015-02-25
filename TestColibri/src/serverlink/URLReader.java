@@ -7,7 +7,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class URLReader {
-
     public URLReader() {
 
     }
@@ -35,5 +34,4 @@ public class URLReader {
         // System.out.println(jsonResponse);
         return jsonResponse.toString();
     }
-
 }

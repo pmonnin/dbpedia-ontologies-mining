@@ -47,10 +47,15 @@ public class PediaConcept {
     }
 
     public void removeDoublonsCategories(ArrayList<String> catP){
+        ArrayList<String> categoriesASupprimees = new ArrayList<>();
+        
         for(String cat : this.getCategories()){
             if(catP.contains(cat))
-                this.getCategories().remove(cat);
+                categoriesASupprimees.add(cat);
         }
+        
+        for(String cat : categoriesASupprimees)
+            this.getCategories().remove(cat);
     }
     
     public String makeRequestCategory() {
