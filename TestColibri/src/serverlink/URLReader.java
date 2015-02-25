@@ -15,7 +15,6 @@ public class URLReader {
 	
 	public String getJSON(String requestUrl) throws IOException
 	{
-		System.out.println(requestUrl);
 		//URL url = new URL("http://sbc2015.telecomnancy.univ-lorraine.fr/project/query?query="+requestUrl+"&output=json");
 		URL url = new URL("http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query="+requestUrl+"&format=application%2Fsparql-results%2Bjson&timeout=30000&debug=on");
 		URLConnection connection = url.openConnection();

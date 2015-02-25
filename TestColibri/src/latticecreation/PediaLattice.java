@@ -26,15 +26,6 @@ public class PediaLattice {
     public PediaLattice() throws ParseException, IOException {
         objects = new ArrayList<>();
         Relation rel = new TreeRelation();
-
-        //rel.add("obj11", "att1");
-        //rel.add("obj11", "att11");
-
-        //rel.add("obj12", "att2");
-        //rel.add("obj12", "att1");
-
-        //rel.add("obj21", "att2");
-        //rel.add("obj21", "att21");
         
         this.createLattice(rel);
 
@@ -72,17 +63,16 @@ public class PediaLattice {
             LatticeObject obj = new LatticeObject(results.get(i));
 
             request = parser.makeRequestAtt(results.get(i));
-            System.out.println("request: "+request);
+
             // We get the response
             response = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
-            System.out.println("response: "+response);
+
             // We parse it to get the different attributes of the thing
             parser.setStringToParse(response);
             ArrayList<String> attributes = parser.getResults("att");
 
             for (int j = 0; j < attributes.size(); j++) {
                 // We add the attributes to the object
-                System.out.println(attributes.get(j));
                 obj.addAttribute(attributes.get(j));
             }
 
@@ -129,53 +119,52 @@ public class PediaLattice {
             Edge e = it.next();
 
             // We take the 1st object
-            System.out.println("* * * * First * * * *");
+//            System.out.println("* * * * First * * * *");
             Concept c = e.getUpper();
 
             Iterator<Comparable> ite = c.getObjects().iterator();
-            System.out.println("---- OBJECTS ----");
+//            System.out.println("---- OBJECTS ----");
             ArrayList<String> obj1 = new ArrayList<>();
             ArrayList<String> att1 = new ArrayList<>();
             while (ite.hasNext()) {
                 String comp = (String) ite.next();
                 obj1.add(comp);
-                System.out.println(comp);
+//                System.out.println(comp);
             }
 
             ite = c.getAttributes().iterator();
-            System.out.println("---- ATTRIBUTES ----");
+//            System.out.println("---- ATTRIBUTES ----");
             while (ite.hasNext()) {
                 String comp = (String) ite.next();  
                 att1.add(comp);
-                System.out.println(comp);
+//                System.out.println(comp);
             }
             PediaConcept pc1 = new PediaConcept(obj1, att1);
-            System.out.println("");
 
             // We take the 2nd object
-            System.out.println("* * * * Second * * * *");
+//            System.out.println("* * * * Second * * * *");
             c = e.getLower();
 
             ite = c.getObjects().iterator();
-            System.out.println("---- OBJECTS ----");
+//            System.out.println("---- OBJECTS ----");
             ArrayList<String> obj2 = new ArrayList<>();
             ArrayList<String> att2 = new ArrayList<>();
             while (ite.hasNext()) {
                 String comp = (String) ite.next();
                 obj2.add(comp);
-                System.out.println(comp);
+//                System.out.println(comp);
             }
 
             ite = c.getAttributes().iterator();
-            System.out.println("---- ATTRIBUTES ----");
+//            System.out.println("---- ATTRIBUTES ----");
             while (ite.hasNext()) {
                 String comp = (String) ite.next();
                 att2.add(comp);
-                System.out.println(comp);
+//                System.out.println(comp);
             }
             PediaConcept pc2 = new PediaConcept(obj2, att2);
             
-            System.out.println("---------------------------------\n\n");
+//            System.out.println("---------------------------------\n\n");
             
             //On ne doit pas avoir plusieurs fois le même concept      
             if(!res.contains(pc1)) {
