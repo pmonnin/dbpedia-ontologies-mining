@@ -1,7 +1,6 @@
 package main;
 
 import java.io.IOException;
-
 import latticecreation.PediaLattice;
 
 import org.json.simple.parser.ParseException;

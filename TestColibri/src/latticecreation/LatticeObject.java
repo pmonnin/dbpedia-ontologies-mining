@@ -1,7 +1,6 @@
 package latticecreation;
 
 import java.util.ArrayList;
-
 import colibri.lib.Relation;
 
 public class LatticeObject {
@@ -12,7 +11,7 @@ public class LatticeObject {
 	public LatticeObject(String name)
 	{
 		this.name = name;
-		this.attributes = new ArrayList<String>();
+		this.attributes = new ArrayList<>();
 	}
 	
 	public void addAttribute(String att)
