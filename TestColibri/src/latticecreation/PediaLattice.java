@@ -27,21 +27,23 @@ public class PediaLattice {
         objects = new ArrayList<>();
         Relation rel = new TreeRelation();
 
-        rel.add("obj11", "att1");
-        rel.add("obj11", "att11");
+        //rel.add("obj11", "att1");
+        //rel.add("obj11", "att11");
 
-        rel.add("obj12", "att2");
-        rel.add("obj12", "att1");
+        //rel.add("obj12", "att2");
+        //rel.add("obj12", "att1");
 
-        rel.add("obj21", "att2");
-        rel.add("obj21", "att21");
+        //rel.add("obj21", "att2");
+        //rel.add("obj21", "att21");
+        
+        this.createLattice(rel);
 
         lattice = new HybridLattice(rel);
     }
 
     public void createLattice(Relation rel) throws ParseException, IOException {
         URLReader urlReader = new URLReader();
-        String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a owl:Thing } LIMIT 10", "UTF-8"));
+        String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a <http://www.w3.org/2002/07/owl#Thing> } LIMIT 10", "UTF-8"));
 
         // We parse it to get the different results
         JsonParser parser = new JsonParser(jsonResponse);
@@ -52,6 +54,7 @@ public class PediaLattice {
         String response;
 
         for (int i = 0; i < results.size(); i++) {
+        	
             // We create an object
             LatticeObject obj = new LatticeObject(results.get(i));
 
@@ -59,7 +62,7 @@ public class PediaLattice {
 
             // We get the response
             response = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
-
+            
             // We parse it to get the different attributes of the thing
             parser.setStringToParse(response);
             ArrayList<String> attributes = parser.getResults("att");
@@ -104,8 +107,8 @@ public class PediaLattice {
         lattice = new HybridLattice(rel);
     }
 
-    public ArrayList<PediaConcept> execIterator() {
-        Iterator<Edge> it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
+    public ArrayList<PediaConcept> execIterator() throws IOException {
+    	Iterator<Edge> it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
         ArrayList<PediaConcept> res = new ArrayList<>();
         
         while (it.hasNext()) {
@@ -161,16 +164,34 @@ public class PediaLattice {
             System.out.println("---------------------------------\n\n");
             
             //On ne doit pas avoir plusieurs fois le même concept      
-            if(!res.contains(pc1)){
+            if(!res.contains(pc1))
+            {
+            	// TODO
+                
                 //requête vers le serveur
                 //parseJSON pour récupérer les catégories
                 //pc1.addCategorie(res retourné par le parseJSON)
+                
+            	// We get the JSON of the shared categories
+            	String request = pc1.makeRequestCategory();
+            	URLReader urlReader = new URLReader();
+            	String jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
+            	
+            	// We add it to the array of results
                 res.add(pc1);
             }
+            
             if(!res.contains(pc2)){
+            	// TODO
                 //requête vers le serveur
                 //parseJSON pour récupérer les catégories
                 //pc1.
+                
+            	// We get the JSON of the shared categories
+            	String request = pc1.makeRequestCategory();
+            	URLReader urlReader = new URLReader();
+            	String jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
+            	
                 //pc2 a comme parent pc1
                 pc2.addParentPediaConcept(pc1);
                 res.add(pc2);

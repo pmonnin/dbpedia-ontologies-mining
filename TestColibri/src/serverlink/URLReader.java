@@ -34,6 +34,7 @@ public class URLReader {
 		}
 		
 		buff.close();
+
 		// System.out.println(jsonResponse);
 		return jsonResponse.toString();
 	}

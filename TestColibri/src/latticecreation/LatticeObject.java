@@ -17,14 +17,13 @@ public class LatticeObject {
 	public void addAttribute(String att)
 	{
 		//if (!att.split("/")[3].equals("ontology"))
-		if (att.split("/")[3].equals("property"))
+		//if (att.split("/")[3].equals("property"))
 			this.attributes.add(att);
 	}
 	
 	public void addToRelation(Relation rel)
 	{	
-		int i = 0;
-		for (i=0 ; i<this.attributes.size() ; i++)
+		for (int i=0 ; i<this.attributes.size() ; i++)
 		{
 			rel.add(this.name, this.attributes.get(i));
 		}
