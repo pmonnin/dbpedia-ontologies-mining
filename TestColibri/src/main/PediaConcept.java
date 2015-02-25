@@ -32,4 +32,25 @@ public class PediaConcept {
     public void addParentPediaConcept(PediaConcept parent){
         parents.add(parent);
     }
+    
+    public String makeRequestCategory()
+    {
+    	// Begin of the request
+    	String request = "SELECT DISTINCT ?categ";
+    	request += " WHERE {";
+    	
+    	// For each object, we link it to the categ
+		for (int i=0 ; i<listeObjets.size() ; i++)
+    	{
+    		request += "<" + listeObjets.get(i) + "> a ?categ";
+    		
+    		if (i < listeObjets.size()-1)
+    			request += ".";
+    	}
+    	
+    	// End of the request
+    	request += "}";
+    	
+    	return request;
+    }
 }
