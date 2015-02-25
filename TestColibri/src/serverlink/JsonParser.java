@@ -3,7 +3,6 @@ package serverlink;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
@@ -13,7 +12,7 @@ import dbpediaobjects.DBCategory;
 
 public class JsonParser {
 
-    String stringToParse;
+    private String stringToParse;
 
     public JsonParser(String stringToParse) {
         this.stringToParse = stringToParse;
@@ -27,11 +26,10 @@ public class JsonParser {
         map = (Map) map.get("results");
         JSONArray array = (JSONArray) map.get("bindings");
 
-        ArrayList<String> returnArray = new ArrayList<String>();
+        ArrayList<String> returnArray = new ArrayList<>();
 
         // For each result
-        int i = 0;
-        for (i = 0; i < array.size(); i++) {
+        for (int i = 0; i < array.size(); i++) {
             // We get the value of the link
             map = (Map) array.get(i);
             map = (Map) map.get(nameRequested);
@@ -50,11 +48,10 @@ public class JsonParser {
         map = (Map) map.get("results");
         JSONArray array = (JSONArray) map.get("bindings");
 
-        HashMap<String, DBCategory> res = new HashMap<String, DBCategory>();
+        HashMap<String, DBCategory> res = new HashMap<>();
 
         // For each result
-        int i = 0;
-        for (i = 0; i < array.size(); i++) {
+        for (int i = 0; i < array.size(); i++) {
             // We get the value of the link
             map = (Map) array.get(i);
             Map categoryMap = (Map) map.get("Category");

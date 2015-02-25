@@ -27,45 +27,62 @@ public class PediaLattice {
         objects = new ArrayList<>();
         Relation rel = new TreeRelation();
 
-        rel.add("obj11", "att1");
-        rel.add("obj11", "att11");
+        //rel.add("obj11", "att1");
+        //rel.add("obj11", "att11");
 
-        rel.add("obj12", "att2");
-        rel.add("obj12", "att1");
+        //rel.add("obj12", "att2");
+        //rel.add("obj12", "att1");
 
-        rel.add("obj21", "att2");
-        rel.add("obj21", "att21");
+        //rel.add("obj21", "att2");
+        //rel.add("obj21", "att21");
+        
+        this.createLattice(rel);
 
         lattice = new HybridLattice(rel);
     }
 
     public void createLattice(Relation rel) throws ParseException, IOException {
         URLReader urlReader = new URLReader();
-        String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a owl:Thing } LIMIT 10", "UTF-8"));
+        String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a <http://www.w3.org/2002/07/owl#Thing> } LIMIT 10", "UTF-8"));
 
         // We parse it to get the different results
         JsonParser parser = new JsonParser(jsonResponse);
-        ArrayList<String> results = parser.getResults("chose");
-
+//        ArrayList<String> results = parser.getResults("chose");
+        
+        
+        /****************TESTS*********************************/
+        ArrayList<String> results = new ArrayList<>();
+        results.add("http://dbpedia.org/resource/Alex_Reid_(fighter)");
+        results.add("http://dbpedia.org/resource/Alex_Tait_(rugby_union)");
+        results.add("http://dbpedia.org/resource/Alexander_Smit");
+        results.add("http://dbpedia.org/resource/Allan_La_Fontaine");
+        results.add("http://dbpedia.org/resource/Tim_Hames");
+        results.add("http://dbpedia.org/resource/Alina_Cho");
+        results.add("http://dbpedia.org/resource/Andrew_Heintzman");         
+        /******************************************************/        
+        
+        
         // For each result
         String request;
         String response;
 
         for (int i = 0; i < results.size(); i++) {
+        	
             // We create an object
             LatticeObject obj = new LatticeObject(results.get(i));
 
             request = parser.makeRequestAtt(results.get(i));
-
+            System.out.println("request: "+request);
             // We get the response
             response = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
-
+            System.out.println("response: "+response);
             // We parse it to get the different attributes of the thing
             parser.setStringToParse(response);
             ArrayList<String> attributes = parser.getResults("att");
 
             for (int j = 0; j < attributes.size(); j++) {
                 // We add the attributes to the object
+                System.out.println(attributes.get(j));
                 obj.addAttribute(attributes.get(j));
             }
 
@@ -104,10 +121,10 @@ public class PediaLattice {
         lattice = new HybridLattice(rel);
     }
 
-    public ArrayList<PediaConcept> execIterator() {
-        Iterator<Edge> it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
+    public ArrayList<PediaConcept> execIterator() throws IOException, ParseException {
+    	Iterator<Edge> it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
         ArrayList<PediaConcept> res = new ArrayList<>();
-        
+
         while (it.hasNext()) {
             Edge e = it.next();
 
@@ -161,19 +178,52 @@ public class PediaLattice {
             System.out.println("---------------------------------\n\n");
             
             //On ne doit pas avoir plusieurs fois le même concept      
-            if(!res.contains(pc1))
+            if(!res.contains(pc1)) {
+            	ArrayList<String> listeUri = new ArrayList<>();
+            	if (pc1.getListeObjets().size() > 0)
+            	{
+	            	// We get the JSON of the shared categories
+	            	String request = pc1.makeRequestCategory();
+	            	URLReader urlReader = new URLReader();
+	            	String jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
+	                
+	                //parse jsonResponse to retrieve URIs to the concept
+	            	JsonParser jsp = new JsonParser(jsonResponse);
+	                listeUri = jsp.getResults("categ");
+            	}
+                pc1.addCategoriesPediaConcept(listeUri);
+                
+            	// We add it to the array of results
                 res.add(pc1);
+            }
             
             if(!res.contains(pc2)){
+            	ArrayList<String> listeUri = new ArrayList<>();
+            	if(pc2.getListeObjets().size()>0)
+            	{
+	            	// We get the JSON of the shared categories
+	            	String request = pc2.makeRequestCategory();
+	            	URLReader urlReader = new URLReader();
+	            	String jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
+	            	
+	                //parse jsonResponse to retrieve URIs to the concept
+	            	JsonParser jsp = new JsonParser(jsonResponse);
+	                listeUri = jsp.getResults("categ");
+	            }
+                pc2.addCategoriesPediaConcept(listeUri);
+                
                 //pc2 a comme parent pc1
                 pc2.addParentPediaConcept(pc1);
+                
+                // We add it to the array of results
                 res.add(pc2);
             }else{
                 /*si pc2 est deja contenu dans la liste, on le récupère et on
                  *lui ajoute pc1 dans sa liste de parents
                  */
+                //enlever les catégories de pc1 à pc2
                 res.get(res.indexOf(pc2)).addParentPediaConcept(pc1);               
-            }
+            }          
         }
         return res;
     }

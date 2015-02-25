@@ -1,9 +1,11 @@
 package main;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import latticecreation.PediaLattice;
 
 import org.json.simple.parser.ParseException;
+import serverlink.JsonParser;
 
 public class Main {
 
@@ -18,6 +20,18 @@ public class Main {
 		// We create the lattice
 		PediaLattice lattice = new PediaLattice();
 		//lattice.deleteFirstIterationAttributes();
-		lattice.execIterator();
+		ArrayList<PediaConcept> lc = lattice.execIterator();
+                
+                for(PediaConcept c : lc){
+                    System.out.println("/***********Concept************/");
+                    for(String obj : c.getListeObjets())
+                        System.out.println("objet: "+obj);
+                    System.out.println("\n");
+                    
+                    for(String cat : c.getCategories())                       
+                        System.out.println("catégorie: "+cat);
+                    
+                    System.out.println("/***********Fin concept*********/\n\n");                  
+                }           
 	}
 }
