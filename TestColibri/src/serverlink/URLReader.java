@@ -19,23 +19,23 @@ public class URLReader {
 		URLConnection connection = url.openConnection();
 		BufferedReader buff = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		String inputLine;
-		String jsonResponse = "";
+		StringBuilder jsonResponse = new StringBuilder();
 		inputLine = buff.readLine();
 		
-		int i = 0;
+//		int i = 0;
 		while ( inputLine != null)
 		{
-			if(i % 10000 == 0)
-				System.out.println("Ligne " + i);
-			i++;
+//			if(i % 10000 == 0)
+//				System.out.println("Ligne " + i);
+//			i++;
 			
-			jsonResponse += inputLine;
+			jsonResponse.append(inputLine);
 			inputLine = buff.readLine();
 		}
 		
 		buff.close();
 		// System.out.println(jsonResponse);
-		return jsonResponse;
+		return jsonResponse.toString();
 	}
 	
 }
