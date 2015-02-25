@@ -38,6 +38,7 @@ public class PediaConcept {
     }
 
     public void addParentPediaConcept(PediaConcept parent) {
+        removeDoublonsCategories(parent.getCategories());
         parents.add(parent);
     }
 
@@ -45,6 +46,13 @@ public class PediaConcept {
         categories = cats;
     }
 
+    public void removeDoublonsCategories(ArrayList<String> catP){
+        for(String cat : this.getCategories()){
+            if(catP.contains(cat))
+                this.getCategories().remove(cat);
+        }
+    }
+    
     public String makeRequestCategory() {
         // Begin of the request
         String request = "SELECT DISTINCT ?categ";

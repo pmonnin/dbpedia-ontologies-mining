@@ -47,8 +47,21 @@ public class PediaLattice {
 
         // We parse it to get the different results
         JsonParser parser = new JsonParser(jsonResponse);
-        ArrayList<String> results = parser.getResults("chose");
-
+//        ArrayList<String> results = parser.getResults("chose");
+        
+        
+        /****************TESTS*********************************/
+        ArrayList<String> results = new ArrayList<>();
+        results.add("http://dbpedia.org/resource/Alex_Reid_(fighter)");
+        results.add("http://dbpedia.org/resource/Alex_Tait_(rugby_union)");
+        results.add("http://dbpedia.org/resource/Alexander_Smit");
+        results.add("http://dbpedia.org/resource/Allan_La_Fontaine");
+        results.add("http://dbpedia.org/resource/Tim_Hames");
+        results.add("http://dbpedia.org/resource/Alina_Cho");
+        results.add("http://dbpedia.org/resource/Andrew_Heintzman");         
+        /******************************************************/        
+        
+        
         // For each result
         String request;
         String response;
@@ -59,16 +72,17 @@ public class PediaLattice {
             LatticeObject obj = new LatticeObject(results.get(i));
 
             request = parser.makeRequestAtt(results.get(i));
-
+            System.out.println("request: "+request);
             // We get the response
             response = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
-            
+            System.out.println("response: "+response);
             // We parse it to get the different attributes of the thing
             parser.setStringToParse(response);
             ArrayList<String> attributes = parser.getResults("att");
 
             for (int j = 0; j < attributes.size(); j++) {
                 // We add the attributes to the object
+                System.out.println(attributes.get(j));
                 obj.addAttribute(attributes.get(j));
             }
 
@@ -110,7 +124,7 @@ public class PediaLattice {
     public ArrayList<PediaConcept> execIterator() throws IOException, ParseException {
     	Iterator<Edge> it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
         ArrayList<PediaConcept> res = new ArrayList<>();
-        
+
         while (it.hasNext()) {
             Edge e = it.next();
 
@@ -199,6 +213,7 @@ public class PediaLattice {
                 /*si pc2 est deja contenu dans la liste, on le récupère et on
                  *lui ajoute pc1 dans sa liste de parents
                  */
+                //enlever les catégories de pc1 à pc2
                 res.get(res.indexOf(pc2)).addParentPediaConcept(pc1);               
             }          
         }
