@@ -9,6 +9,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import dbpediaobjects.DBCategory;
+import dbpediaobjects.DBOntologyClass;
 
 public class JsonParser {
 
@@ -61,6 +62,58 @@ public class JsonParser {
             String label = (String) labelMap.get("value");
 
             res.put(uri, new DBCategory(label, uri));
+        }
+
+        return res;
+    }
+    
+    public HashMap<String, DBOntologyClass> getDbPediaOntologyClasses() throws ParseException {
+        // We get the JSON parsed
+        JSONParser parser = new JSONParser();
+        Map map = (Map) parser.parse(stringToParse);
+        // We get the results
+        map = (Map) map.get("results");
+        JSONArray array = (JSONArray) map.get("bindings");
+
+        HashMap<String, DBOntologyClass> res = new HashMap<>();
+
+        // For each result
+        for (int i = 0; i < array.size(); i++) {
+            // We get the value of the link
+            map = (Map) array.get(i);
+            Map categoryMap = (Map) map.get("Ontology");
+            String uri = (String) categoryMap.get("value");
+
+            Map labelMap = (Map) map.get("Label");
+            String label = (String) labelMap.get("value");
+
+            res.put(uri, new DBOntologyClass(label, uri));
+        }
+
+        return res;
+    }
+    
+    public HashMap<String, DBOntologyClass> getDbPediaOntologyParents() throws ParseException {
+        // We get the JSON parsed
+        JSONParser parser = new JSONParser();
+        Map map = (Map) parser.parse(stringToParse);
+        // We get the results
+        map = (Map) map.get("results");
+        JSONArray array = (JSONArray) map.get("bindings");
+
+        HashMap<String, DBOntologyClass> res = new HashMap<>();
+
+        // For each result
+        for (int i = 0; i < array.size(); i++) {
+            // We get the value of the link
+            map = (Map) array.get(i);
+            Map categoryMap = (Map) map.get("Ontology1");
+            String uri = (String) categoryMap.get("value");
+
+            Map labelMap = (Map) map.get("Ontology2");
+            String label = (String) labelMap.get("value");
+
+            res.put(uri, new DBOntologyClass(label, uri));
         }
 
         return res;
