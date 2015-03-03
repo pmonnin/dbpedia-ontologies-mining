@@ -1,15 +1,17 @@
 package main;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.json.simple.parser.ParseException;
+
 import serverlink.JsonParser;
 import serverlink.URLReader;
-import dbpediaobjects.DBCategory;
 import dbpediaobjects.DBOntologyClass;
-import dbpediaobjects.PediaCategoryThread;
 import dbpediaobjects.PediaOntologyThread;
 
 public class DBOntologyClassesCrawler {
@@ -20,7 +22,7 @@ public class DBOntologyClassesCrawler {
 		
 	}
 	
-	public void computeParents() {
+	public void computeParents() throws UnsupportedEncodingException, IOException, ParseException {
 		//Ask for ontology json
 		URLReader urlReader = new URLReader();
         String jsonResponse = urlReader
@@ -70,7 +72,7 @@ public class DBOntologyClassesCrawler {
                 thread.join();
                 System.out.println("THREAD TERMINE :)");
                 for (DBOntologyClass cat : thread.getThreadCategories()) {
-                    if (cat.getParents().isEmpty()) {
+                    if (cat.getParentsNumber() == 0) {
 //                        System.err.println("La cat�gorie " + cat.getUri()  + " n'a pas de parents.");
                         categoriesWithoutParents++;
                     }
