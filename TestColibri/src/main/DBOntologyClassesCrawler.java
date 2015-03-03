@@ -1,50 +1,44 @@
 package main;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.json.simple.parser.ParseException;
-
 import serverlink.JsonParser;
 import serverlink.URLReader;
 import dbpediaobjects.DBCategory;
+import dbpediaobjects.DBOntologyClass;
 import dbpediaobjects.PediaCategoryThread;
 
-public class DBCategoriesCrawler {
-
-    private HashMap<String, DBCategory> dbcategories;
-
-    public static void main(String[] args) throws UnsupportedEncodingException,
-            IOException, ParseException {
-        System.out.println("START MAIN");
-        new DBCategoriesCrawler().computeParents();
-    }
-
-    public DBCategoriesCrawler() {
-
-    }
-
-    public void computeParents() throws UnsupportedEncodingException,
-            IOException, ParseException {
-        // Ask for categories json
-        URLReader urlReader = new URLReader();
+public class DBOntologyClassesCrawler {
+	
+	private HashMap<String, DBOntologyClass> dbontologies;
+	
+	public DBOntologyClassesCrawler() {
+		
+	}
+	
+	public void computeParents() {
+		//Ask for ontology json
+		URLReader urlReader = new URLReader();
         String jsonResponse = urlReader
                 .getJSON(URLEncoder
-                        .encode("PREFIX dcterms:<http://purl.org/dc/terms/> PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> select distinct ?Category ?Label where "
-                                + "{ [] dcterms:subject ?Category . ?Category rdfs:label ?Label "
-                                + "}", "UTF-8"));
+                        .encode("select distinct ?Ontology ?Label where"
+                    			+"{"
+                    			+"[] rdf:type ?Ontology . "
+                    			+"?Ontology rdfs:label ?Label . "
+                    			+"FILTER(STRSTARTS(STR(?Ontology ), \"http://dbpedia.org/ontology\")) . "
+                    			+"FILTER(langMatches(lang(?Label), \"FR\")) "
+                    			+"}", "UTF-8"));
 
         // Parse the categories
         JsonParser parser = new JsonParser(jsonResponse);
-        dbcategories = parser.getDbPediaCategories();
+        dbontologies = parser.getDbPediaOntologyClasses();
 
-        Set<String> keys = dbcategories.keySet();
+        Set<String> keys = dbontologies.keySet();
         int i = 0, keySize = keys.size();
-        ArrayList<PediaCategoryThread> threadList = new ArrayList<PediaCategoryThread>();
+        /*ArrayList<PediaCategoryThread> threadList = new ArrayList<PediaCategoryThread>();
         int nbCores = Runtime.getRuntime().availableProcessors();
         ArrayList<DBCategory> threadCategories = new ArrayList<DBCategory>();
 
@@ -84,6 +78,6 @@ public class DBCategoriesCrawler {
                 e.printStackTrace();
             }
         }
-        System.out.println("PROGRAMME TERMINE : " + categoriesWithoutParents + " cat�gories sans parents.");
-    }
+        System.out.println("PROGRAMME TERMINE : " + categoriesWithoutParents + " cat�gories sans parents.");*/
+	}
 }

@@ -11,13 +11,13 @@ import org.json.simple.parser.ParseException;
 import serverlink.JsonParser;
 import serverlink.URLReader;
 
-public class PediaThread extends Thread {
+public class PediaCategoryThread extends Thread {
     private JsonParser parser;
     private URLReader urlReader;
     private ArrayList<DBCategory> threadCategories;
     private HashMap<String, DBCategory> dbcategories;
 
-    public PediaThread(JsonParser parser, URLReader urlReader,
+    public PediaCategoryThread(JsonParser parser, URLReader urlReader,
             HashMap<String, DBCategory> dbcategories,
             ArrayList<DBCategory> threadCategories) {
         super();
