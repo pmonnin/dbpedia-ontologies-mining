@@ -28,11 +28,11 @@ public class DBOntologyClass {
 		this.uri = uri;
 	}
 	
-	public ArrayList<DBOntologyClass> getParents() {
-		return parents;
+	public void addParent(DBOntologyClass parent) {
+		parents.add(parent);
 	}
 	
-	public void setParents(ArrayList<DBOntologyClass> parents) {
-		this.parents = parents;
+	public int getParentsNumber() {
+		return parents.size();
 	}
 }

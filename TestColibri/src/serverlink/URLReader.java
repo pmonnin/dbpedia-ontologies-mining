@@ -13,7 +13,7 @@ public class URLReader {
 
     public String getJSON(String requestUrl) throws IOException {
         requestUrl = requestUrl.replaceAll("%3C", "<").replaceAll("%3E", ">");
-        URL url = new URL("http://sbc2015.telecomnancy.univ-lorraine.fr:8080/Project/query?query="+requestUrl+"&output=json");
+        URL url = new URL("http://sbc2015.telecomnancy.univ-lorraine.fr:8080/project_fr/query?query="+requestUrl+"&output=json");
         //URL url = new URL("http://dbpedia.org/sparql?query=" + requestUrl + "&format=application%2Fsparql-results%2Bjson");
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();

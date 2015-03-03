@@ -75,7 +75,7 @@ public class DBCategoriesCrawler {
                 thread.join();
                 System.out.println("THREAD TERMINE :)");
                 for (DBCategory cat : thread.getThreadCategories()) {
-                    if (cat.getParents().isEmpty()) {
+                    if (cat.getParentsNumber() == 0) {
 //                        System.err.println("La cat�gorie " + cat.getUri()  + " n'a pas de parents.");
                         categoriesWithoutParents++;
                     }

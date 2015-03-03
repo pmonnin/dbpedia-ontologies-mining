@@ -54,7 +54,6 @@ public class PediaCategoryThread extends Thread {
                 for (String parentKey : parentsKeys) {
                     DBCategory parent = dbcategories.get(parentKey);
                     if(parent != null) {
-                        System.out.println("FOUND " + parent.getUri() + " AS PARENT FOR " + cat.getUri());
                         cat.addParent(parent);
                         threadCategories.set(i, cat);
                     }
