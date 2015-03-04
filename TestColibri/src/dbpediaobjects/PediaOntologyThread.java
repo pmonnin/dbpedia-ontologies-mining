@@ -15,44 +15,35 @@ public class PediaOntologyThread extends Thread {
     private JsonParser parser;
     private URLReader urlReader;
     private ArrayList<DBOntologyClass> threadOntologies;
-    private HashMap<String, DBOntologyClass> dbontologies;
 
-    public PediaOntologyThread(JsonParser parser, URLReader urlReader, HashMap<String, DBOntologyClass> dbontologies,
+    public PediaOntologyThread(JsonParser parser, URLReader urlReader,
     		ArrayList<DBOntologyClass> threadOntologies) {
         super();
         this.parser = parser;
         this.urlReader = urlReader;
         this.threadOntologies = threadOntologies;
-        this.dbontologies = dbontologies;
     }
 
     @Override
     public void run() {
         for(int i=0; i < threadOntologies.size(); i++) {
-            DBOntologyClass cat = threadOntologies.get(i);
+            DBOntologyClass ont = threadOntologies.get(i);
             String jsonParents = new String();
             try {
                 jsonParents = urlReader
                         .getJSON(URLEncoder
-                                .encode("",
+                                .encode("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+                                		+ "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
+                                		+ "select distinct ?Ontology2 where "
+                                		+ "{ <" + ont.getUri() + "> rdfs:subClassOf ?Ontology2 . "
+                                		+ "FILTER (REGEX(STR(?Ontology2), \"http://dbpedia.org/ontology\", \"i\")) }",
                                         "UTF-8"));
 
                 parser.setStringToParse(jsonParents);
-                HashMap<String, DBOntologyClass> parents;
 
-                parents = parser.getDbPediaOntologyParents();
-                dbontologies.putAll(parents);
-
-                Set<String> parentsKeys = parents.keySet();
-
-                for (String parentKey : parentsKeys) {
-                    DBOntologyClass parent = dbontologies.get(parentKey);
-                    if(parent != null) {
-                        System.out.println("FOUND " + parent.getUri() + " AS PARENT FOR " + cat.getUri());
-                        cat.addParent(parent);
-                        threadOntologies.set(i, cat);
-                    }
-                }
+                ArrayList<String> parents = parser.getDbPediaOntologyParents();
+                ont.setParents(parents);
+                
             } catch (ParseException e) {
                 e.printStackTrace();
             } catch (IOException e) {

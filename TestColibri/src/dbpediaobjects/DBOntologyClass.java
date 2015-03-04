@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class DBOntologyClass {
 	private String label = "";
 	private String uri = "";
-	private ArrayList<DBOntologyClass> parents = new ArrayList<DBOntologyClass>();
+	private ArrayList<String> parents = new ArrayList<String>();
 	
 	public DBOntologyClass(String label, String uri) {
 		this.label = label;
@@ -28,8 +28,12 @@ public class DBOntologyClass {
 		this.uri = uri;
 	}
 	
-	public void addParent(DBOntologyClass parent) {
+	public void addParent(String parent) {
 		parents.add(parent);
+	}
+	
+	public void setParents(ArrayList<String> parents) {
+		this.parents = parents;
 	}
 	
 	public int getParentsNumber() {
