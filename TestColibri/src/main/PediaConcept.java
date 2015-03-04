@@ -11,6 +11,7 @@ public class PediaConcept {
         listeObjets = objets;
         listeAttributs = attributs;
         parents = new ArrayList<>();
+        categories = new ArrayList<>();
     }
 
     public ArrayList<String> getListeObjets() {
@@ -38,7 +39,10 @@ public class PediaConcept {
     }
 
     public void addParentPediaConcept(PediaConcept parent) {
+//        System.out.println("concept1: "+this.getCategories());
+//        System.out.println("parent: "+parent.getCategories());
         removeDoublonsCategories(parent.getCategories());
+//        System.out.println("concept2: "+this.getCategories()+"\n\n");
         parents.add(parent);
     }
 
@@ -48,24 +52,24 @@ public class PediaConcept {
 
     public void removeDoublonsCategories(ArrayList<String> catP){
         ArrayList<String> categoriesASupprimees = new ArrayList<>();
-        
+
         for(String cat : this.getCategories()){
             if(catP.contains(cat))
                 categoriesASupprimees.add(cat);
         }
         
         for(String cat : categoriesASupprimees)
-            this.getCategories().remove(cat);
+            this.categories.remove(cat);
     }
     
     public String makeRequestCategory() {
         // Begin of the request
-        String request = "SELECT DISTINCT ?categ";
+        String request = "SELECT DISTINCT ?att";
         request += " WHERE {";
 
         // For each object, we link it to the categ
         for (int i = 0; i < listeObjets.size(); i++) {
-            request += "<" + listeObjets.get(i) + "> a ?categ";
+            request += "<" + listeObjets.get(i) + "> a ?att";
 
             if (i < listeObjets.size() - 1) {
                 request += ".";
