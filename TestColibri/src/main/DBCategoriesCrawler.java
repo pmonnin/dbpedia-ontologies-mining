@@ -69,21 +69,34 @@ public class DBCategoriesCrawler {
         }
 
         System.out.println("STARTING THREADS JOIN...");
-        int categoriesWithoutParents = 0;
+        dbcategories.clear();
+        int categoriesWithParents = 0;
         for (PediaCategoryThread thread : threadList) {
             try {
                 thread.join();
                 System.out.println("THREAD TERMINE :)");
                 for (DBCategory cat : thread.getThreadCategories()) {
-                    if (cat.getParentsNumber() == 0) {
-//                        System.err.println("La cat�gorie " + cat.getUri()  + " n'a pas de parents.");
-                        categoriesWithoutParents++;
+                    dbcategories.put(cat.getUri(), cat);
+                    if (cat.getParentsNumber() != 0) {
+//                        System.err.println("La catégorie " + cat.getUri()  + " n'a pas de parents.");
+                        categoriesWithParents++;
                     }
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println("PROGRAMME TERMINE : " + categoriesWithoutParents + " cat�gories sans parents.");
+        
+        int categoriesWithParents2 = 0;
+        for (String key : dbcategories.keySet()) {
+            DBCategory cat = dbcategories.get(key);
+            System.out.println(cat);
+            if (cat.getParentsNumber() != 0) {
+                categoriesWithParents2++;
+            }
+        }
+        System.out.println("PROGRAMME TERMINE : " + categoriesWithParents + " catégories avec parents.");
+        System.out.println("PROGRAMME TERMINE : " + categoriesWithParents2 + " catégories avec parents.");
+        System.out.println(dbcategories.keySet().size());
     }
 }
