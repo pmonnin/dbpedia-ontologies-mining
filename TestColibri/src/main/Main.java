@@ -2,9 +2,13 @@ package main;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import latticecreation.PediaLattice;
 
 import org.json.simple.parser.ParseException;
+
+import dbpediaobjects.DBCategory;
+import dbpediaobjects.DBOntologyClass;
 
 public class Main {
 
@@ -19,10 +23,12 @@ public class Main {
 		//Crawling DB categories
 		DBCategoriesCrawler dbCategoriesCrawler = new DBCategoriesCrawler();
 		dbCategoriesCrawler.computeParents();
+		ArrayList<DBCategory> dbcategories = dbCategoriesCrawler.
 		
 		//Crawling DB ontologies
 		DBOntologyClassesCrawler dbOntologyClasses = new DBOntologyClassesCrawler();
 		dbOntologyClasses.computeParents();
+		ArrayList<DBOntologyClass> dbontologies = DBOntologyClass.
 		
 		// We create the lattice
 		PediaLattice lattice = new PediaLattice();
@@ -46,7 +52,14 @@ public class Main {
 //                    System.out.println("/***********Fin concept*********/\n\n");                  
 //                }
 		
-		
+		for(PediaConcept c : lc) {
+			ArrayList<String> parentsCategories;
+			ArrayList<String> categories = c.getCategories();
+			
+			for(String cat : categories) {
+				
+			}
+		}
 		
 	}
 }
