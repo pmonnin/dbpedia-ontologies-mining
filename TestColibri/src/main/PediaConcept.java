@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PediaConcept {
 
@@ -11,6 +12,7 @@ public class PediaConcept {
         listeObjets = objets;
         listeAttributs = attributs;
         parents = new ArrayList<>();
+        categories = new ArrayList<>();
     }
 
     public ArrayList<String> getListeObjets() {
@@ -33,12 +35,19 @@ public class PediaConcept {
         return categories;
     }
 
+    public void setCategories(ArrayList<String> categories) {
+        this.categories = categories;
+    }   
+
     public ArrayList<PediaConcept> getParents() {
         return parents;
     }
 
     public void addParentPediaConcept(PediaConcept parent) {
+//        System.out.println("concept1: "+this.getCategories());
+//        System.out.println("parent: "+parent.getCategories());
         removeDoublonsCategories(parent.getCategories());
+//        System.out.println("concept2: "+this.getCategories()+"\n\n");
         parents.add(parent);
     }
 
@@ -48,14 +57,14 @@ public class PediaConcept {
 
     public void removeDoublonsCategories(ArrayList<String> catP){
         ArrayList<String> categoriesASupprimees = new ArrayList<>();
-        
+
         for(String cat : this.getCategories()){
             if(catP.contains(cat))
                 categoriesASupprimees.add(cat);
         }
         
         for(String cat : categoriesASupprimees)
-            this.getCategories().remove(cat);
+            this.getCategories().remove(cat);        
     }
     
     public String makeRequestCategory() {
@@ -77,18 +86,17 @@ public class PediaConcept {
 
         return request;
     }
-    
-    public boolean isEquivalentTo(PediaConcept pc)
-    {
+     
+    public boolean isEquivalentTo(PediaConcept pc) {
     	ArrayList<String> objets = pc.getListeObjets();
     	ArrayList<String> atts = pc.getListeAttributs();
-    	
+        
     	if (objets.size() != this.listeObjets.size())
     		return false;
     	if (atts.size() != this.listeAttributs.size())
     		return false;
-    	
-    	
+        
+        
     	for (int i=0 ; i<listeObjets.size() ; i++)
     	{
     		if (!objets.contains(listeObjets.get(i)))
@@ -102,5 +110,5 @@ public class PediaConcept {
     	}
     	
     	return true;
-    }
+    }  
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import latticecreation.PediaLattice;
 
 import org.json.simple.parser.ParseException;
-import serverlink.JsonParser;
 
 public class Main {
 

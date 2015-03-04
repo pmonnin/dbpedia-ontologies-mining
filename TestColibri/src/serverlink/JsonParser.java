@@ -34,9 +34,11 @@ public class JsonParser {
             // We get the value of the link
             map = (Map) array.get(i);
             map = (Map) map.get(nameRequested);
-            String str = (String) map.get("value");
-
-            returnArray.add(str);
+            
+            if(map != null){
+                String str = (String) map.get("value");
+                returnArray.add(str);
+            }
         }
         return returnArray;
     }
