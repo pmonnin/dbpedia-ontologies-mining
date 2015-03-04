@@ -3,7 +3,10 @@ package latticecreation;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+
+import main.PediaConcept;
 
 import org.json.simple.parser.ParseException;
 
@@ -16,7 +19,8 @@ import colibri.lib.Lattice;
 import colibri.lib.Relation;
 import colibri.lib.Traversal;
 import colibri.lib.TreeRelation;
-import main.PediaConcept;
+import dbpediaobjects.DBCategory;
+import dbpediaobjects.PediaCategoryThread;
 
 public class PediaLattice {
 
@@ -35,8 +39,9 @@ public class PediaLattice {
     public void createLattice(Relation rel) throws ParseException, IOException {
         URLReader urlReader = new URLReader();
 
-        String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a <http://www.w3.org/2002/07/owl#Thing> } ", "UTF-8"));
+        String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a <http://www.w3.org/2002/07/owl#Thing> } LIMIT 500 ", "UTF-8"));
 
+        System.out.println("FIN 1ère REQUETE CREATION LATTICE");
         // We parse it to get the different results
         JsonParser parser = new JsonParser(jsonResponse);
         ArrayList<String> results = parser.getResults("chose");
@@ -81,6 +86,8 @@ public class PediaLattice {
             obj.addToRelation(rel);
             objects.add(obj);
         }
+        
+        System.out.println("FIN 2ème REQUETE CREATION LATTICE");
     }
 
     public void deleteFirstIterationAttributes() {
@@ -115,10 +122,16 @@ public class PediaLattice {
     public ArrayList<PediaConcept> execIterator() throws IOException, ParseException {
     	Iterator<Edge> it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
         ArrayList<PediaConcept> res = new ArrayList<>();
-
+        HashMap<String, Boolean> resHM = new HashMap<>();
+        int j = 0;
+        System.out.println("DEBUT EXEC ITERATOR");
         while (it.hasNext()) {
+            if (j % 1000 == 0) {
+                System.out.println("j = " + j);
+            }
+            j++;
+            
             Edge e = it.next();
-
             // We take the 1st object
             Concept c = e.getUpper();
 
@@ -160,85 +173,45 @@ public class PediaLattice {
             PediaConcept pc2 = new PediaConcept(obj2, att2);
                        
             //On ne doit pas avoir plusieurs fois le même concept            
-            // We check if res contains pc1 :     
-            boolean isIn = false;
-            for (int i = 0 ; i<res.size() ; i++){
-                if (pc1.isEquivalentTo(res.get(i))){
-                    isIn = true;
-                    pc1 = res.get(i);
-                    break;
-                }
-            }
-            if(!isIn){
-                ArrayList<String> listeUri = new ArrayList<>();
-                ArrayList<String> listeOnto = new ArrayList<>();
-                if (pc1.getListeObjets().size() > 0){
-                    // We get the JSON of the shared categories
-                    String request = pc1.makeRequestCategory();
-                    URLReader urlReader = new URLReader();
-                    String jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
-
-                    //parse jsonResponse to retrieve URIs to the concept
-                    JsonParser jsp = new JsonParser(jsonResponse);
-                    listeUri = jsp.getResults("categ");
-                    
-                    
-                    // We get the JSON of the shared ontologies
-                    request = pc1.makeRequestOntology();
-                    jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
-                    
-                    // parse jsonResponse to retrieve URIs to the concept's list of ontologies
-                    jsp.setStringToParse(jsonResponse);
-                    listeOnto = jsp.getResults("onto");
-                }
-                pc1.addCategoriesPediaConcept(listeUri);
-                pc1.addOntologiesPediaConcept(listeOnto);
+            // We check if res contains pc1 :
+            Boolean isIn = new Boolean(false);
+//            boolean isIn = false;
+//            for (int i = 0 ; i<res.size() ; i++){
+//                if (pc1.isEquivalentTo(res.get(i))){
+//                    isIn = true;
+//                    pc1 = res.get(i);
+//                    break;
+//                }
+//            }
+//            if(!isIn){
+            isIn = resHM.get(pc1);
+            if(isIn == null) {
+                
                 
             	// We add it to the array of results
                 res.add(pc1);
+                resHM.put(pc1.toString(), true);
             }
             
             // We check if res contains pc2 :
-            isIn = false;
-            for (int i = 0 ; i<res.size() ; i++){
-                if (pc2.isEquivalentTo(res.get(i))){
-                    isIn = true;
-                    pc2 = res.get(i);
-                    break;
-                }
-            }
-            if(!isIn){
-                ArrayList<String> listeUri = new ArrayList<>();
-                ArrayList<String> listeOnto = new ArrayList<>();
-                if(pc2.getListeObjets().size()>0){
-                    // We get the JSON of the shared categories
-                    String request = pc2.makeRequestCategory();
-                    URLReader urlReader = new URLReader();
-                    String jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
-
-                    //parse jsonResponse to retrieve URIs to the concept
-                    JsonParser jsp = new JsonParser(jsonResponse);
-                    listeUri = jsp.getResults("categ");
-                    
-
-                    // We get the JSON of the shared ontologies
-                    request = pc2.makeRequestOntology();
-                    urlReader = new URLReader();
-                    jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
-                    
-                    // parce jsonResponse to retrieve URIs to the concept
-                    jsp.setStringToParse(jsonResponse);
-                    listeOnto = jsp.getResults("onto");
-                    
-                }
-                pc2.addCategoriesPediaConcept(listeUri);
-                pc2.addOntologiesPediaConcept(listeOnto);
+//            isIn = false;
+//            for (int i = 0 ; i<res.size() ; i++){
+//                if (pc2.isEquivalentTo(res.get(i))){
+//                    isIn = true;
+//                    pc2 = res.get(i);
+//                    break;
+//                }
+//            }
+//            if(!isIn){
+            isIn = resHM.get(pc2);
+            if(isIn == null) {
                 
                 //pc2 a comme parent pc1;              
                 pc2.addParentPediaConcept(pc1);
                 
                 // We add it to the array of results
                 res.add(pc2);
+                resHM.put(pc1.toString(), true);
             }else{
                 /*si pc2 est deja contenu dans la liste, on le récupère et on
                  *lui ajoute pc1 dans sa liste de parents
@@ -247,6 +220,45 @@ public class PediaLattice {
                 res.get(res.indexOf(pc2)).addParentPediaConcept(pc1);
             }          
         }
+        
+        System.out.println("FIN RECONSTRUCTION LATTICE");
+        computeCategoriesAndOntologies(res);
         return res;
+    }
+    
+    private void computeCategoriesAndOntologies(ArrayList<PediaConcept> res) {
+        int keySize = res.size();
+        ArrayList<LatticeCategoriesOntologiesThread> threadList = new ArrayList<LatticeCategoriesOntologiesThread>();
+        int nbCores = 40; // Runtime.getRuntime().availableProcessors();
+        ArrayList<PediaConcept> threadConcepts = new ArrayList<PediaConcept>();
+
+        // Add relationship
+        for (int i=0; i<res.size(); i++) {
+            PediaConcept pc = res.get(i);
+            threadConcepts.add(pc);
+
+            if (i % Math.ceil(keySize / nbCores) == 0 && i != 0) {
+                LatticeCategoriesOntologiesThread thread = new LatticeCategoriesOntologiesThread(threadConcepts);
+                thread.start();
+                threadList.add(thread);
+                threadConcepts = new ArrayList<PediaConcept>();
+            }
+        }
+        
+        System.out.println("STARTING THREADS JOIN...");
+        res.clear();
+        for (LatticeCategoriesOntologiesThread thread : threadList) {
+            try {
+                thread.join();
+                System.out.println("THREAD TERMINE :)");
+                for (PediaConcept pc : thread.getThreadConcepts()) {
+                    res.add(pc);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        System.out.println("JOIN DES THREADS DE LATTICE CREATION TERMINEE");
     }
 }

@@ -35,6 +35,10 @@ public class DBOntologyClass {
     public void setParents(ArrayList<String> parents) {
         this.parents = parents;
     }
+    
+    public boolean hasParent(String parent) {
+        return parents.contains(parent);
+    }
 
     public ArrayList<String> getParents() {
         return parents;

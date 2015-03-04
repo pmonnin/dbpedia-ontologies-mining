@@ -41,13 +41,13 @@ public class DBCategoriesCrawler {
         Set<String> keys = dbcategories.keySet();
         int i = 0, keySize = keys.size();
         ArrayList<PediaCategoryThread> threadList = new ArrayList<PediaCategoryThread>();
-        int nbCores = Runtime.getRuntime().availableProcessors();
+        int nbCores = 40; // Runtime.getRuntime().availableProcessors();
         ArrayList<DBCategory> threadCategories = new ArrayList<DBCategory>();
 
         // Add relationship
         for (String key : keys) {
             if (i % 1000 == 0) {
-                System.out.println("i " + i);
+//                System.out.println("i " + i);
             }
 
             DBCategory cat = dbcategories.get(key);

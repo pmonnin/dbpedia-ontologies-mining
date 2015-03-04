@@ -45,4 +45,8 @@ public class DBCategory {
     public String toString() {
         return "DBCategory [name=" + name + ", uri=" + uri + ", parents=" + parents + "]";
     }
+
+    public boolean hasParent(String parent) {
+        return parents.contains(parent);
+    }
 }

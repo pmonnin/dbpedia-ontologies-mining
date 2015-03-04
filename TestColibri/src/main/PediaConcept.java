@@ -53,6 +53,10 @@ public class PediaConcept {
     public ArrayList<PediaConcept> getParents() {
         return parents;
     }
+    
+    public int getParentsNumber() {
+        return parents.size();
+    }
 
     public void addParentPediaConcept(PediaConcept parent) {
 //        System.out.println("concept1: "+this.getCategories());
@@ -169,6 +173,16 @@ public class PediaConcept {
         for(PediaConcept p : this.getParents()){
             for(String c : p.getCategories())
                 res.add(c);
+        }
+        return res;
+    }
+    
+    public ArrayList<String> unionOntologiesParent(){
+        ArrayList<String> res = new ArrayList<>();
+        
+        for(PediaConcept p : this.getParents()){
+            for(String o : p.getOntologies())
+                res.add(o);
         }
         return res;
     }

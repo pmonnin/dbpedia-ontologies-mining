@@ -10,7 +10,6 @@ import org.json.simple.parser.ParseException;
 
 import serverlink.JsonParser;
 import serverlink.URLReader;
-import dbpediaobjects.DBCategory;
 
 public class LatticeCategoriesOntologiesThread extends Thread {
     private ArrayList<PediaConcept> threadConcepts;
@@ -61,7 +60,7 @@ public class LatticeCategoriesOntologiesThread extends Thread {
         }
     }
 
-    public ArrayList<PediaConcept> getThreadCategories() {
+    public ArrayList<PediaConcept> getThreadConcepts() {
         return threadConcepts;
     }
 }

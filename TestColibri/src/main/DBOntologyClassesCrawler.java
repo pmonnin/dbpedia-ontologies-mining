@@ -41,13 +41,13 @@ public class DBOntologyClassesCrawler {
         Set<String> keys = dbontologies.keySet();
         int i = 0, keySize = keys.size();
         ArrayList<PediaOntologyThread> threadList = new ArrayList<PediaOntologyThread>();
-        int nbCores = Runtime.getRuntime().availableProcessors();
+        int nbCores = 40; // Runtime.getRuntime().availableProcessors();
         ArrayList<DBOntologyClass> threadOntologies = new ArrayList<DBOntologyClass>();
 
         // Add relationship
         for (String key : keys) {
             if (i % 1000 == 0) {
-                System.out.println("i " + i);
+//                System.out.println("i " + i);
             }
 
             DBOntologyClass ont = dbontologies.get(key);

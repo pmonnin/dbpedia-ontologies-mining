@@ -2,6 +2,7 @@ package main;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import latticecreation.PediaLattice;
@@ -20,74 +21,76 @@ public class Main {
     // http://dbpedia.org/ontology/
 
     public static void main(String[] args) throws ParseException, IOException {
+        Date startDate = new Date();
+        
         // Crawling DB categories
+        System.out.println("DEBUT PARSAGE CATEGORIES");
         DBCategoriesCrawler dbCategoriesCrawler = new DBCategoriesCrawler();
-        dbCategoriesCrawler.computeParents();
+//        dbCategoriesCrawler.computeParents();
         HashMap<String, DBCategory> dbcategories = dbCategoriesCrawler.getDbcategories();
 
         // Crawling DB ontologies
+        System.out.println("DEBUT PARSAGE ONTOLOGIES");
         DBOntologyClassesCrawler dbOntologyClasses = new DBOntologyClassesCrawler();
-        dbOntologyClasses.computeParents();
+//        dbOntologyClasses.computeParents();
         HashMap<String, DBOntologyClass> dbontologies = dbOntologyClasses.getDbontologies();
 
         // We create the lattice
+        System.out.println("DEBUT CREATION LATTICE");
         PediaLattice lattice = new PediaLattice();
         // lattice.deleteFirstIterationAttributes();
         ArrayList<PediaConcept> lc = lattice.execIterator();
 
-        // for(PediaConcept c : lc){
-        // System.out.println("/***********Concept************/");
-        // for(String obj : c.getListeObjets())
-        // System.out.println("objet: "+obj);
-        // System.out.println("\n");
-        //
-        // for(String cat : c.getCategories())
-        // System.out.println("catégorie: "+cat);
-        // System.out.println("\n");
-        //
-        // for(PediaConcept par : c.getParents()){
-        // for(String op : par.getListeObjets())
-        // System.out.println("objet du parent: "+op);
-        // }
-        // System.out.println("/***********Fin concept*********/\n\n");
-        // }
+//        for (PediaConcept c : lc) {
+//            System.out.println("/***********Concept************/");
+//            for (String obj : c.getListeObjets())
+//                System.out.println("objet: " + obj);
+//            System.out.println("\n");
+//
+//            for (String cat : c.getCategories())
+//                System.out.println("catégorie: " + cat);
+//            System.out.println("\n");
+//
+//            for (PediaConcept par : c.getParents()) {
+//                for (String op : par.getListeObjets())
+//                    System.out.println("objet du parent: " + op);
+//            }
+//            System.out.println("/***********Fin concept*********/\n\n");
+//        }
 
         /* Pour chaque concept */
         for (PediaConcept c : lc) {
-            /* Récupérer l'union des catégories des parents */
-            ArrayList<String> latticeOntologyParents = c.unionCategoriesParent();
-            ArrayList<String> latticeOntologies = c.getCategories();
+            /* Récupérer l'union des parents des ontologies */
+            ArrayList<String> latticeOntologyParents = c.unionOntologiesParent();
+            ArrayList<String> latticeOntologies = c.getOntologies();
 
-            /* Pour chaque catégorie du concept */
-            for (String latticeOntology : latticeOntologies) {
-                /* Regarder si la catégorie est incluse dans les catégories de l'union */
-                if (latticeOntologyParents.contains(latticeOntology)) {
-                    /* YOLO à partir d'ici ! */
-                    
-                    DBOntologyClass dbPediaOntology = dbontologies.get(latticeOntology);
-                    ArrayList<String> latticeOntologyParentsCopy = new ArrayList<String>(latticeOntologyParents);
-                    ArrayList<String> dbPediaOntologyParentsCopy = new ArrayList<String>(dbPediaOntology.getParents());
-                    
-                    latticeOntologyParentsCopy.removeAll(dbPediaOntologyParentsCopy);
-                    
-                    if (!latticeOntologyParentsCopy.isEmpty()) {
-                        System.out.println("Tada :) Ces parents sont dans la lattice mais pas sur dbPedia !");
-                        System.out.println(latticeOntologyParentsCopy);
+            /* Pour chaque ontologie du concept */
+            for (String ontoChild : latticeOntologies) {
+                for (String ontoParent : latticeOntologyParents) {
+                    if (dbontologies.get(ontoChild).hasParent(ontoParent)) {
+//                        System.out.println("La relation " + ontoChild + " (enfant) -> " + ontoParent + " (parent) a bien été trouvée dans les classes d'ontologie.");
+                    } else {
+//                        System.out.println("Il manque la relation " + ontoChild + " (enfant) -> " + ontoParent + " (parent) dans les classes d'ontologie.");
                     }
-                    
-                    latticeOntologyParentsCopy = new ArrayList<String>(latticeOntologyParents);
-                    dbPediaOntologyParentsCopy.removeAll(latticeOntologyParentsCopy);
-                    
-                    if (!dbPediaOntologyParentsCopy.isEmpty()) {
-                        System.out.println("Tada :) Ces parents sont dans dbPedia mais pas dans notre treillis !");
-                        System.out.println(dbPediaOntologyParentsCopy);
-                    }
-                    
-                    /* partie YOLO terminée ! */
-                } else {
+                }
+            }
 
+            /* Récupérer l'union des parents des catégories */
+            ArrayList<String> latticeCategoryParents = c.unionCategoriesParent();
+            ArrayList<String> latticeCategories = c.getCategories();
+
+            /* Pour chaque catégories du concept */
+            for (String cateChild : latticeCategories) {
+                for (String cateParent : latticeCategoryParents) {
+                    if (dbcategories.get(cateChild).hasParent(cateParent)) {
+//                        System.out.println("La relation " + cateChild + " (enfant) -> " + cateParent + " (parent) a bien été trouvée dans les catégories.");
+                    } else {
+//                        System.out.println("Il manque la relation " + cateChild + " (enfant) -> " + cateParent + " (parent) dans les catégories.");
+                    }
                 }
             }
         }
+        
+        System.out.println("FIN DU PROGRAMME EN : " + (new Date().getTime() - startDate.getTime()) + " SECONDES.");
     }
 }
