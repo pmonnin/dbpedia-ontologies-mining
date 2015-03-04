@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class DBCategory {
 	private String name = "";
 	private String uri = "";
-	private ArrayList<DBCategory> parents = new ArrayList<DBCategory>();
+	private ArrayList<String> parents = new ArrayList<String>();
 	
 	public DBCategory(String name, String uri) {
         super();
@@ -17,8 +17,12 @@ public class DBCategory {
 		return name;
 	}
 
-	public void addParent(DBCategory parent) {
+	public void addParent(String parent) {
 		parents.add(parent);
+	}
+	
+	public void setParents(ArrayList<String> parents) {
+		this.parents = parents;
 	}
 
 	public void setName(String name) {
