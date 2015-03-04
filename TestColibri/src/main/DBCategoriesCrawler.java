@@ -86,6 +86,6 @@ public class DBCategoriesCrawler {
         }
         
         System.out.println("CATEGORIES CRAWLER TERMINE : " + categoriesWithParents + " catégories avec parents.");
-        System.out.println(dbcategories.keySet().size());
+        System.out.println("Nombre de catégories total : " + dbcategories.keySet().size());
     }
 }
