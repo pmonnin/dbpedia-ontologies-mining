@@ -14,22 +14,15 @@ Sylvain Vissière-Guerinet
 Useful files
 ------------
 
-* http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/fr/article_categories_fr.ttl.bz2 : ressource URL to category URL
-* http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/fr/category_labels_fr.ttl.bz2 : category URL to title
-* http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/fr/page_links_fr.ttl.bz2
-* http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/fr/labels_fr.ttl.bz2 : ressource URL to title
-* http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/fr/skos_categories_fr.ttl.bz2 : category URL to category URL 
+* http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/fr/ : french data
+* http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/en/ : english data (warning: big files)
+* http://wiki.dbpedia.org/Ontology : ontologies (warning: some files are also available on previous links)
 
-Maybe useful files
-------------------
-
-* http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/fr/topical_concepts_fr.ttl.bz2 : category URL to concept URL
-* http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/fr/topical_concepts_unredirected_fr.ttl.bz2 : idem
-* http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/fr/redirects_fr.ttl.bz2
 
 API Colibri
 -----------
 https://code.google.com/p/colibri-java/
+
 
 Access to SPARQL endpoint
 -------------------------
@@ -54,9 +47,6 @@ les argument à mettre dedans:
     tout les %XY c'est les codes héxa des caractères genre "?"->%3F
 
 -output avec la valeur json pour du json
-
-
-si vous utilisé autre chose que du json demandez moi je ressortirais les arguements nécessaire.
 
 
 ensuite la tête du json c'est:  
