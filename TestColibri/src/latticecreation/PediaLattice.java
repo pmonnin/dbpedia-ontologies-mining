@@ -34,6 +34,7 @@ public class PediaLattice {
 
     public void createLattice(Relation rel) throws ParseException, IOException {
         URLReader urlReader = new URLReader();
+
         String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a <http://www.w3.org/2002/07/owl#Thing> } ", "UTF-8"));
 
         // We parse it to get the different results
@@ -170,6 +171,7 @@ public class PediaLattice {
             }
             if(!isIn){
                 ArrayList<String> listeUri = new ArrayList<>();
+                ArrayList<String> listeOnto = new ArrayList<>();
                 if (pc1.getListeObjets().size() > 0){
                     // We get the JSON of the shared categories
                     String request = pc1.makeRequestCategory();
@@ -179,8 +181,18 @@ public class PediaLattice {
                     //parse jsonResponse to retrieve URIs to the concept
                     JsonParser jsp = new JsonParser(jsonResponse);
                     listeUri = jsp.getResults("categ");
+                    
+                    
+                    // We get the JSON of the shared ontologies
+                    request = pc1.makeRequestOntology();
+                    jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
+                    
+                    // parse jsonResponse to retrieve URIs to the concept's list of ontologies
+                    jsp.setStringToParse(jsonResponse);
+                    listeOnto = jsp.getResults("onto");
                 }
                 pc1.addCategoriesPediaConcept(listeUri);
+                pc1.addOntologiesPediaConcept(listeOnto);
                 
             	// We add it to the array of results
                 res.add(pc1);
@@ -197,6 +209,7 @@ public class PediaLattice {
             }
             if(!isIn){
                 ArrayList<String> listeUri = new ArrayList<>();
+                ArrayList<String> listeOnto = new ArrayList<>();
                 if(pc2.getListeObjets().size()>0){
                     // We get the JSON of the shared categories
                     String request = pc2.makeRequestCategory();
@@ -206,8 +219,20 @@ public class PediaLattice {
                     //parse jsonResponse to retrieve URIs to the concept
                     JsonParser jsp = new JsonParser(jsonResponse);
                     listeUri = jsp.getResults("categ");
+                    
+
+                    // We get the JSON of the shared ontologies
+                    request = pc2.makeRequestOntology();
+                    urlReader = new URLReader();
+                    jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
+                    
+                    // parce jsonResponse to retrieve URIs to the concept
+                    jsp.setStringToParse(jsonResponse);
+                    listeOnto = jsp.getResults("onto");
+                    
                 }
                 pc2.addCategoriesPediaConcept(listeUri);
+                pc2.addOntologiesPediaConcept(listeOnto);
                 
                 //pc2 a comme parent pc1;              
                 pc2.addParentPediaConcept(pc1);
