@@ -47,7 +47,6 @@ public class PediaCategoryThread extends Thread {
                 HashMap<String, DBCategory> parents;
 
                 parents = parser.getDbPediaCategories();
-                dbcategories.putAll(parents);
 
                 Set<String> parentsKeys = parents.keySet();
 
