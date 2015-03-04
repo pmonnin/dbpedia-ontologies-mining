@@ -31,6 +31,10 @@ public class Main {
                         System.out.println("catégorie: "+cat);
                     System.out.println("\n");
                     
+                    for (String ont : c.getOntologies())
+                    	System.out.println("ontologie : "+ont);
+                    System.out.println("\n");
+                    
                     for(PediaConcept par : c.getParents()){
                         for(String op :  par.getListeObjets())
                             System.out.println("objet du parent: "+op);
