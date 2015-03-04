@@ -1,7 +1,6 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PediaConcept {
 
@@ -111,4 +110,14 @@ public class PediaConcept {
     	
     	return true;
     }  
+    
+    public ArrayList<String> unionCategoriesParent(){
+        ArrayList<String> res = new ArrayList<>();
+        
+        for(PediaConcept p : this.getParents()){
+            for(String c : p.getCategories())
+                res.add(c);
+        }
+        return res;
+    }
 }
