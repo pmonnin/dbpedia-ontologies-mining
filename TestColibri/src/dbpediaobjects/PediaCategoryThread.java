@@ -3,8 +3,6 @@ package dbpediaobjects;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 
 import org.json.simple.parser.ParseException;
 
