@@ -77,18 +77,20 @@ public class PediaConcept {
 
         return request;
     }
-    
-    public boolean isEquivalentTo(PediaConcept pc)
+  
+    @Override
+    public boolean equals(Object obj)
     {
+        PediaConcept pc = (PediaConcept) obj;
     	ArrayList<String> objets = pc.getListeObjets();
     	ArrayList<String> atts = pc.getListeAttributs();
-    	
+        
     	if (objets.size() != this.listeObjets.size())
     		return false;
     	if (atts.size() != this.listeAttributs.size())
     		return false;
-    	
-    	
+        
+        
     	for (int i=0 ; i<listeObjets.size() ; i++)
     	{
     		if (!objets.contains(listeObjets.get(i)))
@@ -102,5 +104,5 @@ public class PediaConcept {
     	}
     	
     	return true;
-    }
+    }  
 }

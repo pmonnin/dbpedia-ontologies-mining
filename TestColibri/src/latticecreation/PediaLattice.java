@@ -166,27 +166,26 @@ public class PediaLattice {
             
 //            System.out.println("---------------------------------\n\n");
             
-            //On ne doit pas avoir plusieurs fois le même concept
-            
+            //On ne doit pas avoir plusieurs fois le même concept            
             // We check if res contains pc1 :
-            boolean isIn = false;
-            for (int i = 0 ; i<res.size() ; i++)
-            {
-            	if (pc1.isEquivalentTo(res.get(i)))
-            	{
-            		isIn = true;
-            		pc1 = res.get(i);
-            		break;
-            	}
-            }
+//            boolean isIn = false;
+//            for (int i = 0 ; i<res.size() ; i++)
+//            {
+//            	if (pc1.isEquivalentTo(res.get(i)))
+//            	{
+//            		isIn = true;
+//            		pc1 = res.get(i);
+//            		break;
+//            	}
+//            }
             
             
-            //if(!res.contains(pc1))
-            if (!isIn)
+            if(!res.contains(pc1))
+//            if (!isIn)
             {
-            	ArrayList<String> listeUri = new ArrayList<>();
-            	if (pc1.getListeObjets().size() > 0)
-            	{
+//            	ArrayList<String> listeUri = new ArrayList<>();
+//            	if (pc1.getListeObjets().size() > 0)
+//            	{
 	            	// We get the JSON of the shared categories
 	            	String request = pc1.makeRequestCategory();
 	            	URLReader urlReader = new URLReader();
@@ -194,8 +193,8 @@ public class PediaLattice {
 	                
 	                //parse jsonResponse to retrieve URIs to the concept
 	            	JsonParser jsp = new JsonParser(jsonResponse);
-	                listeUri = jsp.getResults("categ");
-            	}
+	                ArrayList<String> listeUri = jsp.getResults("categ");
+//            	}
                 pc1.addCategoriesPediaConcept(listeUri);
                 
             	// We add it to the array of results
@@ -203,23 +202,23 @@ public class PediaLattice {
             }
             
             // We check if res contains pc2 :
-            isIn = false;
-            for (int i = 0 ; i<res.size() ; i++)
+//            isIn = false;
+//            for (int i = 0 ; i<res.size() ; i++)
+//            {
+//            	if (pc2.isEquivalentTo(res.get(i)))
+//            	{
+//            		isIn = true;
+//            		pc2 = res.get(i);
+//            		break;
+//            	}
+//            }
+//            
+//            if (!isIn)
+             if(!res.contains(pc2))
             {
-            	if (pc2.isEquivalentTo(res.get(i)))
-            	{
-            		isIn = true;
-            		pc2 = res.get(i);
-            		break;
-            	}
-            }
-            
-            if (!isIn)
-            // if(!res.contains(pc2))
-            {
-            	ArrayList<String> listeUri = new ArrayList<>();
-            	if(pc2.getListeObjets().size()>0)
-            	{
+//            	ArrayList<String> listeUri = new ArrayList<>();
+//            	if(pc2.getListeObjets().size()>0)
+//            	{
 	            	// We get the JSON of the shared categories
 	            	String request = pc2.makeRequestCategory();
 	            	URLReader urlReader = new URLReader();
@@ -227,8 +226,8 @@ public class PediaLattice {
 	            	
 	                //parse jsonResponse to retrieve URIs to the concept
 	            	JsonParser jsp = new JsonParser(jsonResponse);
-	                listeUri = jsp.getResults("categ");
-	            }
+	                ArrayList<String> listeUri = jsp.getResults("categ");
+//	            }
                 pc2.addCategoriesPediaConcept(listeUri);
                 
                 //pc2 a comme parent pc1
@@ -241,7 +240,6 @@ public class PediaLattice {
                  *lui ajoute pc1 dans sa liste de parents
                  */
                 //enlever les catégories de pc1 à pc2
-            	System.out.println(res.indexOf(pc2));
                 res.get(res.indexOf(pc2)).addParentPediaConcept(pc1);
             }          
         }
