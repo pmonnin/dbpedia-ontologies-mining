@@ -34,22 +34,22 @@ public class PediaLattice {
 
     public void createLattice(Relation rel) throws ParseException, IOException {
         URLReader urlReader = new URLReader();
-        String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a <http://www.w3.org/2002/07/owl#Thing> } LIMIT 10", "UTF-8"));
+        String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a <http://www.w3.org/2002/07/owl#Thing> } ", "UTF-8"));
 
         // We parse it to get the different results
         JsonParser parser = new JsonParser(jsonResponse);
-//        ArrayList<String> results = parser.getResults("chose");
+        ArrayList<String> results = parser.getResults("chose");
         
         
         /****************TESTS*********************************/
-        ArrayList<String> results = new ArrayList<>();
-        results.add("http://dbpedia.org/resource/Alex_Reid_(fighter)");
-        results.add("http://dbpedia.org/resource/Alex_Tait_(rugby_union)");
-        results.add("http://dbpedia.org/resource/Alexander_Smit");
-        results.add("http://dbpedia.org/resource/Allan_La_Fontaine");
-        results.add("http://dbpedia.org/resource/Tim_Hames");
-        results.add("http://dbpedia.org/resource/Alina_Cho");
-        results.add("http://dbpedia.org/resource/Andrew_Heintzman");         
+//        ArrayList<String> results = new ArrayList<>();
+//        results.add("http://dbpedia.org/resource/Alex_Reid_(fighter)");
+//        results.add("http://dbpedia.org/resource/Alex_Tait_(rugby_union)");
+//        results.add("http://dbpedia.org/resource/Alexander_Smit");
+//        results.add("http://dbpedia.org/resource/Allan_La_Fontaine");
+//        results.add("http://dbpedia.org/resource/Tim_Hames");
+//        results.add("http://dbpedia.org/resource/Alina_Cho");
+//        results.add("http://dbpedia.org/resource/Andrew_Heintzman");         
         /******************************************************/        
         
         
