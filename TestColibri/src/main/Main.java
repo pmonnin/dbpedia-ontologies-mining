@@ -2,6 +2,7 @@ package main;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import latticecreation.PediaLattice;
 
@@ -12,23 +13,23 @@ import dbpediaobjects.DBOntologyClass;
 
 public class Main {
 
-	// Ontology :
-	// http://wiki.dbpedia.org/Ontology
-	// http://mappings.dbpedia.org/index.php/How_to_edit_the_DBpedia_Ontology
-	// http://mappings.dbpedia.org/server/templatestatistics/fr/?template=Infobox_Ch%C3%A2teau	
-	// http://dbpedia.org/ontology/
-	
-	public static void main(String[] args) throws ParseException, IOException
+    // Ontology :
+    // http://wiki.dbpedia.org/Ontology
+    // http://mappings.dbpedia.org/index.php/How_to_edit_the_DBpedia_Ontology
+    // http://mappings.dbpedia.org/server/templatestatistics/fr/?template=Infobox_Ch%C3%A2teau
+    // http://dbpedia.org/ontology/
+
+    public static void main(String[] args) throws ParseException, IOException
 	{
 		//Crawling DB categories
 		DBCategoriesCrawler dbCategoriesCrawler = new DBCategoriesCrawler();
 		dbCategoriesCrawler.computeParents();
-		ArrayList<DBCategory> dbcategories = dbCategoriesCrawler.
+        HashMap<String, DBCategory> dbcategories = dbCategoriesCrawler.getDbcategories();
 		
 		//Crawling DB ontologies
 		DBOntologyClassesCrawler dbOntologyClasses = new DBOntologyClassesCrawler();
 		dbOntologyClasses.computeParents();
-		ArrayList<DBOntologyClass> dbontologies = DBOntologyClass.
+		HashMap<String, DBOntologyClass> dbontologies = dbOntologyClasses.getDbontologies();
 		
 		// We create the lattice
 		PediaLattice lattice = new PediaLattice();
@@ -53,11 +54,15 @@ public class Main {
 //                }
 		
 		for(PediaConcept c : lc) {
-			ArrayList<String> parentsCategories;
+			ArrayList<String> unionCategoriesParent = c.unionCategoriesParent();
 			ArrayList<String> categories = c.getCategories();
 			
 			for(String cat : categories) {
-				
+				if(unionCategoriesParent.contains(cat)) {
+				    
+				} else {
+				    
+				}
 			}
 		}
 		

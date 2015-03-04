@@ -18,25 +18,21 @@ public class DBCategoriesCrawler {
 
     private HashMap<String, DBCategory> dbcategories;
 
-    public static void main(String[] args) throws UnsupportedEncodingException,
-            IOException, ParseException {
+    public static void main(String[] args) throws UnsupportedEncodingException, IOException, ParseException {
         System.out.println("START MAIN");
         new DBCategoriesCrawler().computeParents();
     }
 
-    public DBCategoriesCrawler() {
-
+    public HashMap<String, DBCategory> getDbcategories() {
+        return dbcategories;
     }
 
-    public void computeParents() throws UnsupportedEncodingException,
-            IOException, ParseException {
+    public void computeParents() throws UnsupportedEncodingException, IOException, ParseException {
         // Ask for categories json
         URLReader urlReader = new URLReader();
-        String jsonResponse = urlReader
-                .getJSON(URLEncoder
-                        .encode("PREFIX dcterms:<http://purl.org/dc/terms/> PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> select distinct ?Category ?Label where "
-                                + "{ [] dcterms:subject ?Category . ?Category rdfs:label ?Label "
-                                + "}", "UTF-8"));
+        String jsonResponse = urlReader.getJSON(URLEncoder.encode(
+                "PREFIX dcterms:<http://purl.org/dc/terms/> PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> select distinct ?Category ?Label where "
+                        + "{ [] dcterms:subject ?Category . ?Category rdfs:label ?Label " + "}", "UTF-8"));
 
         // Parse the categories
         JsonParser parser = new JsonParser(jsonResponse);
@@ -84,7 +80,7 @@ public class DBCategoriesCrawler {
                 e.printStackTrace();
             }
         }
-        
+
         System.out.println("CATEGORIES CRAWLER TERMINE : " + categoriesWithParents + " catégories avec parents.");
         System.out.println("Nombre de catégories total : " + dbcategories.keySet().size());
     }
