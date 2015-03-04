@@ -58,8 +58,7 @@ public class DBCategoriesCrawler {
             threadCategories.add(cat);
 
             if (i % Math.ceil(keySize / nbCores) == 0 && i != 0) {
-                PediaCategoryThread thread = new PediaCategoryThread(parser, urlReader,
-                        dbcategories, threadCategories);
+                PediaCategoryThread thread = new PediaCategoryThread(parser, urlReader, threadCategories);
                 thread.start();
                 threadList.add(thread);
                 threadCategories = new ArrayList<DBCategory>();

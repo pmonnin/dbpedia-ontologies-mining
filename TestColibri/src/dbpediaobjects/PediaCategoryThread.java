@@ -15,16 +15,13 @@ public class PediaCategoryThread extends Thread {
     private JsonParser parser;
     private URLReader urlReader;
     private ArrayList<DBCategory> threadCategories;
-    private HashMap<String, DBCategory> dbcategories;
 
     public PediaCategoryThread(JsonParser parser, URLReader urlReader,
-            HashMap<String, DBCategory> dbcategories,
             ArrayList<DBCategory> threadCategories) {
         super();
         this.parser = parser;
         this.urlReader = urlReader;
         this.threadCategories = threadCategories;
-        this.dbcategories = dbcategories;
     }
 
     @Override
@@ -35,28 +32,19 @@ public class PediaCategoryThread extends Thread {
             try {
                 jsonParents = urlReader
                         .getJSON(URLEncoder
-                                .encode("PREFIX dcterms:<http://purl.org/dc/terms/> PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> PREFIX skos:<http://www.w3.org/2004/02/skos/core#> select distinct ?Category ?Label where "
+                                .encode("PREFIX dcterms:<http://purl.org/dc/terms/> PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> PREFIX skos:<http://www.w3.org/2004/02/skos/core#> select distinct ?Category where "
                                         + " { "
                                         + "<"
                                         + cat.getUri()
                                         + "> skos:broader ?Category . "
-                                        + "?Category rdfs:label ?Label" + "}",
+                                        + "}",
                                         "UTF-8"));
 
                 parser.setStringToParse(jsonParents);
-                HashMap<String, DBCategory> parents;
 
-                parents = parser.getDbPediaCategories();
-
-                Set<String> parentsKeys = parents.keySet();
-
-                for (String parentKey : parentsKeys) {
-                    DBCategory parent = dbcategories.get(parentKey);
-                    if(parent != null) {
-                        cat.addParent(parent);
-                        threadCategories.set(i, cat);
-                    }
-                }
+                ArrayList<String> parents = parser.getDbPediaCategoriesParents();
+                cat.setParents(parents);
+                
             } catch (ParseException e) {
                 e.printStackTrace();
             } catch (IOException e) {
