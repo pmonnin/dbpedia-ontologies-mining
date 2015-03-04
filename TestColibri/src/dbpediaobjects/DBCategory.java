@@ -16,10 +16,6 @@ public class DBCategory {
 	public String getName() {
 		return name;
 	}
-	
-	public ArrayList<DBCategory> getParents() {
-		return parents;
-	}
 
 	public void addParent(DBCategory parent) {
 		parents.add(parent);
