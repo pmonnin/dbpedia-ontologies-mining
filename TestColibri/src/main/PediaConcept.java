@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PediaConcept {
 
@@ -34,6 +35,10 @@ public class PediaConcept {
         return categories;
     }
 
+    public void setCategories(ArrayList<String> categories) {
+        this.categories = categories;
+    }   
+
     public ArrayList<PediaConcept> getParents() {
         return parents;
     }
@@ -59,17 +64,17 @@ public class PediaConcept {
         }
         
         for(String cat : categoriesASupprimees)
-            this.categories.remove(cat);
+            this.getCategories().remove(cat);        
     }
     
     public String makeRequestCategory() {
         // Begin of the request
-        String request = "SELECT DISTINCT ?att";
+        String request = "SELECT DISTINCT ?categ";
         request += " WHERE {";
 
         // For each object, we link it to the categ
         for (int i = 0; i < listeObjets.size(); i++) {
-            request += "<" + listeObjets.get(i) + "> a ?att";
+            request += "<" + listeObjets.get(i) + "> a ?categ";
 
             if (i < listeObjets.size() - 1) {
                 request += ".";
@@ -81,11 +86,8 @@ public class PediaConcept {
 
         return request;
     }
-  
-    @Override
-    public boolean equals(Object obj)
-    {
-        PediaConcept pc = (PediaConcept) obj;
+     
+    public boolean isEquivalentTo(PediaConcept pc) {
     	ArrayList<String> objets = pc.getListeObjets();
     	ArrayList<String> atts = pc.getListeAttributs();
         
