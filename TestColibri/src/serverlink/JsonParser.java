@@ -67,6 +67,29 @@ public class JsonParser {
         return res;
     }
     
+    public ArrayList<String> getDbPediaCategoriesParents() throws ParseException {
+        // We get the JSON parsed
+        JSONParser parser = new JSONParser();
+        Map map = (Map) parser.parse(stringToParse);
+        // We get the results
+        map = (Map) map.get("results");
+        JSONArray array = (JSONArray) map.get("bindings");
+
+        ArrayList<String> res = new ArrayList<String>();
+
+        // For each result
+        for (int i = 0; i < array.size(); i++) {
+            // We get the value of the link
+            map = (Map) array.get(i);
+            Map categoryMap = (Map) map.get("Category");
+            String uri = (String) categoryMap.get("value");
+
+            res.add(uri);
+        }
+
+        return res;
+    }
+    
     public HashMap<String, DBOntologyClass> getDbPediaOntologyClasses() throws ParseException {
         // We get the JSON parsed
         JSONParser parser = new JSONParser();
