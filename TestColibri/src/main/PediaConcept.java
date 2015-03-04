@@ -105,14 +105,14 @@ public class PediaConcept {
         // For each object, we link it to the categ
         for (int i = 0; i < listeObjets.size(); i++) {
             request += "<" + listeObjets.get(i) + "> a ?onto";
-            // TODO
 
-            if (i < listeObjets.size() - 1) {
+            //if (i < listeObjets.size() - 1) {
                 request += ".";
-            }
+            //}
         }
 
         // End of the request
+        request += "FILTER (REGEX(STR(?onto), \"http://dbpedia.org/ontology\", \"i\"))";
         request += "}";
 
         return request;
