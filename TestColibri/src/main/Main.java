@@ -2,9 +2,13 @@ package main;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import latticecreation.PediaLattice;
 
 import org.json.simple.parser.ParseException;
+
+import dbpediaobjects.DBCategory;
+import dbpediaobjects.DBOntologyClass;
 
 public class Main {
 
@@ -16,26 +20,46 @@ public class Main {
 	
 	public static void main(String[] args) throws ParseException, IOException
 	{
+		//Crawling DB categories
+		DBCategoriesCrawler dbCategoriesCrawler = new DBCategoriesCrawler();
+		dbCategoriesCrawler.computeParents();
+		ArrayList<DBCategory> dbcategories = dbCategoriesCrawler.
+		
+		//Crawling DB ontologies
+		DBOntologyClassesCrawler dbOntologyClasses = new DBOntologyClassesCrawler();
+		dbOntologyClasses.computeParents();
+		ArrayList<DBOntologyClass> dbontologies = DBOntologyClass.
+		
 		// We create the lattice
 		PediaLattice lattice = new PediaLattice();
 		//lattice.deleteFirstIterationAttributes();
 		ArrayList<PediaConcept> lc = lattice.execIterator();
                 
-                for(PediaConcept c : lc){
-                    System.out.println("/***********Concept************/");
-                    for(String obj : c.getListeObjets())
-                        System.out.println("objet: "+obj);
-                    System.out.println("\n");
-                    
-                    for(String cat : c.getCategories())                       
-                        System.out.println("catégorie: "+cat);
-                    System.out.println("\n");
-                    
-                    for(PediaConcept par : c.getParents()){
-                        for(String op :  par.getListeObjets())
-                            System.out.println("objet du parent: "+op);
-                    }
-                    System.out.println("/***********Fin concept*********/\n\n");                  
-                }           
+//                for(PediaConcept c : lc){
+//                    System.out.println("/***********Concept************/");
+//                    for(String obj : c.getListeObjets())
+//                        System.out.println("objet: "+obj);
+//                    System.out.println("\n");
+//                    
+//                    for(String cat : c.getCategories())                       
+//                        System.out.println("catégorie: "+cat);
+//                    System.out.println("\n");
+//                    
+//                    for(PediaConcept par : c.getParents()){
+//                        for(String op :  par.getListeObjets())
+//                            System.out.println("objet du parent: "+op);
+//                    }
+//                    System.out.println("/***********Fin concept*********/\n\n");                  
+//                }
+		
+		for(PediaConcept c : lc) {
+			ArrayList<String> parentsCategories;
+			ArrayList<String> categories = c.getCategories();
+			
+			for(String cat : categories) {
+				
+			}
+		}
+		
 	}
 }
