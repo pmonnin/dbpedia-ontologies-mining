@@ -34,11 +34,7 @@ public class PediaOntologyThread extends Thread {
             try {
                 jsonParents = urlReader
                         .getJSON(URLEncoder
-                                .encode("select distinct ?Ontology1 ?Ontology2 where { "
-                                		+ "?Ontology1 rdfs:subClassOf ?Ontology2 . "
-                                		+ "FILTER(STRSTARTS(STR(?Ontology1), \"http://dbpedia.org/ontology\")) . "
-                                		+ "FILTER(STRSTARTS(STR(?Ontology2), \"http://dbpedia.org/ontology\")) . "
-                                		+ "}",
+                                .encode("",
                                         "UTF-8"));
 
                 parser.setStringToParse(jsonParents);

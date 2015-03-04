@@ -27,13 +27,7 @@ public class DBOntologyClassesCrawler {
 		URLReader urlReader = new URLReader();
         String jsonResponse = urlReader
                 .getJSON(URLEncoder
-                        .encode("select distinct ?Ontology ?Label where"
-                    			+"{"
-                    			+"[] rdf:type ?Ontology . "
-                    			+"?Ontology rdfs:label ?Label . "
-                    			+"FILTER(STRSTARTS(STR(?Ontology), \"http://dbpedia.org/ontology\")) . "
-                    			+"FILTER(langMatches(lang(?Label), \"FR\")) "
-                    			+"}", "UTF-8"));
+                        .encode("", "UTF-8"));
 
         // Parse the categories
         JsonParser parser = new JsonParser(jsonResponse);
@@ -73,7 +67,6 @@ public class DBOntologyClassesCrawler {
                 System.out.println("THREAD TERMINE :)");
                 for (DBOntologyClass cat : thread.getThreadCategories()) {
                     if (cat.getParentsNumber() == 0) {
-//                        System.err.println("La cat�gorie " + cat.getUri()  + " n'a pas de parents.");
                         categoriesWithoutParents++;
                     }
                 }
@@ -81,6 +74,6 @@ public class DBOntologyClassesCrawler {
                 e.printStackTrace();
             }
         }
-        System.out.println("PROGRAMME TERMINE : " + categoriesWithoutParents + " cat�gories sans parents.");
+        System.out.println("PROGRAMME TERMINE : " + categoriesWithoutParents + " ontologies sans parents.");
 	}
 }
