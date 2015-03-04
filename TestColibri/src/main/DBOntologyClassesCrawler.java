@@ -27,7 +27,12 @@ public class DBOntologyClassesCrawler {
 		URLReader urlReader = new URLReader();
         String jsonResponse = urlReader
                 .getJSON(URLEncoder
-                        .encode("", "UTF-8"));
+                        .encode("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+                        		+ "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
+                        		+ "select distinct ?Ontology ?Label where "
+                        		+ "{ [] rdf:type ?Ontology . ?Ontology rdfs:label ?Label . "
+                        		+ "FILTER (REGEX(STR(?Ontology), \"http://dbpedia.org/ontology\", \"i\")) "
+                        		+ "FILTER(langMatches(lang(?Label), \"FR\")) }", "UTF-8"));
 
         // Parse the categories
         JsonParser parser = new JsonParser(jsonResponse);
@@ -49,8 +54,7 @@ public class DBOntologyClassesCrawler {
             threadOntologies.add(ont);
 
             if (i % Math.ceil(keySize / nbCores) == 0 && i != 0) {
-                PediaOntologyThread thread = new PediaOntologyThread(parser, urlReader,
-                        dbontologies, threadOntologies);
+                PediaOntologyThread thread = new PediaOntologyThread(parser, urlReader, threadOntologies);
                 thread.start();
                 threadList.add(thread);
                 threadOntologies = new ArrayList<DBOntologyClass>();
@@ -60,20 +64,23 @@ public class DBOntologyClassesCrawler {
         }
 
         System.out.println("STARTING THREADS JOIN...");
-        int categoriesWithoutParents = 0;
+        dbontologies.clear();
+        int categoriesWithParents = 0;
         for (PediaOntologyThread thread : threadList) {
             try {
                 thread.join();
                 System.out.println("THREAD TERMINE :)");
-                for (DBOntologyClass cat : thread.getThreadCategories()) {
-                    if (cat.getParentsNumber() == 0) {
-                        categoriesWithoutParents++;
+                for (DBOntologyClass ont : thread.getThreadCategories()) {
+                	dbontologies.put(ont.getUri(), ont);
+                    if (ont.getParentsNumber() != 0) {
+                        categoriesWithParents++;
                     }
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println("PROGRAMME TERMINE : " + categoriesWithoutParents + " ontologies sans parents.");
+        System.out.println("PROGRAMME TERMINE : " + categoriesWithParents + " ontologies avec parents.");
+        System.out.println("Nombre total de classes ontologies : " + dbontologies.size());
 	}
 }
