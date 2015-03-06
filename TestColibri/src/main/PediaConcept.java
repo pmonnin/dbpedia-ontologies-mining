@@ -137,10 +137,39 @@ public class PediaConcept {
     	return returnOntologies;
     }
     
-    /*public ArrayList<String> intersectCategories()
+    public ArrayList<String> intersectCategories(HashMap<String, LatticeObject> objects)
     {
+    	// On initialise la liste à retourner aux categories du premier objet
+    	ArrayList<String> returnCategories = objects.get(listeObjets.get(0)).getCategories();
     	
-    }*/
+    	// Pour chaque objet du concept, hormis le premier
+    	for (int i=1 ; i<this.listeObjets.size() ; i++)
+    	{
+    		// On initialise celle qui sera la nouvelle liste à retourner
+    		ArrayList<String> newReturnCategories = new ArrayList<String>();
+    		
+    		// On récupère le LatticeObject correspondant
+    		LatticeObject currentObject = objects.get(listeObjets.get(i));
+    		// on récupère ses categories
+    		ArrayList<String> currentCategories = currentObject.getCategories();
+    		
+    		// On compare les catégories à la liste déjà présente dans returnCategories
+    		for (int j=0 ; j<currentCategories.size() ; j++)
+    		{
+    			// Si la categorie a été rencontrée au préalable
+    			if (returnCategories.contains(currentCategories.get(j)))
+    			{
+    				// on l'ajoute à celle qui sera la nouvelle liste à retourner
+    				newReturnCategories.add(currentCategories.get(j));
+    			}
+    		}
+    		
+    		// On remplace returnCategories par newReturnCategories
+    		returnCategories = newReturnCategories;
+    	}
+    	
+    	return returnCategories;
+    }
     
     public String makeRequestOntology() {
         // Begin of the request

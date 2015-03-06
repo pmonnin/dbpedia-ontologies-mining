@@ -25,14 +25,13 @@ public class LatticeCategoriesOntologiesThread extends Thread {
             PediaConcept concept = threadConcepts.get(i);
             String jsonParents = new String();
             
-            try {
-            	ArrayList<String> listeCateg = new ArrayList<>();
-            	ArrayList<String> listeOnto = new ArrayList<>();
-            	
-            	
-            	if (concept.getListeObjets().size() > 0) {
-            		
-            		/** Categories **/
+            ArrayList<String> listeCateg = new ArrayList<>();
+			ArrayList<String> listeOnto = new ArrayList<>();
+			
+			
+			if (concept.getListeObjets().size() > 0) {
+				
+				/** Categories **/
 //            		// We get the JSON of the shared categories
 //            		String request = concept.makeRequestCategory();
 //            		URLReader urlReader = new URLReader();
@@ -41,12 +40,13 @@ public class LatticeCategoriesOntologiesThread extends Thread {
 //            		//parse jsonResponse to retrieve URIs to the concept
 //            		JsonParser jsp = new JsonParser(jsonResponse);
 //            		listeUri = jsp.getResults("categ");
-            		
-            		// We make the intersection of the different categories
-            		// of the concept's object
-            		listeCateg = concept.intersectCategories();
-            		
-            		/** Ontologies **/
+				
+				// We make the intersection of the different categories
+				// of the concept's object
+				// TODO : ligne suivante avec la Hashmap
+				//listeCateg = concept.intersectCategories();
+				
+				/** Ontologies **/
 //            		// We get the JSON of the shared ontologies
 //            		request = concept.makeRequestOntology();
 //            		jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
@@ -54,21 +54,16 @@ public class LatticeCategoriesOntologiesThread extends Thread {
 //            		// parse jsonResponse to retrieve URIs to the concept's list of ontologies
 //            		jsp.setStringToParse(jsonResponse);
 //            		listeOnto = jsp.getResults("onto");
-            		
-            		// We make the intersection of the different ontologies
-            		// of the concept's objects
-            		listeOnto = concept.intersectOntologies();
-            		
-            	}
-            	
-            	concept.addCategoriesPediaConcept(listeCateg);
-            	concept.addOntologiesPediaConcept(listeOnto);
-            	
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+				
+				// We make the intersection of the different ontologies
+				// of the concept's objects
+				// TODO : ligne suivante avec la Hashmap
+				// listeOnto = concept.intersectOntologies();
+				
+			}
+			
+			concept.addCategoriesPediaConcept(listeCateg);
+			concept.addOntologiesPediaConcept(listeOnto);
         }
     }
 
