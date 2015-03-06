@@ -43,20 +43,6 @@ public class PediaLattice {
         // We parse it to get the different results
         JsonParser parser = new JsonParser(jsonResponse);
         ArrayList<String> results = parser.getResults("chose");
-        
-        
-        /****************TESTS*********************************/
-//        ArrayList<String> results = new ArrayList<>();
-//        results.add("http://dbpedia.org/resource/Alex_Reid_(fighter)");
-//        results.add("http://dbpedia.org/resource/Alex_Tait_(rugby_union)");
-//        results.add("http://dbpedia.org/resource/Alexander_Smit");
-//        results.add("http://dbpedia.org/resource/Allan_La_Fontaine");
-//        results.add("http://dbpedia.org/resource/Tim_Hames");
-//        results.add("http://dbpedia.org/resource/Alina_Cho");
-//        results.add("http://dbpedia.org/resource/Andrew_Heintzman");         
-        /******************************************************/        
-        
-        
 
         int keySize = results.size();
         ArrayList<LatticeCategoriesOntologiesThread> threadList = new ArrayList<LatticeCategoriesOntologiesThread>();
@@ -179,15 +165,6 @@ public class PediaLattice {
 			// On ne doit pas avoir plusieurs fois le même concept
 			// We check if res contains pc1 :
 			Boolean isIn = new Boolean(false);
-			// boolean isIn = false;
-			// for (int i = 0 ; i<res.size() ; i++){
-			// if (pc1.isEquivalentTo(res.get(i))){
-			// isIn = true;
-			// pc1 = res.get(i);
-			// break;
-			// }
-			// }
-			// if(!isIn){
 			isIn = resHM.get(pc1);
 			if (isIn == null) {
 
@@ -197,15 +174,6 @@ public class PediaLattice {
 			}
 
 			// We check if res contains pc2 :
-			// isIn = false;
-			// for (int i = 0 ; i<res.size() ; i++){
-			// if (pc2.isEquivalentTo(res.get(i))){
-			// isIn = true;
-			// pc2 = res.get(i);
-			// break;
-			// }
-			// }
-			// if(!isIn){
 			isIn = resHM.get(pc2);
 			if (isIn == null) {
 

@@ -20,7 +20,7 @@ public class PediaConcept {
         
         if (this.listeObjets.size() > 0)
         {
-            // On remplit les catégories
+            // On remplit les catÃ©gories
         	categories = intersectCategories(objects);
         	
             // On remplit les ontologies
@@ -72,11 +72,8 @@ public class PediaConcept {
     }
 
     public void addParentPediaConcept(PediaConcept parent) {
-//        System.out.println("concept1: "+this.getCategories());
-//        System.out.println("parent: "+parent.getCategories());
         removeDoublonsCategories(parent.getCategories());
         removeDoublonsOntologies(parent.getOntologies());
-//        System.out.println("concept2: "+this.getCategories()+"\n\n");
         parents.add(parent);
     }
 
@@ -115,27 +112,27 @@ public class PediaConcept {
     
     public ArrayList<String> intersectOntologies(HashMap<String, LatticeObject> objects)
     {
-    	// On initialise la liste à retourner aux ontologies du premier objet
+    	// On initialise la liste Ã  retourner aux ontologies du premier objet
     	ArrayList<String> returnOntologies = objects.get(listeObjets.get(0)).getOntologies();
     	
     	// Pour chaque objet du concept, hormis le premier
     	for (int i=1 ; i<this.listeObjets.size() ; i++)
     	{
-    		// On initialise celle qui sera la nouvelle liste à retourner
+    		// On initialise celle qui sera la nouvelle liste ï¿½ retourner
     		ArrayList<String> newReturnOntologies = new ArrayList<String>();
     		
-    		// On récupère le LatticeObject correspondant
+    		// On rÃ©cupÃ¨re le LatticeObject correspondant
     		LatticeObject currentObject = objects.get(listeObjets.get(i));
-    		// on récupère ses ontologies
+    		// on rÃ©cupÃ¨re ses ontologies
     		ArrayList<String> currentOntologies = currentObject.getOntologies();
     		
-    		// On compare les ontologies à la liste déjà présente dans returnOntologies
+    		// On compare les ontologies Ã  la liste dÃ©jÃ  prÃ©sente dans returnOntologies
     		for (int j=0 ; j<currentOntologies.size() ; j++)
     		{
-    			// Si l'ontologie a été rencontrée au préalable
+    			// Si l'ontologie a Ã©tÃ© rencontrÃ©e au prÃ©alable
     			if (returnOntologies.contains(currentOntologies.get(j)))
     			{
-    				// on l'ajoute à celle qui sera la nouvelle liste à retourner
+    				// on l'ajoute Ã  celle qui sera la nouvelle liste Ã  retourner
     				newReturnOntologies.add(currentOntologies.get(j));
     			}
     		}
@@ -149,27 +146,27 @@ public class PediaConcept {
     
     public ArrayList<String> intersectCategories(HashMap<String, LatticeObject> objects)
     {
-    	// On initialise la liste à retourner aux categories du premier objet
+    	// On initialise la liste ï¿½ retourner aux categories du premier objet
     	ArrayList<String> returnCategories = objects.get(listeObjets.get(0)).getCategories();
     	
     	// Pour chaque objet du concept, hormis le premier
     	for (int i=1 ; i<this.listeObjets.size() ; i++)
     	{
-    		// On initialise celle qui sera la nouvelle liste à retourner
+    		// On initialise celle qui sera la nouvelle liste ï¿½ retourner
     		ArrayList<String> newReturnCategories = new ArrayList<String>();
     		
-    		// On récupère le LatticeObject correspondant
+    		// On rï¿½cupï¿½re le LatticeObject correspondant
     		LatticeObject currentObject = objects.get(listeObjets.get(i));
-    		// on récupère ses categories
+    		// on rï¿½cupï¿½re ses categories
     		ArrayList<String> currentCategories = currentObject.getCategories();
     		
-    		// On compare les catégories à la liste déjà présente dans returnCategories
+    		// On compare les catï¿½gories ï¿½ la liste dï¿½jï¿½ prï¿½sente dans returnCategories
     		for (int j=0 ; j<currentCategories.size() ; j++)
     		{
-    			// Si la categorie a été rencontrée au préalable
+    			// Si la categorie a ï¿½tï¿½ rencontrï¿½e au prï¿½alable
     			if (returnCategories.contains(currentCategories.get(j)))
     			{
-    				// on l'ajoute à celle qui sera la nouvelle liste à retourner
+    				// on l'ajoute ï¿½ celle qui sera la nouvelle liste ï¿½ retourner
     				newReturnCategories.add(currentCategories.get(j));
     			}
     		}

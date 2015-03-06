@@ -15,12 +15,6 @@ import dbpediaobjects.DBOntologyClass;
 
 public class Main {
 
-    // Ontology :
-    // http://wiki.dbpedia.org/Ontology
-    // http://mappings.dbpedia.org/index.php/How_to_edit_the_DBpedia_Ontology
-    // http://mappings.dbpedia.org/server/templatestatistics/fr/?template=Infobox_Ch%C3%A2teau
-    // http://dbpedia.org/ontology/
-
     public static void main(String[] args) throws ParseException, IOException {
         Date startDate = new Date();
         
@@ -41,23 +35,6 @@ public class Main {
         PediaLattice lattice = new PediaLattice();
         // lattice.deleteFirstIterationAttributes();
         ArrayList<PediaConcept> lc = lattice.execIterator();
-
-//        for (PediaConcept c : lc) {
-//            System.out.println("/***********Concept************/");
-//            for (String obj : c.getListeObjets())
-//                System.out.println("objet: " + obj);
-//            System.out.println("\n");
-//
-//            for (String cat : c.getCategories())
-//                System.out.println("catégorie: " + cat);
-//            System.out.println("\n");
-//
-//            for (PediaConcept par : c.getParents()) {
-//                for (String op : par.getListeObjets())
-//                    System.out.println("objet du parent: " + op);
-//            }
-//            System.out.println("/***********Fin concept*********/\n\n");
-//        }
 
         /* Pour chaque concept */
         for (PediaConcept c : lc) {
