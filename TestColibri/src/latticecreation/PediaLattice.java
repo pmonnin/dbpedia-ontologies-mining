@@ -39,7 +39,7 @@ public class PediaLattice {
     public void createLattice(Relation rel) throws ParseException, IOException {
         URLReader urlReader = new URLReader();
 
-        String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a <http://www.w3.org/2002/07/owl#Thing> } LIMIT 500 ", "UTF-8"));
+        String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a <http://www.w3.org/2002/07/owl#Thing> } LIMIT 10 ", "UTF-8"));
 
         System.out.println("FIN 1ère REQUETE CREATION LATTICE");
         // We parse it to get the different results
@@ -222,7 +222,6 @@ public class PediaLattice {
         }
         
         System.out.println("FIN RECONSTRUCTION LATTICE");
-        computeCategoriesAndOntologies(res);
         return res;
     }
     

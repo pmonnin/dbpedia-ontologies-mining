@@ -26,13 +26,13 @@ public class Main {
         // Crawling DB categories
         System.out.println("DEBUT PARSAGE CATEGORIES");
         DBCategoriesCrawler dbCategoriesCrawler = new DBCategoriesCrawler();
-//        dbCategoriesCrawler.computeParents();
+        dbCategoriesCrawler.computeParents();
         HashMap<String, DBCategory> dbcategories = dbCategoriesCrawler.getDbcategories();
 
         // Crawling DB ontologies
         System.out.println("DEBUT PARSAGE ONTOLOGIES");
         DBOntologyClassesCrawler dbOntologyClasses = new DBOntologyClassesCrawler();
-//        dbOntologyClasses.computeParents();
+        dbOntologyClasses.computeParents();
         HashMap<String, DBOntologyClass> dbontologies = dbOntologyClasses.getDbontologies();
 
         // We create the lattice
