@@ -20,9 +20,7 @@ public class LatticeObject {
 	
 	public void addAttribute(String att)
 	{
-		//if (!att.split("/")[3].equals("ontology"))
-		//if (att.split("/")[3].equals("property"))
-			this.attributes.add(att);
+		this.attributes.add(att);
 	}
 	
 	public void addToRelation(Relation rel)
@@ -51,5 +49,17 @@ public class LatticeObject {
 	public ArrayList<String> getOntologies()
 	{
 		return this.ontologies;
+	}
+	
+	public void setOntologies(ArrayList<String> ontologies) {
+		this.ontologies = ontologies;
+	}
+	
+	public void setCategories(ArrayList<String> categories) {
+		this.categories = categories;
+	}
+	
+	public String getName() {
+		return name;
 	}
 }

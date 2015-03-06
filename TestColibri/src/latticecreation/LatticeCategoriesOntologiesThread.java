@@ -4,70 +4,70 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-import main.PediaConcept;
-
 import org.json.simple.parser.ParseException;
 
 import serverlink.JsonParser;
 import serverlink.URLReader;
 
 public class LatticeCategoriesOntologiesThread extends Thread {
-    private ArrayList<PediaConcept> threadConcepts;
+    private ArrayList<LatticeObject> threadObjects;
 
-    public LatticeCategoriesOntologiesThread(ArrayList<PediaConcept> threadConcepts) {
+    public LatticeCategoriesOntologiesThread(ArrayList<LatticeObject> threadObjects) {
         super();
-        this.threadConcepts = threadConcepts;
+        this.threadObjects = threadObjects;
     }
 
     @Override
     public void run() {
-        for(int i=0; i < threadConcepts.size(); i++) {
-            PediaConcept concept = threadConcepts.get(i);
-            String jsonParents = new String();
-            
-            ArrayList<String> listeCateg = new ArrayList<>();
-			ArrayList<String> listeOnto = new ArrayList<>();
-			
-			
-			if (concept.getListeObjets().size() > 0) {
-				
-				/** Categories **/
-//            		// We get the JSON of the shared categories
-//            		String request = concept.makeRequestCategory();
-//            		URLReader urlReader = new URLReader();
-//            		String jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
-//            	
-//            		//parse jsonResponse to retrieve URIs to the concept
-//            		JsonParser jsp = new JsonParser(jsonResponse);
-//            		listeUri = jsp.getResults("categ");
-				
-				// We make the intersection of the different categories
-				// of the concept's object
-				// TODO : ligne suivante avec la Hashmap
-				//listeCateg = concept.intersectCategories();
-				
-				/** Ontologies **/
-//            		// We get the JSON of the shared ontologies
-//            		request = concept.makeRequestOntology();
-//            		jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
-//            		
-//            		// parse jsonResponse to retrieve URIs to the concept's list of ontologies
-//            		jsp.setStringToParse(jsonResponse);
-//            		listeOnto = jsp.getResults("onto");
-				
-				// We make the intersection of the different ontologies
-				// of the concept's objects
-				// TODO : ligne suivante avec la Hashmap
-				// listeOnto = concept.intersectOntologies();
-				
-			}
-			
-			concept.addCategoriesPediaConcept(listeCateg);
-			concept.addOntologiesPediaConcept(listeOnto);
+        for (int i = 0; i < threadObjects.size(); i++) {
+            LatticeObject obj = threadObjects.get(i);
+            URLReader urlReader = new URLReader();
+            JsonParser parser = new JsonParser("");
+
+            try {
+                String request = parser.makeRequestAtt(obj.getName());
+
+                // We get the response
+                String response = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
+
+                // We parse it to get the different attributes of the thing
+                parser.setStringToParse(response);
+                ArrayList<String> attributes = parser.getResults("att");
+
+                for (int j = 0; j < attributes.size(); j++) {
+                    // We add the attributes to the object
+                    obj.addAttribute(attributes.get(j));
+                }
+
+                // We get the ontologies for the thing
+                String jsonOnto = urlReader.getJSON(URLEncoder.encode("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+                                                                      + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
+                                                                      + "select distinct ?Ontology2 where "
+                                                                      + "{ <" + obj.getName() +  "> rdf:type ?Ontology2 . "
+                                                                      + "FILTER (REGEX(STR(?Ontology2), \"http://dbpedia.org/ontology\", \"i\")) }", "UTF-8"));
+                parser.setStringToParse(jsonOnto);
+                ArrayList<String> ontologies = parser.getDbPediaOntologyParents();
+                obj.setOntologies(ontologies);
+                
+                
+                // We get the categories for the thing
+                String jsonCategories = urlReader.getJSON(URLEncoder.encode("PREFIX dcterms:<http://purl.org/dc/terms/> "
+                                                                            + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
+                                                                            + "select distinct ?Category where {"
+                                                                            + "<" + obj.getName() + "> dcterms:subject ?Category }", "UTF-8"));
+                parser.setStringToParse(jsonCategories);
+                ArrayList<String> categories = parser.getDbPediaCategoriesParents();
+                obj.setCategories(categories);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public ArrayList<PediaConcept> getThreadConcepts() {
-        return threadConcepts;
+    public ArrayList<LatticeObject> getThreadObjects() {
+        return threadObjects;
     }
+
 }

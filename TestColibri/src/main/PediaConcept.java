@@ -11,12 +11,22 @@ public class PediaConcept {
     private ArrayList<String> listeObjets, listeAttributs, categories, ontologies;
     private ArrayList<PediaConcept> parents;
 
-    public PediaConcept(ArrayList<String> objets, ArrayList<String> attributs) {
+    public PediaConcept(ArrayList<String> objets, ArrayList<String> attributs, HashMap<String, LatticeObject> objects) {
         listeObjets = objets;
         listeAttributs = attributs;
         parents = new ArrayList<>();
         categories = new ArrayList<>();
         ontologies = new ArrayList<>();
+        
+        if (this.listeObjets.size() > 0)
+        {
+            // On remplit les catégories
+        	categories = intersectCategories(objects);
+        	
+            // On remplit les ontologies
+        	ontologies = intersectOntologies(objects);
+        }
+        
     }
 
     public ArrayList<String> getListeObjets() {
