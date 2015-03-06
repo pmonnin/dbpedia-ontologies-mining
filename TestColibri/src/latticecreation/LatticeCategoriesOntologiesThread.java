@@ -43,8 +43,8 @@ public class LatticeCategoriesOntologiesThread extends Thread {
                 String jsonOnto = urlReader.getJSON(URLEncoder.encode("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
                                                                       + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
                                                                       + "select distinct ?Ontology2 where "
-                                                                      + "{ <" + obj.getName() +  "> rdf:type ?Ontology . "
-                                                                      + "FILTER (REGEX(STR(?Ontology), \"http://dbpedia.org/ontology\", \"i\")) }", "UTF-8"));
+                                                                      + "{ <" + obj.getName() +  "> rdf:type ?Ontology2 . "
+                                                                      + "FILTER (REGEX(STR(?Ontology2), \"http://dbpedia.org/ontology\", \"i\")) }", "UTF-8"));
                 parser.setStringToParse(jsonOnto);
                 ArrayList<String> ontologies = parser.getDbPediaOntologyParents();
                 obj.setOntologies(ontologies);
