@@ -26,30 +26,42 @@ public class LatticeCategoriesOntologiesThread extends Thread {
             String jsonParents = new String();
             
             try {
-            	ArrayList<String> listeUri = new ArrayList<>();
+            	ArrayList<String> listeCateg = new ArrayList<>();
             	ArrayList<String> listeOnto = new ArrayList<>();
             	
             	
             	if (concept.getListeObjets().size() > 0) {
-            		// We get the JSON of the shared categories
-            		String request = concept.makeRequestCategory();
-            		URLReader urlReader = new URLReader();
-            		String jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
-            	
-            		//parse jsonResponse to retrieve URIs to the concept
-            		JsonParser jsp = new JsonParser(jsonResponse);
-            		listeUri = jsp.getResults("categ");
             		
-            		// We get the JSON of the shared ontologies
-            		request = concept.makeRequestOntology();
-            		jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
+            		/** Categories **/
+//            		// We get the JSON of the shared categories
+//            		String request = concept.makeRequestCategory();
+//            		URLReader urlReader = new URLReader();
+//            		String jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
+//            	
+//            		//parse jsonResponse to retrieve URIs to the concept
+//            		JsonParser jsp = new JsonParser(jsonResponse);
+//            		listeUri = jsp.getResults("categ");
             		
-            		// parse jsonResponse to retrieve URIs to the concept's list of ontologies
-            		jsp.setStringToParse(jsonResponse);
-            		listeOnto = jsp.getResults("onto");
+            		// We make the intersection of the different categories
+            		// of the concept's object
+            		listeCateg = concept.intersectCategories();
+            		
+            		/** Ontologies **/
+//            		// We get the JSON of the shared ontologies
+//            		request = concept.makeRequestOntology();
+//            		jsonResponse = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
+//            		
+//            		// parse jsonResponse to retrieve URIs to the concept's list of ontologies
+//            		jsp.setStringToParse(jsonResponse);
+//            		listeOnto = jsp.getResults("onto");
+            		
+            		// We make the intersection of the different ontologies
+            		// of the concept's objects
+            		listeOnto = concept.intersectOntologies();
+            		
             	}
             	
-            	concept.addCategoriesPediaConcept(listeUri);
+            	concept.addCategoriesPediaConcept(listeCateg);
             	concept.addOntologiesPediaConcept(listeOnto);
             	
             } catch (ParseException e) {

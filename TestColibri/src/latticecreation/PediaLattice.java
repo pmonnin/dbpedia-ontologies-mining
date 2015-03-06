@@ -124,6 +124,7 @@ public class PediaLattice {
         ArrayList<PediaConcept> res = new ArrayList<>();
         HashMap<String, Boolean> resHM = new HashMap<>();
         int j = 0;
+        
         System.out.println("DEBUT EXEC ITERATOR");
         while (it.hasNext()) {
             if (j % 1000 == 0) {
@@ -132,6 +133,8 @@ public class PediaLattice {
             j++;
             
             Edge e = it.next();
+            
+            
             // We take the 1st object
             Concept c = e.getUpper();
 

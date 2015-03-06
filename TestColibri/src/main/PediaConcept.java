@@ -1,6 +1,9 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import latticecreation.LatticeObject;
 
 
 public class PediaConcept {
@@ -99,6 +102,45 @@ public class PediaConcept {
         for(String ont : ontologiesASupprimer)
             this.getOntologies().remove(ont);        
     }
+    
+    public ArrayList<String> intersectOntologies(HashMap<String, LatticeObject> objects)
+    {
+    	// On initialise la liste à retourner aux ontologies du premier objet
+    	ArrayList<String> returnOntologies = objects.get(listeObjets.get(0)).getOntologies();
+    	
+    	// Pour chaque objet du concept, hormis le premier
+    	for (int i=1 ; i<this.listeObjets.size() ; i++)
+    	{
+    		// On initialise celle qui sera la nouvelle liste à retourner
+    		ArrayList<String> newReturnOntologies = new ArrayList<String>();
+    		
+    		// On récupère le LatticeObject correspondant
+    		LatticeObject currentObject = objects.get(listeObjets.get(i));
+    		// on récupère ses ontologies
+    		ArrayList<String> currentOntologies = currentObject.getOntologies();
+    		
+    		// On compare les ontologies à la liste déjà présente dans returnOntologies
+    		for (int j=0 ; j<currentOntologies.size() ; j++)
+    		{
+    			// Si l'ontologie a été rencontrée au préalable
+    			if (returnOntologies.contains(currentOntologies.get(j)))
+    			{
+    				// on l'ajoute à celle qui sera la nouvelle liste à retourner
+    				newReturnOntologies.add(currentOntologies.get(j));
+    			}
+    		}
+    		
+    		// On remplace returnOntologies par newReturnOntologies
+    		returnOntologies = newReturnOntologies;
+    	}
+    	
+    	return returnOntologies;
+    }
+    
+    /*public ArrayList<String> intersectCategories()
+    {
+    	
+    }*/
     
     public String makeRequestOntology() {
         // Begin of the request

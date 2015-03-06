@@ -37,4 +37,19 @@ public class LatticeObject {
 	{
 		this.attributes.remove(att);
 	}
+	
+	public ArrayList<String> getCategories()
+	{
+		return this.categories;
+	}
+	
+	public void addOntology(String newOntologies)
+	{
+		this.ontologies.add(newOntologies);
+	}
+	
+	public ArrayList<String> getOntologies()
+	{
+		return this.ontologies;
+	}
 }
