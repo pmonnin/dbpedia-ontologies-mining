@@ -24,19 +24,19 @@ import dbpediaobjects.PediaCategoryThread;
 
 public class PediaLattice {
 
-    private Lattice lattice;
-    private ArrayList<LatticeObject> objects;
+	private Lattice lattice;
+	private ArrayList<LatticeObject> objects;
 
-    public PediaLattice() throws ParseException, IOException {
-        objects = new ArrayList<>();
-        Relation rel = new TreeRelation();
-        
-        this.createLattice(rel);
+	public PediaLattice() throws ParseException, IOException {
+		objects = new ArrayList<>();
+		Relation rel = new TreeRelation();
 
-        lattice = new HybridLattice(rel);
-    }
+		this.createLattice(rel);
 
-    public void createLattice(Relation rel) throws ParseException, IOException {
+		lattice = new HybridLattice(rel);
+	}
+
+	public void createLattice(Relation rel) throws ParseException, IOException {
         URLReader urlReader = new URLReader();
 
         String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a <http://www.w3.org/2002/07/owl#Thing> } LIMIT 10 ", "UTF-8"));
@@ -82,6 +82,26 @@ public class PediaLattice {
                 obj.addAttribute(attributes.get(j));
             }
 
+            // We get the ontologies for the thing
+            String jsonOnto = urlReader.getJSON(URLEncoder.encode("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+            													  + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
+            													  + "select distinct ?Ontology2 where "
+            													  + "{ <" + obj.getName() +  "> rdf:type ?Ontology . "
+            													  + "FILTER (REGEX(STR(?Ontology), \"http://dbpedia.org/ontology\", \"i\")) }", "UTF-8"));
+            parser.setStringToParse(jsonOnto);
+            ArrayList<String> ontologies = parser.getDbPediaOntologyParents();
+            obj.setOntologies(ontologies);
+            
+            
+            // We get the categories for the thing
+            String jsonCategories = urlReader.getJSON(URLEncoder.encode("PREFIX dcterms:<http://purl.org/dc/terms/> "
+            															+ "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
+            															+ "select distinct ?Category where {"
+            															+ "<" + obj.getName() + "> dcterms:subject ?Category }", "UTF-8"));
+            parser.setStringToParse(jsonCategories);
+            ArrayList<String> categories = parser.getDbPediaCategoriesParents();
+            obj.setCategories(categories);
+            
             // We add the object to the lattice
             obj.addToRelation(rel);
             objects.add(obj);
@@ -90,174 +110,176 @@ public class PediaLattice {
         System.out.println("FIN 2ème REQUETE CREATION LATTICE");
     }
 
-    public void deleteFirstIterationAttributes() {
-        Iterator<Concept> it = lattice.conceptIterator(Traversal.TOP_OBJSIZE);
-        
-        if (it.hasNext()) {
-            Concept c = it.next();
-            if (it.hasNext()) {
-                c = it.next();
-            }
+	public void deleteFirstIterationAttributes() {
+		Iterator<Concept> it = lattice.conceptIterator(Traversal.TOP_OBJSIZE);
 
-            Iterator<Comparable> it2 = c.getAttributes().iterator();
+		if (it.hasNext()) {
+			Concept c = it.next();
+			if (it.hasNext()) {
+				c = it.next();
+			}
 
-            while (it2.hasNext()) {
-                Comparable att = it2.next();
+			Iterator<Comparable> it2 = c.getAttributes().iterator();
 
-                for (int i = 0; i < objects.size(); i++) {
-                    objects.get(i).deleteAttribute(att.toString());
-                }
-            }
-        }
+			while (it2.hasNext()) {
+				Comparable att = it2.next();
 
-        Relation rel = new TreeRelation();
+				for (int i = 0; i < objects.size(); i++) {
+					objects.get(i).deleteAttribute(att.toString());
+				}
+			}
+		}
 
-        for (int i = 0; i < objects.size(); i++) {
-            objects.get(i).addToRelation(rel);
-        }
+		Relation rel = new TreeRelation();
 
-        lattice = new HybridLattice(rel);
-    }
+		for (int i = 0; i < objects.size(); i++) {
+			objects.get(i).addToRelation(rel);
+		}
 
-    public ArrayList<PediaConcept> execIterator() throws IOException, ParseException {
-    	Iterator<Edge> it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
-        ArrayList<PediaConcept> res = new ArrayList<>();
-        HashMap<String, Boolean> resHM = new HashMap<>();
-        int j = 0;
-        System.out.println("DEBUT EXEC ITERATOR");
-        while (it.hasNext()) {
-            if (j % 1000 == 0) {
-                System.out.println("j = " + j);
-            }
-            j++;
-            
-            Edge e = it.next();
-            // We take the 1st object
-            Concept c = e.getUpper();
+		lattice = new HybridLattice(rel);
+	}
 
-            Iterator<Comparable> ite = c.getObjects().iterator();
-            
-            ArrayList<String> obj1 = new ArrayList<>();
-            ArrayList<String> att1 = new ArrayList<>();
-            while (ite.hasNext()) {
-                String comp = (String) ite.next();
-                obj1.add(comp);
-            }
+	public ArrayList<PediaConcept> execIterator() throws IOException,
+			ParseException {
+		Iterator<Edge> it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
+		ArrayList<PediaConcept> res = new ArrayList<>();
+		HashMap<String, Boolean> resHM = new HashMap<>();
+		int j = 0;
+		System.out.println("DEBUT EXEC ITERATOR");
+		while (it.hasNext()) {
+			if (j % 1000 == 0) {
+				System.out.println("j = " + j);
+			}
+			j++;
 
-            ite = c.getAttributes().iterator();
-            
-            while (ite.hasNext()) {
-                String comp = (String) ite.next();  
-                att1.add(comp);
-            }
-            PediaConcept pc1 = new PediaConcept(obj1, att1);
+			Edge e = it.next();
+			// We take the 1st object
+			Concept c = e.getUpper();
 
-            // We take the 2nd object
-            c = e.getLower();
+			Iterator<Comparable> ite = c.getObjects().iterator();
 
-            ite = c.getObjects().iterator();
+			ArrayList<String> obj1 = new ArrayList<>();
+			ArrayList<String> att1 = new ArrayList<>();
+			while (ite.hasNext()) {
+				String comp = (String) ite.next();
+				obj1.add(comp);
+			}
 
-            ArrayList<String> obj2 = new ArrayList<>();
-            ArrayList<String> att2 = new ArrayList<>();
-            while (ite.hasNext()) {
-                String comp = (String) ite.next();
-                obj2.add(comp);
-            }
+			ite = c.getAttributes().iterator();
 
-            ite = c.getAttributes().iterator();
+			while (ite.hasNext()) {
+				String comp = (String) ite.next();
+				att1.add(comp);
+			}
+			PediaConcept pc1 = new PediaConcept(obj1, att1);
 
-            while (ite.hasNext()) {
-                String comp = (String) ite.next();
-                att2.add(comp);
-            }
-            PediaConcept pc2 = new PediaConcept(obj2, att2);
-                       
-            //On ne doit pas avoir plusieurs fois le même concept            
-            // We check if res contains pc1 :
-            Boolean isIn = new Boolean(false);
-//            boolean isIn = false;
-//            for (int i = 0 ; i<res.size() ; i++){
-//                if (pc1.isEquivalentTo(res.get(i))){
-//                    isIn = true;
-//                    pc1 = res.get(i);
-//                    break;
-//                }
-//            }
-//            if(!isIn){
-            isIn = resHM.get(pc1);
-            if(isIn == null) {
-                
-                
-            	// We add it to the array of results
-                res.add(pc1);
-                resHM.put(pc1.toString(), true);
-            }
-            
-            // We check if res contains pc2 :
-//            isIn = false;
-//            for (int i = 0 ; i<res.size() ; i++){
-//                if (pc2.isEquivalentTo(res.get(i))){
-//                    isIn = true;
-//                    pc2 = res.get(i);
-//                    break;
-//                }
-//            }
-//            if(!isIn){
-            isIn = resHM.get(pc2);
-            if(isIn == null) {
-                
-                //pc2 a comme parent pc1;              
-                pc2.addParentPediaConcept(pc1);
-                
-                // We add it to the array of results
-                res.add(pc2);
-                resHM.put(pc1.toString(), true);
-            }else{
-                /*si pc2 est deja contenu dans la liste, on le récupère et on
-                 *lui ajoute pc1 dans sa liste de parents
-                 */
-                //enlever les catégories de pc1 à pc2
-                res.get(res.indexOf(pc2)).addParentPediaConcept(pc1);
-            }          
-        }
-        
-        System.out.println("FIN RECONSTRUCTION LATTICE");
-        return res;
-    }
-    
-    private void computeCategoriesAndOntologies(ArrayList<PediaConcept> res) {
-        int keySize = res.size();
-        ArrayList<LatticeCategoriesOntologiesThread> threadList = new ArrayList<LatticeCategoriesOntologiesThread>();
-        int nbCores = 40; // Runtime.getRuntime().availableProcessors();
-        ArrayList<PediaConcept> threadConcepts = new ArrayList<PediaConcept>();
+			// We take the 2nd object
+			c = e.getLower();
 
-        // Add relationship
-        for (int i=0; i<res.size(); i++) {
-            PediaConcept pc = res.get(i);
-            threadConcepts.add(pc);
+			ite = c.getObjects().iterator();
 
-            if (i % Math.ceil(keySize / nbCores) == 0 && i != 0) {
-                LatticeCategoriesOntologiesThread thread = new LatticeCategoriesOntologiesThread(threadConcepts);
-                thread.start();
-                threadList.add(thread);
-                threadConcepts = new ArrayList<PediaConcept>();
-            }
-        }
-        
-        System.out.println("STARTING THREADS JOIN...");
-        res.clear();
-        for (LatticeCategoriesOntologiesThread thread : threadList) {
-            try {
-                thread.join();
-                System.out.println("THREAD TERMINE :)");
-                for (PediaConcept pc : thread.getThreadConcepts()) {
-                    res.add(pc);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        
-        System.out.println("JOIN DES THREADS DE LATTICE CREATION TERMINEE");
-    }
+			ArrayList<String> obj2 = new ArrayList<>();
+			ArrayList<String> att2 = new ArrayList<>();
+			while (ite.hasNext()) {
+				String comp = (String) ite.next();
+				obj2.add(comp);
+			}
+
+			ite = c.getAttributes().iterator();
+
+			while (ite.hasNext()) {
+				String comp = (String) ite.next();
+				att2.add(comp);
+			}
+			PediaConcept pc2 = new PediaConcept(obj2, att2);
+
+			// On ne doit pas avoir plusieurs fois le même concept
+			// We check if res contains pc1 :
+			Boolean isIn = new Boolean(false);
+			// boolean isIn = false;
+			// for (int i = 0 ; i<res.size() ; i++){
+			// if (pc1.isEquivalentTo(res.get(i))){
+			// isIn = true;
+			// pc1 = res.get(i);
+			// break;
+			// }
+			// }
+			// if(!isIn){
+			isIn = resHM.get(pc1);
+			if (isIn == null) {
+
+				// We add it to the array of results
+				res.add(pc1);
+				resHM.put(pc1.toString(), true);
+			}
+
+			// We check if res contains pc2 :
+			// isIn = false;
+			// for (int i = 0 ; i<res.size() ; i++){
+			// if (pc2.isEquivalentTo(res.get(i))){
+			// isIn = true;
+			// pc2 = res.get(i);
+			// break;
+			// }
+			// }
+			// if(!isIn){
+			isIn = resHM.get(pc2);
+			if (isIn == null) {
+
+				// pc2 a comme parent pc1;
+				pc2.addParentPediaConcept(pc1);
+
+				// We add it to the array of results
+				res.add(pc2);
+				resHM.put(pc1.toString(), true);
+			} else {
+				/*
+				 * si pc2 est deja contenu dans la liste, on le récupère et on
+				 * lui ajoute pc1 dans sa liste de parents
+				 */
+				// enlever les catégories de pc1 à pc2
+				res.get(res.indexOf(pc2)).addParentPediaConcept(pc1);
+			}
+		}
+
+		System.out.println("FIN RECONSTRUCTION LATTICE");
+		return res;
+	}
+
+	private void computeCategoriesAndOntologies(ArrayList<PediaConcept> res) {
+		int keySize = res.size();
+		ArrayList<LatticeCategoriesOntologiesThread> threadList = new ArrayList<LatticeCategoriesOntologiesThread>();
+		int nbCores = 40; // Runtime.getRuntime().availableProcessors();
+		ArrayList<PediaConcept> threadConcepts = new ArrayList<PediaConcept>();
+
+		// Add relationship
+		for (int i = 0; i < res.size(); i++) {
+			PediaConcept pc = res.get(i);
+			threadConcepts.add(pc);
+
+			if (i % Math.ceil(keySize / nbCores) == 0 && i != 0) {
+				LatticeCategoriesOntologiesThread thread = new LatticeCategoriesOntologiesThread(
+						threadConcepts);
+				thread.start();
+				threadList.add(thread);
+				threadConcepts = new ArrayList<PediaConcept>();
+			}
+		}
+
+		System.out.println("STARTING THREADS JOIN...");
+		res.clear();
+		for (LatticeCategoriesOntologiesThread thread : threadList) {
+			try {
+				thread.join();
+				System.out.println("THREAD TERMINE :)");
+				for (PediaConcept pc : thread.getThreadConcepts()) {
+					res.add(pc);
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+		System.out.println("JOIN DES THREADS DE LATTICE CREATION TERMINEE");
+	}
 }

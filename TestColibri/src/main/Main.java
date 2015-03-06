@@ -68,9 +68,9 @@ public class Main {
             for (String ontoChild : latticeOntologies) {
                 for (String ontoParent : latticeOntologyParents) {
                     if (dbontologies.get(ontoChild).hasParent(ontoParent)) {
-//                        System.out.println("La relation " + ontoChild + " (enfant) -> " + ontoParent + " (parent) a bien été trouvée dans les classes d'ontologie.");
+                        System.out.println("La relation " + ontoChild + " (enfant) -> " + ontoParent + " (parent) a bien été trouvée dans les classes d'ontologie.");
                     } else {
-//                        System.out.println("Il manque la relation " + ontoChild + " (enfant) -> " + ontoParent + " (parent) dans les classes d'ontologie.");
+                        System.out.println("Il manque la relation " + ontoChild + " (enfant) -> " + ontoParent + " (parent) dans les classes d'ontologie.");
                     }
                 }
             }
@@ -83,9 +83,9 @@ public class Main {
             for (String cateChild : latticeCategories) {
                 for (String cateParent : latticeCategoryParents) {
                     if (dbcategories.get(cateChild).hasParent(cateParent)) {
-//                        System.out.println("La relation " + cateChild + " (enfant) -> " + cateParent + " (parent) a bien été trouvée dans les catégories.");
+                        System.out.println("La relation " + cateChild + " (enfant) -> " + cateParent + " (parent) a bien été trouvée dans les catégories.");
                     } else {
-//                        System.out.println("Il manque la relation " + cateChild + " (enfant) -> " + cateParent + " (parent) dans les catégories.");
+                        System.out.println("Il manque la relation " + cateChild + " (enfant) -> " + cateParent + " (parent) dans les catégories.");
                     }
                 }
             }
