@@ -19,8 +19,6 @@ import colibri.lib.Lattice;
 import colibri.lib.Relation;
 import colibri.lib.Traversal;
 import colibri.lib.TreeRelation;
-import dbpediaobjects.DBCategory;
-import dbpediaobjects.PediaCategoryThread;
 
 public class PediaLattice {
 
@@ -59,52 +57,36 @@ public class PediaLattice {
         /******************************************************/        
         
         
-        // For each result
-        String request;
-        String response;
+        int keySize = results.size();
+        ArrayList<LatticeCategoriesOntologiesThread> threadList = new ArrayList<LatticeCategoriesOntologiesThread>();
+        int nbCores = 40; // Runtime.getRuntime().availableProcessors();
+        ArrayList<LatticeObject> threadObjects = new ArrayList<LatticeObject>();
 
+        // Add relationship
         for (int i = 0; i < results.size(); i++) {
-        	
-            // We create an object
             LatticeObject obj = new LatticeObject(results.get(i));
+            threadObjects.add(obj);
 
-            request = parser.makeRequestAtt(results.get(i));
-
-            // We get the response
-            response = urlReader.getJSON(URLEncoder.encode(request, "UTF-8"));
-
-            // We parse it to get the different attributes of the thing
-            parser.setStringToParse(response);
-            ArrayList<String> attributes = parser.getResults("att");
-
-            for (int j = 0; j < attributes.size(); j++) {
-                // We add the attributes to the object
-                obj.addAttribute(attributes.get(j));
+            if (i % Math.ceil(keySize / nbCores) == 0 && i != 0) {
+                LatticeCategoriesOntologiesThread thread = new LatticeCategoriesOntologiesThread(threadObjects);
+                thread.start();
+                threadList.add(thread);
+                threadObjects = new ArrayList<LatticeObject>();
             }
-
-            // We get the ontologies for the thing
-            String jsonOnto = urlReader.getJSON(URLEncoder.encode("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-            													  + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
-            													  + "select distinct ?Ontology2 where "
-            													  + "{ <" + obj.getName() +  "> rdf:type ?Ontology . "
-            													  + "FILTER (REGEX(STR(?Ontology), \"http://dbpedia.org/ontology\", \"i\")) }", "UTF-8"));
-            parser.setStringToParse(jsonOnto);
-            ArrayList<String> ontologies = parser.getDbPediaOntologyParents();
-            obj.setOntologies(ontologies);
-            
-            
-            // We get the categories for the thing
-            String jsonCategories = urlReader.getJSON(URLEncoder.encode("PREFIX dcterms:<http://purl.org/dc/terms/> "
-            															+ "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
-            															+ "select distinct ?Category where {"
-            															+ "<" + obj.getName() + "> dcterms:subject ?Category }", "UTF-8"));
-            parser.setStringToParse(jsonCategories);
-            ArrayList<String> categories = parser.getDbPediaCategoriesParents();
-            obj.setCategories(categories);
-            
-            // We add the object to the lattice
-            obj.addToRelation(rel);
-            objects.add(obj);
+        }
+        
+        for (LatticeCategoriesOntologiesThread thread : threadList) {
+            try {
+                thread.join();
+                System.out.println("LATTICE THREAD TERMINE :)");
+                for (LatticeObject obj : thread.getThreadObjects()) {
+                 // We add the object to the lattice
+                    obj.addToRelation(rel);
+                    objects.add(obj);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         
         System.out.println("FIN 2ème REQUETE CREATION LATTICE");
@@ -244,42 +226,5 @@ public class PediaLattice {
 
 		System.out.println("FIN RECONSTRUCTION LATTICE");
 		return res;
-	}
-
-	private void computeCategoriesAndOntologies(ArrayList<PediaConcept> res) {
-		int keySize = res.size();
-		ArrayList<LatticeCategoriesOntologiesThread> threadList = new ArrayList<LatticeCategoriesOntologiesThread>();
-		int nbCores = 40; // Runtime.getRuntime().availableProcessors();
-		ArrayList<PediaConcept> threadConcepts = new ArrayList<PediaConcept>();
-
-		// Add relationship
-		for (int i = 0; i < res.size(); i++) {
-			PediaConcept pc = res.get(i);
-			threadConcepts.add(pc);
-
-			if (i % Math.ceil(keySize / nbCores) == 0 && i != 0) {
-				LatticeCategoriesOntologiesThread thread = new LatticeCategoriesOntologiesThread(
-						threadConcepts);
-				thread.start();
-				threadList.add(thread);
-				threadConcepts = new ArrayList<PediaConcept>();
-			}
-		}
-
-		System.out.println("STARTING THREADS JOIN...");
-		res.clear();
-		for (LatticeCategoriesOntologiesThread thread : threadList) {
-			try {
-				thread.join();
-				System.out.println("THREAD TERMINE :)");
-				for (PediaConcept pc : thread.getThreadConcepts()) {
-					res.add(pc);
-				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-
-		System.out.println("JOIN DES THREADS DE LATTICE CREATION TERMINEE");
 	}
 }
