@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import latticecreation.PediaLattice;
 
@@ -74,7 +75,13 @@ public class Main {
                     }
                 }
             }
-
+        }
+        
+        System.out.flush();
+        System.out.print("Press Enter to continue");
+        new Scanner(System.in).nextLine();
+        
+        for(PediaConcept c : lc) {
             /* Récupérer l'union des parents des catégories */
             ArrayList<String> latticeCategoryParents = c.unionCategoriesParent();
             ArrayList<String> latticeCategories = c.getCategories();
@@ -91,6 +98,6 @@ public class Main {
             }
         }
         
-        System.out.println("FIN DU PROGRAMME EN : " + (new Date().getTime() - startDate.getTime()) + " SECONDES.");
+        System.out.println("FIN DU PROGRAMME EN : " + (new Date().getTime() - startDate.getTime()) / 100 + " SECONDES.");
     }
 }
