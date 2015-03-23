@@ -11,12 +11,30 @@ Authors
 * Pierre Monnin
 * Sylvain Vissière-Guerinet
 
-Useful files
-------------
+All useful files
+----------------
 
 * http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/fr/ : french data
 * http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/en/ : english data (warning: big files)
 * http://wiki.dbpedia.org/Ontology : ontologies (warning: some files are also available on previous links)
+
+Subset of files to use
+----------------------
+
+* DBPedia Ontology T-BOX (available on http://wiki.dbpedia.org/Ontology)
+* On http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/fr/ :
+  * article_categories_en.ttl
+  * category_labels_en.ttl
+  * genders_en.ttl
+  * geo_coordinates_en.ttl
+  * geonames_links_en_en.ttl
+  * infobox_properties_en.ttl
+  * infobox_property_definitions_en.ttl
+  * instance_types_en.ttl
+  * labels_en.ttl
+  * skos_categories_en.ttl
+  * topical_concepts_en.ttl
+  * pnd_en.ttl
 
 
 API Colibri
