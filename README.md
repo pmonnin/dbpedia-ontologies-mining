@@ -17,6 +17,7 @@ All useful files
 * http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/fr/ : french data
 * http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/en/ : english data (warning: big files)
 * http://wiki.dbpedia.org/Ontology : ontologies (warning: some files are also available on previous links)
+* http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/links/ : files used for the Yago hierarchy (see below)
 
 Subset of files to use
 ----------------------
@@ -38,7 +39,7 @@ Subset of files to use
 * On http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/links/ :
   * yago_types.nt
   * yago_taxonomy.nt
-  
+
 
 API Colibri
 -----------
