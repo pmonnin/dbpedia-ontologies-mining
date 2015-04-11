@@ -75,6 +75,6 @@ public class Main {
             }
         }
         
-        System.out.println("FIN DU PROGRAMME EN : " + (new Date().getTime() - startDate.getTime()) / 100 + " SECONDES.");
+        System.out.println("FIN DU PROGRAMME EN : " + (new Date().getTime() - startDate.getTime()) / 1000 + " SECONDES.");
     }
 }
