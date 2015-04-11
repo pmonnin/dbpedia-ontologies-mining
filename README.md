@@ -22,7 +22,7 @@ Subset of files to use
 ----------------------
 
 * DBPedia Ontology T-BOX (available on http://wiki.dbpedia.org/Ontology)
-* On http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/fr/ :
+* On http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/en/ :
   * article_categories_en.ttl
   * category_labels_en.ttl
   * genders_en.ttl
@@ -35,7 +35,10 @@ Subset of files to use
   * skos_categories_en.ttl
   * topical_concepts_en.ttl
   * pnd_en.ttl
-
+* On http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/links/ :
+  * yago_types.nt
+  * yago_taxonomy.nt
+  
 
 API Colibri
 -----------
