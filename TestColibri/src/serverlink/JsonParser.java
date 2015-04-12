@@ -10,6 +10,7 @@ import org.json.simple.parser.ParseException;
 
 import dbpediaobjects.DBCategory;
 import dbpediaobjects.DBOntologyClass;
+import dbpediaobjects.DBYagoClass;
 
 public class JsonParser {
 
@@ -69,7 +70,7 @@ public class JsonParser {
         return res;
     }
 
-    public ArrayList<String> getDbPediaCategoriesParents() throws ParseException {
+    public ArrayList<String> getDbPediaParents(String parentName) throws ParseException {
         // We get the JSON parsed
         JSONParser parser = new JSONParser();
         Map map = (Map) parser.parse(stringToParse);
@@ -83,7 +84,7 @@ public class JsonParser {
         for (int i = 0; i < array.size(); i++) {
             // We get the value of the link
             map = (Map) array.get(i);
-            Map categoryMap = (Map) map.get("Category");
+            Map categoryMap = (Map) map.get(parentName);
             String uri = (String) categoryMap.get("value");
 
             res.add(uri);
@@ -118,29 +119,6 @@ public class JsonParser {
         return res;
     }
 
-    public ArrayList<String> getDbPediaOntologyParents() throws ParseException {
-        // We get the JSON parsed
-        JSONParser parser = new JSONParser();
-        Map map = (Map) parser.parse(stringToParse);
-        // We get the results
-        map = (Map) map.get("results");
-        JSONArray array = (JSONArray) map.get("bindings");
-
-        ArrayList<String> res = new ArrayList<String>();
-
-        // For each result
-        for (int i = 0; i < array.size(); i++) {
-            // We get the value of the link
-            map = (Map) array.get(i);
-            Map categoryMap = (Map) map.get("Ontology2");
-            String uri = (String) categoryMap.get("value");
-
-            res.add(uri);
-        }
-
-        return res;
-    }
-
     public String makeRequestAtt(String link) {
         // With this value, we can make a new request
         // The request is :
@@ -152,6 +130,29 @@ public class JsonParser {
 
     public void setStringToParse(String s) {
         this.stringToParse = s;
+    }
+
+    public HashMap<String, DBYagoClass> getDbPediaYagoClasses() throws ParseException {
+     // We get the JSON parsed
+        JSONParser parser = new JSONParser();
+        Map map = (Map) parser.parse(stringToParse);
+        // We get the results
+        map = (Map) map.get("results");
+        JSONArray array = (JSONArray) map.get("bindings");
+
+        HashMap<String, DBYagoClass> res = new HashMap<>();
+
+        // For each result
+        for (int i = 0; i < array.size(); i++) {
+            // We get the value of the link
+            map = (Map) array.get(i);
+            Map categoryMap = (Map) map.get("yago");
+            String uri = (String) categoryMap.get("value");
+
+            res.put(uri, new DBYagoClass(uri));
+        }
+
+        return res;
     }
 
 }

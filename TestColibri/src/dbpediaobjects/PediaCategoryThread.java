@@ -40,7 +40,7 @@ public class PediaCategoryThread extends Thread {
 
                 parser.setStringToParse(jsonParents);
 
-                ArrayList<String> parents = parser.getDbPediaCategoriesParents();
+                ArrayList<String> parents = parser.getDbPediaParents("Category");
                 cat.setParents(parents);
                 
             } catch (ParseException e) {

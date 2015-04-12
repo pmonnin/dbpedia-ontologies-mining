@@ -3,8 +3,6 @@ package dbpediaobjects;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 
 import org.json.simple.parser.ParseException;
 
@@ -41,7 +39,7 @@ public class PediaOntologyThread extends Thread {
 
                 parser.setStringToParse(jsonParents);
 
-                ArrayList<String> parents = parser.getDbPediaOntologyParents();
+                ArrayList<String> parents = parser.getDbPediaParents("Ontology2");
                 ont.setParents(parents);
                 
             } catch (ParseException e) {

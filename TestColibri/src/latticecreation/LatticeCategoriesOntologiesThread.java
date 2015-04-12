@@ -46,7 +46,7 @@ public class LatticeCategoriesOntologiesThread extends Thread {
                                                                       + "{ <" + obj.getName() +  "> rdf:type ?Ontology2 . "
                                                                       + "FILTER (REGEX(STR(?Ontology2), \"http://dbpedia.org/ontology\", \"i\")) }", "UTF-8"));
                 parser.setStringToParse(jsonOnto);
-                ArrayList<String> ontologies = parser.getDbPediaOntologyParents();
+                ArrayList<String> ontologies = parser.getDbPediaParents("Ontology2");
                 obj.setOntologies(ontologies);
                 
                 
@@ -56,7 +56,7 @@ public class LatticeCategoriesOntologiesThread extends Thread {
                                                                             + "select distinct ?Category where {"
                                                                             + "<" + obj.getName() + "> dcterms:subject ?Category }", "UTF-8"));
                 parser.setStringToParse(jsonCategories);
-                ArrayList<String> categories = parser.getDbPediaCategoriesParents();
+                ArrayList<String> categories = parser.getDbPediaParents("Category");
                 obj.setCategories(categories);
             } catch (ParseException e) {
                 e.printStackTrace();
