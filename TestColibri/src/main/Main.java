@@ -12,6 +12,7 @@ import org.json.simple.parser.ParseException;
 
 import dbpediaobjects.DBCategory;
 import dbpediaobjects.DBOntologyClass;
+import dbpediaobjects.DBYagoClass;
 
 public class Main {
 
@@ -29,6 +30,12 @@ public class Main {
         DBOntologyClassesCrawler dbOntologyClasses = new DBOntologyClassesCrawler();
         dbOntologyClasses.computeParents();
         HashMap<String, DBOntologyClass> dbontologies = dbOntologyClasses.getDbontologies();
+        
+        // Crawling Yago classes
+        System.out.println("DEBUT PARSAGE ONTOLOGIES");
+        DBYagoClassesCrawler dbYagoClasses = new DBYagoClassesCrawler();
+        dbYagoClasses.computeParents();
+        HashMap<String, DBYagoClass> dbyagoclasses = dbYagoClasses.getDbYagoClasses();
 
         // We create the lattice
         System.out.println("DEBUT CREATION LATTICE");
@@ -54,9 +61,7 @@ public class Main {
             }
         }
         
-        System.out.flush();
-        System.out.print("Press Enter to continue");
-        new Scanner(System.in).nextLine();
+        pause();
         
         for(PediaConcept c : lc) {
             /* Récupérer l'union des parents des catégories */
@@ -75,6 +80,33 @@ public class Main {
             }
         }
         
+        pause();
+        
+        for (PediaConcept c : lc) {
+            /* Récupérer l'union des parents des classes yago */
+            ArrayList<String> latticeYagoClassesParents = c.unionYagoClassesParent();
+            ArrayList<String> latticeYagoClasses = c.getYagoClasses();
+
+            /* Pour chaque classe yago du concept */
+            for (String yagoChild : latticeYagoClasses) {
+                for (String yagoParent : latticeYagoClassesParents) {
+                    if (dbyagoclasses.get(yagoChild).hasParent(yagoParent)) {
+                        System.out.println("La relation " + yagoChild + " (enfant) -> " + yagoParent + " (parent) a bien été trouvée dans les classes yago.");
+                    } else {
+                        System.out.println("Il manque la relation " + yagoChild + " (enfant) -> " + yagoParent + " (parent) dans les classes yago.");
+                    }
+                }
+            }
+        }
+        
         System.out.println("FIN DU PROGRAMME EN : " + (new Date().getTime() - startDate.getTime()) / 1000 + " SECONDES.");
+    }
+    
+    public static final void pause() {
+        System.out.flush();
+        System.out.print("Press Enter to continue");
+        Scanner sc = new Scanner(System.in);
+        sc.nextLine();
+        sc.close();
     }
 }
