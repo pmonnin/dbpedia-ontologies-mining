@@ -32,7 +32,7 @@ public class DBYagoClassesCrawler {
         URLReader urlReader = new URLReader();
         String jsonResponse = urlReader.getJSON(URLEncoder.encode(
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " + "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
-                        + "select distinct ?yago where " + "{ [] rdf:type ?yago . " + "FILTER (REGEX(STR(?yago), \"http://dbpedia.org/class/yago\", \"i\")) }", "UTF-8"));
+                        + "select distinct ?yago where " + "{ [] rdf:type ?yago . " + "FILTER (REGEX(STR(?yago), \"http://dbpedia.org/class/yago\", \"i\")) } LIMIT 500", "UTF-8"));
 
         // Parse the categories
         JsonParser parser = new JsonParser(jsonResponse);
