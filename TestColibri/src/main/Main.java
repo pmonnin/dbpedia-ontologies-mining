@@ -1,5 +1,6 @@
 package main;
 
+import Statistics.ComparisonStats;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +39,8 @@ public class Main {
 	 */
     public static void main(String[] args) throws ParseException, IOException {
         Date startDate = new Date();
+        ComparisonStats comparisonStats = new ComparisonStats();
+        int found, proposed;
         
         // Crawling DB categories
         System.out.println("DEBUT PARSAGE CATEGORIES");
@@ -64,6 +67,8 @@ public class Main {
         ArrayList<PediaConcept> lc = lattice.execIterator();
 
         // For each concept
+        found = 0;
+        proposed = 0;
         for (PediaConcept c : lc) {
         	// We get the union of parents ontology classes
             ArrayList<String> latticeOntologyParents = c.unionOntologiesParent();
@@ -73,17 +78,24 @@ public class Main {
             for (String ontoChild : latticeOntologies) {
                 for (String ontoParent : latticeOntologyParents) {
                     if (dbontologies.get(ontoChild).hasParent(ontoParent)) {
+                        found++;
                         System.out.println("La relation " + ontoChild + " (enfant) -> " + ontoParent + " (parent) a bien été trouvée dans les classes d'ontologie.");
                     } else {
+                        proposed++;
                         System.out.println("Il manque la relation " + ontoChild + " (enfant) -> " + ontoParent + " (parent) dans les classes d'ontologie.");
                     }
                 }
             }
         }
+        //stats of comparison
+        comparisonStats.setNbOntologiesProposed(proposed);
+        comparisonStats.setNbOntologiesFound(found);
         
         // Break between the two comparison (so that text can be read)
         pause();
         
+        found = 0;
+        proposed = 0;
         for(PediaConcept c : lc) {
         	// We get the union of parents categories
             ArrayList<String> latticeCategoryParents = c.unionCategoriesParent();
@@ -93,17 +105,24 @@ public class Main {
             for (String cateChild : latticeCategories) {
                 for (String cateParent : latticeCategoryParents) {
                     if (dbcategories.get(cateChild).hasParent(cateParent)) {
+                        found++;
                         System.out.println("La relation " + cateChild + " (enfant) -> " + cateParent + " (parent) a bien été trouvée dans les catégories.");
                     } else {
+                        proposed++;
                         System.out.println("Il manque la relation " + cateChild + " (enfant) -> " + cateParent + " (parent) dans les catégories.");
                     }
                 }
             }
         }
+        // Stats of comparison
+        comparisonStats.setNbCategoriesFound(found);
+        comparisonStats.setNbCategoriesProposed(proposed);
         
         // Break between the two comparison (so that text can be read)
         pause();
         
+        found = 0;
+        proposed = 0;
         for (PediaConcept c : lc) {
             /* Récupérer l'union des parents des classes yago */
             ArrayList<String> latticeYagoClassesParents = c.unionYagoClassesParent();
@@ -113,15 +132,26 @@ public class Main {
             for (String yagoChild : latticeYagoClasses) {
                 for (String yagoParent : latticeYagoClassesParents) {
                     if (dbyagoclasses.get(yagoChild).hasParent(yagoParent)) {
+                        found++;
                         System.out.println("La relation " + yagoChild + " (enfant) -> " + yagoParent + " (parent) a bien été trouvée dans les classes yago.");
                     } else {
+                        proposed++;
                         System.out.println("Il manque la relation " + yagoChild + " (enfant) -> " + yagoParent + " (parent) dans les classes yago.");
                     }
                 }
             }
         }
+        // Stats of comparison
+        comparisonStats.setNbYagoFound(found);
+        comparisonStats.setNbYagoProposed(proposed);
         
-        System.out.println("FIN DU PROGRAMME EN : " + (new Date().getTime() - startDate.getTime()) / 1000 + " SECONDES.");
+        System.out.println("\n\nNombre d'ontologies trouvées: "+comparisonStats.getNbOntologiesFound());
+        System.out.println("Nombre d'ontologies proposées: "+comparisonStats.getNbOntologiesProposed());
+        System.out.println("Nombre de catégories trouvées: "+comparisonStats.getNbCategoriesFound());
+        System.out.println("Nombre de catégories proposées: "+comparisonStats.getNbCategoriesProposed());
+        System.out.println("Nombre de classes yago trouvées: "+comparisonStats.getNbYagoFound());
+        System.out.println("Nombre de classes yago proposées: "+comparisonStats.getNbYagoProposed());
+        System.out.println("\nFIN DU PROGRAMME EN : " + (new Date().getTime() - startDate.getTime()) / 1000 + " SECONDES.");
     }
     
     /**

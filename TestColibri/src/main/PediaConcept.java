@@ -7,7 +7,11 @@ import latticecreation.LatticeObject;
 
 /**
  * Class of PediaConcept object
- *
+ * 
+ * @author Damien Flament
+ * @author Soline Blanc
+ * @author Thomas Herbeth
+ * 
  */
 public class PediaConcept {
 
@@ -140,7 +144,7 @@ public class PediaConcept {
         // Pour chaque objet du concept, hormis le premier
         for (int i = 1; i < this.listeObjets.size(); i++) {
             // On initialise celle qui sera la nouvelle liste � retourner
-            ArrayList<String> newReturnOntologies = new ArrayList<String>();
+            ArrayList<String> newReturnOntologies = new ArrayList<>();
 
             // On récupère le LatticeObject correspondant
             LatticeObject currentObject = objects.get(listeObjets.get(i));

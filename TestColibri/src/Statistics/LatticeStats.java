@@ -1,8 +1,9 @@
 package Statistics;
 
 /**
- *
- * @author damien
+ * Some statistics on the lattice
+ * 
+ * @author Damien Flament
  */
 public class LatticeStats {
     

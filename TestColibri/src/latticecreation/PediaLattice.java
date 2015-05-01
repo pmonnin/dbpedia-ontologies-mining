@@ -23,6 +23,9 @@ import colibri.lib.TreeRelation;
 
 /**
  * Lattice's construction
+ * 
+ * @author Damien Flament
+ * @author Soline Blanc
  *
  */
 public class PediaLattice {
