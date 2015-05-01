@@ -13,6 +13,9 @@ public class DBYagoClass {
     private String uri = "";
     private ArrayList<String> parents = new ArrayList<String>();
 
+    public DBYagoClass() {
+    }
+    
     public DBYagoClass(String uri) {
         this.uri = uri;
     }
@@ -43,5 +46,10 @@ public class DBYagoClass {
 
     public int getParentsNumber() {
         return parents.size();
+    }
+
+    @Override
+    public String toString() {
+        return "DBYagoClass [uri=" + uri + "]";
     }
 }
