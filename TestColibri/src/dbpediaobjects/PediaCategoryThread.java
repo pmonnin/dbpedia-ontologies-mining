@@ -9,6 +9,12 @@ import org.json.simple.parser.ParseException;
 import serverlink.JsonParser;
 import serverlink.URLReader;
 
+/**
+ * Class used to get the parents of a subset of DBPedia categories
+ * 
+ * @author Thomas Herbeth
+ *
+ */
 public class PediaCategoryThread extends Thread {
     private JsonParser parser;
     private URLReader urlReader;

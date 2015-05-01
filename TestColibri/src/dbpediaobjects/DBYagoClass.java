@@ -2,6 +2,13 @@ package dbpediaobjects;
 
 import java.util.ArrayList;
 
+/**
+ * DBPedia Yago class
+ * 
+ * @author Thomas Herbeth
+ * @author Pierre Monnin
+ *
+ */
 public class DBYagoClass {
     private String uri = "";
     private ArrayList<String> parents = new ArrayList<String>();

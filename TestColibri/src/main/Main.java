@@ -14,8 +14,28 @@ import dbpediaobjects.DBCategory;
 import dbpediaobjects.DBOntologyClass;
 import dbpediaobjects.DBYagoClass;
 
+/**
+ * Main class for the application
+ *  - Crawl DBPedia categories
+ *  - Crawl DBPedia ontology classes
+ *  - Crawl DBPedia yago classes
+ *  - 
+ * 
+ * 
+ * @author Soline Blanc
+ * @author Damien Flament
+ * @author Thomas Herbeth
+ * @author Pierre Monnin
+ *
+ */
 public class Main {
 
+	/**
+	 * Main function of the algorithm
+	 * @param args not used
+	 * @throws ParseException thrown when there is a JSON parse exception from the server output parsing
+	 * @throws IOException thrown when the server is unavailable
+	 */
     public static void main(String[] args) throws ParseException, IOException {
         Date startDate = new Date();
         
@@ -43,13 +63,13 @@ public class Main {
         // lattice.deleteFirstIterationAttributes();
         ArrayList<PediaConcept> lc = lattice.execIterator();
 
-        /* Pour chaque concept */
+        // For each concept
         for (PediaConcept c : lc) {
-            /* Récupérer l'union des parents des ontologies */
+        	// We get the union of parents ontology classes
             ArrayList<String> latticeOntologyParents = c.unionOntologiesParent();
             ArrayList<String> latticeOntologies = c.getOntologies();
 
-            /* Pour chaque ontologie du concept */
+            // For each present concept ontology class
             for (String ontoChild : latticeOntologies) {
                 for (String ontoParent : latticeOntologyParents) {
                     if (dbontologies.get(ontoChild).hasParent(ontoParent)) {
@@ -61,14 +81,15 @@ public class Main {
             }
         }
         
+        // Break between the two comparison (so that text can be read)
         pause();
         
         for(PediaConcept c : lc) {
-            /* Récupérer l'union des parents des catégories */
+        	// We get the union of parents categories
             ArrayList<String> latticeCategoryParents = c.unionCategoriesParent();
             ArrayList<String> latticeCategories = c.getCategories();
 
-            /* Pour chaque catégories du concept */
+            // For each concept category
             for (String cateChild : latticeCategories) {
                 for (String cateParent : latticeCategoryParents) {
                     if (dbcategories.get(cateChild).hasParent(cateParent)) {
@@ -80,6 +101,7 @@ public class Main {
             }
         }
         
+        // Break between the two comparison (so that text can be read)
         pause();
         
         for (PediaConcept c : lc) {
@@ -102,6 +124,10 @@ public class Main {
         System.out.println("FIN DU PROGRAMME EN : " + (new Date().getTime() - startDate.getTime()) / 1000 + " SECONDES.");
     }
     
+    /**
+     * Function used to break between two comparison and give time to 
+     * read the text output
+     */
     public static final void pause() {
         System.out.flush();
         System.out.print("Press Enter to continue");

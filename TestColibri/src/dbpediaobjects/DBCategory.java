@@ -2,6 +2,13 @@ package dbpediaobjects;
 
 import java.util.ArrayList;
 
+/**
+ * DBPedia category
+ * 
+ * @author Thomas Herbeth
+ * @author Pierre Monnin
+ *
+ */
 public class DBCategory {
 	private String name = "";
 	private String uri = "";

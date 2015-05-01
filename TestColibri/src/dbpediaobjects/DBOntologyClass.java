@@ -2,6 +2,13 @@ package dbpediaobjects;
 
 import java.util.ArrayList;
 
+/**
+ * DBPedia Ontology class
+ * 
+ * @author Thomas Herbeth
+ * @author Pierre Monnin
+ *
+ */
 public class DBOntologyClass {
     private String label = "";
     private String uri = "";

@@ -9,6 +9,12 @@ import org.json.simple.parser.ParseException;
 import serverlink.JsonParser;
 import serverlink.URLReader;
 
+/**
+ * Class used to get the parents of a subset of yago classes
+ * 
+ * @author Thomas Herbeth
+ *
+ */
 public class PediaYagoThread extends Thread {
     private JsonParser parser;
     private URLReader urlReader;
