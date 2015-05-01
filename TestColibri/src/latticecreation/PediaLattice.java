@@ -1,6 +1,6 @@
 package latticecreation;
 
-import Statistics.LatticeStats;
+import statistics.LatticeStats;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
