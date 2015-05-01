@@ -10,6 +10,7 @@ import org.json.simple.parser.ParseException;
 
 import serverlink.ChildAndParent;
 import serverlink.JSONReader;
+import statistics.DBCategoriesStatistics;
 import dbpediaobjects.DBCategory;
 
 /**
@@ -33,7 +34,11 @@ public class DBCategoriesCrawler {
      */
     public static void main(String[] args) throws UnsupportedEncodingException, IOException, ParseException {
         System.out.println("START MAIN");
-        new DBCategoriesCrawler().computeParents();
+        DBCategoriesCrawler crawler = new DBCategoriesCrawler();
+        crawler.computeParents();
+        DBCategoriesStatistics stats = new DBCategoriesStatistics(crawler.getDbcategories());
+        stats.computeStatistics();
+        stats.displayStatistics();
     }
 
     /**
@@ -83,13 +88,10 @@ public class DBCategoriesCrawler {
                 currentCategory = new DBCategory(label, child);
                 if (parent != null)
                     currentCategory.addParent(parent);
-//                System.out.println("ADD PARENT " + child + " -> " + parent);
             } else {
                 if (parent != null)
                     currentCategory.addParent(parent);
             }
         }
-        
-        System.out.println("Nombre total de catégories : " + dbcategories.size());
     }
 }

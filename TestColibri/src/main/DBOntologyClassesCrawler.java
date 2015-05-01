@@ -10,6 +10,7 @@ import org.json.simple.parser.ParseException;
 
 import serverlink.ChildAndParent;
 import serverlink.JSONReader;
+import statistics.DBOntologyClassesStatistics;
 import dbpediaobjects.DBOntologyClass;
 
 /**
@@ -33,7 +34,11 @@ public class DBOntologyClassesCrawler {
      */
     public static void main(String[] args) throws UnsupportedEncodingException, IOException, ParseException {
         System.out.println("START MAIN");
-        new DBOntologyClassesCrawler().computeParents();
+        DBOntologyClassesCrawler crawler = new DBOntologyClassesCrawler();
+        crawler.computeParents();
+        DBOntologyClassesStatistics stats = new DBOntologyClassesStatistics(crawler.getDbontologies());
+        stats.computeStatistics();
+        stats.displayStatistics();
     }
 
     /**

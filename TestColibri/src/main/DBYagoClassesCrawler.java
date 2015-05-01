@@ -10,6 +10,7 @@ import org.json.simple.parser.ParseException;
 
 import serverlink.ChildAndParent;
 import serverlink.JSONReader;
+import statistics.DBYagoClassesStatistics;
 import dbpediaobjects.DBYagoClass;
 
 /**
@@ -33,7 +34,11 @@ public class DBYagoClassesCrawler {
      */
     public static void main(String[] args) throws UnsupportedEncodingException, IOException, ParseException {
         System.out.println("START MAIN");
-        new DBYagoClassesCrawler().computeParents();
+        DBYagoClassesCrawler crawler = new DBYagoClassesCrawler();
+        crawler.computeParents();
+        DBYagoClassesStatistics stats = new DBYagoClassesStatistics(crawler.getDbYagoClasses());
+        stats.computeStatistics();
+        stats.displayStatistics();
     }
 
     /**
@@ -78,7 +83,6 @@ public class DBYagoClassesCrawler {
                 currentYagoClass = new DBYagoClass(child);
                 if (parent != null)
                     currentYagoClass.addParent(parent);
-//                System.out.println("ADD PARENT " + child + " -> " + parent);
             } else {
                 if (parent != null)
                     currentYagoClass.addParent(parent);

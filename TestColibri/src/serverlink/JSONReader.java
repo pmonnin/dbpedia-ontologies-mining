@@ -36,7 +36,7 @@ public final class JSONReader {
         SparqlResponse response = new SparqlResponse();
 
         try {
-            response = mapper.readValue(new URL(DBPEDIA_LOC + request), SparqlResponse.class);
+            response = mapper.readValue(new URL(SERVER_LOC + request), SparqlResponse.class);
         } catch (JsonParseException | JsonMappingException | MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
