@@ -1,5 +1,8 @@
 package serverlink;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SparqlValue {
     private String type;
     private String value;

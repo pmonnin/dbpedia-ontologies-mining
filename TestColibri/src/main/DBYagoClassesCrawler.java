@@ -78,7 +78,7 @@ public class DBYagoClassesCrawler {
                 currentYagoClass = new DBYagoClass(child);
                 if (parent != null)
                     currentYagoClass.addParent(parent);
-                System.out.println("ADD PARENT " + child + " -> " + parent);
+//                System.out.println("ADD PARENT " + child + " -> " + parent);
             } else {
                 if (parent != null)
                     currentYagoClass.addParent(parent);

@@ -3,16 +3,14 @@ package main;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
+import java.util.List;
 
 import org.json.simple.parser.ParseException;
 
-import serverlink.JsonParser;
-import serverlink.URLReader;
+import serverlink.ChildAndParent;
+import serverlink.JSONReader;
 import dbpediaobjects.DBOntologyClass;
-import dbpediaobjects.PediaOntologyThread;
 
 /**
  * Crawler of the DBPedia ontology classes
@@ -54,62 +52,43 @@ public class DBOntologyClassesCrawler {
      */
     public void computeParents() throws UnsupportedEncodingException, IOException, ParseException {
     	// Ask for all the ontology classes
-        URLReader urlReader = new URLReader();
-        String jsonResponse = urlReader.getJSON(URLEncoder.encode(
-        		"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-        		+ "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
+        List<ChildAndParent> childrenAndParents = JSONReader.getChildrenAndParents(URLEncoder.encode(
+                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+                + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
                 + "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
-        		+ "select distinct ?Ontology ?Label where "
-                + "{ ?Ontology rdf:type owl:Class . ?Ontology rdfs:label ?Label . "
-                + "FILTER (REGEX(STR(?Ontology), \"http://dbpedia.org/ontology\", \"i\")) "
-                + "FILTER(langMatches(lang(?Label), \"EN\")) }", "UTF-8"));
+                + "select distinct ?child ?parent ?label where {"
+                + "?child rdf:type owl:Class ."
+                + "FILTER (REGEX(STR(?child), \"http://dbpedia.org/ontology\", \"i\")) ."
+                + "?child rdfs:label ?label ."
+                + "FILTER(langMatches(lang(?label), \"EN\"))"
+                + "OPTIONAL {"
+                + "?child rdfs:subClassOf ?parent . "
+                + "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/ontology\", \"i\"))"
+                + "}}", "UTF-8"));
 
-        // Parse them
-        JsonParser parser = new JsonParser(jsonResponse);
-        dbontologies = parser.getDbPediaOntologyClasses();
+        dbontologies = new HashMap<String, DBOntologyClass>();
+        DBOntologyClass currentOntology = null;
+        for (ChildAndParent childAndParent : childrenAndParents) {
+            String child = childAndParent.getChild().getValue();
+            String label = childAndParent.getLabel().getValue();
+            String parent = childAndParent.getParent() == null ? null : childAndParent.getParent().getValue();
 
-	    // Now we construct the hierarchy by asking parents of each ontology class
-	    	//The hierarchy asking to the server is divided into nbCores thread -- threading setup here
-        Set<String> keys = dbontologies.keySet();
-        int i = 0, keySize = keys.size();
-        ArrayList<PediaOntologyThread> threadList = new ArrayList<PediaOntologyThread>();
-        int nbCores = Runtime.getRuntime().availableProcessors();
-        ArrayList<DBOntologyClass> threadOntologies = new ArrayList<DBOntologyClass>();
-
-        for (String key : keys) {
-            DBOntologyClass ont = dbontologies.get(key);
-            threadOntologies.add(ont);
-
-            // We give to each thread an amount of ontology classes to take care
-            if (i % Math.ceil(keySize / nbCores) == 0 && i != 0) {
-                PediaOntologyThread thread = new PediaOntologyThread(parser, urlReader, threadOntologies);
-                thread.start();
-                threadList.add(thread);
-                threadOntologies = new ArrayList<DBOntologyClass>();
-            }
-
-            i++;
-        }
-
-        // We join the thread and add all the classes in the final hashmap
-        System.out.println("STARTING THREADS JOIN...");
-        dbontologies.clear();
-        int categoriesWithParents = 0;
-        for (PediaOntologyThread thread : threadList) {
-            try {
-                thread.join();
-                System.out.println("THREAD TERMINE :)");
-                for (DBOntologyClass ont : thread.getThreadCategories()) {
-                    dbontologies.put(ont.getUri(), ont);
-                    if (ont.getParentsNumber() != 0) {
-                        categoriesWithParents++;
-                    }
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if (currentOntology == null) {
+                currentOntology = new DBOntologyClass(label, child);
+                if (parent != null)
+                    currentOntology.addParent(parent);
+            } else if (!child.equals(currentOntology.getUri())) {
+                dbontologies.put(currentOntology.getUri(), currentOntology);
+                currentOntology = new DBOntologyClass(label, child);
+                if (parent != null)
+                    currentOntology.addParent(parent);
+//                System.out.println("ADD PARENT " + child + " -> " + parent);
+            } else {
+                if (parent != null)
+                    currentOntology.addParent(parent);
             }
         }
-        System.out.println("PROGRAMME TERMINE : " + categoriesWithParents + " ontologies avec parents.");
-        System.out.println("Nombre total de classes ontologies : " + dbontologies.size());
+        
+        System.out.println("Nombre total d'ontologies : " + dbontologies.size());
     }
 }
