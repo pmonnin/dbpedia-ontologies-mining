@@ -5,6 +5,10 @@ import java.util.HashMap;
 
 import latticecreation.LatticeObject;
 
+/**
+ * Class of PediaConcept object
+ *
+ */
 public class PediaConcept {
 
     private ArrayList<String> listeObjets, listeAttributs, categories, ontologies, yagoClasses;
@@ -71,10 +75,18 @@ public class PediaConcept {
         return parents;
     }
 
+    /**
+     * getParentsNumber
+     * @return size of the list of parents
+     */
     public int getParentsNumber() {
         return parents.size();
     }
 
+    /**
+     * Add a parent to the list of parents of the current pedia concept
+     * @param parent : parent of the current pedia concept
+     */
     public void addParentPediaConcept(PediaConcept parent) {
         removeDoublonsCategories(parent.getCategories());
         removeDoublonsOntologies(parent.getOntologies());
@@ -89,6 +101,10 @@ public class PediaConcept {
         ontologies = ontos;
     }
 
+    /**
+     * remove duplicated categories present in the list of categories
+     * @param catP : list of categories
+     */
     public void removeDoublonsCategories(ArrayList<String> catP) {
         ArrayList<String> categoriesASupprimees = new ArrayList<>();
 
@@ -101,6 +117,10 @@ public class PediaConcept {
             this.getCategories().remove(cat);
     }
 
+    /**
+     * remove duplicated ontologies present in the list of categories
+     * @param ontP : list of ontologies
+     */
     public void removeDoublonsOntologies(ArrayList<String> ontP) {
         ArrayList<String> ontologiesASupprimer = new ArrayList<>();
 
@@ -150,7 +170,7 @@ public class PediaConcept {
         // Pour chaque objet du concept, hormis le premier
         for (int i = 1; i < this.listeObjets.size(); i++) {
             // On initialise celle qui sera la nouvelle liste � retourner
-            ArrayList<String> newReturnYagoClasses = new ArrayList<String>();
+            ArrayList<String> newReturnYagoClasses = new ArrayList<>();
 
             // On récupère le LatticeObject correspondant
             LatticeObject currentObject = objects.get(listeObjets.get(i));
@@ -180,7 +200,7 @@ public class PediaConcept {
         // Pour chaque objet du concept, hormis le premier
         for (int i = 1; i < this.listeObjets.size(); i++) {
             // On initialise celle qui sera la nouvelle liste � retourner
-            ArrayList<String> newReturnCategories = new ArrayList<String>();
+            ArrayList<String> newReturnCategories = new ArrayList<>();
 
             // On r�cup�re le LatticeObject correspondant
             LatticeObject currentObject = objects.get(listeObjets.get(i));
@@ -295,5 +315,10 @@ public class PediaConcept {
                 res.add(o);
         }
         return res;
+    }
+
+    @Override
+    public String toString() {
+        return "PediaConcept{" + "listeObjets=" + listeObjets + ", listeAttributs=" + listeAttributs + ", categories=" + categories + ", ontologies=" + ontologies + ", yagoClasses=" + yagoClasses + ", parents=" + parents + '}';
     }
 }

@@ -15,9 +15,9 @@ public class LatticeObject {
     public LatticeObject(String name) {
         this.name = name;
         this.attributes = new ArrayList<>();
-        this.ontologies = new ArrayList<String>();
-        this.categories = new ArrayList<String>();
-        this.yagoClasses = new ArrayList<String>();
+        this.ontologies = new ArrayList<>();
+        this.categories = new ArrayList<>();
+        this.yagoClasses = new ArrayList<>();
     }
 
     public void addAttribute(String att) {
