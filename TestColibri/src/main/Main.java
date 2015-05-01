@@ -20,7 +20,7 @@ import dbpediaobjects.DBYagoClass;
  *  - Crawl DBPedia categories
  *  - Crawl DBPedia ontology classes
  *  - Crawl DBPedia yago classes
- *  - 
+ *  - Comparison between our lattice and the existing hierarchy
  * 
  * 
  * @author Soline Blanc
