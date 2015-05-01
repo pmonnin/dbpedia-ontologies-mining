@@ -1,4 +1,4 @@
-package Statistics;
+package statistics;
 
 /**
  * Some statistics on the lattice
