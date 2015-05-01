@@ -10,7 +10,7 @@ import latticecreation.PediaLattice;
 
 import org.json.simple.parser.ParseException;
 
-import Statistics.ComparisonStats;
+import statistics.ComparisonStats;
 import dbpediaobjects.DBCategory;
 import dbpediaobjects.DBOntologyClass;
 import dbpediaobjects.DBYagoClass;
