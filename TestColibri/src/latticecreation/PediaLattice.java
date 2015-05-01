@@ -46,7 +46,7 @@ public class PediaLattice {
 
         int keySize = results.size();
         ArrayList<LatticeCategoriesOntologiesThread> threadList = new ArrayList<LatticeCategoriesOntologiesThread>();
-        int nbCores = 40; // Runtime.getRuntime().availableProcessors();
+        int nbCores = Runtime.getRuntime().availableProcessors();
         ArrayList<LatticeObject> threadObjects = new ArrayList<LatticeObject>();
 
         // Add relationship
