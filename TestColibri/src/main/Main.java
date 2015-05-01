@@ -1,6 +1,5 @@
 package main;
 
-import Statistics.ComparisonStats;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +10,7 @@ import latticecreation.PediaLattice;
 
 import org.json.simple.parser.ParseException;
 
+import Statistics.ComparisonStats;
 import dbpediaobjects.DBCategory;
 import dbpediaobjects.DBOntologyClass;
 import dbpediaobjects.DBYagoClass;
@@ -55,7 +55,7 @@ public class Main {
         HashMap<String, DBOntologyClass> dbontologies = dbOntologyClasses.getDbontologies();
         
         // Crawling Yago classes
-        System.out.println("DEBUT PARSAGE ONTOLOGIES");
+        System.out.println("DEBUT PARSAGE YAGO");
         DBYagoClassesCrawler dbYagoClasses = new DBYagoClassesCrawler();
         dbYagoClasses.computeParents();
         HashMap<String, DBYagoClass> dbyagoclasses = dbYagoClasses.getDbYagoClasses();

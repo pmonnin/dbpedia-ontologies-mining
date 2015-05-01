@@ -3,16 +3,14 @@ package main;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
+import java.util.List;
 
 import org.json.simple.parser.ParseException;
 
-import serverlink.JsonParser;
-import serverlink.URLReader;
+import serverlink.ChildAndParent;
+import serverlink.JSONReader;
 import dbpediaobjects.DBCategory;
-import dbpediaobjects.PediaCategoryThread;
 
 /**
  * Crawler of the DBPedia categories
@@ -54,60 +52,44 @@ public class DBCategoriesCrawler {
      */
     public void computeParents() throws UnsupportedEncodingException, IOException, ParseException {
     	// Ask for all the categories
-        URLReader urlReader = new URLReader();
-        String jsonResponse = urlReader.getJSON(URLEncoder.encode(
-                "PREFIX dcterms:<http://purl.org/dc/terms/> "
-        		+ "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
-                + "select distinct ?Category ?Label where "
-                + "{ [] dcterms:subject ?Category . ?Category rdfs:label ?Label " + "}", "UTF-8"));
+        List<ChildAndParent> childrenAndParents = JSONReader.getChildrenAndParents(URLEncoder.encode(
+                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+                + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
+                + "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
+                + "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> "
+                + "select distinct ?child ?parent ?label where {"
+                + "?child rdf:type skos:Concept ."
+                + "FILTER (REGEX(STR(?child), \"http://dbpedia.org/resource/Category\", \"i\")) ."
+                + "?child rdfs:label ?label ."
+                + "FILTER(langMatches(lang(?label), \"EN\"))"
+                + "OPTIONAL {"
+                + "?child skos:broader ?parent . "
+                + "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/resource/Category\", \"i\"))"
+                + "}}", "UTF-8"));
 
-        // Parse them
-        JsonParser parser = new JsonParser(jsonResponse);
-        dbcategories = parser.getDbPediaCategories();
+        dbcategories = new HashMap<String, DBCategory>();
+        DBCategory currentCategory = null;
+        for (ChildAndParent childAndParent : childrenAndParents) {
+            String child = childAndParent.getChild().getValue();
+            String label = childAndParent.getLabel().getValue();
+            String parent = childAndParent.getParent() == null ? null : childAndParent.getParent().getValue();
 
-        // Now we construct the hierarchy by asking parents of each category
-    		//The hierarchy asking to the server is divided into nbCores thread -- threading setup here
-        Set<String> keys = dbcategories.keySet();
-        int i = 0, keySize = keys.size();
-        ArrayList<PediaCategoryThread> threadList = new ArrayList<PediaCategoryThread>();
-        int nbCores = Runtime.getRuntime().availableProcessors();
-        ArrayList<DBCategory> threadCategories = new ArrayList<DBCategory>();
-
-        for (String key : keys) {
-            DBCategory cat = dbcategories.get(key);
-            threadCategories.add(cat);
-
-            // We give to each thread an amount of categories to take care
-            if (i % Math.ceil(keySize / nbCores) == 0 && i != 0) {
-                PediaCategoryThread thread = new PediaCategoryThread(parser, urlReader, threadCategories);
-                thread.start();
-                threadList.add(thread);
-                threadCategories = new ArrayList<DBCategory>();
-            }
-
-            i++;
-        }
-
-        // We join the thread and add all the classes in the final hashmap
-        System.out.println("STARTING THREADS JOIN...");
-        dbcategories.clear();
-        int categoriesWithParents = 0;
-        for (PediaCategoryThread thread : threadList) {
-            try {
-                thread.join();
-                System.out.println("THREAD TERMINE :)");
-                for (DBCategory cat : thread.getThreadCategories()) {
-                    dbcategories.put(cat.getUri(), cat);
-                    if (cat.getParentsNumber() != 0) {
-                        categoriesWithParents++;
-                    }
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if (currentCategory == null) {
+                currentCategory = new DBCategory(label, child);
+                if (parent != null)
+                    currentCategory.addParent(parent);
+            } else if (!child.equals(currentCategory.getUri())) {
+                dbcategories.put(currentCategory.getUri(), currentCategory);
+                currentCategory = new DBCategory(label, child);
+                if (parent != null)
+                    currentCategory.addParent(parent);
+//                System.out.println("ADD PARENT " + child + " -> " + parent);
+            } else {
+                if (parent != null)
+                    currentCategory.addParent(parent);
             }
         }
-
-        System.out.println("CATEGORIES CRAWLER TERMINE : " + categoriesWithParents + " catégories avec parents.");
-        System.out.println("Nombre de catégories total : " + dbcategories.keySet().size());
+        
+        System.out.println("Nombre total de catégories : " + dbcategories.size());
     }
 }
