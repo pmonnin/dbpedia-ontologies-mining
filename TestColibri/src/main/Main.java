@@ -30,6 +30,7 @@ import dbpediaobjects.DBYagoClass;
  *
  */
 public class Main {
+    private static Scanner sc;
 
 	/**
 	 * Main function of the algorithm
@@ -152,6 +153,8 @@ public class Main {
         System.out.println("Nombre de classes yago trouvées: "+comparisonStats.getNbYagoFound());
         System.out.println("Nombre de classes yago proposées: "+comparisonStats.getNbYagoProposed());
         System.out.println("\nFIN DU PROGRAMME EN : " + (new Date().getTime() - startDate.getTime()) / 1000 + " SECONDES.");
+        
+        sc.close();
     }
     
     /**
@@ -161,8 +164,7 @@ public class Main {
     public static final void pause() {
         System.out.flush();
         System.out.print("Press Enter to continue");
-        Scanner sc = new Scanner(System.in);
+        sc = new Scanner(System.in);
         sc.nextLine();
-        sc.close();
     }
 }
