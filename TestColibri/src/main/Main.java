@@ -77,7 +77,7 @@ public class Main {
             // For each present concept ontology class
             for (String ontoChild : latticeOntologies) {
                 for (String ontoParent : latticeOntologyParents) {
-                    if (dbontologies.get(ontoChild).hasParent(ontoParent)) {
+                    if (dbontologies.get(ontoChild) != null && dbontologies.get(ontoChild).hasParent(ontoParent)) {
                         found++;
                         System.out.println("La relation " + ontoChild + " (enfant) -> " + ontoParent + " (parent) a bien été trouvée dans les classes d'ontologie.");
                     } else {
@@ -104,7 +104,7 @@ public class Main {
             // For each concept category
             for (String cateChild : latticeCategories) {
                 for (String cateParent : latticeCategoryParents) {
-                    if (dbcategories.get(cateChild).hasParent(cateParent)) {
+                    if (dbcategories.get(cateChild) != null && dbcategories.get(cateChild).hasParent(cateParent)) {
                         found++;
                         System.out.println("La relation " + cateChild + " (enfant) -> " + cateParent + " (parent) a bien été trouvée dans les catégories.");
                     } else {
@@ -131,7 +131,7 @@ public class Main {
             /* Pour chaque classe yago du concept */
             for (String yagoChild : latticeYagoClasses) {
                 for (String yagoParent : latticeYagoClassesParents) {
-                    if (dbyagoclasses.get(yagoChild).hasParent(yagoParent)) {
+                    if (dbyagoclasses.get(yagoChild) != null && dbyagoclasses.get(yagoChild).hasParent(yagoParent)) {
                         found++;
                         System.out.println("La relation " + yagoChild + " (enfant) -> " + yagoParent + " (parent) a bien été trouvée dans les classes yago.");
                     } else {

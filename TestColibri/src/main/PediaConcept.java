@@ -325,4 +325,59 @@ public class PediaConcept {
     public String toString() {
         return "PediaConcept{" + "listeObjets=" + listeObjets + ", listeAttributs=" + listeAttributs + ", categories=" + categories + ", ontologies=" + ontologies + ", yagoClasses=" + yagoClasses + ", parents=" + parents + '}';
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((categories == null) ? 0 : categories.hashCode());
+        result = prime * result + ((listeAttributs == null) ? 0 : listeAttributs.hashCode());
+        result = prime * result + ((listeObjets == null) ? 0 : listeObjets.hashCode());
+        result = prime * result + ((ontologies == null) ? 0 : ontologies.hashCode());
+        result = prime * result + ((parents == null) ? 0 : parents.hashCode());
+        result = prime * result + ((yagoClasses == null) ? 0 : yagoClasses.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        PediaConcept other = (PediaConcept) obj;
+        if (categories == null) {
+            if (other.categories != null)
+                return false;
+        } else if (!categories.equals(other.categories))
+            return false;
+        if (listeAttributs == null) {
+            if (other.listeAttributs != null)
+                return false;
+        } else if (!listeAttributs.equals(other.listeAttributs))
+            return false;
+        if (listeObjets == null) {
+            if (other.listeObjets != null)
+                return false;
+        } else if (!listeObjets.equals(other.listeObjets))
+            return false;
+        if (ontologies == null) {
+            if (other.ontologies != null)
+                return false;
+        } else if (!ontologies.equals(other.ontologies))
+            return false;
+        if (parents == null) {
+            if (other.parents != null)
+                return false;
+        } else if (!parents.equals(other.parents))
+            return false;
+        if (yagoClasses == null) {
+            if (other.yagoClasses != null)
+                return false;
+        } else if (!yagoClasses.equals(other.yagoClasses))
+            return false;
+        return true;
+    }
 }

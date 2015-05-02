@@ -98,7 +98,7 @@ public class PediaLattice {
     public ArrayList<PediaConcept> execIterator() throws IOException, ParseException {
         Iterator<Edge> it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
         ArrayList<PediaConcept> res = new ArrayList<>();
-        HashMap<String, Boolean> resHM = new HashMap<>();
+        HashMap<PediaConcept, Boolean> resHM = new HashMap<>();
         
         System.out.println("BEGIN EXEC ITERATOR");
         while (it.hasNext()) {
@@ -146,22 +146,22 @@ public class PediaLattice {
             /* We must not have the same concept several times so we check 
              * if res doesn't contain pc1 and pc2 yet, before adding them
              */
-            Boolean isIn = resHM.get(pc1.toString());
+            Boolean isIn = resHM.get(pc1);
             if (isIn == null) {
                 // We add it to the array of results
                 res.add(pc1);
-                resHM.put(pc1.toString(), true);
+                resHM.put(pc1, true);
             }
 
             // We check if res contains pc2
-            isIn = resHM.get(pc2.toString());
+            isIn = resHM.get(pc2);
             if (isIn == null) {
                 // pc2 is the child of pc1
                 pc2.addParentPediaConcept(pc1);
 
                 // We add it to the array of results
                 res.add(pc2);
-                resHM.put(pc1.toString(), true);
+                resHM.put(pc2, true);
             } else {
                 /*
                  * Otherwise, pc2 is already contained in the list, so we get it and we add pc1
