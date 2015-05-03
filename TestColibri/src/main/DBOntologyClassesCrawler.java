@@ -93,7 +93,5 @@ public class DBOntologyClassesCrawler {
                     currentOntology.addParent(parent);
             }
         }
-        
-        System.out.println("Nombre total d'ontologies : " + dbontologies.size());
     }
 }

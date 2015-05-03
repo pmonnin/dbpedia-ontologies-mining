@@ -88,7 +88,5 @@ public class DBYagoClassesCrawler {
                     currentYagoClass.addParent(parent);
             }
         }
-        
-        System.out.println("Nombre total de classes yago : " + dbyagoclasses.size());
     }
 }

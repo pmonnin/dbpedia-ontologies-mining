@@ -16,31 +16,39 @@ public class DBCategoriesStatistics {
 	private int categoriesNumber;
 	private int orphansNumber;
 	private int depth;
+	private int directSubsumptions;
+	private int inferredSubsumptions;
 	
 	public DBCategoriesStatistics(HashMap<String, DBCategory> categories) {
 		this.categories = categories;
 		this.categoriesNumber = 0;
 		this.orphansNumber = 0;
 		this.depth = 0;
+		this.directSubsumptions = 0;
+		this.inferredSubsumptions = 0;
 	}
 	
 	public void computeStatistics() {
 		// Categories number
 		this.categoriesNumber = this.categories.size();
 		
-		// Categories without parents
+		// Orphans number and direct subsumptions number
 		Set<String> keys = this.categories.keySet();
 		for(String key : keys) {
-			if(categories.get(key).getParentsNumber() == 0)
+			if(this.categories.get(key).getParentsNumber() == 0)
 				this.orphansNumber++;
+			
+			this.directSubsumptions += this.categories.get(key).getParentsNumber();
 		}
 		
-		// Categories hierarchy depth
+		// Depth
 	}
 	
 	public void displayStatistics() {
 		System.out.println("== DBPedia categories statistics ==");
-		System.out.println("Number: " + this.categoriesNumber);
+		System.out.println("Classes number: " + this.categoriesNumber);
+		System.out.println("Direct subsomptions number: " + this.directSubsumptions);
+		System.out.println("Inferred subsomptions number: " + this.inferredSubsumptions);
 		System.out.println("Orphans: " + this.orphansNumber);
 		System.out.println("Depth: " + this.depth);
 	}
