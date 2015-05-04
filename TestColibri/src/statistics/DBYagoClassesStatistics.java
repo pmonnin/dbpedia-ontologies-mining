@@ -32,16 +32,21 @@ public class DBYagoClassesStatistics {
 		// Yago classes number
 		this.yagoClassesNumber = yagoClasses.size();
 		
-		// Orphans number and direct subsumptions number
+		// Orphans number, depth, direct and inferred subsumptions number
 		Set<String> keys = this.yagoClasses.keySet();
 		for(String key : keys) {
+			// Orphans
 			if(this.yagoClasses.get(key).getParentsNumber() == 0)
 				this.orphansNumber++;
 			
+			// Depth
+			int depthYago = computeDepth(key);
+			if(depthYago > this.depth)
+				this.depth = depthYago;
+			
+			// Direct subsumptions
 			this.directSubsumptions += this.yagoClasses.get(key).getParentsNumber();
 		}
-		
-		// Depth
 	}
 	
 	public void displayStatistics() {
@@ -51,5 +56,25 @@ public class DBYagoClassesStatistics {
 		System.out.println("Inferred subsomptions number: " + this.inferredSubsumptions);
 		System.out.println("Orphans: " + this.orphansNumber);
 		System.out.println("Depth: " + this.depth);
+	}
+	
+	private int computeDepth(String key) {
+		DBYagoClass yClass = this.yagoClasses.get(key);
+		
+		if(yClass == null)
+			return 0;
+	
+		if(yClass.getParentsNumber() == 0)		
+			return 0;
+		
+		int currentDepth = 0;
+		for(String parent : yClass.getParents()) {
+			int parentDepth = computeDepth(parent);
+			
+			if(parentDepth > currentDepth)
+				currentDepth = parentDepth;
+		}
+		
+		return currentDepth + 1;
 	}
 }
