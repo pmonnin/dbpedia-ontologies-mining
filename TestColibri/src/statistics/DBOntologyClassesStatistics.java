@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import dbpediaobjects.DBOntologyClass;
+import dbpediaobjects.DBYagoClass;
 
 /**
  * Class computing statistics over DB Ontology classes hierarchy
@@ -32,16 +33,21 @@ public class DBOntologyClassesStatistics {
 		// Ontologies number
 		this.ontologiesNumber = this.ontologies.size();
 		
-		// Orphans number and direct subsumptions number
+		// Orphans number, depth, direct and inferred subsumptions number
 		Set<String> keys = this.ontologies.keySet();
 		for(String key : keys) {
+			// Orphans
 			if(this.ontologies.get(key).getParentsNumber() == 0)
 				this.orphansNumber++;
-			
+		
+			// Depth
+			int depthOnto = computeDepth(key);
+			if(depthOnto > this.depth)
+				this.depth = depthOnto;
+		
+			// Direct subsumptions
 			this.directSubsumptions += this.ontologies.get(key).getParentsNumber();
 		}
-		
-		// Depth
 	}
 	
 	public void displayStatistics() {
@@ -51,5 +57,25 @@ public class DBOntologyClassesStatistics {
 		System.out.println("Inferred subsomptions number: " + this.inferredSubsumptions);
 		System.out.println("Orphans: " + this.orphansNumber);
 		System.out.println("Depth: " + this.depth);
+	}
+	
+	private int computeDepth(String key) {
+		DBOntologyClass ontoClass = this.ontologies.get(key);
+		
+		if(ontoClass == null)
+			return 0;
+	
+		if(ontoClass.getParentsNumber() == 0)		
+			return 0;
+		
+		int currentDepth = 0;
+		for(String parent : ontoClass.getParents()) {
+			int parentDepth = computeDepth(parent);
+			
+			if(parentDepth > currentDepth)
+				currentDepth = parentDepth;
+		}
+		
+		return currentDepth + 1;
 	}
 }
