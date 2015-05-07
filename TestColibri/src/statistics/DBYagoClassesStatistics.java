@@ -2,7 +2,9 @@ package statistics;
 
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Stack;
 
+import util.Pair;
 import dbpediaobjects.DBYagoClass;
 
 /**
@@ -60,21 +62,24 @@ public class DBYagoClassesStatistics {
 	
 	private int computeDepth(String key) {
 		DBYagoClass yClass = this.yagoClasses.get(key);
-		
-		if(yClass == null)
-			return 0;
-	
-		if(yClass.getParentsNumber() == 0)		
-			return 0;
-		
+		Stack<Pair<DBYagoClass, Integer>> stack = new Stack<Pair<DBYagoClass, Integer>>();
+		stack.push(new Pair<DBYagoClass, Integer>(yClass, 0));
 		int currentDepth = 0;
-		for(String parent : yClass.getParents()) {
-			int parentDepth = computeDepth(parent);
+		
+		while(!stack.isEmpty()) {
+			Pair<DBYagoClass, Integer> p = stack.pop();
 			
-			if(parentDepth > currentDepth)
-				currentDepth = parentDepth;
+			if((p.getValue1() == null || p.getValue1().getParentsNumber() == 0)) { 
+				if(currentDepth < p.getValue2())
+					currentDepth = p.getValue2();
+			}
+			
+			else {
+				for(String parent : p.getValue1().getParents())
+					stack.push(new Pair<DBYagoClass, Integer>(this.yagoClasses.get(parent), p.getValue2() + 1));
+			}
 		}
 		
-		return currentDepth + 1;
+		return currentDepth;
 	}
 }
