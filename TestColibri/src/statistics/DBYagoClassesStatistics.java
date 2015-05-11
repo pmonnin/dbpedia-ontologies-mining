@@ -53,7 +53,6 @@ public class DBYagoClassesStatistics {
 				
 				// Depth
 				int currentDepth = computeDepth(key);
-				System.out.println(currentDepth);
 				if(currentDepth > this.depth)
 					this.depth = currentDepth;
 			}
