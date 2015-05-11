@@ -16,13 +16,13 @@ All useful files
 
 * http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/fr/ : french data
 * http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/en/ : english data (warning: big files)
-* http://wiki.dbpedia.org/Ontology : ontologies (warning: some files are also available on previous links)
+* http://wiki.dbpedia.org/services-resources/ontology : ontologies (warning: some files are also available on previous links)
 * http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/links/ : files used for the Yago hierarchy (see below)
 
 Subset of files to use
 ----------------------
 
-* DBPedia Ontology T-BOX (available on http://wiki.dbpedia.org/Ontology)
+* DBPedia Ontology T-BOX (available on http://wiki.dbpedia.org/services-resources/ontology)
 * On http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/en/ :
   * article_categories_en.ttl
   * category_labels_en.ttl
