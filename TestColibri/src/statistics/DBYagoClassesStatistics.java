@@ -31,20 +31,32 @@ public class DBYagoClassesStatistics {
 	}
 	
 	public void computeStatistics() {
+		// Children relationship computation
+		Set<String> keys = this.yagoClasses.keySet();
+		for(String key : keys) {
+			for(String parent : this.yagoClasses.get(key).getParents()) {
+				DBYagoClass p = this.yagoClasses.get(parent);
+				
+				if(p != null)
+					p.addChild(key);
+			}
+		}
+		
 		// Yago classes number
 		this.yagoClassesNumber = yagoClasses.size();
 		
-		// Orphans number, depth, direct and inferred subsumptions number
-		Set<String> keys = this.yagoClasses.keySet();
+		// Orphans number, depth and direct subsumptions number
 		for(String key : keys) {
-			// Orphans
-			if(this.yagoClasses.get(key).getParentsNumber() == 0)
+			if(this.yagoClasses.get(key).getParentsNumber() == 0) {
+				// Orphans
 				this.orphansNumber++;
-			
-			// Depth
-			int depthYago = computeDepth(key);
-			if(depthYago > this.depth)
-				this.depth = depthYago;
+				
+				// Depth
+				int currentDepth = computeDepth(key);
+				System.out.println(currentDepth);
+				if(currentDepth > this.depth)
+					this.depth = currentDepth;
+			}
 			
 			// Direct subsumptions
 			this.directSubsumptions += this.yagoClasses.get(key).getParentsNumber();
@@ -61,22 +73,29 @@ public class DBYagoClassesStatistics {
 	}
 	
 	private int computeDepth(String key) {
-		DBYagoClass yClass = this.yagoClasses.get(key);
-		Stack<Pair<DBYagoClass, Integer>> stack = new Stack<Pair<DBYagoClass, Integer>>();
-		stack.push(new Pair<DBYagoClass, Integer>(yClass, 0));
 		int currentDepth = 0;
+		Stack<String> stack = new Stack<String>();
+		stack.push(key);
 		
 		while(!stack.isEmpty()) {
-			Pair<DBYagoClass, Integer> p = stack.pop();
+			String yagoClass = stack.pop();
+			DBYagoClass dbYagoClass = this.yagoClasses.get(yagoClass);
 			
-			if((p.getValue1() == null || p.getValue1().getParentsNumber() == 0)) { 
-				if(currentDepth < p.getValue2())
-					currentDepth = p.getValue2();
-			}
-			
-			else {
-				for(String parent : p.getValue1().getParents())
-					stack.push(new Pair<DBYagoClass, Integer>(this.yagoClasses.get(parent), p.getValue2() + 1));
+			if(dbYagoClass != null) {
+				if(dbYagoClass.getChildrenNumber() == 0 && dbYagoClass.getDepth() > currentDepth) {
+					currentDepth = dbYagoClass.getDepth();
+				}
+				
+				else {
+					for(String child : dbYagoClass.getChildren()) {
+						DBYagoClass childClass = this.yagoClasses.get(child);
+						
+						if(childClass != null && childClass.getDepth() <= dbYagoClass.getDepth()) {
+							childClass.setDepth(dbYagoClass.getDepth() + 1);
+							stack.push(child);
+						}
+					}
+				}
 			}
 		}
 		

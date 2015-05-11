@@ -12,6 +12,8 @@ import java.util.ArrayList;
 public class DBYagoClass {
     private String uri = "";
     private ArrayList<String> parents = new ArrayList<String>();
+    private ArrayList<String> children = new ArrayList<String>();
+    private int depth = 0;
 
     public DBYagoClass() {
     }
@@ -51,5 +53,26 @@ public class DBYagoClass {
     @Override
     public String toString() {
         return "DBYagoClass [uri=" + uri + "]";
+    }
+    
+    public void addChild(String child) {
+    	this.children.add(child);
+    }
+    
+    public ArrayList<String> getChildren() {
+    	return this.children;
+    }
+    
+    public int getChildrenNumber() {
+    	return this.children.size();
+    }
+    
+    public void setDepth(int depth) {
+    	if(depth >= 0)
+    		this.depth = depth;
+    }
+    
+    public int getDepth() {
+    	return this.depth;
     }
 }
