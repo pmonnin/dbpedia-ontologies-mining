@@ -93,5 +93,7 @@ public class DBCategoriesCrawler {
                     currentCategory.addParent(parent);
             }
         }
+        
+        childrenAndParents.clear();
     }
 }
