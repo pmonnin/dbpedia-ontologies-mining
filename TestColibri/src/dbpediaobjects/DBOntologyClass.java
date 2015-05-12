@@ -12,7 +12,9 @@ import java.util.ArrayList;
 public class DBOntologyClass {
     private String label = "";
     private String uri = "";
+    private int depth = 0;
     private ArrayList<String> parents = new ArrayList<String>();
+    private ArrayList<String> children = new ArrayList<String>();
 
     public DBOntologyClass(String label, String uri) {
         this.label = label;
@@ -54,4 +56,27 @@ public class DBOntologyClass {
     public int getParentsNumber() {
         return parents.size();
     }
+    
+    public void setDepth(int depth) {
+    	if(depth >= 0) {
+    		this.depth = depth;
+    	}
+    }
+    
+    public int getDepth() {
+    	return this.depth;
+    }
+    
+    public int getChildrenNumber() {
+    	return this.children.size();
+    }
+    
+    public ArrayList<String> getChildren() {
+    	return this.children;
+    }
+    
+    public void addChildren(String child) {
+    	this.children.add(child);
+    }
+    
 }
