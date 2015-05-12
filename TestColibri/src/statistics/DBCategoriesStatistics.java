@@ -33,18 +33,14 @@ public class DBCategoriesStatistics {
 	
 	public void computeStatistics() {
 		// Children relationship creation
-		System.out.println("CHILDREN RELATIONSHIP");
 		Set<String> keys = this.categories.keySet();
-		int i = 0;
 		for(String key : keys) {
-			System.out.println(i + " / " + keys.size());
 			for(String parent : this.categories.get(key).getParents()) {
 				DBCategory parentCat = this.categories.get(parent);
 				
 				if(parentCat != null)
 					parentCat.addChild(key);
 			}
-			i++;
 		}
 		
 		// Categories number
@@ -52,7 +48,7 @@ public class DBCategoriesStatistics {
 		
 		// Orphans number, direct subsumptions number, 
 		System.out.println("ORPHANS, SUBSUMPTIONS AND DEPTH");
-		i = 0;
+		int i = 0;
 		for(String key : keys) {
 			System.out.println(i + " / " + keys.size());
 			
