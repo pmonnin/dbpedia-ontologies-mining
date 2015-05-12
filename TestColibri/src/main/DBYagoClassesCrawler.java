@@ -93,5 +93,7 @@ public class DBYagoClassesCrawler {
                     currentYagoClass.addParent(parent);
             }
         }
+        
+        childrenAndParents.clear();
     }
 }
