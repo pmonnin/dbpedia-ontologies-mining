@@ -58,6 +58,9 @@ public class DBYagoClassesStatistics {
 			
 			// Direct subsumptions
 			this.directSubsumptions += this.yagoClasses.get(key).getParentsNumber();
+			
+			// Inferred subsumptions
+			this.inferredSubsumptions += computeInferredSubsumptions(key);
 		}
 	}
 	
@@ -98,5 +101,28 @@ public class DBYagoClassesStatistics {
 		}
 		
 		return currentDepth;
+	}
+	
+	private int computeInferredSubsumptions(String key) {
+		int inferredSubsumptions = 0;
+		Stack<String> stack = new Stack<String>();
+		
+		for(String parent : this.yagoClasses.get(key).getParents()) {
+			stack.push(parent);
+		}
+		
+		while(!stack.isEmpty()) {
+			DBYagoClass yagoClass = this.yagoClasses.get(stack.pop());
+			
+			if(yagoClass != null) {
+				inferredSubsumptions += yagoClass.getParentsNumber();
+				
+				for(String parent : yagoClass.getParents()) {
+					stack.push(parent);
+				}
+			}
+		}
+		
+		return inferredSubsumptions;
 	}
 }
