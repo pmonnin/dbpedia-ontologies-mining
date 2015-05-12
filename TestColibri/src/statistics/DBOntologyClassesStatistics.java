@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.Stack;
 
-import dbpediaobjects.DBCategory;
 import dbpediaobjects.DBOntologyClass;
-import dbpediaobjects.DBYagoClass;
 
 /**
  * Class computing statistics over DB Ontology classes hierarchy

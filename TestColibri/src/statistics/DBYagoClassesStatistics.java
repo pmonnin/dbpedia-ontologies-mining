@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.Stack;
 
-import util.Pair;
 import dbpediaobjects.DBYagoClass;
 
 /**

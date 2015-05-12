@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.Stack;
 
-import util.Pair;
 import dbpediaobjects.DBCategory;
-import dbpediaobjects.DBYagoClass;
 
 /**
  * Class computing statistics over the DB Categories hierarchy
