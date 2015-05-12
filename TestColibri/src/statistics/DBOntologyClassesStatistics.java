@@ -58,6 +58,9 @@ public class DBOntologyClassesStatistics {
 		
 			// Direct subsumptions
 			this.directSubsumptions += this.ontologies.get(key).getParentsNumber();
+			
+			// Inferred subsumptions
+			this.inferredSubsumptions += computeInferredSubsumptions(key);
 		}
 	}
 	
@@ -98,5 +101,28 @@ public class DBOntologyClassesStatistics {
 		}
 		
 		return currentDepth;
+	}
+	
+	private int computeInferredSubsumptions(String key) {
+		int inferredSubsumptions = 0;
+		Stack<String> stack = new Stack<String>();
+		
+		for(String parent : this.ontologies.get(key).getParents()) {
+			stack.push(parent);
+		}
+		
+		while(!stack.isEmpty()) {
+			DBOntologyClass onto = this.ontologies.get(stack.pop());
+			
+			if(onto != null) {
+				inferredSubsumptions += onto.getParentsNumber();
+				
+				for(String child : onto.getChildren()) {
+					stack.push(child);
+				}
+			}
+		}
+		
+		return inferredSubsumptions;
 	}
 }

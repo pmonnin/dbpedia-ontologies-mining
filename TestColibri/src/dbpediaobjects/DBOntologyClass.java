@@ -78,5 +78,4 @@ public class DBOntologyClass {
     public void addChildren(String child) {
     	this.children.add(child);
     }
-    
 }
