@@ -45,11 +45,7 @@ public class DBCategoriesStatistics {
 		this.categoriesNumber = this.categories.size();
 		
 		// Orphans number, direct subsumptions number, 
-		System.out.println("ORPHANS, SUBSUMPTIONS AND DEPTH");
-		int i = 0;
-		for(String key : keys) {
-			System.out.println(i + " / " + keys.size());
-			
+		for(String key : keys) {			
 			// Orphans
 			if(this.categories.get(key).getParentsNumber() == 0) {
 				this.orphansNumber++;
@@ -63,7 +59,8 @@ public class DBCategoriesStatistics {
 			// Direct subsumptions
 			this.directSubsumptions += this.categories.get(key).getParentsNumber();
 			
-			i++;
+			// Inferred subsumptions
+			this.inferredSubsumptions += computeInferredSubsumptions(key);
 		}
 	}
 	
@@ -104,5 +101,28 @@ public class DBCategoriesStatistics {
 		}
 		
 		return currentDepth;
+	}
+	
+	private int computeInferredSubsumptions(String key) {
+		int inferredSubsumptions = 0;
+		Stack<String> stack = new Stack<String>();
+		
+		for(String parent : this.categories.get(key).getParents()) {
+			stack.push(parent);
+		}
+		
+		while(!stack.isEmpty()) {
+			DBCategory cat = this.categories.get(stack.pop());
+			
+			if(cat != null) {
+				inferredSubsumptions += cat.getParentsNumber();
+				
+				for(String child : cat.getChildren()) {
+					stack.push(child);
+				}
+			}
+		}
+		
+		return inferredSubsumptions;
 	}
 }
