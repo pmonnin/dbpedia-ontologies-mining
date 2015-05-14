@@ -67,8 +67,8 @@ public class DBOntologyClassesStatistics {
 	public void displayStatistics() {
 		System.out.println("== DB Pedia Ontology classes statistics ==");
 		System.out.println("Classes number: " + this.ontologiesNumber);
-		System.out.println("Direct subsomptions number: " + this.directSubsumptions);
-		System.out.println("Inferred subsomptions number: " + this.inferredSubsumptions);
+		System.out.println("Direct subsumptions number: " + this.directSubsumptions);
+		System.out.println("Inferred subsumptions number: " + this.inferredSubsumptions);
 		System.out.println("Orphans: " + this.orphansNumber);
 		System.out.println("Depth: " + this.depth);
 	}
