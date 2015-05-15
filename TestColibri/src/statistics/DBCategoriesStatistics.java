@@ -70,12 +70,14 @@ public class DBCategoriesStatistics {
 		for(String key : arrayKeys) {
 			// Depth
 			if(orphans.contains(key)) {
+				System.out.println("Computing depth for orphans: " + key);
 				int computedDepth = computeDepth(key);
 				if(computedDepth > this.depth)
 					this.depth = computedDepth;
 			}
 			
 			// Inferred subsumptions
+			System.out.println("Computing inferred subsumptions for category: " + key);
 			this.inferredSubsumptions += computeInferredSubsumptions(key);
 		}
 	}
@@ -96,6 +98,7 @@ public class DBCategoriesStatistics {
 		
 		try {
 			while(!stack.isEmpty()) {
+				System.out.println("Computing depth for orphans: " + key + " Stack size: " + stack.size());
 				Pair<String, Integer> pair = stack.pop();
 				
 				List<ChildAndParent> children = JSONReader.getChildrenAndParents(URLEncoder.encode(
@@ -125,7 +128,8 @@ public class DBCategoriesStatistics {
 			e.printStackTrace();
 		}
 		
-		return 0;
+		stack.clear();
+		return computedDepth;
 	}
 	
 	private int computeInferredSubsumptions(String key) {
@@ -159,6 +163,7 @@ public class DBCategoriesStatistics {
 		}
 		
 		while(!stack.isEmpty()) {
+			System.out.println("Computing inferred subsumptions for category: " + key + " Stack size: " + stack.size());
 			String child = stack.pop();
 			
 			try {
@@ -189,6 +194,8 @@ public class DBCategoriesStatistics {
 			}
 		}
 		
+		stack.clear();
+		alreadySeen.clear();
 		return computedInferredSubsumptions;
 	}
 }
