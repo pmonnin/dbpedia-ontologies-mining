@@ -129,6 +129,66 @@ public class DBCategoriesStatistics {
 	}
 	
 	private int computeInferredSubsumptions(String key) {
-		return 0;
+		int computedInferredSubsumptions = 0;
+		Stack<String> stack = new Stack<String>();
+		HashMap<String, Boolean> alreadySeen = new HashMap<String, Boolean>();
+		
+		List<ChildAndParent> parents = null;
+		try {
+			parents = JSONReader.getChildrenAndParents(URLEncoder.encode(
+                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+                + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
+                + "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
+                + "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> "
+                + "select distinct ?parent where "
+                + "{"
+                + "?parent rdf:type skos:Concept . "
+                + "?child skos:broader ?parent . "
+                + "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/resource/Category\", \"i\")) . "
+                + "FILTER (REGEX(STR(?child), \"" + key + "\", \"i\")) ."
+                + "}", "UTF-8"));
+		}
+		catch(UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return -1;
+		}
+		
+		for(ChildAndParent parent : parents) {
+			stack.push(parent.getParent().getValue());
+			alreadySeen.put(parent.getParent().getValue(), true);
+		}
+		
+		while(!stack.isEmpty()) {
+			String child = stack.pop();
+			
+			try {
+				parents = JSONReader.getChildrenAndParents(URLEncoder.encode(
+	                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+	                + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
+	                + "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
+	                + "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> "
+	                + "select distinct ?parent where "
+	                + "{"
+	                + "?parent rdf:type skos:Concept . "
+	                + "?child skos:broader ?parent . "
+	                + "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/resource/Category\", \"i\")) . "
+	                + "FILTER (REGEX(STR(?child), \"" + child + "\", \"i\")) ."
+	                + "}", "UTF-8"));
+			}
+			catch(UnsupportedEncodingException e) {
+				e.printStackTrace();
+				return -1;
+			}
+			
+			for(ChildAndParent parent : parents) {
+				if(alreadySeen.get(parent.getParent().getValue()) == null) {
+					computedInferredSubsumptions++;
+					alreadySeen.put(parent.getParent().getValue(), true);
+					stack.push(parent.getParent().getValue());
+				}
+			}
+		}
+		
+		return computedInferredSubsumptions;
 	}
 }
