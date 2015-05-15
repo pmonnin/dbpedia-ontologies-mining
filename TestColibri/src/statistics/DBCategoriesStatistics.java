@@ -1,9 +1,16 @@
 package statistics;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
+import serverlink.ChildAndParent;
+import serverlink.JSONReader;
+import util.Pair;
 import dbpediaobjects.DBCategory;
 
 /**
@@ -44,20 +51,29 @@ public class DBCategoriesStatistics {
 		// Categories number
 		this.categoriesNumber = this.categories.size();
 		
-		// Orphans number, direct subsumptions number, 
+		// Orphans number, direct subsumptions number,
+		ArrayList<String> orphans = new ArrayList<>(); 
 		for(String key : keys) {			
 			// Orphans
 			if(this.categories.get(key).getParentsNumber() == 0) {
 				this.orphansNumber++;
-				
-				// If it's an orphan we can compute depth from it
-				int computedDepth = computeDepth(key);
-				if(computedDepth > this.depth)
-					this.depth = computedDepth;
+				orphans.add(key);
 			}
 			
 			// Direct subsumptions
 			this.directSubsumptions += this.categories.get(key).getParentsNumber();
+		}
+		
+		// Depth & inferred subsumptions number
+		ArrayList<String> arrayKeys = new ArrayList<String>(keys);
+		this.categories.clear();
+		for(String key : arrayKeys) {
+			// Depth
+			if(orphans.contains(key)) {
+				int computedDepth = computeDepth(key);
+				if(computedDepth > this.depth)
+					this.depth = computedDepth;
+			}
 			
 			// Inferred subsumptions
 			this.inferredSubsumptions += computeInferredSubsumptions(key);
@@ -74,55 +90,45 @@ public class DBCategoriesStatistics {
 	}
 	
 	private int computeDepth(String key) {
-		int currentDepth = 0;
-		Stack<String> stack = new Stack<String>();
-		stack.push(key);
+		int computedDepth = 0;
+		Stack<Pair<String, Integer>> stack = new Stack<>();
+		stack.push(new Pair<String, Integer>(key, 0));
 		
-		while(!stack.isEmpty()) {
-			String category = stack.pop();
-			DBCategory dbCategory = this.categories.get(category);
-			
-			if(dbCategory != null) {
-				if(dbCategory.getChildrenNumber() == 0 && dbCategory.getDepth() > currentDepth) {
-					currentDepth = dbCategory.getDepth();
-				}
+		try {
+			while(!stack.isEmpty()) {
+				Pair<String, Integer> pair = stack.pop();
+				
+				List<ChildAndParent> children = JSONReader.getChildrenAndParents(URLEncoder.encode(
+		                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+		                + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
+		                + "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
+		                + "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> "
+		                + "select distinct ?child where "
+		                + "{"
+		                + "?child rdf:type skos:Concept . "
+		                + "?child skos:broader ?parent . "
+		                + "FILTER (REGEX(STR(?child), \"http://dbpedia.org/resource/Category\", \"i\")) . "
+		                + "FILTER (REGEX(STR(?parent), \"" + pair.getValue1() + "\", \"i\")) ."
+		                + "}", "UTF-8"));
+				
+				if(children.size() == 0 && pair.getValue2() > computedDepth)
+					computedDepth = pair.getValue2();
 				
 				else {
-					for(String child : dbCategory.getChildren()) {
-						DBCategory childCat = this.categories.get(child);
-						
-						if(childCat != null && childCat.getDepth() <= dbCategory.getDepth()) {
-							childCat.setDepth(dbCategory.getDepth() + 1);
-							stack.push(child);
-						}
-					}
+					for(ChildAndParent child : children) 
+						stack.push(new Pair<String, Integer>(child.getChild().getValue(), pair.getValue2() + 1));
 				}
 			}
 		}
 		
-		return currentDepth;
+		catch(UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		return 0;
 	}
 	
 	private int computeInferredSubsumptions(String key) {
-		int inferredSubsumptions = 0;
-		Stack<String> stack = new Stack<String>();
-		
-		for(String parent : this.categories.get(key).getParents()) {
-			stack.push(parent);
-		}
-		
-		while(!stack.isEmpty()) {
-			DBCategory cat = this.categories.get(stack.pop());
-			
-			if(cat != null) {
-				inferredSubsumptions += cat.getParentsNumber();
-				
-				for(String child : cat.getChildren()) {
-					stack.push(child);
-				}
-			}
-		}
-		
-		return inferredSubsumptions;
+		return 0;
 	}
 }

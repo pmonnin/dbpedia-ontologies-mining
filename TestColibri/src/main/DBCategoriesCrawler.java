@@ -48,7 +48,7 @@ public class DBCategoriesCrawler {
     public HashMap<String, DBCategory> getDbcategories() {
         return dbcategories;
     }
-
+    
     /**
      * Method computing the DBPedia categories hierarchy
      * @throws UnsupportedEncodingException
