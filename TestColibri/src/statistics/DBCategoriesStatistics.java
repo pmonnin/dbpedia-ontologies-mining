@@ -1,6 +1,7 @@
 package statistics;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +51,7 @@ public class DBCategoriesStatistics {
 		
 		// Categories number
 		this.categoriesNumber = this.categories.size();
-		
+		System.out.println(this.categoriesNumber);
 		// Orphans number, direct subsumptions number,
 		ArrayList<String> orphans = new ArrayList<>(); 
 		for(String key : keys) {			
@@ -67,18 +68,19 @@ public class DBCategoriesStatistics {
 		// Depth & inferred subsumptions number
 		ArrayList<String> arrayKeys = new ArrayList<String>(keys);
 		this.categories.clear();
+		System.out.println(this.orphansNumber);
 		for(String key : arrayKeys) {
 			// Depth
 			if(orphans.contains(key)) {
 				System.out.println("Computing depth for orphans: " + key);
-				int computedDepth = computeDepth(key);
+				int computedDepth = computeDepth2(key);
 				if(computedDepth > this.depth)
 					this.depth = computedDepth;
 			}
 			
 			// Inferred subsumptions
-			System.out.println("Computing inferred subsumptions for category: " + key);
-			this.inferredSubsumptions += computeInferredSubsumptions(key);
+//			System.out.println("Computing inferred subsumptions for category: " + key);
+//			this.inferredSubsumptions += computeInferredSubsumptions(key);
 		}
 	}
 	
@@ -130,6 +132,47 @@ public class DBCategoriesStatistics {
 		
 		stack.clear();
 		return computedDepth;
+	}
+	
+	private int computeDepth2(String key) {
+		int currentDepth = 0;
+		int currentChildrenNumber = -1;
+		
+		try {
+			while(currentChildrenNumber != 0) {
+				String query = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+						+ "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
+						+ "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
+						+ "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> "
+						+ "select count(distinct ?child) as ?label where { "
+						+ "?child rdf:type skos:Concept . "
+						+ "?child skos:broader";
+				
+				for(int i = 1 ; i <= currentDepth ; i++) {
+					query += "/skos:broader";
+				}
+				
+				query += " ?parent . "
+						+ "FILTER (REGEX(STR(?child), \"http://dbpedia.org/resource/Category.*\", \"i\")) . "
+						+ "FILTER (REGEX(STR(?parent), \"" + URLDecoder.decode(key, "UTF-8") + "\", \"i\")) . }";
+
+				List<ChildAndParent> childrenNumber = JSONReader.getChildrenAndParents(URLEncoder.encode(query, "UTF-8"));
+				currentChildrenNumber = Integer.parseInt(childrenNumber.get(0).getLabel().getValue());
+				System.out.println(childrenNumber.get(0).getLabel().getValue());
+				System.out.println(currentChildrenNumber);
+				if(currentChildrenNumber != 0) {
+					currentDepth++;
+					System.out.println("Computing depth for: " + key + " Current Depth = " + currentDepth);
+				}
+			}
+		}
+		
+		catch(UnsupportedEncodingException e) {
+			e.printStackTrace();
+			currentDepth = -1;
+		}
+		
+		return currentDepth;
 	}
 	
 	private int computeInferredSubsumptions(String key) {
