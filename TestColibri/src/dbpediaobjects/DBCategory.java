@@ -14,7 +14,7 @@ public class DBCategory {
 	private String uri = "";
 	private ArrayList<String> parents = new ArrayList<String>();
 	private ArrayList<String> children = new ArrayList<String>();
-	private int depth = 0;
+	private int depth = -1;
 	
 	public DBCategory(String name, String uri) {
         super();
@@ -22,7 +22,7 @@ public class DBCategory {
         this.uri = uri;
         this.parents = new ArrayList<String>();
         this.children = new ArrayList<String>();
-        this.depth = 0;
+        this.depth = -1;
     }
 	
 	public String getName() {

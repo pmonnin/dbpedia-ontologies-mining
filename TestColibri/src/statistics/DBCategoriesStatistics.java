@@ -1,17 +1,8 @@
 package statistics;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
-import java.util.Stack;
-
-import serverlink.ChildAndParent;
-import serverlink.JSONReader;
-import util.Pair;
 import dbpediaobjects.DBCategory;
 
 /**
@@ -51,7 +42,7 @@ public class DBCategoriesStatistics {
 		
 		// Categories number
 		this.categoriesNumber = this.categories.size();
-		System.out.println(this.categoriesNumber);
+		
 		// Orphans number, direct subsumptions number,
 		ArrayList<String> orphans = new ArrayList<>(); 
 		for(String key : keys) {			
@@ -65,23 +56,8 @@ public class DBCategoriesStatistics {
 			this.directSubsumptions += this.categories.get(key).getParentsNumber();
 		}
 		
-		// Depth & inferred subsumptions number
-		ArrayList<String> arrayKeys = new ArrayList<String>(keys);
-		this.categories.clear();
-		System.out.println(this.orphansNumber);
-		for(String key : arrayKeys) {
-			// Depth
-			if(orphans.contains(key)) {
-				System.out.println("Computing depth for orphans: " + key);
-				int computedDepth = computeDepth2(key);
-				if(computedDepth > this.depth)
-					this.depth = computedDepth;
-			}
-			
-			// Inferred subsumptions
-//			System.out.println("Computing inferred subsumptions for category: " + key);
-//			this.inferredSubsumptions += computeInferredSubsumptions(key);
-		}
+		// Compute depth
+		computeDepth();
 	}
 	
 	public void displayStatistics() {
@@ -93,152 +69,52 @@ public class DBCategoriesStatistics {
 		System.out.println("Depth: " + this.depth);
 	}
 	
-	private int computeDepth(String key) {
-		int computedDepth = 0;
-		Stack<Pair<String, Integer>> stack = new Stack<>();
-		stack.push(new Pair<String, Integer>(key, 0));
+	private void computeDepth() {
+		Set<String> keys = this.categories.keySet();
+		boolean done = false;
 		
-		try {
-			while(!stack.isEmpty()) {
-				System.out.println("Computing depth for orphans: " + key + " Stack size: " + stack.size());
-				Pair<String, Integer> pair = stack.pop();
+		// Algorithm initialization
+		for(String key : keys) {
+			if(this.categories.get(key).getParentsNumber() == 0) {
+				this.categories.get(key).setDepth(0);
+			}
+		}
+		
+		// Algorithm computation
+		while(!done) {
+			done = true;
+			
+			for(String key : keys) {
+				DBCategory cat = this.categories.get(key);
 				
-				List<ChildAndParent> children = JSONReader.getChildrenAndParents(URLEncoder.encode(
-		                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-		                + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
-		                + "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
-		                + "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> "
-		                + "select distinct ?child where "
-		                + "{"
-		                + "?child rdf:type skos:Concept . "
-		                + "?child skos:broader ?parent . "
-		                + "FILTER (REGEX(STR(?child), \"http://dbpedia.org/resource/Category\", \"i\")) . "
-		                + "FILTER (REGEX(STR(?parent), \"" + pair.getValue1() + "\", \"i\")) ."
-		                + "}", "UTF-8"));
-				
-				if(children.size() == 0 && pair.getValue2() > computedDepth)
-					computedDepth = pair.getValue2();
-				
-				else {
-					for(ChildAndParent child : children) 
-						stack.push(new Pair<String, Integer>(child.getChild().getValue(), pair.getValue2() + 1));
+				for(String parent : cat.getParents()) {
+					DBCategory parentCat = this.categories.get(parent);
+							
+					if(parentCat != null) {
+						if(parentCat.getDepth() + 1 > cat.getDepth()) {
+							cat.setDepth(parentCat.getDepth() + 1);
+							done = false;
+							
+//							if(parentCat.getDepth() + 1 > this.depth) {
+//								this.depth = parentCat.getDepth() + 1;
+//								System.out.println("Current depth = " + this.depth);
+//							}
+						}
+					}
 				}
 			}
 		}
 		
-		catch(UnsupportedEncodingException e) {
-			e.printStackTrace();
+		// Getting depth
+		this.depth = 0;
+		for(String key : keys) {
+			if(this.categories.get(key).getDepth() > this.depth)
+				this.depth = this.categories.get(key).getDepth();
 		}
 		
-		stack.clear();
-		return computedDepth;
-	}
-	
-	private int computeDepth2(String key) {
-		int currentDepth = 0;
-		int currentChildrenNumber = -1;
-		
-		try {
-			while(currentChildrenNumber != 0) {
-				String query = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-						+ "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
-						+ "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
-						+ "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> "
-						+ "select count(distinct ?child) as ?label where { "
-						+ "?child rdf:type skos:Concept . "
-						+ "?child skos:broader";
-				
-				for(int i = 1 ; i <= currentDepth ; i++) {
-					query += "/skos:broader";
-				}
-				
-				query += " ?parent . "
-						+ "FILTER (REGEX(STR(?child), \"http://dbpedia.org/resource/Category.*\", \"i\")) . "
-						+ "FILTER (REGEX(STR(?parent), \"" + URLDecoder.decode(key, "UTF-8") + "\", \"i\")) . }";
-
-				List<ChildAndParent> childrenNumber = JSONReader.getChildrenAndParents(URLEncoder.encode(query, "UTF-8"));
-				currentChildrenNumber = Integer.parseInt(childrenNumber.get(0).getLabel().getValue());
-				System.out.println(childrenNumber.get(0).getLabel().getValue());
-				System.out.println(currentChildrenNumber);
-				if(currentChildrenNumber != 0) {
-					currentDepth++;
-					System.out.println("Computing depth for: " + key + " Current Depth = " + currentDepth);
-				}
-			}
-		}
-		
-		catch(UnsupportedEncodingException e) {
-			e.printStackTrace();
-			currentDepth = -1;
-		}
-		
-		return currentDepth;
 	}
 	
 	private int computeInferredSubsumptions(String key) {
-		int computedInferredSubsumptions = 0;
-		Stack<String> stack = new Stack<String>();
-		HashMap<String, Boolean> alreadySeen = new HashMap<String, Boolean>();
-		
-		List<ChildAndParent> parents = null;
-		try {
-			parents = JSONReader.getChildrenAndParents(URLEncoder.encode(
-                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-                + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
-                + "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
-                + "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> "
-                + "select distinct ?parent where "
-                + "{"
-                + "?parent rdf:type skos:Concept . "
-                + "?child skos:broader ?parent . "
-                + "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/resource/Category\", \"i\")) . "
-                + "FILTER (REGEX(STR(?child), \"" + key + "\", \"i\")) ."
-                + "}", "UTF-8"));
-		}
-		catch(UnsupportedEncodingException e) {
-			e.printStackTrace();
-			return -1;
-		}
-		
-		for(ChildAndParent parent : parents) {
-			stack.push(parent.getParent().getValue());
-			alreadySeen.put(parent.getParent().getValue(), true);
-		}
-		
-		while(!stack.isEmpty()) {
-			System.out.println("Computing inferred subsumptions for category: " + key + " Stack size: " + stack.size());
-			String child = stack.pop();
-			
-			try {
-				parents = JSONReader.getChildrenAndParents(URLEncoder.encode(
-	                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-	                + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
-	                + "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
-	                + "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> "
-	                + "select distinct ?parent where "
-	                + "{"
-	                + "?parent rdf:type skos:Concept . "
-	                + "?child skos:broader ?parent . "
-	                + "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/resource/Category\", \"i\")) . "
-	                + "FILTER (REGEX(STR(?child), \"" + child + "\", \"i\")) ."
-	                + "}", "UTF-8"));
-			}
-			catch(UnsupportedEncodingException e) {
-				e.printStackTrace();
-				return -1;
-			}
-			
-			for(ChildAndParent parent : parents) {
-				if(alreadySeen.get(parent.getParent().getValue()) == null) {
-					computedInferredSubsumptions++;
-					alreadySeen.put(parent.getParent().getValue(), true);
-					stack.push(parent.getParent().getValue());
-				}
-			}
-		}
-		
-		stack.clear();
-		alreadySeen.clear();
-		return computedInferredSubsumptions;
+		return 0;
 	}
 }
