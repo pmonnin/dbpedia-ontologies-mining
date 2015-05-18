@@ -2,6 +2,7 @@ package statistics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Set;
 
 import dbpediaobjects.DBCategory;
@@ -30,23 +31,21 @@ public class DBCategoriesStatistics {
 	}
 	
 	public void computeStatistics() {
-		// Children relationship creation
+		// Categories number
+		this.categoriesNumber = this.categories.size();
+		
+		// Orphans number, direct subsumptions number,
 		Set<String> keys = this.categories.keySet();
+		ArrayList<String> orphans = new ArrayList<>(); 
 		for(String key : keys) {
+			// Children relationship creation
 			for(String parent : this.categories.get(key).getParents()) {
 				DBCategory parentCat = this.categories.get(parent);
 				
 				if(parentCat != null)
 					parentCat.addChild(key);
 			}
-		}
-		
-		// Categories number
-		this.categoriesNumber = this.categories.size();
-		
-		// Orphans number, direct subsumptions number,
-		ArrayList<String> orphans = new ArrayList<>(); 
-		for(String key : keys) {			
+			
 			// Orphans
 			if(this.categories.get(key).getParentsNumber() == 0) {
 				this.orphansNumber++;
@@ -55,29 +54,18 @@ public class DBCategoriesStatistics {
 			
 			// Direct subsumptions
 			this.directSubsumptions += this.categories.get(key).getParentsNumber();
+			
+			// Depth preparation
+			this.categories.get(key).setDepth(-1);
 		}
 		
 		// Compute depth
 		System.out.println("Computing depth");
-		Thread t1 = new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				computeDepth();
-			}
-		});
-		t1.start();
+		computeDepth(orphans);
 		
 		// Compute inferred subsumptions
-		System.out.println("Computing inferred subsumptions");
-		Thread t = new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				computeInferredSubsumptions();
-			}
-		});
-		t.start();
+//		System.out.println("Computing inferred subsumptions");
+//		computeInferredSubsumptions();
 	}
 	
 	public void displayStatistics() {
@@ -89,53 +77,37 @@ public class DBCategoriesStatistics {
 		System.out.println("Depth: " + this.depth);
 	}
 	
-	private void computeDepth() {
-		Set<String> keys = this.categories.keySet();
-		boolean done = false;
+	private void computeDepth(ArrayList<String> orphans) {
+		LinkedList<String> stack = new LinkedList<String>();
 		
-		// Algorithm initialization
-		for(String key : keys) {
-			if(this.categories.get(key).getParentsNumber() == 0) {
-				this.categories.get(key).setDepth(0);
-			}
-		}
-		
-		// Algorithm computation
-		int i = 0;
-		while(!done) {
-			done = true;
+		for(String key : orphans) {
+			stack.add(key);
+			this.categories.get(key).setDepth(0);
 			
-			for(String key : keys) {
-				DBCategory cat = this.categories.get(key);
+			int i = 0;
+			while(!stack.isEmpty()) {
+				String cat = stack.pollFirst();
+				DBCategory dbCategory = this.categories.get(cat);
 				
-				for(String parent : cat.getParents()) {
-					DBCategory parentCat = this.categories.get(parent);
+				if(dbCategory != null) {
+					for(String child : dbCategory.getChildren()) {
+						DBCategory dbChild = this.categories.get(child);
+						
+						if(dbChild != null && dbChild.getDepth() < dbCategory.getDepth() + 1) {
+							dbChild.setDepth(dbCategory.getDepth() + 1);
+							stack.add(child);
 							
-					if(parentCat != null) {
-						if(parentCat.getDepth() + 1 > cat.getDepth()) {
-							cat.setDepth(parentCat.getDepth() + 1);
-							done = false;
-							
-							if(cat.getDepth() > this.depth)
-								this.depth = cat.getDepth();
+							if(dbChild.getDepth() > this.depth)
+								this.depth = dbChild.getDepth();
 						}
 					}
 				}
+				
+				i++;
+				if(i % 500 == 0)
+					System.out.println("i: " + i + " depth: " + this.depth);
 			}
-			
-			i++;
-			
-			if(i % 50 == 0)
-				System.out.println("i: " + i + " depth: " + this.depth);
 		}
-		
-		// Getting depth
-		this.depth = 0;
-		for(String key : keys) {
-			if(this.categories.get(key).getDepth() > this.depth)
-				this.depth = this.categories.get(key).getDepth();
-		}
-		
 	}
 	
 	private void computeInferredSubsumptions() {
