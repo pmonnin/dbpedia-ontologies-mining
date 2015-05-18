@@ -3,6 +3,7 @@ package statistics;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+
 import dbpediaobjects.DBCategory;
 
 /**
@@ -57,7 +58,26 @@ public class DBCategoriesStatistics {
 		}
 		
 		// Compute depth
-		computeDepth();
+		System.out.println("Computing depth");
+		Thread t1 = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				computeDepth();
+			}
+		});
+		t1.start();
+		
+		// Compute inferred subsumptions
+		System.out.println("Computing inferred subsumptions");
+		Thread t = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				computeInferredSubsumptions();
+			}
+		});
+		t.start();
 	}
 	
 	public void displayStatistics() {
@@ -81,6 +101,7 @@ public class DBCategoriesStatistics {
 		}
 		
 		// Algorithm computation
+		int i = 0;
 		while(!done) {
 			done = true;
 			
@@ -95,14 +116,17 @@ public class DBCategoriesStatistics {
 							cat.setDepth(parentCat.getDepth() + 1);
 							done = false;
 							
-//							if(parentCat.getDepth() + 1 > this.depth) {
-//								this.depth = parentCat.getDepth() + 1;
-//								System.out.println("Current depth = " + this.depth);
-//							}
+							if(cat.getDepth() > this.depth)
+								this.depth = cat.getDepth();
 						}
 					}
 				}
 			}
+			
+			i++;
+			
+			if(i % 50 == 0)
+				System.out.println("i: " + i + " depth: " + this.depth);
 		}
 		
 		// Getting depth
@@ -114,7 +138,47 @@ public class DBCategoriesStatistics {
 		
 	}
 	
-	private int computeInferredSubsumptions(String key) {
-		return 0;
+	private void computeInferredSubsumptions() {
+		Set<String> keys = this.categories.keySet();
+		
+		// Algorithm for each category
+		int i = 0;
+		for(String cat : keys) {
+			System.out.println("Inferred subsumptions : " + i + " / " + keys.size());
+			
+			// Algorithm initialization
+			for(String key : keys) {
+				this.categories.get(key).setInferredSubsumptionsToken(false);
+			}
+			
+			boolean done = false;
+			// We put the token to true on every reachable category 
+			while(!done) {
+				done = true;
+				
+				for(String key : keys) {
+					if(this.categories.get(key).getInferredSubsumptions()) {
+						for(String parent : this.categories.get(key).getParents()) {
+							DBCategory parentCat = this.categories.get(parent);
+							
+							if(parentCat != null) {
+								if(!parentCat.getInferredSubsumptions()) {
+									parentCat.setInferredSubsumptionsToken(true);
+									done = false;
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			// Algorithm disarming
+			for(String key : keys) {
+				if(this.categories.get(key).getInferredSubsumptions())
+					this.inferredSubsumptions++;
+			}
+			this.inferredSubsumptions -= this.categories.get(cat).getParentsNumber();
+			i++;
+		}
 	}
 }

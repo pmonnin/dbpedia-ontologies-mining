@@ -15,6 +15,7 @@ public class DBCategory {
 	private ArrayList<String> parents = new ArrayList<String>();
 	private ArrayList<String> children = new ArrayList<String>();
 	private int depth = -1;
+	private boolean inferredSubsumptionsToken = false;
 	
 	public DBCategory(String name, String uri) {
         super();
@@ -23,14 +24,15 @@ public class DBCategory {
         this.parents = new ArrayList<String>();
         this.children = new ArrayList<String>();
         this.depth = -1;
+        this.inferredSubsumptionsToken = false;
     }
 	
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void addParent(String parent) {
-		parents.add(parent);
+		this.parents.add(parent);
 	}
 	
 	public void setParents(ArrayList<String> parents) {
@@ -42,7 +44,7 @@ public class DBCategory {
 	}
 	
 	public String getUri() {
-		return uri;
+		return this.uri;
 	}
 	
 	public void setUri(String uri) {
@@ -50,7 +52,7 @@ public class DBCategory {
 	}
 	
 	public int getParentsNumber() {
-		return parents.size();
+		return this.parents.size();
 	}
 	
 	public ArrayList<String> getParents() {
@@ -59,11 +61,11 @@ public class DBCategory {
 	
 	@Override
     public String toString() {
-        return "DBCategory [name=" + name + ", uri=" + uri + ", parents=" + parents + "]";
+        return "DBCategory [name=" + this.name + ", uri=" + this.uri + ", parents=" + this.parents + "]";
     }
 
     public boolean hasParent(String parent) {
-        return parents.contains(parent);
+        return this.parents.contains(parent);
     }
     
     public void addChild(String uri) {
@@ -85,5 +87,13 @@ public class DBCategory {
     
     public int getDepth() {
     	return this.depth;
+    }
+    
+    public void setInferredSubsumptionsToken(boolean inferredSubsumptionsToken) {
+		this.inferredSubsumptionsToken = inferredSubsumptionsToken;
+    }
+    
+    public boolean getInferredSubsumptions() {
+    	return this.inferredSubsumptionsToken;
     }
 }
