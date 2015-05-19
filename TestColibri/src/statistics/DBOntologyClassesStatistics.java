@@ -1,6 +1,7 @@
 package statistics;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.Stack;
 
@@ -75,11 +76,18 @@ public class DBOntologyClassesStatistics {
 	
 	private int computeDepth(String key) {
 		int currentDepth = 0;
-		Stack<String> stack = new Stack<String>();
+		LinkedList<String> stack = new LinkedList<String>();
+		
+		// Algorithm initialization
+		for(String onto : this.ontologies.keySet()) {
+			this.ontologies.get(onto).setDepth(-1);
+		}
+		this.ontologies.get(key).setDepth(0);
 		stack.push(key);
 		
+		// Algorithm computation
 		while(!stack.isEmpty()) {
-			String ontology = stack.pop();
+			String ontology = stack.pollFirst();
 			DBOntologyClass dbOntology = this.ontologies.get(ontology);
 			
 			if(dbOntology != null) {
@@ -91,9 +99,9 @@ public class DBOntologyClassesStatistics {
 					for(String child : dbOntology.getChildren()) {
 						DBOntologyClass childCat = this.ontologies.get(child);
 						
-						if(childCat != null && childCat.getDepth() <= dbOntology.getDepth()) {
+						if(childCat != null && childCat.getDepth() == -1) {
 							childCat.setDepth(dbOntology.getDepth() + 1);
-							stack.push(child);
+							stack.add(child);
 						}
 					}
 				}

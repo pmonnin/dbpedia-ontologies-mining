@@ -50,6 +50,11 @@ public class DBCategoriesStatistics {
 			if(this.categories.get(key).getParentsNumber() == 0) {
 				this.orphansNumber++;
 				orphans.add(key);
+				
+				// Compute depth
+				int currentDepth = computeDepth(key);
+				if(currentDepth > this.depth)
+					this.depth = currentDepth;
 			}
 			
 			// Direct subsumptions
@@ -58,10 +63,6 @@ public class DBCategoriesStatistics {
 			// Depth preparation
 			this.categories.get(key).setDepth(-1);
 		}
-		
-		// Compute depth
-		System.out.println("Computing depth");
-		computeDepth(orphans);
 		
 		// Compute inferred subsumptions
 //		System.out.println("Computing inferred subsumptions");
@@ -77,37 +78,41 @@ public class DBCategoriesStatistics {
 		System.out.println("Depth: " + this.depth);
 	}
 	
-	private void computeDepth(ArrayList<String> orphans) {
+	private int computeDepth(String key) {
+		int currentDepth = 0;
 		LinkedList<String> stack = new LinkedList<String>();
 		
-		for(String key : orphans) {
-			stack.add(key);
-			this.categories.get(key).setDepth(0);
+		// Algorithm initialization
+		for(String yagoClass : this.categories.keySet()) {
+			this.categories.get(yagoClass).setDepth(-1);
+		}
+		this.categories.get(key).setDepth(0);
+		stack.push(key);
+		
+		// Algorithm computation
+		while(!stack.isEmpty()) {
+			String cat = stack.pollFirst();
+			DBCategory dbCat = this.categories.get(cat);
 			
-			int i = 0;
-			while(!stack.isEmpty()) {
-				String cat = stack.pollFirst();
-				DBCategory dbCategory = this.categories.get(cat);
+			if(dbCat != null) {
+				if(dbCat.getChildrenNumber() == 0 && dbCat.getDepth() > currentDepth) {
+					currentDepth = dbCat.getDepth();
+				}
 				
-				if(dbCategory != null) {
-					for(String child : dbCategory.getChildren()) {
-						DBCategory dbChild = this.categories.get(child);
+				else {
+					for(String child : dbCat.getChildren()) {
+						DBCategory childClass = this.categories.get(child);
 						
-						if(dbChild != null && dbChild.getDepth() < dbCategory.getDepth() + 1) {
-							dbChild.setDepth(dbCategory.getDepth() + 1);
+						if(childClass != null && childClass.getDepth() == -1) {
+							childClass.setDepth(dbCat.getDepth() + 1);
 							stack.add(child);
-							
-							if(dbChild.getDepth() > this.depth)
-								this.depth = dbChild.getDepth();
 						}
 					}
 				}
-				
-				i++;
-				if(i % 500 == 0)
-					System.out.println("i: " + i + " depth: " + this.depth);
 			}
 		}
+		
+		return currentDepth;
 	}
 	
 	private void computeInferredSubsumptions() {

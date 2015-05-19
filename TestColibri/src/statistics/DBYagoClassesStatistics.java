@@ -1,6 +1,7 @@
 package statistics;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.Stack;
 
@@ -42,7 +43,7 @@ public class DBYagoClassesStatistics {
 		}
 		
 		// Yago classes number
-		this.yagoClassesNumber = yagoClasses.size();
+		this.yagoClassesNumber = this.yagoClasses.size();
 		
 		// Orphans number, depth and direct subsumptions number
 		for(String key : keys) {
@@ -75,11 +76,18 @@ public class DBYagoClassesStatistics {
 	
 	private int computeDepth(String key) {
 		int currentDepth = 0;
-		Stack<String> stack = new Stack<String>();
+		LinkedList<String> stack = new LinkedList<String>();
+		
+		// Algorithm initialization
+		for(String yagoClass : this.yagoClasses.keySet()) {
+			this.yagoClasses.get(yagoClass).setDepth(-1);
+		}
+		this.yagoClasses.get(key).setDepth(0);
 		stack.push(key);
 		
+		// Algorithm computation
 		while(!stack.isEmpty()) {
-			String yagoClass = stack.pop();
+			String yagoClass = stack.pollFirst();
 			DBYagoClass dbYagoClass = this.yagoClasses.get(yagoClass);
 			
 			if(dbYagoClass != null) {
@@ -91,9 +99,9 @@ public class DBYagoClassesStatistics {
 					for(String child : dbYagoClass.getChildren()) {
 						DBYagoClass childClass = this.yagoClasses.get(child);
 						
-						if(childClass != null && childClass.getDepth() <= dbYagoClass.getDepth()) {
+						if(childClass != null && childClass.getDepth() == -1) {
 							childClass.setDepth(dbYagoClass.getDepth() + 1);
-							stack.push(child);
+							stack.add(child);
 						}
 					}
 				}

@@ -81,7 +81,7 @@ public class DBCategory {
     }
     
     public void setDepth(int depth) {
-    	if(depth >= 0)
+    	if(depth >= -1)
     		this.depth = depth;
     }
     
