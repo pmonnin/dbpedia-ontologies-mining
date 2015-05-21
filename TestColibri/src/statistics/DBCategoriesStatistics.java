@@ -1,5 +1,6 @@
 package statistics;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
@@ -35,6 +36,7 @@ public class DBCategoriesStatistics {
 		
 		// Orphans number, direct subsumptions number,
 		Set<String> keys = this.categories.keySet();
+		ArrayList<String> orphans = new ArrayList<String>();
 		for(String key : keys) {
 			// Children relationship creation
 			for(String parent : this.categories.get(key).getParents()) {
@@ -47,17 +49,16 @@ public class DBCategoriesStatistics {
 			// Orphans
 			if(this.categories.get(key).getParentsNumber() == 0) {
 				this.orphansNumber++;
-				
-				// Compute depth
-				System.out.println("Orphan + 1");
-				int currentDepth = computeDepth(key);
-				if(currentDepth > this.depth)
-					this.depth = currentDepth;
+				orphans.add(key);
 			}
 			
 			// Direct subsumptions
 			this.directSubsumptions += this.categories.get(key).getParentsNumber();
 		}
+		
+		System.out.println("Compute depth");
+		computeDepth(orphans);
+		System.out.println("End compute depth");
 	}
 	
 	public void displayStatistics() {
@@ -69,46 +70,46 @@ public class DBCategoriesStatistics {
 		System.out.println("Depth: " + this.depth);
 	}
 	
-	private int computeDepth(String key) {
-		int currentDepth = 0;
-		LinkedList<String> stack = new LinkedList<String>();
-		
-		// Algorithm initialization
-		System.out.println("Depth initialization");
-		for(String category : this.categories.keySet()) {
-			this.categories.get(category).setDepth(-1);
-		}
-		this.categories.get(key).setDepth(0);
-		stack.push(key);
-		
-		// Algorithm computation
-		System.out.println("Depth computation");
-		while(!stack.isEmpty()) {
-			String cat = stack.pollFirst();
-			DBCategory dbCat = this.categories.get(cat);
+	private void computeDepth(ArrayList<String> orphans) {
+		for(String key : orphans) {
+			int currentDepth = 0;
+			LinkedList<String> stack = new LinkedList<String>();
 			
-			if(dbCat != null) {
-				boolean childrenModified = false;
-				for(String child : dbCat.getChildren()) {
-					DBCategory childClass = this.categories.get(child);
-					
-					if(childClass != null && childClass.getDepth() == -1) {
-						childClass.setDepth(dbCat.getDepth() + 1);
-						stack.add(child);
-						childrenModified = true;
+			// Algorithm initialization
+			for(String category : this.categories.keySet()) {
+				this.categories.get(category).setDepth(-1);
+			}
+			this.categories.get(key).setDepth(0);
+			stack.push(key);
+			
+			// Algorithm computation
+			while(!stack.isEmpty()) {
+				String cat = stack.pollFirst();
+				DBCategory dbCat = this.categories.get(cat);
+				
+				if(dbCat != null) {
+					boolean childrenModified = false;
+					for(String child : dbCat.getChildren()) {
+						DBCategory childClass = this.categories.get(child);
+						
+						if(childClass != null && childClass.getDepth() == -1) {
+							childClass.setDepth(dbCat.getDepth() + 1);
+							stack.add(child);
+							childrenModified = true;
+						}
 					}
+					
+					if(!childrenModified && dbCat.getDepth() > currentDepth) {
+						currentDepth = dbCat.getDepth();
+					}
+					
 				}
-				
-				if(!childrenModified && dbCat.getDepth() > currentDepth) {
-					currentDepth = dbCat.getDepth();
-				}
-				
 			}
 			
-			System.out.println(currentDepth);
+			if(currentDepth > this.depth) {
+				this.depth = currentDepth;
+				System.out.println(this.depth);
+			}
 		}
-		
-		System.out.println("Depth end");
-		return currentDepth;
 	}
 }
