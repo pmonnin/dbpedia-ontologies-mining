@@ -71,44 +71,47 @@ public class DBCategoriesStatistics {
 	}
 	
 	private void computeDepth(ArrayList<String> orphans) {
-		for(String key : orphans) {
-			int currentDepth = 0;
-			LinkedList<String> stack = new LinkedList<String>();
+		LinkedList<String> stack = new LinkedList<String>();
+		this.depth = 1;
+		
+		// Algorithm initialization
+		int i = 0;
+		for(String category : this.categories.keySet()) {
+			this.categories.get(category).setDepth(-1);
 			
-			// Algorithm initialization
-			for(String category : this.categories.keySet()) {
-				this.categories.get(category).setDepth(-1);
+			if(orphans.contains(category)) {
+				this.categories.get(category).setDepth(1);
+				stack.add(category);
 			}
-			this.categories.get(key).setDepth(0);
-			stack.push(key);
 			
-			// Algorithm computation
-			while(!stack.isEmpty()) {
-				String cat = stack.pollFirst();
-				DBCategory dbCat = this.categories.get(cat);
-				
-				if(dbCat != null) {
-					boolean childrenModified = false;
-					for(String child : dbCat.getChildren()) {
-						DBCategory childClass = this.categories.get(child);
-						
-						if(childClass != null && childClass.getDepth() == -1) {
-							childClass.setDepth(dbCat.getDepth() + 1);
-							stack.add(child);
-							childrenModified = true;
-						}
-					}
+			i++;
+			System.out.println("Init : " + i);
+		}
+		
+		// Algorithm computation
+		i = 0;
+		while(!stack.isEmpty()) {
+			String cat = stack.pollFirst();
+			DBCategory dbCat = this.categories.get(cat);
+			
+			if(dbCat != null) {
+				boolean childrenModified = false;
+				for(String child : dbCat.getChildren()) {
+					DBCategory childClass = this.categories.get(child);
 					
-					if(!childrenModified && dbCat.getDepth() > currentDepth) {
-						currentDepth = dbCat.getDepth();
+					if(childClass != null && childClass.getDepth() == -1) {
+						childClass.setDepth(dbCat.getDepth() + 1);
+						stack.add(child);
+						childrenModified = true;
+						i++;
+						System.out.println(i);
 					}
-					
 				}
-			}
-			
-			if(currentDepth > this.depth) {
-				this.depth = currentDepth;
-				System.out.println(this.depth);
+				
+				if(!childrenModified && dbCat.getDepth() > this.depth) {
+					this.depth = dbCat.getDepth();
+				}
+				
 			}
 		}
 	}
