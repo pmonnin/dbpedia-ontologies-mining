@@ -46,7 +46,7 @@ public class DBYagoClassesCrawler {
      * @return the parsed yago classes with HashMap (key = URI of the yago classes and object is the DBYagoClass)
      */
     public HashMap<String, DBYagoClass> getDbYagoClasses() {
-        return dbyagoclasses;
+        return this.dbyagoclasses;
     }
 
     /**
@@ -73,7 +73,7 @@ public class DBYagoClassesCrawler {
                 + "FILTER (REGEX(STR(?child), \"http://dbpedia.org/class/yago\", \"i\")) ."
                 + "}}", "UTF-8"));
 
-        dbyagoclasses = new HashMap<String, DBYagoClass>();
+        this.dbyagoclasses = new HashMap<String, DBYagoClass>();
         DBYagoClass currentYagoClass = null;
         for (ChildAndParent childAndParent : childrenAndParents) {
             String child = childAndParent.getChild().getValue();
@@ -84,7 +84,7 @@ public class DBYagoClassesCrawler {
                 if (parent != null)
                     currentYagoClass.addParent(parent);
             } else if (!child.equals(currentYagoClass.getUri())) {
-                dbyagoclasses.put(currentYagoClass.getUri(), currentYagoClass);
+                this.dbyagoclasses.put(currentYagoClass.getUri(), currentYagoClass);
                 currentYagoClass = new DBYagoClass(child);
                 if (parent != null)
                     currentYagoClass.addParent(parent);
@@ -95,5 +95,15 @@ public class DBYagoClassesCrawler {
         }
         
         childrenAndParents.clear();
+        
+        // Children relationship creation
+        for(String key : this.dbyagoclasses.keySet()) {
+			for(String parent : this.dbyagoclasses.get(key).getParents()) {
+				DBYagoClass p = this.dbyagoclasses.get(parent);
+				
+				if(p != null)
+					p.addChild(key);
+			}
+		}
     }
 }

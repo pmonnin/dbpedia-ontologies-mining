@@ -1,8 +1,8 @@
 package statistics;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Set;
 import java.util.Stack;
 
 import dbpediaobjects.DBYagoClass;
@@ -31,30 +31,16 @@ public class DBYagoClassesStatistics {
 	}
 	
 	public void computeStatistics() {
-		// Children relationship computation
-		Set<String> keys = this.yagoClasses.keySet();
-		for(String key : keys) {
-			for(String parent : this.yagoClasses.get(key).getParents()) {
-				DBYagoClass p = this.yagoClasses.get(parent);
-				
-				if(p != null)
-					p.addChild(key);
-			}
-		}
-		
 		// Yago classes number
 		this.yagoClassesNumber = this.yagoClasses.size();
 		
-		// Orphans number, depth and direct subsumptions number
-		for(String key : keys) {
+		// Orphans number anddirect subsumptions number
+		ArrayList<String> orphans = new ArrayList<String>();
+		for(String key : this.yagoClasses.keySet()) {
 			if(this.yagoClasses.get(key).getParentsNumber() == 0) {
 				// Orphans
 				this.orphansNumber++;
-				
-				// Depth
-				int currentDepth = computeDepth(key);
-				if(currentDepth > this.depth)
-					this.depth = currentDepth;
+				orphans.add(key);
 			}
 			
 			// Direct subsumptions
@@ -63,6 +49,9 @@ public class DBYagoClassesStatistics {
 			// Inferred subsumptions
 			this.inferredSubsumptions += computeInferredSubsumptions(key);
 		}
+		
+		// Depth
+		computeDepth(orphans);
 	}
 	
 	public void displayStatistics() {
@@ -74,41 +63,43 @@ public class DBYagoClassesStatistics {
 		System.out.println("Depth: " + this.depth);
 	}
 	
-	private int computeDepth(String key) {
-		int currentDepth = 0;
+	private void computeDepth(ArrayList<String> orphans) {
 		LinkedList<String> stack = new LinkedList<String>();
+		this.depth = 1;
 		
 		// Algorithm initialization
-		for(String yagoClass : this.yagoClasses.keySet()) {
-			this.yagoClasses.get(yagoClass).setDepth(-1);
+		for(String yago : this.yagoClasses.keySet()) {
+			this.yagoClasses.get(yago).setDepth(-1);
 		}
-		this.yagoClasses.get(key).setDepth(0);
-		stack.push(key);
+		
+		for(String orphan : orphans) {
+			this.yagoClasses.get(orphan).setDepth(1);
+			stack.add(orphan);
+		}
 		
 		// Algorithm computation
 		while(!stack.isEmpty()) {
-			String yagoClass = stack.pollFirst();
-			DBYagoClass dbYagoClass = this.yagoClasses.get(yagoClass);
+			String yago = stack.pollFirst();
+			DBYagoClass dbYago = this.yagoClasses.get(yago);
 			
-			if(dbYagoClass != null) {
-				if(dbYagoClass.getChildrenNumber() == 0 && dbYagoClass.getDepth() > currentDepth) {
-					currentDepth = dbYagoClass.getDepth();
-				}
-				
-				else {
-					for(String child : dbYagoClass.getChildren()) {
-						DBYagoClass childClass = this.yagoClasses.get(child);
-						
-						if(childClass != null && childClass.getDepth() == -1) {
-							childClass.setDepth(dbYagoClass.getDepth() + 1);
-							stack.add(child);
-						}
+			if(dbYago != null) {
+				boolean childrenModified = false;
+				for(String child : dbYago.getChildren()) {
+					DBYagoClass childClass = this.yagoClasses.get(child);
+					
+					if(childClass != null && childClass.getDepth() == -1) {
+						childClass.setDepth(dbYago.getDepth() + 1);
+						stack.add(child);
+						childrenModified = true;
 					}
 				}
+				
+				if(!childrenModified && dbYago.getDepth() > this.depth) {
+					this.depth = dbYago.getDepth();
+				}
+				
 			}
 		}
-		
-		return currentDepth;
 	}
 	
 	private int computeInferredSubsumptions(String key) {
