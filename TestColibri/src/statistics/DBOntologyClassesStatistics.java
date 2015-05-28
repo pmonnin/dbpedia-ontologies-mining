@@ -64,7 +64,7 @@ public class DBOntologyClassesStatistics {
 	}
 	
 	private void computeDepth(ArrayList<String> orphans) {
-		LinkedList<String> stack = new LinkedList<String>();
+		LinkedList<String> queue = new LinkedList<String>();
 		this.depth = 1;
 		
 		// Algorithm initialization
@@ -74,12 +74,12 @@ public class DBOntologyClassesStatistics {
 		
 		for(String orphan : orphans) {
 			this.ontologies.get(orphan).setDepth(1);
-			stack.add(orphan);
+			queue.add(orphan);
 		}
 		
 		// Algorithm computation
-		while(!stack.isEmpty()) {
-			String onto = stack.pollFirst();
+		while(!queue.isEmpty()) {
+			String onto = queue.pollFirst();
 			DBOntologyClass dbOnto = this.ontologies.get(onto);
 			
 			if(dbOnto != null) {
@@ -89,7 +89,7 @@ public class DBOntologyClassesStatistics {
 					
 					if(childClass != null && childClass.getDepth() == -1) {
 						childClass.setDepth(dbOnto.getDepth() + 1);
-						stack.add(child);
+						queue.add(child);
 						childrenModified = true;
 					}
 				}

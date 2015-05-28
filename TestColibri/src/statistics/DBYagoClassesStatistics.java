@@ -64,7 +64,7 @@ public class DBYagoClassesStatistics {
 	}
 	
 	private void computeDepth(ArrayList<String> orphans) {
-		LinkedList<String> stack = new LinkedList<String>();
+		LinkedList<String> queue = new LinkedList<String>();
 		this.depth = 1;
 		
 		// Algorithm initialization
@@ -74,12 +74,12 @@ public class DBYagoClassesStatistics {
 		
 		for(String orphan : orphans) {
 			this.yagoClasses.get(orphan).setDepth(1);
-			stack.add(orphan);
+			queue.add(orphan);
 		}
 		
 		// Algorithm computation
-		while(!stack.isEmpty()) {
-			String yago = stack.pollFirst();
+		while(!queue.isEmpty()) {
+			String yago = queue.pollFirst();
 			DBYagoClass dbYago = this.yagoClasses.get(yago);
 			
 			if(dbYago != null) {
@@ -89,7 +89,7 @@ public class DBYagoClassesStatistics {
 					
 					if(childClass != null && childClass.getDepth() == -1) {
 						childClass.setDepth(dbYago.getDepth() + 1);
-						stack.add(child);
+						queue.add(child);
 						childrenModified = true;
 					}
 				}

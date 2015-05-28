@@ -62,7 +62,7 @@ public class DBCategoriesStatistics {
 	}
 	
 	private void computeDepth(ArrayList<String> orphans) {
-		LinkedList<String> stack = new LinkedList<String>();
+		LinkedList<String> queue = new LinkedList<String>();
 		this.depth = 1;
 		
 		// Algorithm initialization
@@ -72,12 +72,12 @@ public class DBCategoriesStatistics {
 		
 		for(String orphan : orphans) {
 			this.categories.get(orphan).setDepth(1);
-			stack.add(orphan);
+			queue.add(orphan);
 		}
 		
 		// Algorithm computation
-		while(!stack.isEmpty()) {
-			String cat = stack.pollFirst();
+		while(!queue.isEmpty()) {
+			String cat = queue.pollFirst();
 			DBCategory dbCat = this.categories.get(cat);
 			
 			if(dbCat != null) {
@@ -87,7 +87,7 @@ public class DBCategoriesStatistics {
 					
 					if(childClass != null && childClass.getDepth() == -1) {
 						childClass.setDepth(dbCat.getDepth() + 1);
-						stack.add(child);
+						queue.add(child);
 						childrenModified = true;
 					}
 				}
