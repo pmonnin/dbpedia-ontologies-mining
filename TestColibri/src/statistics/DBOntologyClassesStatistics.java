@@ -1,8 +1,8 @@
 package statistics;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Set;
 import java.util.Stack;
 
 import dbpediaobjects.DBOntologyClass;
@@ -31,30 +31,16 @@ public class DBOntologyClassesStatistics {
 	}
 	
 	public void computeStatistics() {
-		// Children relationship creation
-		Set<String> keys = this.ontologies.keySet();
-		for(String key : keys) {
-			for(String parent : this.ontologies.get(key).getParents()) {
-				DBOntologyClass parentOnto = this.ontologies.get(parent);
-				
-				if(parentOnto != null)
-					parentOnto.addChildren(key);
-			}
-		}
-		
 		// Ontologies number
 		this.ontologiesNumber = this.ontologies.size();
 		
-		// Orphans number, depth, direct and inferred subsumptions number
-		for(String key : keys) {
+		// Orphans number, direct subsumptions number
+		ArrayList<String> orphans = new ArrayList<String>();
+		for(String key : this.ontologies.keySet()) {
 			// Orphans
 			if(this.ontologies.get(key).getParentsNumber() == 0) {
 				this.orphansNumber++;
-
-				// Depth
-				int depthOnto = computeDepth(key);
-				if(depthOnto > this.depth)
-					this.depth = depthOnto;
+				orphans.add(key);
 			}
 		
 			// Direct subsumptions
@@ -63,6 +49,9 @@ public class DBOntologyClassesStatistics {
 			// Inferred subsumptions
 			this.inferredSubsumptions += computeInferredSubsumptions(key);
 		}
+		
+		// Depth
+		computeDepth(orphans);
 	}
 	
 	public void displayStatistics() {
@@ -74,41 +63,43 @@ public class DBOntologyClassesStatistics {
 		System.out.println("Depth: " + this.depth);
 	}
 	
-	private int computeDepth(String key) {
-		int currentDepth = 0;
+	private void computeDepth(ArrayList<String> orphans) {
 		LinkedList<String> stack = new LinkedList<String>();
+		this.depth = 1;
 		
 		// Algorithm initialization
-		for(String onto : this.ontologies.keySet()) {
-			this.ontologies.get(onto).setDepth(-1);
+		for(String ontology : this.ontologies.keySet()) {
+			this.ontologies.get(ontology).setDepth(-1);
 		}
-		this.ontologies.get(key).setDepth(0);
-		stack.push(key);
+		
+		for(String orphan : orphans) {
+			this.ontologies.get(orphan).setDepth(1);
+			stack.add(orphan);
+		}
 		
 		// Algorithm computation
 		while(!stack.isEmpty()) {
-			String ontology = stack.pollFirst();
-			DBOntologyClass dbOntology = this.ontologies.get(ontology);
+			String onto = stack.pollFirst();
+			DBOntologyClass dbOnto = this.ontologies.get(onto);
 			
-			if(dbOntology != null) {
-				if(dbOntology.getChildrenNumber() == 0 && dbOntology.getDepth() > currentDepth) {
-					currentDepth = dbOntology.getDepth();
-				}
-				
-				else {
-					for(String child : dbOntology.getChildren()) {
-						DBOntologyClass childCat = this.ontologies.get(child);
-						
-						if(childCat != null && childCat.getDepth() == -1) {
-							childCat.setDepth(dbOntology.getDepth() + 1);
-							stack.add(child);
-						}
+			if(dbOnto != null) {
+				boolean childrenModified = false;
+				for(String child : dbOnto.getChildren()) {
+					DBOntologyClass childClass = this.ontologies.get(child);
+					
+					if(childClass != null && childClass.getDepth() == -1) {
+						childClass.setDepth(dbOnto.getDepth() + 1);
+						stack.add(child);
+						childrenModified = true;
 					}
 				}
+				
+				if(!childrenModified && dbOnto.getDepth() > this.depth) {
+					this.depth = dbOnto.getDepth();
+				}
+				
 			}
 		}
-		
-		return currentDepth;
 	}
 	
 	private int computeInferredSubsumptions(String key) {

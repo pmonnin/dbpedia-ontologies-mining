@@ -46,7 +46,7 @@ public class DBOntologyClassesCrawler {
      * @return the parsed ontology classes with HashMap (key = URI of the ontology classes and object is the DBOnolotyClass)
      */
     public HashMap<String, DBOntologyClass> getDbontologies() {
-        return dbontologies;
+        return this.dbontologies;
     }
 
     /**
@@ -71,7 +71,7 @@ public class DBOntologyClassesCrawler {
                 + "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/ontology\", \"i\"))"
                 + "}}", "UTF-8"));
 
-        dbontologies = new HashMap<String, DBOntologyClass>();
+        this.dbontologies = new HashMap<String, DBOntologyClass>();
         DBOntologyClass currentOntology = null;
         for (ChildAndParent childAndParent : childrenAndParents) {
             String child = childAndParent.getChild().getValue();
@@ -83,15 +83,24 @@ public class DBOntologyClassesCrawler {
                 if (parent != null)
                     currentOntology.addParent(parent);
             } else if (!child.equals(currentOntology.getUri())) {
-                dbontologies.put(currentOntology.getUri(), currentOntology);
+                this.dbontologies.put(currentOntology.getUri(), currentOntology);
                 currentOntology = new DBOntologyClass(label, child);
                 if (parent != null)
                     currentOntology.addParent(parent);
-//                System.out.println("ADD PARENT " + child + " -> " + parent);
             } else {
                 if (parent != null)
                     currentOntology.addParent(parent);
             }
+        }
+        
+        // Children relationship creation
+        for(String key : this.dbontologies.keySet()) {
+        	for(String parent : this.dbontologies.get(key).getParents()) {
+				DBOntologyClass parentOnto = this.dbontologies.get(parent);
+				
+				if(parentOnto != null)
+					parentOnto.addChildren(key);
+			}
         }
     }
 }
