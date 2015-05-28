@@ -37,15 +37,7 @@ public class DBCategoriesStatistics {
 		// Orphans number, direct subsumptions number,
 		Set<String> keys = this.categories.keySet();
 		ArrayList<String> orphans = new ArrayList<String>();
-		for(String key : keys) {
-			// Children relationship creation
-			for(String parent : this.categories.get(key).getParents()) {
-				DBCategory parentCat = this.categories.get(parent);
-				
-				if(parentCat != null)
-					parentCat.addChild(key);
-			}
-			
+		for(String key : keys) {	
 			// Orphans
 			if(this.categories.get(key).getParentsNumber() == 0) {
 				this.orphansNumber++;
@@ -56,9 +48,8 @@ public class DBCategoriesStatistics {
 			this.directSubsumptions += this.categories.get(key).getParentsNumber();
 		}
 		
-		System.out.println("Compute depth");
+		// Depth computation
 		computeDepth(orphans);
-		System.out.println("End compute depth");
 	}
 	
 	public void displayStatistics() {
@@ -75,21 +66,16 @@ public class DBCategoriesStatistics {
 		this.depth = 1;
 		
 		// Algorithm initialization
-		int i = 0;
 		for(String category : this.categories.keySet()) {
 			this.categories.get(category).setDepth(-1);
-			
-			if(orphans.contains(category)) {
-				this.categories.get(category).setDepth(1);
-				stack.add(category);
-			}
-			
-			i++;
-			System.out.println("Init : " + i);
+		}
+		
+		for(String orphan : orphans) {
+			this.categories.get(orphan).setDepth(1);
+			stack.add(orphan);
 		}
 		
 		// Algorithm computation
-		i = 0;
 		while(!stack.isEmpty()) {
 			String cat = stack.pollFirst();
 			DBCategory dbCat = this.categories.get(cat);
@@ -103,8 +89,6 @@ public class DBCategoriesStatistics {
 						childClass.setDepth(dbCat.getDepth() + 1);
 						stack.add(child);
 						childrenModified = true;
-						i++;
-						System.out.println(i);
 					}
 				}
 				

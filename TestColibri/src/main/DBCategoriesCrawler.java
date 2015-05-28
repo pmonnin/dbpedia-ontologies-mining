@@ -46,7 +46,7 @@ public class DBCategoriesCrawler {
      * @return the parsed categories with HashMap (key = URI of the categories and object is the DBCategory)
      */
     public HashMap<String, DBCategory> getDbcategories() {
-        return dbcategories;
+        return this.dbcategories;
     }
     
     /**
@@ -72,7 +72,7 @@ public class DBCategoriesCrawler {
                 + "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/resource/Category\", \"i\"))"
                 + "}}", "UTF-8"));
 
-        dbcategories = new HashMap<String, DBCategory>();
+        this.dbcategories = new HashMap<String, DBCategory>();
         DBCategory currentCategory = null;
         for (ChildAndParent childAndParent : childrenAndParents) {
             String child = childAndParent.getChild().getValue();
@@ -84,7 +84,7 @@ public class DBCategoriesCrawler {
                 if (parent != null)
                     currentCategory.addParent(parent);
             } else if (!child.equals(currentCategory.getUri())) {
-                dbcategories.put(currentCategory.getUri(), currentCategory);
+                this.dbcategories.put(currentCategory.getUri(), currentCategory);
                 currentCategory = new DBCategory(label, child);
                 if (parent != null)
                     currentCategory.addParent(parent);
@@ -95,5 +95,15 @@ public class DBCategoriesCrawler {
         }
         
         childrenAndParents.clear();
+        
+        // Children relationship creation
+        for(String key : this.dbcategories.keySet()) {
+        	for(String parent : this.dbcategories.get(key).getParents()) {
+				DBCategory parentCat = this.dbcategories.get(parent);
+				
+				if(parentCat != null)
+					parentCat.addChild(key);
+			}
+        }
     }
 }
