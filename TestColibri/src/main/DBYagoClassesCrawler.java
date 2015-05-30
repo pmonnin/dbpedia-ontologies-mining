@@ -77,7 +77,7 @@ public class DBYagoClassesCrawler {
                 + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
                 + "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
                 + "select distinct ?child ?parent where {"
-                + "{ FILTER (REGEX(STR(?child), \"http://dbpedia.org/class/yago\", \"i\")) ."
+                + "FILTER (REGEX(STR(?child), \"http://dbpedia.org/class/yago\", \"i\")) ."
                 + "OPTIONAL {"
                 + "?child rdfs:subClassOf ?parent . "
                 + "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/class/yago\", \"i\"))"
