@@ -13,6 +13,7 @@ public class DBOntologyClass {
     private String label = "";
     private String uri = "";
     private int depth = -1;
+    private boolean seen = false;
     private ArrayList<String> parents = new ArrayList<String>();
     private ArrayList<String> children = new ArrayList<String>();
 
@@ -77,5 +78,13 @@ public class DBOntologyClass {
     
     public void addChildren(String child) {
     	this.children.add(child);
+    }
+    
+    public boolean getSeen() {
+    	return this.seen;
+    }
+    
+    public void setSeen(boolean seen) {
+    	this.seen = seen;
     }
 }

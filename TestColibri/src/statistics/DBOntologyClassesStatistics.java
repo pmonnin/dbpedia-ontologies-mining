@@ -3,7 +3,6 @@ package statistics;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Stack;
 
 import dbpediaobjects.DBOntologyClass;
 
@@ -45,13 +44,13 @@ public class DBOntologyClassesStatistics {
 		
 			// Direct subsumptions
 			this.directSubsumptions += this.ontologies.get(key).getParentsNumber();
-			
-			// Inferred subsumptions
-			this.inferredSubsumptions += computeInferredSubsumptions(key);
 		}
 		
 		// Depth
 		computeDepth(orphans);
+		
+		// Inferred subsumptions
+		computeInferredSubsumptions();
 	}
 	
 	public void displayStatistics() {
@@ -102,26 +101,42 @@ public class DBOntologyClassesStatistics {
 		}
 	}
 	
-	private int computeInferredSubsumptions(String key) {
-		int inferredSubsumptions = 0;
-		Stack<String> stack = new Stack<String>();
-		
-		for(String parent : this.ontologies.get(key).getParents()) {
-			stack.push(parent);
-		}
-		
-		while(!stack.isEmpty()) {
-			DBOntologyClass onto = this.ontologies.get(stack.pop());
+	private void computeInferredSubsumptions() {
+		for(String key : this.ontologies.keySet()) {
 			
-			if(onto != null) {
-				inferredSubsumptions += onto.getParentsNumber();
+			// Algorithm initialization
+			for(String onto : this.ontologies.keySet()) {
+				this.ontologies.get(onto).setSeen(false);
+			}
+			
+			LinkedList<String> queue = new LinkedList<String>();
+			this.ontologies.get(key).setSeen(true);
+			for(String parent : this.ontologies.get(key).getParents()) {
+				DBOntologyClass onto = this.ontologies.get(parent);
 				
-				for(String child : onto.getChildren()) {
-					stack.push(child);
+				if(onto != null) {
+					this.ontologies.get(parent).setSeen(true);
+					queue.add(parent);
+				}
+			}
+			
+			// Algorithm computation
+			while(!queue.isEmpty()) {
+				String onto = queue.pollFirst();
+				DBOntologyClass dbOnto = this.ontologies.get(onto);
+				
+				if(dbOnto != null) {
+					for(String parent : dbOnto.getParents()) {
+						DBOntologyClass dbParent = this.ontologies.get(parent);
+						
+						if(dbParent != null && !dbParent.getSeen()) {
+							dbParent.setSeen(true);
+							queue.add(parent);
+							this.inferredSubsumptions++;
+						}
+					}
 				}
 			}
 		}
-		
-		return inferredSubsumptions;
 	}
 }
