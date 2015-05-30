@@ -81,11 +81,6 @@ public class DBYagoClassesCrawler {
                 + "OPTIONAL {"
                 + "?child rdfs:subClassOf ?parent . "
                 + "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/class/yago\", \"i\"))"
-                + "}}"
-                + "UNION {"
-                + "[] rdfs:subClassOf ?child . "
-                + "FILTER (NOT EXISTS{?child rdfs:subClassOf ?parent}) . "
-                + "FILTER (REGEX(STR(?child), \"http://dbpedia.org/class/yago\", \"i\")) ."
                 + "}}", "UTF-8"));
         
         // Building complete list
