@@ -50,6 +50,9 @@ public class DBCategoriesStatistics {
 		
 		// Depth computation
 		computeDepth(orphans);
+		
+		// Inferred subsumptions
+		computeInferredSubsumptions();
 	}
 	
 	public void displayStatistics() {
@@ -97,6 +100,46 @@ public class DBCategoriesStatistics {
 				}
 				
 			}
+		}
+	}
+	
+	private void computeInferredSubsumptions() {
+		for(String key : this.categories.keySet()) {
+			
+			// Algorithm initialization
+			for(String cat : this.categories.keySet()) {
+				this.categories.get(cat).setSeen(false);
+			}
+			
+			LinkedList<String> queue = new LinkedList<String>();
+			this.categories.get(key).setSeen(true);
+			for(String parent : this.categories.get(key).getParents()) {
+				DBCategory cat = this.categories.get(parent);
+				
+				if(cat != null) {
+					cat.setSeen(true);
+					queue.add(parent);
+				}
+			}
+			
+			// Algorithm computation
+			while(!queue.isEmpty()) {
+				String cat = queue.pollFirst();
+				DBCategory dbCat = this.categories.get(cat);
+				
+				if(dbCat != null) {
+					for(String parent : dbCat.getParents()) {
+						DBCategory dbParent = this.categories.get(parent);
+						
+						if(dbParent != null && !dbParent.getSeen()) {
+							dbParent.setSeen(true);
+							queue.add(parent);
+							this.inferredSubsumptions++;
+						}
+					}
+				}
+			}
+		
 		}
 	}
 }

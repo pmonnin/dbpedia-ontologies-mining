@@ -15,7 +15,7 @@ public class DBCategory {
 	private ArrayList<String> parents = new ArrayList<String>();
 	private ArrayList<String> children = new ArrayList<String>();
 	private int depth = -1;
-	private boolean inferredSubsumptionsToken = false;
+	private boolean seen = false;
 	
 	public DBCategory(String name, String uri) {
         super();
@@ -24,7 +24,7 @@ public class DBCategory {
         this.parents = new ArrayList<String>();
         this.children = new ArrayList<String>();
         this.depth = -1;
-        this.inferredSubsumptionsToken = false;
+        this.seen = false;
     }
 	
 	public String getName() {
@@ -89,11 +89,11 @@ public class DBCategory {
     	return this.depth;
     }
     
-    public void setInferredSubsumptionsToken(boolean inferredSubsumptionsToken) {
-		this.inferredSubsumptionsToken = inferredSubsumptionsToken;
+    public void setSeen(boolean seen) {
+		this.seen = seen;
     }
     
-    public boolean getInferredSubsumptions() {
-    	return this.inferredSubsumptionsToken;
+    public boolean getSeen() {
+    	return this.seen;
     }
 }
