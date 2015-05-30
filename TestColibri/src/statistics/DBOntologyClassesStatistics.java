@@ -115,7 +115,7 @@ public class DBOntologyClassesStatistics {
 				DBOntologyClass onto = this.ontologies.get(parent);
 				
 				if(onto != null) {
-					this.ontologies.get(parent).setSeen(true);
+					onto.setSeen(true);
 					queue.add(parent);
 				}
 			}
