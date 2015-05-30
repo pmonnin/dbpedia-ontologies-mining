@@ -14,6 +14,7 @@ public class DBYagoClass {
     private ArrayList<String> parents = new ArrayList<String>();
     private ArrayList<String> children = new ArrayList<String>();
     private int depth = -1;
+    private boolean seen = false;
 
     public DBYagoClass() {
     }
@@ -74,5 +75,13 @@ public class DBYagoClass {
     
     public int getDepth() {
     	return this.depth;
+    }
+    
+    public boolean getSeen() {
+    	return this.seen;
+    }
+    
+    public void setSeen(boolean seen) {
+    	this.seen = seen;
     }
 }

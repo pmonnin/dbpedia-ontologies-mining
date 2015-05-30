@@ -3,7 +3,6 @@ package statistics;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Stack;
 
 import dbpediaobjects.DBYagoClass;
 
@@ -45,13 +44,13 @@ public class DBYagoClassesStatistics {
 			
 			// Direct subsumptions
 			this.directSubsumptions += this.yagoClasses.get(key).getParentsNumber();
-			
-			// Inferred subsumptions
-			this.inferredSubsumptions += computeInferredSubsumptions(key);
 		}
 		
 		// Depth
 		computeDepth(orphans);
+		
+		// Inferred subsumptions
+		computeInferredSubsumptions();
 	}
 	
 	public void displayStatistics() {
@@ -102,26 +101,43 @@ public class DBYagoClassesStatistics {
 		}
 	}
 	
-	private int computeInferredSubsumptions(String key) {
-		int inferredSubsumptions = 0;
-		Stack<String> stack = new Stack<String>();
-		
-		for(String parent : this.yagoClasses.get(key).getParents()) {
-			stack.push(parent);
-		}
-		
-		while(!stack.isEmpty()) {
-			DBYagoClass yagoClass = this.yagoClasses.get(stack.pop());
+	private void computeInferredSubsumptions() {
+		for(String key : this.yagoClasses.keySet()) {
 			
-			if(yagoClass != null) {
-				inferredSubsumptions += yagoClass.getParentsNumber();
+			// Algorithm initialization
+			for(String yago : this.yagoClasses.keySet()) {
+				this.yagoClasses.get(yago).setSeen(false);
+			}
+			
+			LinkedList<String> queue = new LinkedList<String>();
+			this.yagoClasses.get(key).setSeen(true);
+			for(String parent : this.yagoClasses.get(key).getParents()) {
+				DBYagoClass yago = this.yagoClasses.get(parent);
 				
-				for(String parent : yagoClass.getParents()) {
-					stack.push(parent);
+				if(yago != null) {
+					yago.setSeen(true);
+					queue.add(parent);
 				}
 			}
-		}
+			
+			// Algorithm computation
+			while(!queue.isEmpty()) {
+				String yago = queue.pollFirst();
+				DBYagoClass dbYago = this.yagoClasses.get(yago);
+				
+				if(dbYago != null) {
+					for(String parent : dbYago.getParents()) {
+						DBYagoClass dbParent = this.yagoClasses.get(parent);
+						
+						if(dbParent != null && !dbParent.getSeen()) {
+							dbParent.setSeen(true);
+							queue.add(parent);
+							this.inferredSubsumptions++;
+						}
+					}
+				}
+			}
 		
-		return inferredSubsumptions;
+		}
 	}
 }
