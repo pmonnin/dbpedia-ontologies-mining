@@ -56,7 +56,22 @@ public class DBYagoClassesCrawler {
      * @throws ParseException
      */
     public void computeParents() throws UnsupportedEncodingException, IOException, ParseException {
-        // Ask for all the yago classes
+    	// Ask for all the yago classes that don't have parents
+    	List<ChildAndParent> children = JSONReader.getChildrenAndParents(URLEncoder.encode(
+                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+                + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
+                + "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
+                + "select distinct ?child where {"
+                + "[] rdfs:subClassOf ?child . "
+            	+ "FILTER (NOT EXISTS "
+    			+ " { "
+    			+ "?child rdfs:subClassOf ?parent . "
+    			+ "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/class/yago\", \"i\")) . "
+    			+ "}) ." 
+    			+ "FILTER (REGEX(STR(?child), \"http://dbpedia.org/class/yago\", \"i\")) ."
+                + "}", "UTF-8"));
+    	
+        // Ask for all the yago classes that have parents
         List<ChildAndParent> childrenAndParents = JSONReader.getChildrenAndParents(URLEncoder.encode(
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
                 + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
@@ -72,7 +87,10 @@ public class DBYagoClassesCrawler {
                 + "FILTER (NOT EXISTS{?child rdfs:subClassOf ?parent}) . "
                 + "FILTER (REGEX(STR(?child), \"http://dbpedia.org/class/yago\", \"i\")) ."
                 + "}}", "UTF-8"));
-
+        
+        // Building complete list
+        childrenAndParents.addAll(children);
+        
         this.dbyagoclasses = new HashMap<String, DBYagoClass>();
         DBYagoClass currentYagoClass = null;
         for (ChildAndParent childAndParent : childrenAndParents) {
