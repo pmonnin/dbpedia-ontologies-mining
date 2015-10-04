@@ -11,11 +11,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
- * Requêtes Java vers serveur HTTP. Récupération automatique de la réponse et auto-binding dans la classe modèle fournie. La réponse du serveur doit être en JSON.
+ * Java requests to HTTP Server. Automatic crawling of server answer and auto-binding to given model class. Server answer must be JSON 
  */
 public final class JSONReader {
     /**
-     * Adresse du serveur
+     * Server address
      */
     public static final String SERVER_LOC = "http://sbc2015.telecomnancy.univ-lorraine.fr:10000/publi/query?output=json&query=";
     public static final String DBPEDIA_LOC = "http://dbpedia.org/sparql/?default-graph-uri=http%3A%2F%2Fdbpedia.org&format=application%2Fsparql-results%2Bjson&timeout=30000&debug=on&query=";
@@ -27,11 +27,10 @@ public final class JSONReader {
     }
 
     /**
-     * Cherche tous les enfants et parents d'un type de hiérarchie dbPedia (catégorie, ontologie ou Yago)
+     * Crawls all children and parents of DBPedia hierarchy type (category, ontology, yago class)
      * 
-     * @param request
-     *            Requête SPARQL à exécuter
-     * @return liste des parents et leurs enfants
+     * @param request SPARQL request to execute
+     * @return children and parents list
      */
     public static List<ChildAndParent> getChildrenAndParents(String request) {
         SparqlResponse response = new SparqlResponse();

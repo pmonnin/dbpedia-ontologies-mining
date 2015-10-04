@@ -33,9 +33,9 @@ public class DBCategoriesCrawler {
      * @throws ParseException thrown when JSON is not valid
      */
     public static void main(String[] args) throws UnsupportedEncodingException, IOException, ParseException {
-        System.out.println("START MAIN");
+        System.out.println("== START MAIN DB CATEGORIES CRAWLER ==");
         DBCategoriesCrawler crawler = new DBCategoriesCrawler();
-        crawler.computeParents();
+        crawler.computeCategoriesHierarchy();
         DBCategoriesStatistics stats = new DBCategoriesStatistics(crawler.getDbcategories());
         stats.computeStatistics();
         stats.displayStatistics();
@@ -55,43 +55,52 @@ public class DBCategoriesCrawler {
      * @throws IOException
      * @throws ParseException
      */
-    public void computeParents() throws UnsupportedEncodingException, IOException, ParseException {
+    public void computeCategoriesHierarchy() throws UnsupportedEncodingException, IOException, ParseException {
     	// Ask for all the categories
         List<ChildAndParent> childrenAndParents = JSONReader.getChildrenAndParents(URLEncoder.encode(
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
                 + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
                 + "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
                 + "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> "
-                + "select distinct ?child ?parent ?label where {"
+                + "select distinct ?child ?parent where {"
                 + "?child rdf:type skos:Concept ."
                 + "FILTER (REGEX(STR(?child), \"http://dbpedia.org/resource/Category\", \"i\")) ."
-                + "?child rdfs:label ?label ."
-                + "FILTER(langMatches(lang(?label), \"EN\"))"
                 + "OPTIONAL {"
                 + "?child skos:broader ?parent . "
                 + "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/resource/Category\", \"i\"))"
                 + "}}", "UTF-8"));
 
         this.dbcategories = new HashMap<String, DBCategory>();
+        
         DBCategory currentCategory = null;
         for (ChildAndParent childAndParent : childrenAndParents) {
             String child = childAndParent.getChild().getValue();
-            String label = childAndParent.getLabel().getValue();
             String parent = childAndParent.getParent() == null ? null : childAndParent.getParent().getValue();
 
             if (currentCategory == null) {
-                currentCategory = new DBCategory(label, child);
-                if (parent != null)
+                currentCategory = new DBCategory(child);
+                
+                if (parent != null) {
                     currentCategory.addParent(parent);
-            } else if (!child.equals(currentCategory.getUri())) {
+                }
+            }
+            
+            else if (!child.equals(currentCategory.getUri())) {
                 this.dbcategories.put(currentCategory.getUri(), currentCategory);
-                currentCategory = new DBCategory(label, child);
-                if (parent != null)
-                    currentCategory.addParent(parent);
-            } else {
+                currentCategory = new DBCategory(child);
                 if (parent != null)
                     currentCategory.addParent(parent);
             }
+            
+            else {
+                if (parent != null) {
+                    currentCategory.addParent(parent);
+                }
+            }
+        }
+        
+        if(currentCategory != null && this.dbcategories.get(currentCategory.getUri()) == null) {
+        	this.dbcategories.put(currentCategory.getUri(), currentCategory);
         }
         
         childrenAndParents.clear();
@@ -101,8 +110,9 @@ public class DBCategoriesCrawler {
         	for(String parent : this.dbcategories.get(key).getParents()) {
 				DBCategory parentCat = this.dbcategories.get(parent);
 				
-				if(parentCat != null)
+				if(parentCat != null) {
 					parentCat.addChild(key);
+				}
 			}
         }
     }

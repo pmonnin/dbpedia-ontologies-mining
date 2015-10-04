@@ -41,12 +41,12 @@ public class Main {
     public static void main(String[] args) throws ParseException, IOException {
         Date startDate = new Date();
         ComparisonStats comparisonStats = new ComparisonStats();
-        int found, proposed;
+        int found = 0, proposed = 0;
         
         // Crawling DB categories
         System.out.println("DEBUT PARSAGE CATEGORIES");
         DBCategoriesCrawler dbCategoriesCrawler = new DBCategoriesCrawler();
-        dbCategoriesCrawler.computeParents();
+        dbCategoriesCrawler.computeCategoriesHierarchy();
         HashMap<String, DBCategory> dbcategories = dbCategoriesCrawler.getDbcategories();
 
         // Crawling DB ontologies

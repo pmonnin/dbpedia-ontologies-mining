@@ -64,7 +64,7 @@ public class JsonParser {
             Map labelMap = (Map) map.get("Label");
             String label = (String) labelMap.get("value");
 
-            res.put(uri, new DBCategory(label, uri));
+            res.put(uri, new DBCategory(uri));
         }
 
         return res;

@@ -10,26 +10,19 @@ import java.util.ArrayList;
  *
  */
 public class DBCategory {
-	private String name = "";
 	private String uri = "";
 	private ArrayList<String> parents = new ArrayList<String>();
 	private ArrayList<String> children = new ArrayList<String>();
 	private int depth = -1;
 	private boolean seen = false;
 	
-	public DBCategory(String name, String uri) {
-        super();
-        this.name = name;
+	public DBCategory(String uri) {
         this.uri = uri;
         this.parents = new ArrayList<String>();
         this.children = new ArrayList<String>();
         this.depth = -1;
         this.seen = false;
     }
-	
-	public String getName() {
-		return this.name;
-	}
 
 	public void addParent(String parent) {
 		this.parents.add(parent);
@@ -37,10 +30,6 @@ public class DBCategory {
 	
 	public void setParents(ArrayList<String> parents) {
 		this.parents = parents;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 	public String getUri() {
@@ -61,7 +50,7 @@ public class DBCategory {
 	
 	@Override
     public String toString() {
-        return "DBCategory [name=" + this.name + ", uri=" + this.uri + ", parents=" + this.parents + "]";
+        return "DBCategory [uri=" + this.uri + ", parents=" + this.parents + "]";
     }
 
     public boolean hasParent(String parent) {
