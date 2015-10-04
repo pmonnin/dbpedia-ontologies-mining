@@ -70,6 +70,7 @@ public class DBOntologyClassesCrawler {
                 + "}}", "UTF-8"));
 
         this.dbontologies = new HashMap<String, DBOntologyClass>();
+        
         DBOntologyClass currentOntology = null;
         for (ChildAndParent childAndParent : childrenAndParents) {
             String child = childAndParent.getChild().getValue();
@@ -77,17 +78,30 @@ public class DBOntologyClassesCrawler {
 
             if (currentOntology == null) {
                 currentOntology = new DBOntologyClass(child);
-                if (parent != null)
+                
+                if (parent != null) {
                     currentOntology.addParent(parent);
-            } else if (!child.equals(currentOntology.getUri())) {
+                }
+            }
+            
+            else if (!child.equals(currentOntology.getUri())) {
                 this.dbontologies.put(currentOntology.getUri(), currentOntology);
                 currentOntology = new DBOntologyClass(child);
-                if (parent != null)
+                if (parent != null) {
                     currentOntology.addParent(parent);
-            } else {
-                if (parent != null)
-                    currentOntology.addParent(parent);
+                }
+                
             }
+            
+            else {
+                if (parent != null) {
+                    currentOntology.addParent(parent);
+                }
+            }
+        }
+        
+        if(currentOntology != null && this.dbontologies.get(currentOntology.getUri()) == null) {
+        	this.dbontologies.put(currentOntology.getUri(), currentOntology);
         }
         
         // Children relationship creation
