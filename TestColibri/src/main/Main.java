@@ -52,7 +52,7 @@ public class Main {
         // Crawling DB ontologies
         System.out.println("DEBUT PARSAGE ONTOLOGIES");
         DBOntologyClassesCrawler dbOntologyClasses = new DBOntologyClassesCrawler();
-        dbOntologyClasses.computeParents();
+        dbOntologyClasses.computeOntologiesHierarchy();
         HashMap<String, DBOntologyClass> dbontologies = dbOntologyClasses.getDbontologies();
         
         // Crawling Yago classes

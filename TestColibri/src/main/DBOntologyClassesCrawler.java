@@ -33,9 +33,9 @@ public class DBOntologyClassesCrawler {
      * @throws ParseException thrown when JSON is not valid
      */
     public static void main(String[] args) throws UnsupportedEncodingException, IOException, ParseException {
-        System.out.println("START MAIN");
+        System.out.println("== START MAIN DB CATEGORIES CRAWLER ==");
         DBOntologyClassesCrawler crawler = new DBOntologyClassesCrawler();
-        crawler.computeParents();
+        crawler.computeOntologiesHierarchy();
         DBOntologyClassesStatistics stats = new DBOntologyClassesStatistics(crawler.getDbontologies());
         stats.computeStatistics();
         stats.displayStatistics();
@@ -55,17 +55,15 @@ public class DBOntologyClassesCrawler {
      * @throws IOException
      * @throws ParseException
      */
-    public void computeParents() throws UnsupportedEncodingException, IOException, ParseException {
+    public void computeOntologiesHierarchy() throws UnsupportedEncodingException, IOException, ParseException {
     	// Ask for all the ontology classes
         List<ChildAndParent> childrenAndParents = JSONReader.getChildrenAndParents(URLEncoder.encode(
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
                 + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
                 + "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
-                + "select distinct ?child ?parent ?label where {"
+                + "select distinct ?child ?parent where {"
                 + "?child rdf:type owl:Class ."
                 + "FILTER (REGEX(STR(?child), \"http://dbpedia.org/ontology\", \"i\")) ."
-                + "?child rdfs:label ?label ."
-                + "FILTER(langMatches(lang(?label), \"EN\"))"
                 + "OPTIONAL {"
                 + "?child rdfs:subClassOf ?parent . "
                 + "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/ontology\", \"i\"))"
@@ -75,16 +73,15 @@ public class DBOntologyClassesCrawler {
         DBOntologyClass currentOntology = null;
         for (ChildAndParent childAndParent : childrenAndParents) {
             String child = childAndParent.getChild().getValue();
-            String label = childAndParent.getLabel().getValue();
             String parent = childAndParent.getParent() == null ? null : childAndParent.getParent().getValue();
 
             if (currentOntology == null) {
-                currentOntology = new DBOntologyClass(label, child);
+                currentOntology = new DBOntologyClass(child);
                 if (parent != null)
                     currentOntology.addParent(parent);
             } else if (!child.equals(currentOntology.getUri())) {
                 this.dbontologies.put(currentOntology.getUri(), currentOntology);
-                currentOntology = new DBOntologyClass(label, child);
+                currentOntology = new DBOntologyClass(child);
                 if (parent != null)
                     currentOntology.addParent(parent);
             } else {

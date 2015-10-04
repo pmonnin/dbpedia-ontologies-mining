@@ -10,24 +10,14 @@ import java.util.ArrayList;
  *
  */
 public class DBOntologyClass {
-    private String label = "";
     private String uri = "";
     private int depth = -1;
     private boolean seen = false;
     private ArrayList<String> parents = new ArrayList<String>();
     private ArrayList<String> children = new ArrayList<String>();
 
-    public DBOntologyClass(String label, String uri) {
-        this.label = label;
+    public DBOntologyClass(String uri) {
         this.uri = uri;
-    }
-
-    public String getLabel() {
-        return this.label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
     }
 
     public String getUri() {

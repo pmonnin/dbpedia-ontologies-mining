@@ -82,18 +82,16 @@ public class DBYagoClassesStatistics {
 			DBYagoClass dbYago = this.yagoClasses.get(yago);
 			
 			if(dbYago != null) {
-				boolean childrenModified = false;
 				for(String child : dbYago.getChildren()) {
 					DBYagoClass childClass = this.yagoClasses.get(child);
 					
 					if(childClass != null && childClass.getDepth() == -1) {
 						childClass.setDepth(dbYago.getDepth() + 1);
 						queue.add(child);
-						childrenModified = true;
 					}
 				}
 				
-				if(!childrenModified && dbYago.getDepth() > this.depth) {
+				if(dbYago.getDepth() > this.depth) {
 					this.depth = dbYago.getDepth();
 				}
 				

@@ -113,7 +113,7 @@ public class JsonParser {
             Map labelMap = (Map) map.get("Label");
             String label = (String) labelMap.get("value");
 
-            res.put(uri, new DBOntologyClass(label, uri));
+            res.put(uri, new DBOntologyClass(uri));
         }
 
         return res;

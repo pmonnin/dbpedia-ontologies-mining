@@ -84,18 +84,16 @@ public class DBCategoriesStatistics {
 			DBCategory dbCat = this.categories.get(cat);
 			
 			if(dbCat != null) {
-				boolean childrenModified = false;
 				for(String child : dbCat.getChildren()) {
 					DBCategory childClass = this.categories.get(child);
 					
 					if(childClass != null && childClass.getDepth() == -1) {
 						childClass.setDepth(dbCat.getDepth() + 1);
 						queue.add(child);
-						childrenModified = true;
 					}
 				}
 				
-				if(!childrenModified && dbCat.getDepth() > this.depth) {
+				if(dbCat.getDepth() > this.depth) {
 					this.depth = dbCat.getDepth();
 				}
 				
@@ -139,7 +137,6 @@ public class DBCategoriesStatistics {
 					}
 				}
 			}
-		
 		}
 	}
 }

@@ -82,18 +82,16 @@ public class DBOntologyClassesStatistics {
 			DBOntologyClass dbOnto = this.ontologies.get(onto);
 			
 			if(dbOnto != null) {
-				boolean childrenModified = false;
 				for(String child : dbOnto.getChildren()) {
 					DBOntologyClass childClass = this.ontologies.get(child);
 					
 					if(childClass != null && childClass.getDepth() == -1) {
 						childClass.setDepth(dbOnto.getDepth() + 1);
 						queue.add(child);
-						childrenModified = true;
 					}
 				}
 				
-				if(!childrenModified && dbOnto.getDepth() > this.depth) {
+				if(dbOnto.getDepth() > this.depth) {
 					this.depth = dbOnto.getDepth();
 				}
 				
