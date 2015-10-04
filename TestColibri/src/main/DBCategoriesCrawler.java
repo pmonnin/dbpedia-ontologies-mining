@@ -72,35 +72,17 @@ public class DBCategoriesCrawler {
 
         this.dbcategories = new HashMap<String, DBCategory>();
         
-        DBCategory currentCategory = null;
         for (ChildAndParent childAndParent : childrenAndParents) {
             String child = childAndParent.getChild().getValue();
             String parent = childAndParent.getParent() == null ? null : childAndParent.getParent().getValue();
 
-            if (currentCategory == null) {
-                currentCategory = new DBCategory(child);
-                
-                if (parent != null) {
-                    currentCategory.addParent(parent);
-                }
+            if(this.dbcategories.get(child) == null) {
+            	this.dbcategories.put(child, new DBCategory(child));
             }
             
-            else if (!child.equals(currentCategory.getUri())) {
-                this.dbcategories.put(currentCategory.getUri(), currentCategory);
-                currentCategory = new DBCategory(child);
-                if (parent != null)
-                    currentCategory.addParent(parent);
+            if(parent != null && !this.dbcategories.get(child).hasParent(parent)) {
+            	this.dbcategories.get(child).addParent(parent);
             }
-            
-            else {
-                if (parent != null) {
-                    currentCategory.addParent(parent);
-                }
-            }
-        }
-        
-        if(currentCategory != null && this.dbcategories.get(currentCategory.getUri()) == null) {
-        	this.dbcategories.put(currentCategory.getUri(), currentCategory);
         }
         
         childrenAndParents.clear();

@@ -88,37 +88,17 @@ public class DBYagoClassesCrawler {
         
         this.dbyagoclasses = new HashMap<String, DBYagoClass>();
         
-        DBYagoClass currentYagoClass = null;
         for (ChildAndParent childAndParent : childrenAndParents) {
             String child = childAndParent.getChild().getValue();
             String parent = childAndParent.getParent() == null ? null : childAndParent.getParent().getValue();
 
-            if (currentYagoClass == null) {
-                currentYagoClass = new DBYagoClass(child);
-                
-                if (parent != null) {
-                    currentYagoClass.addParent(parent);
-                }
+            if(this.dbyagoclasses.get(child) == null) {
+            	this.dbyagoclasses.put(child, new DBYagoClass(child));
             }
             
-            else if (!child.equals(currentYagoClass.getUri())) {
-                this.dbyagoclasses.put(currentYagoClass.getUri(), currentYagoClass);
-                
-                currentYagoClass = new DBYagoClass(child);
-                
-                if (parent != null) {
-                    currentYagoClass.addParent(parent);
-                }
+            if(parent != null && !this.dbyagoclasses.get(child).hasParent(parent)) {
+            	this.dbyagoclasses.get(child).addParent(parent);
             }
-            
-            else {
-                if (parent != null)
-                    currentYagoClass.addParent(parent);
-            }
-        }
-        
-        if(currentYagoClass != null && this.dbyagoclasses.get(currentYagoClass.getUri()) == null) {
-        	this.dbyagoclasses.put(currentYagoClass.getUri(), currentYagoClass);
         }
         
         childrenAndParents.clear();
