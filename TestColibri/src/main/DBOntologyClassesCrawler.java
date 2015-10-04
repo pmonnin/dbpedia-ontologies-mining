@@ -33,7 +33,7 @@ public class DBOntologyClassesCrawler {
      * @throws ParseException thrown when JSON is not valid
      */
     public static void main(String[] args) throws UnsupportedEncodingException, IOException, ParseException {
-        System.out.println("== START MAIN DB CATEGORIES CRAWLER ==");
+        System.out.println("== START MAIN DB ONTOLOGIES CRAWLER ==");
         DBOntologyClassesCrawler crawler = new DBOntologyClassesCrawler();
         crawler.computeOntologiesHierarchy();
         DBOntologyClassesStatistics stats = new DBOntologyClassesStatistics(crawler.getDbontologies());

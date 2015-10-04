@@ -33,7 +33,7 @@ public class DBYagoClassesCrawler {
      * @throws ParseException thrown when JSON is not valid
      */
     public static void main(String[] args) throws UnsupportedEncodingException, IOException, ParseException {
-        System.out.println("START MAIN");
+        System.out.println("== START MAIN DB YAGO CLASSES CRAWLER ==");
         DBYagoClassesCrawler crawler = new DBYagoClassesCrawler();
         crawler.computeParents();
         DBYagoClassesStatistics stats = new DBYagoClassesStatistics(crawler.getDbYagoClasses());
