@@ -3,7 +3,6 @@ package main;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Scanner;
 
 import latticecreation.PediaLattice;
@@ -11,9 +10,6 @@ import latticecreation.PediaLattice;
 import org.json.simple.parser.ParseException;
 
 import statistics.ComparisonStats;
-import dbpediaobjects.DBCategory;
-import dbpediaobjects.DBOntologyClass;
-import dbpediaobjects.DBYagoClass;
 
 /**
  * Main class for the application
@@ -43,30 +39,32 @@ public class Main {
         ComparisonStats comparisonStats = new ComparisonStats();
         int found = 0, proposed = 0;
         
+        System.out.println("== MAIN ALGORITHM OF COMPARISON ==");
+        
         // Crawling DB categories
-        System.out.println("DEBUT PARSAGE CATEGORIES");
-        DBCategoriesCrawler dbCategoriesCrawler = new DBCategoriesCrawler();
-        dbCategoriesCrawler.computeCategoriesHierarchy();
-        HashMap<String, DBCategory> dbcategories = dbCategoriesCrawler.getDbcategories();
+//        System.out.println("== CATEGORIES CRAWLING AND PARSING ==");
+//        DBCategoriesCrawler dbCategoriesCrawler = new DBCategoriesCrawler();
+//        dbCategoriesCrawler.computeCategoriesHierarchy();
+//        HashMap<String, DBCategory> dbcategories = dbCategoriesCrawler.getDbcategories();
 
         // Crawling DB ontologies
-        System.out.println("DEBUT PARSAGE ONTOLOGIES");
-        DBOntologyClassesCrawler dbOntologyClasses = new DBOntologyClassesCrawler();
-        dbOntologyClasses.computeOntologiesHierarchy();
-        HashMap<String, DBOntologyClass> dbontologies = dbOntologyClasses.getDbontologies();
+//        System.out.println("== ONTOLOGIES CRAWLING AND PARSING ==");
+//        DBOntologyClassesCrawler dbOntologyClasses = new DBOntologyClassesCrawler();
+//        dbOntologyClasses.computeOntologiesHierarchy();
+//        HashMap<String, DBOntologyClass> dbontologies = dbOntologyClasses.getDbontologies();
         
         // Crawling Yago classes
-        System.out.println("DEBUT PARSAGE YAGO");
-        DBYagoClassesCrawler dbYagoClasses = new DBYagoClassesCrawler();
-        dbYagoClasses.computeParents();
-        HashMap<String, DBYagoClass> dbyagoclasses = dbYagoClasses.getDbYagoClasses();
+//        System.out.println("== YAGO CLASSES CRAWLING AND PARSING ==");
+//        DBYagoClassesCrawler dbYagoClasses = new DBYagoClassesCrawler();
+//        dbYagoClasses.computeParents();
+//        HashMap<String, DBYagoClass> dbyagoclasses = dbYagoClasses.getDbYagoClasses();
 
         // We create the lattice
-        System.out.println("DEBUT CREATION LATTICE");
+        System.out.println("== LATTICE CREATION ==");
         PediaLattice lattice = new PediaLattice();
-        // lattice.deleteFirstIterationAttributes();
         ArrayList<PediaConcept> lc = lattice.execIterator();
 
+        /*
         // For each concept
         found = 0;
         proposed = 0;
@@ -125,11 +123,11 @@ public class Main {
         found = 0;
         proposed = 0;
         for (PediaConcept c : lc) {
-            /* Récupérer l'union des parents des classes yago */
+        	// We get the union of parents categorie
             ArrayList<String> latticeYagoClassesParents = c.unionYagoClassesParent();
             ArrayList<String> latticeYagoClasses = c.getYagoClasses();
 
-            /* Pour chaque classe yago du concept */
+         // For each concept category
             for (String yagoChild : latticeYagoClasses) {
                 for (String yagoParent : latticeYagoClassesParents) {
                     if (dbyagoclasses.get(yagoChild) != null && dbyagoclasses.get(yagoChild).hasParent(yagoParent)) {
@@ -145,14 +143,16 @@ public class Main {
         // Stats of comparison
         comparisonStats.setNbYagoFound(found);
         comparisonStats.setNbYagoProposed(proposed);
+        */
         
-        System.out.println("\n\nNombre d'ontologies trouvées: "+comparisonStats.getNbOntologiesFound());
-        System.out.println("Nombre d'ontologies proposées: "+comparisonStats.getNbOntologiesProposed());
-        System.out.println("Nombre de catégories trouvées: "+comparisonStats.getNbCategoriesFound());
-        System.out.println("Nombre de catégories proposées: "+comparisonStats.getNbCategoriesProposed());
-        System.out.println("Nombre de classes yago trouvées: "+comparisonStats.getNbYagoFound());
-        System.out.println("Nombre de classes yago proposées: "+comparisonStats.getNbYagoProposed());
-        System.out.println("\nFIN DU PROGRAMME EN : " + (new Date().getTime() - startDate.getTime()) / 1000 + " SECONDES.");
+        System.out.println("== PROPOSAL STATISTICS ==");
+        System.out.println("\n\nNombre d'ontologies trouvées: " +comparisonStats.getNbOntologiesFound());
+        System.out.println("Nombre d'ontologies proposées: " +comparisonStats.getNbOntologiesProposed());
+        System.out.println("Nombre de catégories trouvées: " +comparisonStats.getNbCategoriesFound());
+        System.out.println("Nombre de catégories proposées:  "+comparisonStats.getNbCategoriesProposed());
+        System.out.println("Nombre de classes yago trouvées: " +comparisonStats.getNbYagoFound());
+        System.out.println("Nombre de classes yago proposées: " +comparisonStats.getNbYagoProposed());
+        System.out.println("\nPROGRAM EXECUTION TIME: " + (new Date().getTime() - startDate.getTime()) / 1000 + " SECONDS");
         
         sc.close();
     }

@@ -1,6 +1,5 @@
 package latticecreation;
 
-import statistics.LatticeStats;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import org.json.simple.parser.ParseException;
 
 import serverlink.JsonParser;
 import serverlink.URLReader;
+import statistics.LatticeStats;
 import colibri.lib.Concept;
 import colibri.lib.Edge;
 import colibri.lib.HybridLattice;
@@ -35,13 +35,13 @@ public class PediaLattice {
     private LatticeStats latticeStats;
 
     public PediaLattice() throws ParseException, IOException {
-        latticeStats = new LatticeStats();
-        objects = new HashMap<>();
+        this.latticeStats = new LatticeStats();
+        this.objects = new HashMap<>();
         Relation rel = new TreeRelation();
 
         this.createLattice(rel);
 
-        lattice = new HybridLattice(rel);
+        this.lattice = new HybridLattice(rel);
     }
 
     /**
@@ -53,7 +53,12 @@ public class PediaLattice {
     public void createLattice(Relation rel) throws ParseException, IOException {
         URLReader urlReader = new URLReader();
 
-        String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose where { ?chose a <http://www.w3.org/2002/07/owl#Thing> } LIMIT 1000 ", "UTF-8"));
+        String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose "
+        		+ "where "
+        		+ "{ "
+        		+ "?chose a <http://www.w3.org/2002/07/owl#Thing> "
+        		+ "} "
+        		+ "LIMIT 1000 ", "UTF-8"));
 
         System.out.println("FIN 1ère REQUETE CREATION LATTICE");
         // We parse it to get the different results
@@ -85,7 +90,7 @@ public class PediaLattice {
                 for (LatticeObject obj : thread.getThreadObjects()) {
                     // We add the object to the lattice
                     obj.addToRelation(rel);
-                    objects.put(obj.getName(), obj);
+                    this.objects.put(obj.getName(), obj);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -96,7 +101,7 @@ public class PediaLattice {
     }
 
     public ArrayList<PediaConcept> execIterator() throws IOException, ParseException {
-        Iterator<Edge> it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
+        Iterator<Edge> it = this.lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
         ArrayList<PediaConcept> res = new ArrayList<>();
         HashMap<PediaConcept, Boolean> resHM = new HashMap<>();
         
@@ -121,7 +126,7 @@ public class PediaLattice {
                 String comp = (String) ite.next();
                 att1.add(comp);
             }
-            PediaConcept pc1 = new PediaConcept(obj1, att1, objects);
+            PediaConcept pc1 = new PediaConcept(obj1, att1, this.objects);
 
             // We take the 2nd object
             c = e.getLower();
@@ -140,7 +145,7 @@ public class PediaLattice {
                 String comp = (String) ite.next();
                 att2.add(comp);
             }
-            PediaConcept pc2 = new PediaConcept(obj2, att2, objects);
+            PediaConcept pc2 = new PediaConcept(obj2, att2, this.objects);
 
             
             /* We must not have the same concept several times so we check 
@@ -172,7 +177,7 @@ public class PediaLattice {
         }
 
         System.out.println("End exex iterator. The reconstruction of lattice is now finished!");
-        latticeStats.setNbConcept(res.size()); 
+        this.latticeStats.setNbConcept(res.size()); 
         return res;
     }
 }
