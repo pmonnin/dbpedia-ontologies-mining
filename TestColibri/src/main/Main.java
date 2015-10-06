@@ -144,12 +144,12 @@ public class Main {
         */
         
         System.out.println("== PROPOSAL STATISTICS ==");
-        System.out.println("\n\nNombre d'ontologies trouvées: " +comparisonStats.getNbOntologiesFound());
-        System.out.println("Nombre d'ontologies proposées: " +comparisonStats.getNbOntologiesProposed());
-        System.out.println("Nombre de catégories trouvées: " +comparisonStats.getNbCategoriesFound());
-        System.out.println("Nombre de catégories proposées:  "+comparisonStats.getNbCategoriesProposed());
-        System.out.println("Nombre de classes yago trouvées: " +comparisonStats.getNbYagoFound());
-        System.out.println("Nombre de classes yago proposées: " +comparisonStats.getNbYagoProposed());
+        System.out.println("Nombre d'ontologies trouvées: " + comparisonStats.getNbOntologiesFound());
+        System.out.println("Nombre d'ontologies proposées: " + comparisonStats.getNbOntologiesProposed());
+        System.out.println("Nombre de catégories trouvées: " + comparisonStats.getNbCategoriesFound());
+        System.out.println("Nombre de catégories proposées:  " + comparisonStats.getNbCategoriesProposed());
+        System.out.println("Nombre de classes yago trouvées: " + comparisonStats.getNbYagoFound());
+        System.out.println("Nombre de classes yago proposées: " + comparisonStats.getNbYagoProposed());
         System.out.println("\nPROGRAM EXECUTION TIME: " + (new Date().getTime() - startDate.getTime()) / 1000 + " SECONDS");
         
         sc.close();

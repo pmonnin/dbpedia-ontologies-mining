@@ -62,7 +62,6 @@ public class PediaLattice {
                 + "select distinct ?child where {"
                 + "?child dbo:wikiPageID ?pageId ."
                 + "?child rdf:type/rdfs:subClassOf* dbo:Person ."
-                + "FILTER (REGEX(STR(?child), \"http://dbpedia.org/page\", \"i\")) ."
                 + "}", "UTF-8"));
         
     	System.out.println("Selected pages number: " + pages.size());
