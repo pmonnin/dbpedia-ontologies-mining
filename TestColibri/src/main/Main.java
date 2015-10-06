@@ -1,7 +1,6 @@
 package main;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -62,9 +61,8 @@ public class Main {
         // We create the lattice
         System.out.println("== LATTICE CREATION ==");
         PediaLattice lattice = new PediaLattice();
-        ArrayList<PediaConcept> lc = lattice.execIterator();
+        /*ArrayList<PediaConcept> lc = lattice.execIterator();
 
-        /*
         // For each concept
         found = 0;
         proposed = 0;
