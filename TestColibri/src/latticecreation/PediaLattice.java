@@ -32,7 +32,7 @@ import colibri.lib.TreeRelation;
 public class PediaLattice {
 
     private Lattice lattice;
-    private HashMap<String, LatticeObject> objects;
+    private HashMap<String, DBPage> objects;
     private LatticeStats latticeStats;
 
     public PediaLattice() throws ParseException, IOException {
@@ -46,13 +46,14 @@ public class PediaLattice {
     }
 
     /**
-     * Creation of lattice
-     * @param rel 
+     * Lattice creation
+     * @param rel object representing relationship matrix
      * @throws ParseException
      * @throws IOException 
      */
     public void createLattice(Relation rel) throws ParseException, IOException {
     	// Ask for pages related to dbo:Person
+    	System.out.println("Crawling pages related to dbo:Person hierarchy...");
         List<ChildAndParent> pages = JSONReader.getChildrenAndParents(URLEncoder.encode(
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
                 + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
@@ -64,8 +65,41 @@ public class PediaLattice {
                 + "?child rdf:type/rdfs:subClassOf* dbo:Person ."
                 + "}", "UTF-8"));
         
+        System.out.print("Getting information for each page... ");
+        int rate = 0;
+        for(int i = 0 ; i < pages.size() ; i++) {
+        	if(i / pages.size() * 100 % 10 > rate) {
+        		rate = i / pages.size() * 100 % 10;
+        		System.out.print(i + " % ... ");
+        	}
+        	
+        	DBPage page = new DBPage(pages.get(i).getChild().getValue());
+        	
+        	// Relationships + addition to relation
+        	List<ChildAndParent> relationships = JSONReader.getChildrenAndParents(URLEncoder.encode(
+        			"select distinct ?child where {"
+        			+ "<" + page.getURI() + "> ?child ?other ."
+        			+ "}", "UTF-8"));
+        	
+        	for(ChildAndParent r : relationships) {
+        		page.addRelationship(r.getChild().getValue());
+        		rel.add(page.getURI(), r.getChild().getValue());
+        	}
+        	
+        	// Categories
+        	
+        	// Ontologies
+        	
+        	// Yago classes
+        	
+        	// Lattice relationship addition
+        }
+        
     	System.out.println("Selected pages number: " + pages.size());
         
+    	// For each page, we get available relationships
+    	
+    	
 //        URLReader urlReader = new URLReader();
 //
 //        String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose "

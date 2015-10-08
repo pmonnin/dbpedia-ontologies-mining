@@ -2,36 +2,30 @@ package latticecreation;
 
 import java.util.ArrayList;
 
-import colibri.lib.Relation;
+/**
+ * Represents a page of DBPedia with its URI, relationships, categories, ontologies and yago classes
+ * 
+ * @author Pierre Monnin
+ *
+ */
+public class DBPage {
 
-public class LatticeObject {
-
-    private String name;
-    private ArrayList<String> attributes;
+    private String uri;
+    private ArrayList<String> relationships;
     private ArrayList<String> ontologies;
     private ArrayList<String> categories;
     private ArrayList<String> yagoClasses;
 
-    public LatticeObject(String name) {
-        this.name = name;
-        this.attributes = new ArrayList<>();
+    public DBPage(String uri) {
+        this.uri = uri;
+        this.relationships = new ArrayList<>();
         this.ontologies = new ArrayList<>();
         this.categories = new ArrayList<>();
         this.yagoClasses = new ArrayList<>();
     }
 
-    public void addAttribute(String att) {
-        this.attributes.add(att);
-    }
-
-    public void addToRelation(Relation rel) {
-        for (int i = 0; i < this.attributes.size(); i++) {
-            rel.add(this.name, this.attributes.get(i));
-        }
-    }
-
-    public void deleteAttribute(String att) {
-        this.attributes.remove(att);
+    public void addRelationship(String r) {
+        this.relationships.add(r);
     }
 
     public ArrayList<String> getCategories() {
@@ -58,7 +52,7 @@ public class LatticeObject {
         this.categories = categories;
     }
 
-    public String getName() {
-        return name;
+    public String getURI() {
+        return this.uri;
     }
 }

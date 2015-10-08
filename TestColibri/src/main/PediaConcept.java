@@ -3,7 +3,7 @@ package main;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import latticecreation.LatticeObject;
+import latticecreation.DBPage;
 
 /**
  * Class of PediaConcept object
@@ -18,7 +18,7 @@ public class PediaConcept {
     private ArrayList<String> listeObjets, listeAttributs, categories, ontologies, yagoClasses;
     private ArrayList<PediaConcept> parents;
 
-    public PediaConcept(ArrayList<String> objets, ArrayList<String> attributs, HashMap<String, LatticeObject> objects) {
+    public PediaConcept(ArrayList<String> objets, ArrayList<String> attributs, HashMap<String, DBPage> objects) {
         listeObjets = objets;
         listeAttributs = attributs;
         parents = new ArrayList<>();
@@ -137,7 +137,7 @@ public class PediaConcept {
             this.getOntologies().remove(ont);
     }
 
-    public ArrayList<String> intersectOntologies(HashMap<String, LatticeObject> objects) {
+    public ArrayList<String> intersectOntologies(HashMap<String, DBPage> objects) {
         // On initialise la liste à retourner aux ontologies du premier objet
         ArrayList<String> returnOntologies = objects.get(listeObjets.get(0)).getOntologies();
 
@@ -147,7 +147,7 @@ public class PediaConcept {
             ArrayList<String> newReturnOntologies = new ArrayList<>();
 
             // On récupère le LatticeObject correspondant
-            LatticeObject currentObject = objects.get(listeObjets.get(i));
+            DBPage currentObject = objects.get(listeObjets.get(i));
             // on récupère ses ontologies
             ArrayList<String> currentOntologies = currentObject.getOntologies();
 
@@ -167,7 +167,7 @@ public class PediaConcept {
         return returnOntologies;
     }
     
-    private ArrayList<String> intersectYagoClasses(HashMap<String, LatticeObject> objects) {
+    private ArrayList<String> intersectYagoClasses(HashMap<String, DBPage> objects) {
         // On initialise la liste à retourner aux classes yago du premier objet
         ArrayList<String> returnYagoClasses = objects.get(listeObjets.get(0)).getYagoClasses();
 
@@ -177,7 +177,7 @@ public class PediaConcept {
             ArrayList<String> newReturnYagoClasses = new ArrayList<>();
 
             // On récupère le LatticeObject correspondant
-            LatticeObject currentObject = objects.get(listeObjets.get(i));
+            DBPage currentObject = objects.get(listeObjets.get(i));
             // on récupère ses ontologies
             ArrayList<String> currentYagoClasses = currentObject.getYagoClasses();
 
@@ -197,7 +197,7 @@ public class PediaConcept {
         return returnYagoClasses;
     }
 
-    public ArrayList<String> intersectCategories(HashMap<String, LatticeObject> objects) {
+    public ArrayList<String> intersectCategories(HashMap<String, DBPage> objects) {
         // On initialise la liste � retourner aux categories du premier objet
         ArrayList<String> returnCategories = objects.get(listeObjets.get(0)).getCategories();
 
@@ -207,7 +207,7 @@ public class PediaConcept {
             ArrayList<String> newReturnCategories = new ArrayList<>();
 
             // On r�cup�re le LatticeObject correspondant
-            LatticeObject currentObject = objects.get(listeObjets.get(i));
+            DBPage currentObject = objects.get(listeObjets.get(i));
             // on r�cup�re ses categories
             ArrayList<String> currentCategories = currentObject.getCategories();
 
