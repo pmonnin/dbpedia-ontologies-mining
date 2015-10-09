@@ -65,8 +65,8 @@ public class PediaLattice {
                 + "}", "UTF-8"));
         
         System.out.print("Getting information for each page... ");
-        int rate = 0;
-        int i = -1;
+        int rate = -1;
+        int i = 0;
         while(i < pages.size()) {
         	if(i / pages.size() * 100 % 100 > rate) {
         		rate = i / pages.size() * 100 % 100;
