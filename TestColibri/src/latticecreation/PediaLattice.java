@@ -48,10 +48,9 @@ public class PediaLattice {
     /**
      * Lattice creation
      * @param rel object representing relationship matrix
-     * @throws ParseException
-     * @throws IOException 
+     * @throws IOException if pages cannot be crawled
      */
-    public void createLattice(Relation rel) throws ParseException, IOException {
+    public void createLattice(Relation rel) throws IOException {
     	// Ask for pages related to dbo:Person
     	System.out.println("Crawling pages related to dbo:Person hierarchy...");
         List<ChildAndParent> pages = JSONReader.getChildrenAndParents(URLEncoder.encode(
@@ -67,32 +66,40 @@ public class PediaLattice {
         
         System.out.print("Getting information for each page... ");
         int rate = 0;
-        for(int i = 0 ; i < pages.size() ; i++) {
-        	if(i / pages.size() * 100 % 10 > rate) {
-        		rate = i / pages.size() * 100 % 10;
-        		System.out.print(i + " % ... ");
+        int i = -1;
+        while(i < pages.size()) {
+        	if(i / pages.size() * 100 % 100 > rate) {
+        		rate = i / pages.size() * 100 % 100;
+        		System.out.println(i + " % ... ");
         	}
         	
-        	DBPage page = new DBPage(pages.get(i).getChild().getValue());
-        	
-        	// Relationships + addition to relation
-        	List<ChildAndParent> relationships = JSONReader.getChildrenAndParents(URLEncoder.encode(
-        			"select distinct ?child where {"
-        			+ "<" + page.getURI() + "> ?child ?other ."
-        			+ "}", "UTF-8"));
-        	
-        	for(ChildAndParent r : relationships) {
-        		page.addRelationship(r.getChild().getValue());
-        		rel.add(page.getURI(), r.getChild().getValue());
+        	try {
+	        	DBPage page = new DBPage(pages.get(i).getChild().getValue());
+	        	
+	        	// Relationships + addition to lattice relation
+	        	List<ChildAndParent> relationships = JSONReader.getChildrenAndParents(URLEncoder.encode(
+	        			"select distinct ?child where {"
+	        			+ "<" + page.getURI() + "> ?child ?other ."
+	        			+ "}", "UTF-8"));
+	        	
+	        	for(ChildAndParent r : relationships) {
+	        		page.addRelationship(r.getChild().getValue());
+	        		rel.add(page.getURI(), r.getChild().getValue());
+	        	}
+	        	
+	        	// Categories
+	        	
+	        	// Ontologies
+	        	
+	        	// Yago classes
+	        	
+	        	i++;
+	        	this.objects.put(page.getURI(), page);
         	}
         	
-        	// Categories
-        	
-        	// Ontologies
-        	
-        	// Yago classes
-        	
-        	// Lattice relationship addition
+        	catch(IOException e) {
+        		System.err.println("Error while trying to get info on: " + pages.get(i) + ". New try...");
+        	}
         }
         
     	System.out.println("Selected pages number: " + pages.size());
