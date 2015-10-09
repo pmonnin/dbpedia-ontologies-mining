@@ -68,9 +68,9 @@ public class PediaLattice {
         int rate = -1;
         int i = 0;
         while(i < pages.size()) {
-        	if(i / pages.size() * 100 % 100 > rate) {
+        	if(i / pages.size() * 1000 % 1000 > rate) {
         		rate = i / pages.size() * 100 % 100;
-        		System.out.println(i + " % ... ");
+        		System.out.println(rate + " %0 ... ");
         	}
         	
         	try {
