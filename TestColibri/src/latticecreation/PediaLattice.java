@@ -135,7 +135,7 @@ public class PediaLattice {
         	}
         	
         	catch(IOException e) {
-        		System.err.println("Error while trying to get info on: " + pages.get(i) + ". New try...");
+        		System.err.println("Error while trying to get info on: " + pages.get(i).getChild().getValue() + ". New try...");
         	}
         }
         
