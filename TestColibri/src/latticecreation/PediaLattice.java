@@ -48,12 +48,14 @@ public class PediaLattice {
     /**
      * Lattice creation
      * @param rel object representing relationship matrix
-     * @throws IOException if pages cannot be crawled
      */
-    public void createLattice(Relation rel) throws IOException {
+    public void createLattice(Relation rel) {
     	// Ask for pages related to dbo:Person
     	System.out.println("Crawling pages related to dbo:Person hierarchy...");
-        List<ChildAndParent> pages = JSONReader.getChildrenAndParents(URLEncoder.encode(
+        List<ChildAndParent> pages = null;
+        		
+        try {
+        	pages = JSONReader.getChildrenAndParents(URLEncoder.encode(
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
                 + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
                 + "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
@@ -63,7 +65,12 @@ public class PediaLattice {
                 + "?child dbo:wikiPageID ?pageId ."
                 + "?child rdf:type/rdfs:subClassOf* dbo:Person ."
                 + "}", "UTF-8"));
+        }
         
+        catch(IOException e) {
+        	System.err.println("Error while trying to get the subset pages");
+        }
+        	
         // For each page we get
         System.out.print("Getting information for each page... ");
         int rate = -1;
