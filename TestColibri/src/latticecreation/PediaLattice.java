@@ -64,12 +64,13 @@ public class PediaLattice {
                 + "?child rdf:type/rdfs:subClassOf* dbo:Person ."
                 + "}", "UTF-8"));
         
+        // For each page we get
         System.out.print("Getting information for each page... ");
         int rate = -1;
         int i = 0;
         while(i < pages.size()) {
-        	if(i / pages.size() * 100 % 100 > rate) {
-        		rate = i / pages.size() * 100 % 100;
+        	if((double) i / (double) pages.size() * 100 % 100 > rate) {
+        		rate = (int) ((double) i / (double) pages.size() * 100 % 100);
         		System.out.println(rate + " % ... ");
         	}
         	
@@ -103,57 +104,6 @@ public class PediaLattice {
         }
         
     	System.out.println("Selected pages number: " + pages.size());
-        
-    	// For each page, we get available relationships
-    	
-    	
-//        URLReader urlReader = new URLReader();
-//
-//        String jsonResponse = urlReader.getJSON(URLEncoder.encode("select distinct ?chose "
-//        		+ "where "
-//        		+ "{ "
-//        		+ "?chose a <http://www.w3.org/2002/07/owl#Thing> "
-//        		+ "} "
-//        		+ "LIMIT 1000 ", "UTF-8"));
-//
-//        System.out.println("FIN 1ère REQUETE CREATION LATTICE");
-//        // We parse it to get the different results
-//        JsonParser parser = new JsonParser(jsonResponse);
-//        ArrayList<String> results = parser.getResults("chose");
-//
-//        int keySize = results.size();
-//        ArrayList<LatticeCategoriesOntologiesThread> threadList = new ArrayList<LatticeCategoriesOntologiesThread>();
-//        int nbCores = Runtime.getRuntime().availableProcessors();
-//        ArrayList<LatticeObject> threadObjects = new ArrayList<LatticeObject>();
-//
-//        // Add relationship
-//        for (int i = 0; i < results.size(); i++) {
-//            LatticeObject obj = new LatticeObject(results.get(i));
-//            threadObjects.add(obj);
-//
-//            if (i % Math.ceil(keySize / nbCores) == 0 && i != 0) {
-//                LatticeCategoriesOntologiesThread thread = new LatticeCategoriesOntologiesThread(threadObjects);
-//                thread.start();
-//                threadList.add(thread);
-//                threadObjects = new ArrayList<>();
-//            }
-//        }
-//
-//        for (LatticeCategoriesOntologiesThread thread : threadList) {
-//            try {
-//                thread.join();
-//                System.out.println("LATTICE THREAD TERMINE :)");
-//                for (LatticeObject obj : thread.getThreadObjects()) {
-//                    // We add the object to the lattice
-//                    obj.addToRelation(rel);
-//                    this.objects.put(obj.getName(), obj);
-//                }
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        System.out.println("FIN 2ème REQUETE CREATION LATTICE");
     }
 
     public ArrayList<PediaConcept> execIterator() throws IOException, ParseException {
