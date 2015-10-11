@@ -104,7 +104,7 @@ public class PediaLattice {
 	        			"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
 	        			+ "select distinct ?child where {"
 	        			+ "<" + page.getURI() + "> rdf:type ?child . "
-    					+ "FILTER(REGEXP(STR(?child), \"http://dbpedia.org/ontology\", \"i\")) . "
+    					+ "FILTER(REGEX(STR(?child), \"http://dbpedia.org/ontology\", \"i\")) . "
 	        			+ "}", "UTF-8"));
 	        	
 	        	for(ChildAndParent o : ontologies) {
@@ -116,7 +116,7 @@ public class PediaLattice {
 	        			"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
 	        			+ "select distinct ?child where {"
 	        			+ "<" + page.getURI() + "> rdf:type ?child . "
-    					+ "FILTER(REGEXP(STR(?child), \"http://dbpedia.org/class/yago\", \"i\")) . "
+    					+ "FILTER(REGEX(STR(?child), \"http://dbpedia.org/class/yago\", \"i\")) . "
 	        			+ "}", "UTF-8"));
 	        	
 	        	for(ChildAndParent y : yagoClasses) {
