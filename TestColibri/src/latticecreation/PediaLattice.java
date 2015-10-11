@@ -69,7 +69,7 @@ public class PediaLattice {
         int rate = -1;
         int i = 0;
         while(i < pages.size()) {
-        	if((double) i / (double) pages.size() * 100 % 100 > rate) {
+        	if((int) ((double) i / (double) pages.size() * 100 % 100) > rate) {
         		rate = (int) ((double) i / (double) pages.size() * 100 % 100);
         		System.out.println(rate + " % ... ");
         	}
@@ -89,6 +89,8 @@ public class PediaLattice {
 	        	}
 	        	
 	        	// Categories
+	        	List<ChildAndParent> categories = JSONReader.getChildrenAndParents(URLEncoder.encode(
+	        			"select distinct ?", "UTF-8"));
 	        	
 	        	// Ontologies
 	        	
