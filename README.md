@@ -19,27 +19,6 @@ All useful files
 * http://wiki.dbpedia.org/services-resources/ontology : ontologies (warning: some files are also available on previous links)
 * http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/links/ : files used for the Yago hierarchy (see below)
 
-Subset of files to use
-----------------------
-
-* DBPedia Ontology T-BOX (available on http://wiki.dbpedia.org/services-resources/ontology)
-* On http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/en/ :
-  * article_categories_en.ttl
-  * category_labels_en.ttl
-  * genders_en.ttl
-  * geo_coordinates_en.ttl
-  * geonames_links_en_en.ttl
-  * infobox_properties_en.ttl
-  * infobox_property_definitions_en.ttl
-  * instance_types_en.ttl
-  * labels_en.ttl
-  * skos_categories_en.ttl
-  * topical_concepts_en.ttl
-  * pnd_en.ttl
-* On http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/links/ :
-  * yago_types.nt
-  * yago_taxonomy.nt
-
 
 API Colibri
 -----------
@@ -50,11 +29,5 @@ Used to build the lattice. Available here : https://code.google.com/p/colibri-ja
 Access to SPARQL endpoint
 -------------------------
 
-We have set up a Fuzeki available through eduroam or UL VPN here : http://sbc2015.telecomnancy.univ-lorraine.fr:8080/
-
-You can query it by selecting the projects_fr via the control panel. The URL
-is http://sbc2015.telecomnancy.univ-lorraine.fr:8080/sparql.tpl
-
-You can query it from the Java code with two GET variables :
-* query : where you put the query encoded with UTF-8
-* output : usually the JSON format (output=json)
+We have set up a Virtuoso server for our work. It is not available for outside
+queries.
