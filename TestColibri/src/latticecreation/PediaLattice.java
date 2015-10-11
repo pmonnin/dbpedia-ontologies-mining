@@ -80,7 +80,7 @@ public class PediaLattice {
 	        	// Relationships + addition to lattice relation
 	        	List<ChildAndParent> relationships = JSONReader.getChildrenAndParents(URLEncoder.encode(
 	        			"select distinct ?child where {"
-	        			+ "<" + page.getURI() + "> ?child ?other ."
+	        			+ "<" + page.getURI() + "> ?child ?other . "
 	        			+ "}", "UTF-8"));
 	        	
 	        	for(ChildAndParent r : relationships) {
@@ -92,7 +92,7 @@ public class PediaLattice {
 	        	List<ChildAndParent> categories = JSONReader.getChildrenAndParents(URLEncoder.encode(
 	        			"PREFIX dcterms:<http://purl.org/dc/terms/> "
 	        			+ "select distinct ?child where {"
-	        			+ "<" + page.getURI() + "> dcterms:subject ?child ."
+	        			+ "<" + page.getURI() + "> dcterms:subject ?child . "
 	        			+ "}", "UTF-8"));
 	        	
 	        	for(ChildAndParent c : categories) {
@@ -103,8 +103,8 @@ public class PediaLattice {
 	        	List<ChildAndParent> ontologies = JSONReader.getChildrenAndParents(URLEncoder.encode(
 	        			"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
 	        			+ "select distinct ?child where {"
-	        			+ "<" + page.getURI() + "> rdf:type ?child ."
-    					+ "FILTER(REGEXP(STR(?child), \"http://dbpedia.org/ontology\", \"i\")) ."
+	        			+ "<" + page.getURI() + "> rdf:type ?child . "
+    					+ "FILTER(REGEXP(STR(?child), \"http://dbpedia.org/ontology\", \"i\")) . "
 	        			+ "}", "UTF-8"));
 	        	
 	        	for(ChildAndParent o : ontologies) {
@@ -115,8 +115,8 @@ public class PediaLattice {
 	        	List<ChildAndParent> yagoClasses = JSONReader.getChildrenAndParents(URLEncoder.encode(
 	        			"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
 	        			+ "select distinct ?child where {"
-	        			+ "<" + page.getURI() + "> rdf:type ?child ."
-    					+ "FILTER(REGEXP(STR(?child), \"http://dbpedia.org/class/yago\", \"i\")) ."
+	        			+ "<" + page.getURI() + "> rdf:type ?child . "
+    					+ "FILTER(REGEXP(STR(?child), \"http://dbpedia.org/class/yago\", \"i\")) . "
 	        			+ "}", "UTF-8"));
 	        	
 	        	for(ChildAndParent y : yagoClasses) {
