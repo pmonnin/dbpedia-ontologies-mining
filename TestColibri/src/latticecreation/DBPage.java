@@ -32,14 +32,18 @@ public class DBPage {
         return this.categories;
     }
 
-    public void addOntology(String newOntologies) {
-        this.ontologies.add(newOntologies);
+    public void addOntology(String ontology) {
+        this.ontologies.add(ontology);
     }
 
     public ArrayList<String> getOntologies() {
         return this.ontologies;
     }
 
+    public void addYagoClass(String yagoClass) {
+    	this.yagoClasses.add(yagoClass);
+    }
+    
     public ArrayList<String> getYagoClasses() {
         return this.yagoClasses;
     }
@@ -48,6 +52,10 @@ public class DBPage {
         this.ontologies = ontologies;
     }
 
+    public void addCategory(String category) {
+    	this.categories.add(category);
+    }
+    
     public void setCategories(ArrayList<String> categories) {
         this.categories = categories;
     }

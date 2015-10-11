@@ -90,11 +90,38 @@ public class PediaLattice {
 	        	
 	        	// Categories
 	        	List<ChildAndParent> categories = JSONReader.getChildrenAndParents(URLEncoder.encode(
-	        			"select distinct ?", "UTF-8"));
+	        			"PREFIX dcterms:<http://purl.org/dc/terms/> "
+	        			+ "select distinct ?child where {"
+	        			+ "<" + page.getURI() + "> dcterms:subject ?child ."
+	        			+ "}", "UTF-8"));
+	        	
+	        	for(ChildAndParent c : categories) {
+	        		page.addCategory(c.getChild().getValue());
+	        	}
 	        	
 	        	// Ontologies
+	        	List<ChildAndParent> ontologies = JSONReader.getChildrenAndParents(URLEncoder.encode(
+	        			"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+	        			+ "select distinct ?child where {"
+	        			+ "<" + page.getURI() + "> rdf:type ?child ."
+    					+ "FILTER(REGEXP(STR(?child), \"http://dbpedia.org/ontology\", \"i\")) ."
+	        			+ "}", "UTF-8"));
+	        	
+	        	for(ChildAndParent o : ontologies) {
+	        		page.addOntology(o.getChild().getValue());
+	        	}
 	        	
 	        	// Yago classes
+	        	List<ChildAndParent> yagoClasses = JSONReader.getChildrenAndParents(URLEncoder.encode(
+	        			"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+	        			+ "select distinct ?child where {"
+	        			+ "<" + page.getURI() + "> rdf:type ?child ."
+    					+ "FILTER(REGEXP(STR(?child), \"http://dbpedia.org/class/yago\", \"i\")) ."
+	        			+ "}", "UTF-8"));
+	        	
+	        	for(ChildAndParent y : yagoClasses) {
+	        		page.addYagoClass(y.getChild().getValue());
+	        	}
 	        	
 	        	i++;
 	        	this.objects.put(page.getURI(), page);
