@@ -1,4 +1,4 @@
-package latticecreation;
+package pedialattice;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import main.PediaConcept;
 
 import org.json.simple.parser.ParseException;
 
@@ -21,21 +19,23 @@ import colibri.lib.Lattice;
 import colibri.lib.Relation;
 import colibri.lib.Traversal;
 import colibri.lib.TreeRelation;
+import dbpediaobjects.DBPage;
 
 /**
  * Lattice's construction
  * 
  * @author Damien Flament
  * @author Soline Blanc
+ * @author Pierre Monnin
  *
  */
-public class PediaLattice {
+public class PediaLatticeFactory {
 
     private Lattice lattice;
     private HashMap<String, DBPage> objects;
     private LatticeStats latticeStats;
 
-    public PediaLattice() throws ParseException, IOException {
+    public PediaLatticeFactory() throws ParseException, IOException {
         this.latticeStats = new LatticeStats();
         this.objects = new HashMap<>();
         Relation rel = new TreeRelation();

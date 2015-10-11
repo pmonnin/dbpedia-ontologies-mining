@@ -1,9 +1,9 @@
-package main;
+package pedialattice;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import latticecreation.DBPage;
+import dbpediaobjects.DBPage;
 
 /**
  * Class of PediaConcept object

@@ -1,4 +1,4 @@
-package latticecreation;
+package dbpediaobjects;
 
 import java.util.ArrayList;
 

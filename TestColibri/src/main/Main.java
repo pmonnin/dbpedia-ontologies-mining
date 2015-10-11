@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Scanner;
 
-import latticecreation.PediaLattice;
-
 import org.json.simple.parser.ParseException;
 
+import pedialattice.PediaLatticeFactory;
 import statistics.ComparisonStats;
 
 /**
@@ -60,7 +59,7 @@ public class Main {
 
         // We create the lattice
         System.out.println("== LATTICE CREATION ==");
-        PediaLattice lattice = new PediaLattice();
+        PediaLatticeFactory lattice = new PediaLatticeFactory();
         /*ArrayList<PediaConcept> lc = lattice.execIterator();
 
         // For each concept
