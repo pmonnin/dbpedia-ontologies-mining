@@ -30,15 +30,14 @@ public final class JSONReader {
      * 
      * @param request SPARQL request to execute
      * @return children and parents list
+     * @throws IOException when request is incorrect
      */
-    public static List<ChildAndParent> getChildrenAndParents(String request) {
+    public static List<ChildAndParent> getChildrenAndParents(String request) throws IOException {
         SparqlResponse response = new SparqlResponse();
 
         try {
             response = mapper.readValue(new URL(SERVER_CRAN + request), SparqlResponse.class);
         } catch (JsonParseException | JsonMappingException | MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
 
