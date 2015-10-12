@@ -11,10 +11,8 @@ import org.json.simple.parser.ParseException;
 
 import serverlink.ChildAndParent;
 import serverlink.JSONReader;
-import statistics.LatticeStats;
 import colibri.lib.Concept;
 import colibri.lib.Edge;
-import colibri.lib.HybridLattice;
 import colibri.lib.Lattice;
 import colibri.lib.Relation;
 import colibri.lib.Traversal;
@@ -32,24 +30,21 @@ import dbpediaobjects.DBPage;
 public class PediaLatticeFactory {
 
     private Lattice lattice;
-    private HashMap<String, DBPage> objects;
-    private LatticeStats latticeStats;
+    private HashMap<String, DBPage> dbPages;
 
     public PediaLatticeFactory() throws ParseException, IOException {
-        this.latticeStats = new LatticeStats();
-        this.objects = new HashMap<>();
-        Relation rel = new TreeRelation();
-
-        this.createLattice(rel);
-
-        this.lattice = new HybridLattice(rel);
+        this.dbPages = new HashMap<>();
+        this.createLattice();
     }
 
     /**
      * Lattice creation
-     * @param rel object representing relationship matrix
      */
-    public void createLattice(Relation rel) {
+    public void createLattice() {
+    	// Lattice objects from colibri
+    	Relation rel = new TreeRelation();
+    	
+    	
     	// Ask for pages related to dbo:Person
     	System.out.println("Crawling pages related to dbo:Person hierarchy...");
         List<ChildAndParent> pages = null;
@@ -131,7 +126,7 @@ public class PediaLatticeFactory {
 	        	}
 	        	
 	        	i++;
-	        	this.objects.put(page.getURI(), page);
+	        	this.dbPages.put(page.getURI(), page);
         	}
         	
         	catch(IOException e) {
@@ -139,10 +134,15 @@ public class PediaLatticeFactory {
         	}
         }
         
-    	System.out.println("Selected pages number: " + pages.size());
+        // Lattice construction
+        
+        // Statistics
+        System.out.println("=== LATTICE STATISTICS ===");
+        System.out.println("Selected pages number: " + pages.size());
+        System.out.println("==========================");
     }
 
-    public ArrayList<PediaConcept> execIterator() throws IOException, ParseException {
+    public ArrayList<PediaConcept> execIterator() {
         Iterator<Edge> it = this.lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
         ArrayList<PediaConcept> res = new ArrayList<>();
         HashMap<PediaConcept, Boolean> resHM = new HashMap<>();
@@ -168,7 +168,7 @@ public class PediaLatticeFactory {
                 String comp = (String) ite.next();
                 att1.add(comp);
             }
-            PediaConcept pc1 = new PediaConcept(obj1, att1, this.objects);
+            PediaConcept pc1 = new PediaConcept(obj1, att1, this.dbPages);
 
             // We take the 2nd object
             c = e.getLower();
@@ -187,7 +187,7 @@ public class PediaLatticeFactory {
                 String comp = (String) ite.next();
                 att2.add(comp);
             }
-            PediaConcept pc2 = new PediaConcept(obj2, att2, this.objects);
+            PediaConcept pc2 = new PediaConcept(obj2, att2, this.dbPages);
 
             
             /* We must not have the same concept several times so we check 
@@ -219,7 +219,6 @@ public class PediaLatticeFactory {
         }
 
         System.out.println("End exex iterator. The reconstruction of lattice is now finished!");
-        this.latticeStats.setNbConcept(res.size()); 
         return res;
     }
 }

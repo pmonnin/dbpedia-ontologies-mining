@@ -2,12 +2,16 @@ package main;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import org.json.simple.parser.ParseException;
 
 import pedialattice.PediaLatticeFactory;
 import statistics.ComparisonStats;
+import dbpediaobjects.DBCategory;
+import dbpediaobjects.DBOntologyClass;
+import dbpediaobjects.DBYagoClass;
 
 /**
  * Main class for the application
@@ -40,26 +44,26 @@ public class Main {
         System.out.println("== MAIN ALGORITHM OF COMPARISON ==");
         
         // Crawling DB categories
-//        System.out.println("== CATEGORIES CRAWLING AND PARSING ==");
-//        DBCategoriesCrawler dbCategoriesCrawler = new DBCategoriesCrawler();
-//        dbCategoriesCrawler.computeCategoriesHierarchy();
-//        HashMap<String, DBCategory> dbcategories = dbCategoriesCrawler.getDbcategories();
+        System.out.println("== CATEGORIES CRAWLING AND PARSING ==");
+        DBCategoriesCrawler dbCategoriesCrawler = new DBCategoriesCrawler();
+        dbCategoriesCrawler.computeCategoriesHierarchy();
+        HashMap<String, DBCategory> dbcategories = dbCategoriesCrawler.getDbcategories();
 
         // Crawling DB ontologies
-//        System.out.println("== ONTOLOGIES CRAWLING AND PARSING ==");
-//        DBOntologyClassesCrawler dbOntologyClasses = new DBOntologyClassesCrawler();
-//        dbOntologyClasses.computeOntologiesHierarchy();
-//        HashMap<String, DBOntologyClass> dbontologies = dbOntologyClasses.getDbontologies();
+        System.out.println("== ONTOLOGIES CRAWLING AND PARSING ==");
+        DBOntologyClassesCrawler dbOntologyClasses = new DBOntologyClassesCrawler();
+        dbOntologyClasses.computeOntologiesHierarchy();
+        HashMap<String, DBOntologyClass> dbontologies = dbOntologyClasses.getDbontologies();
         
         // Crawling Yago classes
-//        System.out.println("== YAGO CLASSES CRAWLING AND PARSING ==");
-//        DBYagoClassesCrawler dbYagoClasses = new DBYagoClassesCrawler();
-//        dbYagoClasses.computeParents();
-//        HashMap<String, DBYagoClass> dbyagoclasses = dbYagoClasses.getDbYagoClasses();
+        System.out.println("== YAGO CLASSES CRAWLING AND PARSING ==");
+        DBYagoClassesCrawler dbYagoClasses = new DBYagoClassesCrawler();
+        dbYagoClasses.computeParents();
+        HashMap<String, DBYagoClass> dbyagoclasses = dbYagoClasses.getDbYagoClasses();
 
         // We create the lattice
         System.out.println("== LATTICE CREATION ==");
-        PediaLatticeFactory lattice = new PediaLatticeFactory();
+        PediaLatticeFactory latticeFactory = new PediaLatticeFactory();
         /*ArrayList<PediaConcept> lc = lattice.execIterator();
 
         // For each concept
