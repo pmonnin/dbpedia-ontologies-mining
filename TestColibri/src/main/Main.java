@@ -1,12 +1,14 @@
 package main;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 
 import org.json.simple.parser.ParseException;
 
+import pedialattice.PediaConcept;
 import pedialattice.PediaLatticeFactory;
 import statistics.ComparisonStats;
 import dbpediaobjects.DBCategory;
@@ -64,10 +66,10 @@ public class Main {
         // We create the lattice
         System.out.println("== LATTICE CREATION ==");
         PediaLatticeFactory latticeFactory = new PediaLatticeFactory();
-        /*ArrayList<PediaConcept> lc = lattice.execIterator();
+        ArrayList<PediaConcept> dbLattice = latticeFactory.getDBLattice();
 
         // For each concept
-        found = 0;
+        /*found = 0;
         proposed = 0;
         for (PediaConcept c : lc) {
         	// We get the union of parents ontology classes

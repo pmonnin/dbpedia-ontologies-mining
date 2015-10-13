@@ -13,6 +13,7 @@ import serverlink.ChildAndParent;
 import serverlink.JSONReader;
 import colibri.lib.Concept;
 import colibri.lib.Edge;
+import colibri.lib.HybridLattice;
 import colibri.lib.Lattice;
 import colibri.lib.Relation;
 import colibri.lib.Traversal;
@@ -31,6 +32,7 @@ public class PediaLatticeFactory {
 
     private Lattice lattice;
     private HashMap<String, DBPage> dbPages;
+    private ArrayList<PediaConcept> dbLattice;
 
     public PediaLatticeFactory() throws ParseException, IOException {
         this.dbPages = new HashMap<>();
@@ -43,7 +45,6 @@ public class PediaLatticeFactory {
     public void createLattice() {
     	// Lattice objects from colibri
     	Relation rel = new TreeRelation();
-    	
     	
     	// Ask for pages related to dbo:Person
     	System.out.println("Crawling pages related to dbo:Person hierarchy...");
@@ -135,13 +136,42 @@ public class PediaLatticeFactory {
         }
         
         // Lattice construction
+        System.out.print("Constructing lattice... ");
+        this.lattice = new HybridLattice(rel);
+        int edgesNumber = 0;
+        
+        	// Edges number computation
+       Iterator<Edge> it = this.lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
+       while(it.hasNext()) {
+    	   edgesNumber++;
+    	   it.next();
+       }
+       
+       		// Working over edges
+       it = this.lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
+       rate = -1;
+       i = 0;
+       while(it.hasNext()) {
+    	   if((int) ((double) i / (double) pages.size() * 100 % 100) > rate) {
+       			rate = (int) ((double) i / (double) pages.size() * 100 % 100);
+       			System.out.println(rate + " % ... ");
+    	   }
+    	   
+    	   Edge currentEdge = it.next();
+    	   i++;
+       }
         
         // Statistics
         System.out.println("=== LATTICE STATISTICS ===");
         System.out.println("Selected pages number: " + pages.size());
+        System.out.println("Lattice edges number: " + edgesNumber);
         System.out.println("==========================");
     }
 
+    public ArrayList<PediaConcept> getDBLattice() {
+    	return this.dbLattice;
+    }
+    
     public ArrayList<PediaConcept> execIterator() {
         Iterator<Edge> it = this.lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
         ArrayList<PediaConcept> res = new ArrayList<>();
