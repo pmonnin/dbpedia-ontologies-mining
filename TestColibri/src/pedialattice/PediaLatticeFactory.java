@@ -14,7 +14,6 @@ import serverlink.JSONReader;
 import colibri.lib.Concept;
 import colibri.lib.Edge;
 import colibri.lib.HybridLattice;
-import colibri.lib.Lattice;
 import colibri.lib.Relation;
 import colibri.lib.Traversal;
 import colibri.lib.TreeRelation;
@@ -30,7 +29,6 @@ import dbpediaobjects.DBPage;
  */
 public class PediaLatticeFactory {
 
-    private Lattice lattice;
     private HashMap<String, DBPage> dbPages;
     private ArrayList<PediaConcept> dbLattice;
 
@@ -137,20 +135,22 @@ public class PediaLatticeFactory {
         
         // Lattice construction
         System.out.print("Constructing lattice... ");
-        this.lattice = new HybridLattice(rel);
+        HybridLattice lattice = new HybridLattice(rel);
         int edgesNumber = 0;
         
         	// Edges number computation
-       Iterator<Edge> it = this.lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
+       Iterator<Edge> it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
        while(it.hasNext()) {
     	   edgesNumber++;
     	   it.next();
        }
        
        		// Working over edges
-       it = this.lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
+       it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
        rate = -1;
        i = 0;
+       HashMap<Concept, PediaConcept> processed = new HashMap<Concept, PediaConcept>();
+       
        while(it.hasNext()) {
     	   if((int) ((double) i / (double) pages.size() * 100 % 100) > rate) {
        			rate = (int) ((double) i / (double) pages.size() * 100 % 100);
@@ -159,96 +159,38 @@ public class PediaLatticeFactory {
     	   
     	   Edge currentEdge = it.next();
     	   i++;
+    	   
+    	   // Create upper / lower concepts relation
+    	   Concept upperConcept = currentEdge.getUpper();
+    	   PediaConcept upperPediaConcept = processed.get(upperConcept);
+    	   
+    	   if(upperPediaConcept == null) {
+    		   upperPediaConcept = new PediaConcept(upperConcept, this.dbPages);
+    		   processed.put(upperConcept, upperPediaConcept);
+    		   this.dbLattice.add(upperPediaConcept);
+    	   }
+    	   
+    	   Concept lowerConcept = currentEdge.getLower();
+    	   PediaConcept lowerPediaConcept = processed.get(lowerConcept);
+    	   
+    	   if(lowerPediaConcept == null) {
+    		   lowerPediaConcept = new PediaConcept(lowerConcept, this.dbPages);
+    		   processed.put(lowerConcept, lowerPediaConcept);
+    		   this.dbLattice.add(lowerPediaConcept);
+    	   }
+    	   
+    	   lowerPediaConcept.addParentPediaConcept(upperPediaConcept);
        }
         
         // Statistics
         System.out.println("=== LATTICE STATISTICS ===");
         System.out.println("Selected pages number: " + pages.size());
         System.out.println("Lattice edges number: " + edgesNumber);
+        System.out.println("Lattice concepts number: " + this.dbLattice.size());
         System.out.println("==========================");
     }
 
     public ArrayList<PediaConcept> getDBLattice() {
     	return this.dbLattice;
-    }
-    
-    public ArrayList<PediaConcept> execIterator() {
-        Iterator<Edge> it = this.lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
-        ArrayList<PediaConcept> res = new ArrayList<>();
-        HashMap<PediaConcept, Boolean> resHM = new HashMap<>();
-        
-        System.out.println("BEGIN EXEC ITERATOR");
-        while (it.hasNext()) {
-            Edge e = it.next();
-            
-            // We take the 1st object
-            Concept c = e.getUpper();
-            Iterator<Comparable> ite = c.getObjects().iterator();
-            ArrayList<String> obj1 = new ArrayList<>();
-            ArrayList<String> att1 = new ArrayList<>();
-           
-            while (ite.hasNext()) {
-                String comp = (String) ite.next();
-                obj1.add(comp);
-            }
-
-            ite = c.getAttributes().iterator();
-
-            while (ite.hasNext()) {
-                String comp = (String) ite.next();
-                att1.add(comp);
-            }
-            PediaConcept pc1 = new PediaConcept(obj1, att1, this.dbPages);
-
-            // We take the 2nd object
-            c = e.getLower();
-            ite = c.getObjects().iterator();
-            ArrayList<String> obj2 = new ArrayList<>();
-            ArrayList<String> att2 = new ArrayList<>();
-            
-            while (ite.hasNext()) {
-                String comp = (String) ite.next();
-                obj2.add(comp);
-            }
-
-            ite = c.getAttributes().iterator();
-
-            while (ite.hasNext()) {
-                String comp = (String) ite.next();
-                att2.add(comp);
-            }
-            PediaConcept pc2 = new PediaConcept(obj2, att2, this.dbPages);
-
-            
-            /* We must not have the same concept several times so we check 
-             * if res doesn't contain pc1 and pc2 yet, before adding them
-             */
-            Boolean isIn = resHM.get(pc1);
-            if (isIn == null) {
-                // We add it to the array of results
-                res.add(pc1);
-                resHM.put(pc1, true);
-            }
-
-            // We check if res contains pc2
-            isIn = resHM.get(pc2);
-            if (isIn == null) {
-                // pc2 is the child of pc1
-                pc2.addParentPediaConcept(pc1);
-
-                // We add it to the array of results
-                res.add(pc2);
-                resHM.put(pc2, true);
-            } else {
-                /*
-                 * Otherwise, pc2 is already contained in the list, so we get it and we add pc1
-                 * in its list of parents
-                 */
-                res.get(res.indexOf(pc2)).addParentPediaConcept(pc1);
-            }
-        }
-
-        System.out.println("End exex iterator. The reconstruction of lattice is now finished!");
-        return res;
     }
 }

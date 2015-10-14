@@ -3,6 +3,7 @@ package pedialattice;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import colibri.lib.Concept;
 import dbpediaobjects.DBPage;
 
 /**
@@ -15,49 +16,56 @@ import dbpediaobjects.DBPage;
  * 
  */
 public class PediaConcept {
-
-    private ArrayList<String> listeObjets;
-    private ArrayList<String> listeAttributs;
+    private ArrayList<String> objects;
+    private ArrayList<String> attributes;
     private ArrayList<String> categories;
     private ArrayList<String> ontologies;
     private ArrayList<String> yagoClasses;
     private ArrayList<PediaConcept> parents;
 
-    public PediaConcept(ArrayList<String> objets, ArrayList<String> attributs, HashMap<String, DBPage> objects) {
-        this.listeObjets = objets;
-        this.listeAttributs = attributs;
+    public PediaConcept(Concept concept, HashMap<String, DBPage> dbPages) {
+    	// Concept objects (DBPedia pages) & attributes (DBPedia relationship)
+        this.objects = new ArrayList<String>();
+        concept.getObjects().forEach(o -> this.objects.add((String) o));
+        
+        this.attributes = new ArrayList<String>();
+        concept.getAttributes().forEach(a -> this.attributes.add((String) a));
+        
+        // Concept relationship within lattice
         this.parents = new ArrayList<>();
+        
+        // Concept intersection of DB Pedia categories, ontologies and yago classes associated to concept's pages
         this.categories = new ArrayList<>();
         this.ontologies = new ArrayList<>();
         this.yagoClasses = new ArrayList<>();
 
-        if (this.listeObjets.size() > 0) {
+        if (this.objects.size() > 0) {
             // On remplit les catégories
-            this.categories = intersectCategories(objects);
+            this.categories = intersectCategories(dbPages);
 
             // On remplit les ontologies
-            this.ontologies = intersectOntologies(objects);
+            this.ontologies = intersectOntologies(dbPages);
             
             // On remplit les classes yago
-            this.yagoClasses = intersectYagoClasses(objects);
+            this.yagoClasses = intersectYagoClasses(dbPages);
         }
 
     }
 
     public ArrayList<String> getListeObjets() {
-        return this.listeObjets;
+        return this.objects;
     }
 
     public void setListeObjets(ArrayList<String> listeObjets) {
-        this.listeObjets = listeObjets;
+        this.objects = listeObjets;
     }
 
     public ArrayList<String> getListeAttributs() {
-        return this.listeAttributs;
+        return this.attributes;
     }
 
     public void setListeAttributs(ArrayList<String> listeAttributs) {
-        this.listeAttributs = listeAttributs;
+        this.attributes = listeAttributs;
     }
 
     public ArrayList<String> getCategories() {
@@ -144,15 +152,15 @@ public class PediaConcept {
 
     public ArrayList<String> intersectOntologies(HashMap<String, DBPage> objects) {
         // On initialise la liste à retourner aux ontologies du premier objet
-        ArrayList<String> returnOntologies = objects.get(this.listeObjets.get(0)).getOntologies();
+        ArrayList<String> returnOntologies = objects.get(this.objects.get(0)).getOntologies();
 
         // Pour chaque objet du concept, hormis le premier
-        for (int i = 1; i < this.listeObjets.size(); i++) {
+        for (int i = 1; i < this.objects.size(); i++) {
             // On initialise celle qui sera la nouvelle liste � retourner
             ArrayList<String> newReturnOntologies = new ArrayList<>();
 
             // On récupère le LatticeObject correspondant
-            DBPage currentObject = objects.get(this.listeObjets.get(i));
+            DBPage currentObject = objects.get(this.objects.get(i));
             // on récupère ses ontologies
             ArrayList<String> currentOntologies = currentObject.getOntologies();
 
@@ -174,15 +182,15 @@ public class PediaConcept {
     
     private ArrayList<String> intersectYagoClasses(HashMap<String, DBPage> objects) {
         // On initialise la liste à retourner aux classes yago du premier objet
-        ArrayList<String> returnYagoClasses = objects.get(this.listeObjets.get(0)).getYagoClasses();
+        ArrayList<String> returnYagoClasses = objects.get(this.objects.get(0)).getYagoClasses();
 
         // Pour chaque objet du concept, hormis le premier
-        for (int i = 1; i < this.listeObjets.size(); i++) {
+        for (int i = 1; i < this.objects.size(); i++) {
             // On initialise celle qui sera la nouvelle liste � retourner
             ArrayList<String> newReturnYagoClasses = new ArrayList<>();
 
             // On récupère le LatticeObject correspondant
-            DBPage currentObject = objects.get(this.listeObjets.get(i));
+            DBPage currentObject = objects.get(this.objects.get(i));
             // on récupère ses ontologies
             ArrayList<String> currentYagoClasses = currentObject.getYagoClasses();
 
@@ -204,15 +212,15 @@ public class PediaConcept {
 
     public ArrayList<String> intersectCategories(HashMap<String, DBPage> objects) {
         // On initialise la liste � retourner aux categories du premier objet
-        ArrayList<String> returnCategories = objects.get(this.listeObjets.get(0)).getCategories();
+        ArrayList<String> returnCategories = objects.get(this.objects.get(0)).getCategories();
 
         // Pour chaque objet du concept, hormis le premier
-        for (int i = 1; i < this.listeObjets.size(); i++) {
+        for (int i = 1; i < this.objects.size(); i++) {
             // On initialise celle qui sera la nouvelle liste � retourner
             ArrayList<String> newReturnCategories = new ArrayList<>();
 
             // On r�cup�re le LatticeObject correspondant
-            DBPage currentObject = objects.get(this.listeObjets.get(i));
+            DBPage currentObject = objects.get(this.objects.get(i));
             // on r�cup�re ses categories
             ArrayList<String> currentCategories = currentObject.getCategories();
 
@@ -238,8 +246,8 @@ public class PediaConcept {
         request += " WHERE {";
 
         // For each object, we link it to the categ
-        for (int i = 0; i < this.listeObjets.size(); i++) {
-            request += "<" + this.listeObjets.get(i) + "> a ?onto";
+        for (int i = 0; i < this.objects.size(); i++) {
+            request += "<" + this.objects.get(i) + "> a ?onto";
 
             // if (i < listeObjets.size() - 1) {
             request += ".";
@@ -260,10 +268,10 @@ public class PediaConcept {
         request += " WHERE {";
 
         // For each object, we link it to the categ
-        for (int i = 0; i < this.listeObjets.size(); i++) {
-            request += "<" + this.listeObjets.get(i) + "> <http://purl.org/dc/terms/subject> ?categ";
+        for (int i = 0; i < this.objects.size(); i++) {
+            request += "<" + this.objects.get(i) + "> <http://purl.org/dc/terms/subject> ?categ";
 
-            if (i < this.listeObjets.size() - 1) {
+            if (i < this.objects.size() - 1) {
                 request += ".";
             }
         }
@@ -278,18 +286,18 @@ public class PediaConcept {
         ArrayList<String> objets = pc.getListeObjets();
         ArrayList<String> atts = pc.getListeAttributs();
 
-        if (objets.size() != this.listeObjets.size())
+        if (objets.size() != this.objects.size())
             return false;
-        if (atts.size() != this.listeAttributs.size())
+        if (atts.size() != this.attributes.size())
             return false;
 
-        for (int i = 0; i < this.listeObjets.size(); i++) {
-            if (!objets.contains(this.listeObjets.get(i)))
+        for (int i = 0; i < this.objects.size(); i++) {
+            if (!objets.contains(this.objects.get(i)))
                 return false;
         }
 
-        for (int i = 0; i < this.listeAttributs.size(); i++) {
-            if (!atts.contains(this.listeAttributs.get(i)))
+        for (int i = 0; i < this.attributes.size(); i++) {
+            if (!atts.contains(this.attributes.get(i)))
                 return false;
         }
 
@@ -328,7 +336,7 @@ public class PediaConcept {
 
     @Override
     public String toString() {
-        return "PediaConcept{" + "listeObjets=" + this.listeObjets + ", listeAttributs=" + this.listeAttributs + ", categories=" + this.categories + ", ontologies=" + this.ontologies + ", yagoClasses=" + this.yagoClasses + ", parents=" + this.parents + '}';
+        return "PediaConcept{" + "listeObjets=" + this.objects + ", listeAttributs=" + this.attributes + ", categories=" + this.categories + ", ontologies=" + this.ontologies + ", yagoClasses=" + this.yagoClasses + ", parents=" + this.parents + '}';
     }
 
     @Override
@@ -336,8 +344,8 @@ public class PediaConcept {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.categories == null) ? 0 : this.categories.hashCode());
-        result = prime * result + ((this.listeAttributs == null) ? 0 : this.listeAttributs.hashCode());
-        result = prime * result + ((this.listeObjets == null) ? 0 : this.listeObjets.hashCode());
+        result = prime * result + ((this.attributes == null) ? 0 : this.attributes.hashCode());
+        result = prime * result + ((this.objects == null) ? 0 : this.objects.hashCode());
         result = prime * result + ((this.ontologies == null) ? 0 : this.ontologies.hashCode());
         result = prime * result + ((this.parents == null) ? 0 : this.parents.hashCode());
         result = prime * result + ((this.yagoClasses == null) ? 0 : this.yagoClasses.hashCode());
@@ -370,23 +378,23 @@ public class PediaConcept {
             return false;
         }
         
-        if (this.listeAttributs == null) {
-            if (other.listeAttributs != null) {
+        if (this.attributes == null) {
+            if (other.attributes != null) {
                 return false;
             }
         } 
         
-        else if (!this.listeAttributs.equals(other.listeAttributs)) {
+        else if (!this.attributes.equals(other.attributes)) {
             return false;
         }
         
-        if (this.listeObjets == null) {
-            if (other.listeObjets != null) {
+        if (this.objects == null) {
+            if (other.objects != null) {
                 return false;
             }
         } 
         
-        else if (!this.listeObjets.equals(other.listeObjets)) {
+        else if (!this.objects.equals(other.objects)) {
             return false;
         }
         
