@@ -26,10 +26,14 @@ public class PediaConcept {
     public PediaConcept(Concept concept, HashMap<String, DBPage> dbPages) {
     	// Concept objects (DBPedia pages) & attributes (DBPedia relationship)
         this.objects = new ArrayList<String>();
-        concept.getObjects().forEach(o -> this.objects.add((String) o));
+        for(Object o : concept.getObjects()) {
+        	this.objects.add((String) o);
+        }
         
         this.attributes = new ArrayList<String>();
-        concept.getAttributes().forEach(a -> this.attributes.add((String) a));
+        for(Object a : concept.getAttributes()) {
+        	this.attributes.add((String) a);
+        }
         
         // Concept relationship within lattice
         this.parents = new ArrayList<>();
