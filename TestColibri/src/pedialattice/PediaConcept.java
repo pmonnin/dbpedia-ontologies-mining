@@ -52,22 +52,6 @@ public class PediaConcept {
 
     }
 
-    public ArrayList<String> getListeObjets() {
-        return this.objects;
-    }
-
-    public void setListeObjets(ArrayList<String> listeObjets) {
-        this.objects = listeObjets;
-    }
-
-    public ArrayList<String> getListeAttributs() {
-        return this.attributes;
-    }
-
-    public void setListeAttributs(ArrayList<String> listeAttributs) {
-        this.attributes = listeAttributs;
-    }
-
     public ArrayList<String> getCategories() {
         return this.categories;
     }
@@ -80,24 +64,8 @@ public class PediaConcept {
         return this.yagoClasses;
     }
 
-    public void setCategories(ArrayList<String> categories) {
-        this.categories = categories;
-    }
-
-    public void setOntologies(ArrayList<String> ontologies) {
-        this.ontologies = ontologies;
-    }
-
     public ArrayList<PediaConcept> getParents() {
         return this.parents;
-    }
-
-    /**
-     * getParentsNumber
-     * @return size of the list of parents
-     */
-    public int getParentsNumber() {
-        return this.parents.size();
     }
 
     /**
@@ -108,14 +76,6 @@ public class PediaConcept {
         removeDoublonsCategories(parent.getCategories());
         removeDoublonsOntologies(parent.getOntologies());
         this.parents.add(parent);
-    }
-
-    public void addCategoriesPediaConcept(ArrayList<String> cats) {
-        this.categories = cats;
-    }
-
-    public void addOntologiesPediaConcept(ArrayList<String> ontos) {
-        this.ontologies = ontos;
     }
 
     /**
@@ -238,70 +198,6 @@ public class PediaConcept {
         }
 
         return returnCategories;
-    }
-
-    public String makeRequestOntology() {
-        // Begin of the request
-        String request = "SELECT DISTINCT ?onto";
-        request += " WHERE {";
-
-        // For each object, we link it to the categ
-        for (int i = 0; i < this.objects.size(); i++) {
-            request += "<" + this.objects.get(i) + "> a ?onto";
-
-            // if (i < listeObjets.size() - 1) {
-            request += ".";
-            // }
-        }
-
-        // End of the request
-        request += "FILTER (REGEX(STR(?onto), \"http://dbpedia.org/ontology\", \"i\"))";
-        request += "}";
-
-        return request;
-    }
-
-    public String makeRequestCategory() {
-        // Begin of the request
-
-        String request = "SELECT DISTINCT ?categ";
-        request += " WHERE {";
-
-        // For each object, we link it to the categ
-        for (int i = 0; i < this.objects.size(); i++) {
-            request += "<" + this.objects.get(i) + "> <http://purl.org/dc/terms/subject> ?categ";
-
-            if (i < this.objects.size() - 1) {
-                request += ".";
-            }
-        }
-
-        // End of the request
-        request += "}";
-
-        return request;
-    }
-
-    public boolean isEquivalentTo(PediaConcept pc) {
-        ArrayList<String> objets = pc.getListeObjets();
-        ArrayList<String> atts = pc.getListeAttributs();
-
-        if (objets.size() != this.objects.size())
-            return false;
-        if (atts.size() != this.attributes.size())
-            return false;
-
-        for (int i = 0; i < this.objects.size(); i++) {
-            if (!objets.contains(this.objects.get(i)))
-                return false;
-        }
-
-        for (int i = 0; i < this.attributes.size(); i++) {
-            if (!atts.contains(this.attributes.get(i)))
-                return false;
-        }
-
-        return true;
     }
 
     public ArrayList<String> unionCategoriesParent() {
