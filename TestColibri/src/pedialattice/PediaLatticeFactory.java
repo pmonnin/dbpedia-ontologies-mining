@@ -66,8 +66,6 @@ public class PediaLatticeFactory {
         	System.err.println("Error while trying to get the subset pages");
         }
         
-        System.out.println("Pages number: " + pages.size());
-        
         // For each page we get
         System.out.print("Getting information for each page... ");
         int rate = -1;
