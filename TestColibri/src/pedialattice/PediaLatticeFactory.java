@@ -58,13 +58,16 @@ public class PediaLatticeFactory {
                 + "select distinct ?child where {"
                 + "?child dbo:wikiPageID ?pageId ."
                 + "?child rdf:type/rdfs:subClassOf* dbo:Person ."
+                + "?child dbo:deathDate ?deathDate."
                 + "}", "UTF-8"));
         }
         
         catch(IOException e) {
         	System.err.println("Error while trying to get the subset pages");
         }
-        	
+        
+        System.out.println("Pages number: " + pages.size());
+        
         // For each page we get
         System.out.print("Getting information for each page... ");
         int rate = -1;
