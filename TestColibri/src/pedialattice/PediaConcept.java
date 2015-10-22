@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import colibri.lib.Concept;
-import com.sun.org.apache.xalan.internal.xsltc.dom.ArrayNodeListIterator;
-import dbpediaobjects.DBCategory;
 import dbpediaobjects.DBPage;
 
 /**
