@@ -59,7 +59,7 @@ public class PediaLatticeFactory {
                 + "?child dbo:wikiPageID ?pageId ."
                 + "?child rdf:type/rdfs:subClassOf* dbo:Person ."
                 + "?child dbo:deathDate ?deathDate."
-                + "} LIMIT 5000", "UTF-8"));
+                + "} LIMIT 500", "UTF-8"));
         }
         
         catch(IOException e) {
@@ -135,53 +135,54 @@ public class PediaLatticeFactory {
         }
         
         // Lattice construction
-        System.out.print("Constructing lattice... ");
+        System.out.print("Constructing lattice... Colibri Hybrid lattice... ");
         HybridLattice lattice = new HybridLattice(rel);
         int edgesNumber = 0;
         
         	// Edges number computation
-       Iterator<Edge> it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
-       while(it.hasNext()) {
-    	   edgesNumber++;
-    	   it.next();
-       }
+        Iterator<Edge> it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
+        while(it.hasNext()) {
+           edgesNumber++;
+           it.next();
+        }
        
        		// Working over edges
-       it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
-       rate = -1;
-       i = 0;
-       HashMap<Concept, PediaConcept> processed = new HashMap<>();
-       
-       while(it.hasNext()) {
-    	   if((int) ((double) i / (double) pages.size() * 100 % 100) > rate) {
-       			rate = (int) ((double) i / (double) pages.size() * 100 % 100);
-       			System.out.println(rate + " % ... ");
-    	   }
-    	   
-    	   Edge currentEdge = it.next();
-    	   i++;
-    	   
-    	   // Create upper / lower concepts relation
-    	   Concept upperConcept = currentEdge.getUpper();
-    	   PediaConcept upperPediaConcept = processed.get(upperConcept);
-    	   
-    	   if(upperPediaConcept == null) {
-    		   upperPediaConcept = new PediaConcept(upperConcept, this.dbPages);
-    		   processed.put(upperConcept, upperPediaConcept);
-    		   this.dbLattice.add(upperPediaConcept);
-    	   }
-    	   
-    	   Concept lowerConcept = currentEdge.getLower();
-    	   PediaConcept lowerPediaConcept = processed.get(lowerConcept);
-    	   
-    	   if(lowerPediaConcept == null) {
-    		   lowerPediaConcept = new PediaConcept(lowerConcept, this.dbPages);
-    		   processed.put(lowerConcept, lowerPediaConcept);
-    		   this.dbLattice.add(lowerPediaConcept);
-    	   }
-    	   
-    	   lowerPediaConcept.addParentPediaConcept(upperPediaConcept);
-       }
+        System.out.println("Constructing lattice... PediaLattice... ");
+        it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
+        rate = -1;
+        i = 0;
+        HashMap<Concept, PediaConcept> processed = new HashMap<>();
+
+        while(it.hasNext()) {
+            if((int) ((double) i / (double) pages.size() * 100 % 100) > rate) {
+                rate = (int) ((double) i / (double) pages.size() * 100 % 100);
+                System.out.println(rate + " % ... ");
+            }
+
+            Edge currentEdge = it.next();
+            i++;
+
+            // Create upper / lower concepts relation
+            Concept upperConcept = currentEdge.getUpper();
+            PediaConcept upperPediaConcept = processed.get(upperConcept);
+
+            if(upperPediaConcept == null) {
+                upperPediaConcept = new PediaConcept(upperConcept, this.dbPages);
+                processed.put(upperConcept, upperPediaConcept);
+                this.dbLattice.add(upperPediaConcept);
+            }
+
+            Concept lowerConcept = currentEdge.getLower();
+            PediaConcept lowerPediaConcept = processed.get(lowerConcept);
+
+            if(lowerPediaConcept == null) {
+                lowerPediaConcept = new PediaConcept(lowerConcept, this.dbPages);
+                processed.put(lowerConcept, lowerPediaConcept);
+                this.dbLattice.add(lowerPediaConcept);
+            }
+
+            lowerPediaConcept.addParentPediaConcept(upperPediaConcept);
+        }
         
         // Statistics
         System.out.println("=== LATTICE STATISTICS ===");
