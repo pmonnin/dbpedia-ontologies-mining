@@ -59,7 +59,7 @@ public class PediaLatticeFactory {
                 + "?child dbo:wikiPageID ?pageId ."
                 + "?child rdf:type/rdfs:subClassOf* dbo:Person ."
                 + "?child dbo:deathDate ?deathDate."
-                + "}", "UTF-8"));
+                + "} LIMIT 5000", "UTF-8"));
         }
         
         catch(IOException e) {
@@ -150,7 +150,7 @@ public class PediaLatticeFactory {
        it = lattice.edgeIterator(Traversal.BOTTOM_ATTRSIZE);
        rate = -1;
        i = 0;
-       HashMap<Concept, PediaConcept> processed = new HashMap<Concept, PediaConcept>();
+       HashMap<Concept, PediaConcept> processed = new HashMap<>();
        
        while(it.hasNext()) {
     	   if((int) ((double) i / (double) pages.size() * 100 % 100) > rate) {
