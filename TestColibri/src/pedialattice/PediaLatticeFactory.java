@@ -135,7 +135,7 @@ public class PediaLatticeFactory {
         }
         
         // Lattice construction
-        System.out.print("Constructing lattice... Colibri Hybrid lattice... ");
+        System.out.println("Constructing lattice... Colibri Hybrid lattice... ");
         HybridLattice lattice = new HybridLattice(rel);
         int edgesNumber = 0;
         
@@ -152,6 +152,7 @@ public class PediaLatticeFactory {
         rate = -1;
         i = 0;
         HashMap<Concept, PediaConcept> processed = new HashMap<>();
+        this.dbLattice = new ArrayList<>();
 
         while(it.hasNext()) {
             if((int) ((double) i / (double) pages.size() * 100 % 100) > rate) {
