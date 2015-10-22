@@ -182,7 +182,8 @@ public class PediaLatticeFactory {
                 this.dbLattice.add(lowerPediaConcept);
             }
 
-            lowerPediaConcept.addParentPediaConcept(upperPediaConcept);
+            lowerPediaConcept.addParent(upperPediaConcept);
+            upperPediaConcept.addChild(lowerPediaConcept);
         }
         
         // Statistics

@@ -21,7 +21,9 @@ public class PediaConcept {
     private ArrayList<String> categories;
     private ArrayList<String> ontologies;
     private ArrayList<String> yagoClasses;
+
     private ArrayList<PediaConcept> parents;
+    private ArrayList<PediaConcept> children;
 
     public PediaConcept(Concept concept, HashMap<String, DBPage> dbPages) {
     	// Concept objects (DBPedia pages) & attributes (DBPedia relationship)
@@ -37,6 +39,7 @@ public class PediaConcept {
         
         // Concept relationship within lattice
         this.parents = new ArrayList<>();
+        this.children = new ArrayList<>();
         
         // Concept intersection of DB Pedia categories, ontologies and yago classes associated to each concept's page
         this.categories = new ArrayList<>();
@@ -122,19 +125,17 @@ public class PediaConcept {
         return this.parents;
     }
 
-    /**
-     * Add a parent to the list of parents of the current pedia concept
-     * @param parent : parent of the current pedia concept
-     */
-    public void addParentPediaConcept(PediaConcept parent) {
-        removeDoublonsCategories(parent.getCategories());
-        removeDoublonsOntologies(parent.getOntologies());
+    public void addParent(PediaConcept parent) {
         this.parents.add(parent);
+    }
+
+    public void addChild(PediaConcept child) {
+        this.children.add(child);
     }
 
     /**
      * remove duplicated categories present in the list of categories
-     * @param catP : list of categories
+     * @param catP list of categories
      */
     public void removeDoublonsCategories(ArrayList<String> catP) {
         ArrayList<String> categoriesASupprimees = new ArrayList<>();
@@ -150,7 +151,7 @@ public class PediaConcept {
 
     /**
      * remove duplicated ontologies present in the list of categories
-     * @param ontP : list of ontologies
+     * @param ontP list of ontologies
      */
     public void removeDoublonsOntologies(ArrayList<String> ontP) {
         ArrayList<String> ontologiesASupprimer = new ArrayList<>();
