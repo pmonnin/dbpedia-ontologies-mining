@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import colibri.lib.Concept;
+import com.sun.org.apache.xalan.internal.xsltc.dom.ArrayNodeListIterator;
+import dbpediaobjects.DBCategory;
 import dbpediaobjects.DBPage;
 
 /**
@@ -25,12 +27,12 @@ public class PediaConcept {
 
     public PediaConcept(Concept concept, HashMap<String, DBPage> dbPages) {
     	// Concept objects (DBPedia pages) & attributes (DBPedia relationship)
-        this.objects = new ArrayList<String>();
+        this.objects = new ArrayList<>();
         for(Object o : concept.getObjects()) {
         	this.objects.add((String) o);
         }
         
-        this.attributes = new ArrayList<String>();
+        this.attributes = new ArrayList<>();
         for(Object a : concept.getAttributes()) {
         	this.attributes.add((String) a);
         }
@@ -38,22 +40,72 @@ public class PediaConcept {
         // Concept relationship within lattice
         this.parents = new ArrayList<>();
         
-        // Concept intersection of DB Pedia categories, ontologies and yago classes associated to concept's pages
+        // Concept intersection of DB Pedia categories, ontologies and yago classes associated to each concept's page
         this.categories = new ArrayList<>();
         this.ontologies = new ArrayList<>();
         this.yagoClasses = new ArrayList<>();
 
-        if (this.objects.size() > 0) {
-            // On remplit les catégories
-            this.categories = intersectCategories(dbPages);
+        if(this.objects.size() > 0) {
+            for(String o : this.objects) {
+                DBPage page = dbPages.get(o);
 
-            // On remplit les ontologies
-            this.ontologies = intersectOntologies(dbPages);
-            
-            // On remplit les classes yago
-            this.yagoClasses = intersectYagoClasses(dbPages);
+                if(page != null) {
+                    for(String cat : page.getCategories()) {
+                        if(!this.categories.contains(cat))  {
+                            boolean toAdd = true;
+
+                            for(String o2 : this.objects) {
+                                DBPage p = dbPages.get(o2);
+
+                                if(p != null && !p.getCategories().contains(cat)) {
+                                    toAdd = false;
+                                }
+                            }
+
+                            if(toAdd) {
+                                this.categories.add(cat);
+                            }
+                        }
+                    }
+
+                    for(String onto : page.getOntologies()) {
+                        if(!this.ontologies.contains(onto)) {
+                            boolean toAdd = true;
+
+                            for(String o2 : this.objects) {
+                                DBPage p = dbPages.get(o2);
+
+                                if(p != null && !p.getOntologies().contains(onto)) {
+                                    toAdd = false;
+                                }
+                            }
+
+                            if(toAdd) {
+                                this.ontologies.add(onto);
+                            }
+                        }
+                    }
+
+                    for(String yagoClass : page.getYagoClasses()) {
+                        if(!this.yagoClasses.contains(yagoClass)) {
+                            boolean toAdd = true;
+
+                            for(String o2 : this.objects) {
+                                DBPage p = dbPages.get(o2);
+
+                                if(p != null && !p.getYagoClasses().contains(yagoClass)) {
+                                    toAdd = false;
+                                }
+                            }
+
+                            if(toAdd) {
+                                this.yagoClasses.add(yagoClass);
+                            }
+                        }
+                    }
+                }
+            }
         }
-
     }
 
     public ArrayList<String> getCategories() {
@@ -112,96 +164,6 @@ public class PediaConcept {
 
         for (String ont : ontologiesASupprimer)
             this.getOntologies().remove(ont);
-    }
-
-    public ArrayList<String> intersectOntologies(HashMap<String, DBPage> objects) {
-        // On initialise la liste à retourner aux ontologies du premier objet
-        ArrayList<String> returnOntologies = objects.get(this.objects.get(0)).getOntologies();
-
-        // Pour chaque objet du concept, hormis le premier
-        for (int i = 1; i < this.objects.size(); i++) {
-            // On initialise celle qui sera la nouvelle liste � retourner
-            ArrayList<String> newReturnOntologies = new ArrayList<>();
-
-            // On récupère le LatticeObject correspondant
-            DBPage currentObject = objects.get(this.objects.get(i));
-            // on récupère ses ontologies
-            ArrayList<String> currentOntologies = currentObject.getOntologies();
-
-            // On compare les ontologies à la liste déjà présente dans returnOntologies
-            for (int j = 0; j < currentOntologies.size(); j++) {
-                // Si l'ontologie a été rencontrée au préalable
-                if (returnOntologies.contains(currentOntologies.get(j))) {
-                    // on l'ajoute à celle qui sera la nouvelle liste à retourner
-                    newReturnOntologies.add(currentOntologies.get(j));
-                }
-            }
-
-            // On remplace returnOntologies par newReturnOntologies
-            returnOntologies = newReturnOntologies;
-        }
-
-        return returnOntologies;
-    }
-    
-    private ArrayList<String> intersectYagoClasses(HashMap<String, DBPage> objects) {
-        // On initialise la liste à retourner aux classes yago du premier objet
-        ArrayList<String> returnYagoClasses = objects.get(this.objects.get(0)).getYagoClasses();
-
-        // Pour chaque objet du concept, hormis le premier
-        for (int i = 1; i < this.objects.size(); i++) {
-            // On initialise celle qui sera la nouvelle liste � retourner
-            ArrayList<String> newReturnYagoClasses = new ArrayList<>();
-
-            // On récupère le LatticeObject correspondant
-            DBPage currentObject = objects.get(this.objects.get(i));
-            // on récupère ses ontologies
-            ArrayList<String> currentYagoClasses = currentObject.getYagoClasses();
-
-            // On compare les ontologies à la liste déjà présente dans returnOntologies
-            for (int j = 0; j < currentYagoClasses.size(); j++) {
-                // Si l'ontologie a été rencontrée au préalable
-                if (returnYagoClasses.contains(currentYagoClasses.get(j))) {
-                    // on l'ajoute à celle qui sera la nouvelle liste à retourner
-                    newReturnYagoClasses.add(currentYagoClasses.get(j));
-                }
-            }
-
-            // On remplace returnOntologies par newReturnOntologies
-            returnYagoClasses = newReturnYagoClasses;
-        }
-
-        return returnYagoClasses;
-    }
-
-    public ArrayList<String> intersectCategories(HashMap<String, DBPage> objects) {
-        // On initialise la liste � retourner aux categories du premier objet
-        ArrayList<String> returnCategories = objects.get(this.objects.get(0)).getCategories();
-
-        // Pour chaque objet du concept, hormis le premier
-        for (int i = 1; i < this.objects.size(); i++) {
-            // On initialise celle qui sera la nouvelle liste � retourner
-            ArrayList<String> newReturnCategories = new ArrayList<>();
-
-            // On r�cup�re le LatticeObject correspondant
-            DBPage currentObject = objects.get(this.objects.get(i));
-            // on r�cup�re ses categories
-            ArrayList<String> currentCategories = currentObject.getCategories();
-
-            // On compare les cat�gories � la liste d�j� pr�sente dans returnCategories
-            for (int j = 0; j < currentCategories.size(); j++) {
-                // Si la categorie a �t� rencontr�e au pr�alable
-                if (returnCategories.contains(currentCategories.get(j))) {
-                    // on l'ajoute � celle qui sera la nouvelle liste � retourner
-                    newReturnCategories.add(currentCategories.get(j));
-                }
-            }
-
-            // On remplace returnCategories par newReturnCategories
-            returnCategories = newReturnCategories;
-        }
-
-        return returnCategories;
     }
 
     public ArrayList<String> unionCategoriesParent() {
