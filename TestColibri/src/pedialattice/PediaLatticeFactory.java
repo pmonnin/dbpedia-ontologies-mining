@@ -69,13 +69,13 @@ public class PediaLatticeFactory {
         }
         
         // For each page we get
-        System.out.print("Getting information for each page... ");
+        System.out.println("Getting information for each page... ");
         int rate = -1;
         int i = 0;
         while(i < pages.size()) {
         	if((int) ((double) i / (double) pages.size() * 100 % 100) > rate) {
         		rate = (int) ((double) i / (double) pages.size() * 100 % 100);
-        		System.out.println(rate + " % ... ");
+        		System.out.print(rate + " % ... ");
         	}
         	
         	try {
@@ -135,7 +135,9 @@ public class PediaLatticeFactory {
         		System.err.println("Error while trying to get info on: " + pages.get(i).getChild().getValue() + ". New try...");
         	}
         }
-        
+
+        System.out.print("\n");
+
         // Lattice construction
         System.out.println("Constructing lattice... Colibri Hybrid lattice... ");
         HybridLattice lattice = new HybridLattice(rel);
@@ -159,7 +161,7 @@ public class PediaLatticeFactory {
         while(it.hasNext()) {
             if((int) ((double) i / (double) pages.size() * 100 % 100) > rate) {
                 rate = (int) ((double) i / (double) pages.size() * 100 % 100);
-                System.out.println(rate + " % ... ");
+                System.out.print(rate + " % ... ");
             }
 
             Edge currentEdge = it.next();
@@ -188,6 +190,8 @@ public class PediaLatticeFactory {
             upperPediaConcept.addChild(lowerPediaConcept);
         }
 
+        System.out.print("\n");
+
         // Looking for top and bottom concepts
         System.out.println("Top and bottom detection...");
         for(PediaConcept p : this.dbLattice) {
@@ -213,7 +217,7 @@ public class PediaLatticeFactory {
 
             if((int) ((double) i / (double) this.dbLattice.size() * 100 % 100) > rate) {
                 rate = (int) ((double) i / (double) this.dbLattice.size() * 100 % 100);
-                System.out.println(rate + " % ... ");
+                System.out.print(rate + " % ... ");
             }
 
             for(PediaConcept parent : concept.getParents()) {
@@ -234,6 +238,8 @@ public class PediaLatticeFactory {
                 }
             }
         }
+
+        System.out.print("\n");
         
         // Statistics
         System.out.println("=== LATTICE STATISTICS ===");
