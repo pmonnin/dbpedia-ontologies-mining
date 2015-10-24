@@ -10,7 +10,6 @@ import org.json.simple.parser.ParseException;
 
 import pedialattice.PediaConcept;
 import pedialattice.PediaLatticeFactory;
-import statistics.ComparisonStats;
 import dbpediaobjects.DBCategory;
 import dbpediaobjects.DBOntologyClass;
 import dbpediaobjects.DBYagoClass;
@@ -38,7 +37,6 @@ public class Main {
 	 */
     public static void main(String[] args) throws ParseException, IOException {
         Date startDate = new Date();
-        ComparisonStats comparisonStats = new ComparisonStats();
         int found = 0, proposed = 0;
         
         System.out.println("== MAIN ALGORITHM OF COMPARISON ==");
