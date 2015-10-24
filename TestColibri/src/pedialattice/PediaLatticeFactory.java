@@ -159,8 +159,8 @@ public class PediaLatticeFactory {
         this.dbLattice = new ArrayList<>();
 
         while(it.hasNext()) {
-            if((int) ((double) i / (double) pages.size() * 100 % 100) > rate) {
-                rate = (int) ((double) i / (double) pages.size() * 100 % 100);
+            if((int) ((double) i / (double) edgesNumber * 100 % 100) > rate) {
+                rate = (int) ((double) i / (double) edgesNumber * 100 % 100);
                 System.out.print(rate + " % ... ");
             }
 
