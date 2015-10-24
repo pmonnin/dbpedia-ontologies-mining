@@ -2,10 +2,7 @@ package pedialattice;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.json.simple.parser.ParseException;
 
@@ -192,15 +189,49 @@ public class PediaLatticeFactory {
         }
 
         // Looking for top and bottom concepts
+        System.out.println("Top and bottom detection...");
         for(PediaConcept p : this.dbLattice) {
             if(p.getParents().size() == 0) {
                 this.top = p;
-                System.out.println("TOP");
             }
 
             if(p.getChildren().size() == 0) {
                 this.bottom = p;
-                System.out.println("BOTTOM");
+            }
+        }
+
+        // Multiple categories / ontologies / yago classes cleaning uphill
+        System.out.println("Cleaning concepts categories, ontologies, yago classes by lattice uphill traversal...");
+        Queue<PediaConcept> queue = new LinkedList<>();
+        queue.add(this.bottom);
+        i = 0;
+        rate = -1;
+
+        while(!queue.isEmpty()) {
+            PediaConcept concept = queue.poll();
+            i++;
+
+            if((int) ((double) i / (double) this.dbLattice.size() * 100 % 100) > rate) {
+                rate = (int) ((double) i / (double) this.dbLattice.size() * 100 % 100);
+                System.out.println(rate + " % ... ");
+            }
+
+            for(PediaConcept parent : concept.getParents()) {
+                if(!queue.contains(parent)) {
+                    queue.add(parent);
+                }
+
+                for(String category : parent.getCategories()) {
+                    concept.getCategories().remove(category);
+                }
+
+                for(String ontology : parent.getOntologies()) {
+                    concept.getOntologies().remove(ontology);
+                }
+
+                for(String yagoClass : parent.getYagoClasses()) {
+                    concept.getYagoClasses().remove(yagoClass);
+                }
             }
         }
         

@@ -137,68 +137,6 @@ public class PediaConcept {
         this.children.add(child);
     }
 
-    /**
-     * remove duplicated categories present in the list of categories
-     * @param catP list of categories
-     */
-    public void removeDoublonsCategories(ArrayList<String> catP) {
-        ArrayList<String> categoriesASupprimees = new ArrayList<>();
-
-        for (String cat : this.getCategories()) {
-            if (catP.contains(cat))
-                categoriesASupprimees.add(cat);
-        }
-
-        for (String cat : categoriesASupprimees)
-            this.getCategories().remove(cat);
-    }
-
-    /**
-     * remove duplicated ontologies present in the list of categories
-     * @param ontP list of ontologies
-     */
-    public void removeDoublonsOntologies(ArrayList<String> ontP) {
-        ArrayList<String> ontologiesASupprimer = new ArrayList<>();
-
-        for (String ont : this.getOntologies()) {
-            if (ontP.contains(ont))
-                ontologiesASupprimer.add(ont);
-        }
-
-        for (String ont : ontologiesASupprimer)
-            this.getOntologies().remove(ont);
-    }
-
-    public ArrayList<String> unionCategoriesParent() {
-        ArrayList<String> res = new ArrayList<>();
-
-        for (PediaConcept p : this.getParents()) {
-            for (String c : p.getCategories())
-                res.add(c);
-        }
-        return res;
-    }
-
-    public ArrayList<String> unionOntologiesParent() {
-        ArrayList<String> res = new ArrayList<>();
-
-        for (PediaConcept p : this.getParents()) {
-            for (String o : p.getOntologies())
-                res.add(o);
-        }
-        return res;
-    }
-
-    public ArrayList<String> unionYagoClassesParent() {
-        ArrayList<String> res = new ArrayList<>();
-
-        for (PediaConcept p : this.getParents()) {
-            for (String o : p.getYagoClasses())
-                res.add(o);
-        }
-        return res;
-    }
-
     @Override
     public String toString() {
         return "PediaConcept{" + "listeObjets=" + this.objects + ", listeAttributs=" + this.attributes + ", categories=" + this.categories + ", ontologies=" + this.ontologies + ", yagoClasses=" + this.yagoClasses + ", parents=" + this.parents + '}';
