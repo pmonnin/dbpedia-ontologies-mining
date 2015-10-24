@@ -125,6 +125,10 @@ public class PediaConcept {
         return this.parents;
     }
 
+    public ArrayList<PediaConcept> getChildren() {
+        return this.children;
+    }
+
     public void addParent(PediaConcept parent) {
         this.parents.add(parent);
     }

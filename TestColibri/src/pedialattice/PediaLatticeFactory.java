@@ -31,9 +31,14 @@ public class PediaLatticeFactory {
 
     private HashMap<String, DBPage> dbPages;
     private ArrayList<PediaConcept> dbLattice;
+    private PediaConcept top;
+    private PediaConcept bottom;
 
     public PediaLatticeFactory() throws ParseException, IOException {
         this.dbPages = new HashMap<>();
+        this.dbLattice = null;
+        this.top = null;
+        this.bottom = null;
         this.createLattice();
     }
 
@@ -184,6 +189,19 @@ public class PediaLatticeFactory {
 
             lowerPediaConcept.addParent(upperPediaConcept);
             upperPediaConcept.addChild(lowerPediaConcept);
+        }
+
+        // Looking for top and bottom concepts
+        for(PediaConcept p : this.dbLattice) {
+            if(p.getParents().size() == 0) {
+                this.top = p;
+                System.out.println("TOP");
+            }
+
+            if(p.getChildren().size() == 0) {
+                this.bottom = p;
+                System.out.println("BOTTOM");
+            }
         }
         
         // Statistics
