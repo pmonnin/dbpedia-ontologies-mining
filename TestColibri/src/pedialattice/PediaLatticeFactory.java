@@ -208,6 +208,8 @@ public class PediaLatticeFactory {
         System.out.println("Cleaning concepts categories, ontologies, yago classes by lattice uphill traversal...");
         Queue<PediaConcept> queue = new LinkedList<>();
         queue.add(this.bottom);
+        ArrayList<PediaConcept> seen = new ArrayList<>();
+        seen.add(this.bottom);
         i = 0;
         rate = -1;
 
@@ -221,8 +223,9 @@ public class PediaLatticeFactory {
             }
 
             for(PediaConcept parent : concept.getParents()) {
-                if(!queue.contains(parent)) {
+                if(!seen.contains(parent)) {
                     queue.add(parent);
+                    seen.add(parent);
                 }
 
                 for(String category : parent.getCategories()) {
