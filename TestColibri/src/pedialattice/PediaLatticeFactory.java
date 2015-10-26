@@ -15,6 +15,7 @@ import colibri.lib.Relation;
 import colibri.lib.Traversal;
 import colibri.lib.TreeRelation;
 import dbpediaobjects.DBPage;
+import statistics.DBPediaLatticeStatistics;
 
 /**
  * Lattice's construction
@@ -244,12 +245,11 @@ public class PediaLatticeFactory {
 
         System.out.print("\n");
         
-        // Statistics
-        System.out.println("=== LATTICE STATISTICS ===");
-        System.out.println("Selected pages number: " + pages.size());
-        System.out.println("Lattice edges number: " + edgesNumber);
-        System.out.println("Lattice concepts number: " + this.dbLattice.size());
-        System.out.println("==========================");
+        // Lattice statistics
+        DBPediaLatticeStatistics latticeStatistics = new DBPediaLatticeStatistics();
+        latticeStatistics.computeStatistics(this.dbLattice, this.top, this.dbPages);
+        latticeStatistics.displayStatistics();
+
     }
 
     public ArrayList<PediaConcept> getDBLattice() {
