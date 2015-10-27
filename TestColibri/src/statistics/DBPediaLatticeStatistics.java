@@ -5,6 +5,8 @@ import pedialattice.PediaConcept;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Class computing statistics over the built pedia lattice
@@ -30,7 +32,7 @@ public class DBPediaLatticeStatistics {
         this.conceptsWithoutYagoClasses = 0;
     }
 
-    public void computeStatistics(ArrayList<PediaConcept> pediaLattice, PediaConcept top, PediaConcept bototm,
+    public void computeStatistics(ArrayList<PediaConcept> pediaLattice, PediaConcept top, PediaConcept bottom,
                                   HashMap<String, DBPage> pages) {
 
         this.conceptsNumber = pediaLattice.size();
@@ -52,6 +54,24 @@ public class DBPediaLatticeStatistics {
             }
         }
 
+        Queue<PediaConcept> queue = new LinkedList<>();
+        top.setDepth(0);
+        queue.add(top);
+
+        while(!queue.isEmpty()) {
+            PediaConcept c = queue.poll();
+
+            for(PediaConcept child : c.getChildren()) {
+                if(child.getDepth() < c.getDepth() + 1) {
+                    child.setDepth(c.getDepth() + 1);
+                    if(!queue.contains(child)) {
+                        queue.add(child);
+                    }
+                }
+            }
+        }
+
+        this.latticeDepth = bottom.getDepth();
     }
 
     public void displayStatistics() {

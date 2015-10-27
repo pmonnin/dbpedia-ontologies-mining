@@ -25,6 +25,8 @@ public class PediaConcept {
     private ArrayList<PediaConcept> parents;
     private ArrayList<PediaConcept> children;
 
+    private int depth;
+
     public PediaConcept(Concept concept, HashMap<String, DBPage> dbPages) {
     	// Concept objects (DBPedia pages) & attributes (DBPedia relationship)
         this.objects = new ArrayList<>();
@@ -106,6 +108,18 @@ public class PediaConcept {
                     }
                 }
             }
+        }
+
+        this.depth = -1;
+    }
+
+    public int getDepth() {
+        return this.depth;
+    }
+
+    public void setDepth(int depth) {
+        if(depth >= -1) {
+            this.depth = depth;
         }
     }
 
