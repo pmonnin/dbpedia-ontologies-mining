@@ -247,7 +247,7 @@ public class PediaLatticeFactory {
         
         // Lattice statistics
         DBPediaLatticeStatistics latticeStatistics = new DBPediaLatticeStatistics();
-        latticeStatistics.computeStatistics(this.dbLattice, this.top, this.dbPages);
+        latticeStatistics.computeStatistics(this.dbLattice, this.top, this.bottom, this.dbPages);
         latticeStatistics.displayStatistics();
 
     }
