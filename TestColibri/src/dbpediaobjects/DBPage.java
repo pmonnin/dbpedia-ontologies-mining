@@ -48,16 +48,8 @@ public class DBPage {
         return this.yagoClasses;
     }
 
-    public void setOntologies(ArrayList<String> ontologies) {
-        this.ontologies = ontologies;
-    }
-
     public void addCategory(String category) {
     	this.categories.add(category);
-    }
-    
-    public void setCategories(ArrayList<String> categories) {
-        this.categories = categories;
     }
 
     public String getURI() {

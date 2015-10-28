@@ -15,9 +15,6 @@ public class DBYagoClass {
     private ArrayList<String> children = new ArrayList<String>();
     private int depth = -1;
     private boolean seen = false;
-
-    public DBYagoClass() {
-    }
     
     public DBYagoClass(String uri) {
         this.uri = uri;
@@ -33,10 +30,6 @@ public class DBYagoClass {
 
     public void addParent(String parent) {
         this.parents.add(parent);
-    }
-
-    public void setParents(ArrayList<String> parents) {
-        this.parents = parents;
     }
     
     public boolean hasParent(String parent) {
@@ -62,10 +55,6 @@ public class DBYagoClass {
     
     public ArrayList<String> getChildren() {
     	return this.children;
-    }
-    
-    public int getChildrenNumber() {
-    	return this.children.size();
     }
     
     public void setDepth(int depth) {

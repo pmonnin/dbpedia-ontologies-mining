@@ -31,10 +31,6 @@ public class DBOntologyClass {
     public void addParent(String parent) {
         this.parents.add(parent);
     }
-
-    public void setParents(ArrayList<String> parents) {
-        this.parents = parents;
-    }
     
     public boolean hasParent(String parent) {
         return this.parents.contains(parent);
@@ -56,10 +52,6 @@ public class DBOntologyClass {
     
     public int getDepth() {
     	return this.depth;
-    }
-    
-    public int getChildrenNumber() {
-    	return this.children.size();
     }
     
     public ArrayList<String> getChildren() {

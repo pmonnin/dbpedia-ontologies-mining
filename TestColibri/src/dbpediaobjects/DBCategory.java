@@ -28,10 +28,6 @@ public class DBCategory {
 		this.parents.add(parent);
 	}
 	
-	public void setParents(ArrayList<String> parents) {
-		this.parents = parents;
-	}
-	
 	public String getUri() {
 		return this.uri;
 	}
@@ -59,10 +55,6 @@ public class DBCategory {
     
     public void addChild(String uri) {
     	this.children.add(uri);
-    }
-    
-    public int getChildrenNumber() {
-    	return this.children.size();
     }
     
     public ArrayList<String> getChildren() {
