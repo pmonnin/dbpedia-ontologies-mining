@@ -1,8 +1,6 @@
 package dbpediaobjects;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  * DBPedia category
@@ -12,11 +10,11 @@ import java.util.Queue;
  *
  */
 public class DBCategory {
-	private String uri = "";
-	private ArrayList<String> parents = new ArrayList<String>();
-	private ArrayList<String> children = new ArrayList<String>();
-	private int depth = -1;
-	private boolean seen = false;
+	private String uri;
+	private ArrayList<String> parents;
+	private ArrayList<String> children;
+	private int depth;
+	private boolean seen;
 	
 	public DBCategory(String uri) {
         this.uri = uri;
