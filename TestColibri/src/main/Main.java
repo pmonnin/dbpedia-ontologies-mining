@@ -144,13 +144,14 @@ public class Main {
         comparisonStats.setNbYagoProposed(proposed);
         */
         
-        System.out.println("== PROPOSAL STATISTICS ==");
+        System.out.println("=== PROPOSAL STATISTICS ===");
         System.out.println("Nombre d'ontologies trouvées: ");
         System.out.println("Nombre d'ontologies proposées: ");
         System.out.println("Nombre de catégories trouvées: ");
         System.out.println("Nombre de catégories proposées:  ");
         System.out.println("Nombre de classes yago trouvées: ");
         System.out.println("Nombre de classes yago proposées: ");
+        System.out.println("===========================");
         System.out.println("\nPROGRAM EXECUTION TIME: " + (new Date().getTime() - startDate.getTime()) / 1000 + " SECONDS");
     }
     

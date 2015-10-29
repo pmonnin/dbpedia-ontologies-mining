@@ -1,6 +1,8 @@
 package dbpediaobjects;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * DBPedia category
@@ -60,10 +62,11 @@ public class DBCategory {
     public ArrayList<String> getChildren() {
     	return this.children;
     }
-    
+
     public void setDepth(int depth) {
-    	if(depth >= -1)
-    		this.depth = depth;
+    	if(depth >= -1) {
+            this.depth = depth;
+        }
     }
     
     public int getDepth() {
