@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import dbpediaobjects.DBCategoriesManager;
 import org.json.simple.parser.ParseException;
 
 import pedialattice.PediaConcept;
@@ -45,7 +46,7 @@ public class Main {
         System.out.println("== CATEGORIES CRAWLING AND PARSING ==");
         DBCategoriesCrawler dbCategoriesCrawler = new DBCategoriesCrawler();
         dbCategoriesCrawler.computeCategoriesHierarchy();
-        HashMap<String, DBCategory> dbcategories = dbCategoriesCrawler.getDbcategories();
+        DBCategoriesManager dbcategories = dbCategoriesCrawler.getDBCategoriesManager();
 
         // Crawling DB ontologies
         System.out.println("== ONTOLOGIES CRAWLING AND PARSING ==");

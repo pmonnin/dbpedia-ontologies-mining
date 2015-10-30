@@ -6,6 +6,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
+import dbpediaobjects.DBCategoriesManager;
 import org.json.simple.parser.ParseException;
 
 import serverlink.ChildAndParent;
@@ -36,7 +37,7 @@ public class DBCategoriesCrawler {
         System.out.println("== START MAIN DB CATEGORIES CRAWLER ==");
         DBCategoriesCrawler crawler = new DBCategoriesCrawler();
         crawler.computeCategoriesHierarchy();
-        DBCategoriesStatistics stats = new DBCategoriesStatistics(crawler.getDbcategories());
+        DBCategoriesStatistics stats = new DBCategoriesStatistics(crawler.dbcategories);
         stats.computeStatistics();
         stats.displayStatistics();
     }
@@ -45,8 +46,8 @@ public class DBCategoriesCrawler {
      * Getter on the parsed categories
      * @return the parsed categories with HashMap (key = URI of the categories and object is the DBCategory)
      */
-    public HashMap<String, DBCategory> getDbcategories() {
-        return this.dbcategories;
+    public DBCategoriesManager getDBCategoriesManager() {
+        return new DBCategoriesManager(this.dbcategories);
     }
     
     /**
