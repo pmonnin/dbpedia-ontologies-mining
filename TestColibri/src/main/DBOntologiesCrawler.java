@@ -44,7 +44,7 @@ public class DBOntologiesCrawler {
 
     /**
      * Getter on the parsed ontology classes
-     * @return the parsed ontology classes with HashMap (key = URI of the ontology classes and object is the DBOnolotyClass)
+     * @return the parsed ontology classes as a manager object
      */
     public DBOntologiesManager getDBOntologiesManager() {
         return new DBOntologiesManager(this.dbontologies);

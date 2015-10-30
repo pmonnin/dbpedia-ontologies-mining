@@ -44,7 +44,7 @@ public class DBYagoClassesCrawler {
 
     /**
      * Getter on the parsed yago classes
-     * @return the parsed yago classes with HashMap (key = URI of the yago classes and object is the DBYagoClass)
+     * @return the parsed yago classes as a manager object)
      */
     public DBYagoClassesManager getDBYagoClassesManager() {
         return new DBYagoClassesManager(this.dbyagoclasses);

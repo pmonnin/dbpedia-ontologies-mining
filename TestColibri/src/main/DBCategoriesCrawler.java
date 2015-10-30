@@ -44,7 +44,7 @@ public class DBCategoriesCrawler {
 
     /**
      * Getter on the parsed categories
-     * @return the parsed categories with HashMap (key = URI of the categories and object is the DBCategory)
+     * @return the parsed categories as a manager object)
      */
     public DBCategoriesManager getDBCategoriesManager() {
         return new DBCategoriesManager(this.dbcategories);
