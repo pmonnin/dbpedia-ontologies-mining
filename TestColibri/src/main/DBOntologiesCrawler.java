@@ -29,11 +29,10 @@ public class DBOntologiesCrawler {
     /**
      * Main method to test the crawler 
      * @param args not used
-     * @throws UnsupportedEncodingException thrown when JSON is not valid
      * @throws IOException thrown when server is unavailable
      * @throws ParseException thrown when JSON is not valid
      */
-    public static void main(String[] args) throws UnsupportedEncodingException, IOException, ParseException {
+    public static void main(String[] args) throws IOException, ParseException {
         System.out.println("== START MAIN DB ONTOLOGIES CRAWLER ==");
         DBOntologiesCrawler crawler = new DBOntologiesCrawler();
         crawler.computeOntologiesHierarchy();

@@ -29,11 +29,10 @@ public class DBYagoClassesCrawler {
     /**
      * Main method to test the crawler 
      * @param args not used
-     * @throws UnsupportedEncodingException thrown when JSON is not valid
      * @throws IOException thrown when server is unavailable
      * @throws ParseException thrown when JSON is not valid
      */
-    public static void main(String[] args) throws UnsupportedEncodingException, IOException, ParseException {
+    public static void main(String[] args) throws IOException, ParseException {
         System.out.println("== START MAIN DB YAGO CLASSES CRAWLER ==");
         DBYagoClassesCrawler crawler = new DBYagoClassesCrawler();
         crawler.computeParents();
