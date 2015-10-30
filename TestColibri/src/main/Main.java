@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import dbpediaobjects.DBCategoriesManager;
+import dbpediaobjects.DBOntologiesManager;
 import org.json.simple.parser.ParseException;
 
 import pedialattice.PediaConcept;
 import pedialattice.PediaLatticeFactory;
-import dbpediaobjects.DBCategory;
 import dbpediaobjects.DBOntologyClass;
 import dbpediaobjects.DBYagoClass;
 
@@ -52,7 +52,7 @@ public class Main {
         System.out.println("== ONTOLOGIES CRAWLING AND PARSING ==");
         DBOntologyClassesCrawler dbOntologyClasses = new DBOntologyClassesCrawler();
         dbOntologyClasses.computeOntologiesHierarchy();
-        HashMap<String, DBOntologyClass> dbontologies = dbOntologyClasses.getDbontologies();
+        DBOntologiesManager dbontologies = dbOntologyClasses.getDBOntologiesManager();
         
         // Crawling Yago classes
         System.out.println("== YAGO CLASSES CRAWLING AND PARSING ==");

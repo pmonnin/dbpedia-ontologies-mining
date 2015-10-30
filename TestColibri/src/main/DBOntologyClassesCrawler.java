@@ -6,6 +6,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
+import dbpediaobjects.DBOntologiesManager;
 import org.json.simple.parser.ParseException;
 
 import serverlink.ChildAndParent;
@@ -36,7 +37,7 @@ public class DBOntologyClassesCrawler {
         System.out.println("== START MAIN DB ONTOLOGIES CRAWLER ==");
         DBOntologyClassesCrawler crawler = new DBOntologyClassesCrawler();
         crawler.computeOntologiesHierarchy();
-        DBOntologyClassesStatistics stats = new DBOntologyClassesStatistics(crawler.getDbontologies());
+        DBOntologyClassesStatistics stats = new DBOntologyClassesStatistics(crawler.dbontologies);
         stats.computeStatistics();
         stats.displayStatistics();
     }
@@ -45,8 +46,8 @@ public class DBOntologyClassesCrawler {
      * Getter on the parsed ontology classes
      * @return the parsed ontology classes with HashMap (key = URI of the ontology classes and object is the DBOnolotyClass)
      */
-    public HashMap<String, DBOntologyClass> getDbontologies() {
-        return this.dbontologies;
+    public DBOntologiesManager getDBOntologiesManager() {
+        return new DBOntologiesManager(this.dbontologies);
     }
 
     /**
