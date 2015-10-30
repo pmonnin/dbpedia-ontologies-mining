@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import dbpediaobjects.DBOntologyClass;
+import dbpediaobjects.DBOntology;
 
 /**
  * Class computing statistics over DB Ontology classes hierarchy
@@ -12,15 +12,15 @@ import dbpediaobjects.DBOntologyClass;
  * @author Pierre Monnin
  *
  */
-public class DBOntologyClassesStatistics {
-	private HashMap<String, DBOntologyClass> ontologies;
+public class DBOntologiesStatistics {
+	private HashMap<String, DBOntology> ontologies;
 	private int ontologiesNumber;
 	private int orphansNumber;
 	private int depth;
 	private int directSubsumptions;
 	private int inferredSubsumptions;
 	
-	public DBOntologyClassesStatistics(HashMap<String, DBOntologyClass> ontologies) {
+	public DBOntologiesStatistics(HashMap<String, DBOntology> ontologies) {
 		this.ontologies = ontologies;
 		this.ontologiesNumber = 0;
 		this.orphansNumber = 0;
@@ -79,11 +79,11 @@ public class DBOntologyClassesStatistics {
 		// Algorithm computation
 		while(!queue.isEmpty()) {
 			String onto = queue.pollFirst();
-			DBOntologyClass dbOnto = this.ontologies.get(onto);
+			DBOntology dbOnto = this.ontologies.get(onto);
 			
 			if(dbOnto != null) {
 				for(String child : dbOnto.getChildren()) {
-					DBOntologyClass childClass = this.ontologies.get(child);
+					DBOntology childClass = this.ontologies.get(child);
 					
 					if(childClass != null && childClass.getDepth() == -1) {
 						childClass.setDepth(dbOnto.getDepth() + 1);
@@ -110,7 +110,7 @@ public class DBOntologyClassesStatistics {
 			LinkedList<String> queue = new LinkedList<String>();
 			this.ontologies.get(key).setSeen(true);
 			for(String parent : this.ontologies.get(key).getParents()) {
-				DBOntologyClass onto = this.ontologies.get(parent);
+				DBOntology onto = this.ontologies.get(parent);
 				
 				if(onto != null) {
 					onto.setSeen(true);
@@ -121,11 +121,11 @@ public class DBOntologyClassesStatistics {
 			// Algorithm computation
 			while(!queue.isEmpty()) {
 				String onto = queue.pollFirst();
-				DBOntologyClass dbOnto = this.ontologies.get(onto);
+				DBOntology dbOnto = this.ontologies.get(onto);
 				
 				if(dbOnto != null) {
 					for(String parent : dbOnto.getParents()) {
-						DBOntologyClass dbParent = this.ontologies.get(parent);
+						DBOntology dbParent = this.ontologies.get(parent);
 						
 						if(dbParent != null && !dbParent.getSeen()) {
 							dbParent.setSeen(true);

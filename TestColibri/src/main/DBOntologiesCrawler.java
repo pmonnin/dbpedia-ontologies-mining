@@ -11,8 +11,8 @@ import org.json.simple.parser.ParseException;
 
 import serverlink.ChildAndParent;
 import serverlink.JSONReader;
-import statistics.DBOntologyClassesStatistics;
-import dbpediaobjects.DBOntologyClass;
+import statistics.DBOntologiesStatistics;
+import dbpediaobjects.DBOntology;
 
 /**
  * Crawler of the DBPedia ontology classes
@@ -22,9 +22,9 @@ import dbpediaobjects.DBOntologyClass;
  * @author Pierre Monnin
  *
  */
-public class DBOntologyClassesCrawler {
+public class DBOntologiesCrawler {
 
-    private HashMap<String, DBOntologyClass> dbontologies;
+    private HashMap<String, DBOntology> dbontologies;
 
     /**
      * Main method to test the crawler 
@@ -35,9 +35,9 @@ public class DBOntologyClassesCrawler {
      */
     public static void main(String[] args) throws UnsupportedEncodingException, IOException, ParseException {
         System.out.println("== START MAIN DB ONTOLOGIES CRAWLER ==");
-        DBOntologyClassesCrawler crawler = new DBOntologyClassesCrawler();
+        DBOntologiesCrawler crawler = new DBOntologiesCrawler();
         crawler.computeOntologiesHierarchy();
-        DBOntologyClassesStatistics stats = new DBOntologyClassesStatistics(crawler.dbontologies);
+        DBOntologiesStatistics stats = new DBOntologiesStatistics(crawler.dbontologies);
         stats.computeStatistics();
         stats.displayStatistics();
     }
@@ -70,13 +70,13 @@ public class DBOntologyClassesCrawler {
                 + "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/ontology\", \"i\"))"
                 + "}}", "UTF-8"));
 
-        this.dbontologies = new HashMap<String, DBOntologyClass>();
+        this.dbontologies = new HashMap<String, DBOntology>();
         for (ChildAndParent childAndParent : childrenAndParents) {
             String child = childAndParent.getChild().getValue();
             String parent = childAndParent.getParent() == null ? null : childAndParent.getParent().getValue();
 
             if(this.dbontologies.get(child) == null) {
-            	this.dbontologies.put(child, new DBOntologyClass(child));
+            	this.dbontologies.put(child, new DBOntology(child));
             }
             
             if(parent != null && !this.dbontologies.get(child).hasParent(parent)) {
@@ -87,7 +87,7 @@ public class DBOntologyClassesCrawler {
         // Children relationship creation
         for(String key : this.dbontologies.keySet()) {
         	for(String parent : this.dbontologies.get(key).getParents()) {
-				DBOntologyClass parentOnto = this.dbontologies.get(parent);
+				DBOntology parentOnto = this.dbontologies.get(parent);
 				
 				if(parentOnto != null)
 					parentOnto.addChildren(key);

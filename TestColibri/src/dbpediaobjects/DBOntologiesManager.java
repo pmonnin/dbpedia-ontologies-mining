@@ -8,9 +8,9 @@ import java.util.HashMap;
  * @author Pierre Monnin
  */
 public class DBOntologiesManager {
-    public HashMap<String, DBOntologyClass> ontologies;
+    public HashMap<String, DBOntology> ontologies;
 
-    public DBOntologiesManager(HashMap<String, DBOntologyClass> ontologies) {
+    public DBOntologiesManager(HashMap<String, DBOntology> ontologies) {
         this.ontologies = ontologies;
     }
 }

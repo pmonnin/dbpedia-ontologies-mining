@@ -12,7 +12,6 @@ import org.json.simple.parser.ParseException;
 
 import pedialattice.PediaConcept;
 import pedialattice.PediaLatticeFactory;
-import dbpediaobjects.DBOntologyClass;
 import dbpediaobjects.DBYagoClass;
 
 /**
@@ -50,7 +49,7 @@ public class Main {
 
         // Crawling DB ontologies
         System.out.println("== ONTOLOGIES CRAWLING AND PARSING ==");
-        DBOntologyClassesCrawler dbOntologyClasses = new DBOntologyClassesCrawler();
+        DBOntologiesCrawler dbOntologyClasses = new DBOntologiesCrawler();
         dbOntologyClasses.computeOntologiesHierarchy();
         DBOntologiesManager dbontologies = dbOntologyClasses.getDBOntologiesManager();
         

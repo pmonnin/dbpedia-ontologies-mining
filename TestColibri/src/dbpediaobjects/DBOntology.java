@@ -9,14 +9,14 @@ import java.util.ArrayList;
  * @author Pierre Monnin
  *
  */
-public class DBOntologyClass {
+public class DBOntology {
     private String uri = "";
     private int depth = -1;
     private boolean seen = false;
     private ArrayList<String> parents = new ArrayList<String>();
     private ArrayList<String> children = new ArrayList<String>();
 
-    public DBOntologyClass(String uri) {
+    public DBOntology(String uri) {
         this.uri = uri;
     }
 
