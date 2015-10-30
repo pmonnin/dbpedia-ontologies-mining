@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import dbpediaobjects.DBCategoriesManager;
 import dbpediaobjects.DBOntologiesManager;
+import dbpediaobjects.DBYagoClassesManager;
 import org.json.simple.parser.ParseException;
 
 import pedialattice.PediaConcept;
@@ -57,7 +58,7 @@ public class Main {
         System.out.println("== YAGO CLASSES CRAWLING AND PARSING ==");
         DBYagoClassesCrawler dbYagoClasses = new DBYagoClassesCrawler();
         dbYagoClasses.computeParents();
-        HashMap<String, DBYagoClass> dbyagoclasses = dbYagoClasses.getDbYagoClasses();
+        DBYagoClassesManager dbyagoclasses = dbYagoClasses.getDBYagoClassesManager();
 
         // We create the lattice
         System.out.println("== LATTICE CREATION ==");

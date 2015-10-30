@@ -6,6 +6,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
+import dbpediaobjects.DBYagoClassesManager;
 import org.json.simple.parser.ParseException;
 
 import serverlink.ChildAndParent;
@@ -36,7 +37,7 @@ public class DBYagoClassesCrawler {
         System.out.println("== START MAIN DB YAGO CLASSES CRAWLER ==");
         DBYagoClassesCrawler crawler = new DBYagoClassesCrawler();
         crawler.computeParents();
-        DBYagoClassesStatistics stats = new DBYagoClassesStatistics(crawler.getDbYagoClasses());
+        DBYagoClassesStatistics stats = new DBYagoClassesStatistics(crawler.dbyagoclasses);
         stats.computeStatistics();
         stats.displayStatistics();
     }
@@ -45,8 +46,8 @@ public class DBYagoClassesCrawler {
      * Getter on the parsed yago classes
      * @return the parsed yago classes with HashMap (key = URI of the yago classes and object is the DBYagoClass)
      */
-    public HashMap<String, DBYagoClass> getDbYagoClasses() {
-        return this.dbyagoclasses;
+    public DBYagoClassesManager getDBYagoClassesManager() {
+        return new DBYagoClassesManager(this.dbyagoclasses);
     }
 
     /**
