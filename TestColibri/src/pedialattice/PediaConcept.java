@@ -74,6 +74,7 @@ public class PediaConcept {
     private void initializeHierarchiesFromPage(DBPage page, DBCategoriesManager dbcategories, DBOntologiesManager dbontologies,
                                                DBYagoClassesManager dbyagoclasses) {
 
+        // Categories
         for(int i = 0 ; i < page.getCategories().size() ; i++) {
             if(i == 0) {
                 this.categories.addAll(dbcategories.getSelfAndAncestors(page.getCategories().get(0)));
@@ -82,14 +83,15 @@ public class PediaConcept {
             else {
                 ArrayList<String> selfAndAncestors = dbcategories.getSelfAndAncestors(page.getCategories().get(i));
 
-                for(String cat : selfAndAncestors) {
-                    if(!this.categories.contains(cat)) {
-                        this.categories.add(cat);
+                for(String category : selfAndAncestors) {
+                    if(!this.categories.contains(category)) {
+                        this.categories.add(category);
                     }
                 }
             }
         }
 
+        // Ontologies
         for(int i = 0 ; i < page.getOntologies().size() ; i++) {
             if(i == 0) {
                 this.ontologies.addAll(dbontologies.getSelfAndAncestors(page.getOntologies().get(0)));
@@ -106,6 +108,7 @@ public class PediaConcept {
             }
         }
 
+        // Yago classes
         for(int i = 0 ; i < page.getYagoClasses().size() ; i++) {
             if(i == 0) {
                 this.yagoClasses.addAll(dbyagoclasses.getSelfAndAncestors(page.getYagoClasses().get(0)));
@@ -123,8 +126,38 @@ public class PediaConcept {
         }
     }
 
-    private void hierarchiesIntersectionWithPage(DBPage page, DBCategoriesManager dbCategoriesManager, DBOntologiesManager dbontologies,
+    private void hierarchiesIntersectionWithPage(DBPage page, DBCategoriesManager dbcategories, DBOntologiesManager dbontologies,
                                                  DBYagoClassesManager dbyagoclasses) {
+
+        // Categories
+        ArrayList<String> pageCategories = new ArrayList<>();
+        for(int i = 0 ; i < page.getCategories().size() ; i++) {
+            if(i == 0) {
+                pageCategories.addAll(dbcategories.getSelfAndAncestors(page.getCategories().get(0)));
+            }
+
+            else {
+                ArrayList<String> selfAndAncestors = dbcategories.getSelfAndAncestors(page.getCategories().get(i));
+
+                for(String category : selfAndAncestors) {
+                    if(!pageCategories.contains(category)) {
+                        pageCategories.add(category);
+                    }
+                }
+            }
+        }
+
+        ArrayList<String> categoriesToRemove = new ArrayList<>();
+        for(String category : this.categories) {
+            if(!pageCategories.contains(category)) {
+                categoriesToRemove.add(category);
+            }
+        }
+        this.categories.removeAll(categoriesToRemove);
+
+        // Ontologies
+
+        // Yago classes
 
     }
 
