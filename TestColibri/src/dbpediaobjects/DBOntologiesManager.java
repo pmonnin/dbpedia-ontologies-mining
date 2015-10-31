@@ -1,5 +1,6 @@
 package dbpediaobjects;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -12,5 +13,12 @@ public class DBOntologiesManager {
 
     public DBOntologiesManager(HashMap<String, DBOntology> ontologies) {
         this.ontologies = ontologies;
+    }
+
+    public ArrayList<String> getSelfAndAncestors(String ontology) {
+        ArrayList<String> retVal = new ArrayList<>();
+        retVal.add(ontology);
+
+        return retVal;
     }
 }

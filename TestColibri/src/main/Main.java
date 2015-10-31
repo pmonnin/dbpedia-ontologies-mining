@@ -62,7 +62,7 @@ public class Main {
 
         // We create the lattice
         System.out.println("== LATTICE CREATION ==");
-        PediaLatticeFactory latticeFactory = new PediaLatticeFactory();
+        PediaLatticeFactory latticeFactory = new PediaLatticeFactory(dbcategories, dbontologies, dbyagoclasses);
         ArrayList<PediaConcept> dbLattice = latticeFactory.getDBLattice();
 
         // For each concept

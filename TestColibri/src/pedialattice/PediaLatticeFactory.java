@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.*;
 
+import dbpediaobjects.DBCategoriesManager;
+import dbpediaobjects.DBOntologiesManager;
+import dbpediaobjects.DBYagoClassesManager;
 import org.json.simple.parser.ParseException;
 
 import serverlink.ChildAndParent;
@@ -32,18 +35,20 @@ public class PediaLatticeFactory {
     private PediaConcept top;
     private PediaConcept bottom;
 
-    public PediaLatticeFactory() throws ParseException, IOException {
+    public PediaLatticeFactory(DBCategoriesManager dbcategories, DBOntologiesManager dbontologies,
+                               DBYagoClassesManager dbyagoclasses) throws ParseException, IOException {
         this.dbPages = new HashMap<>();
         this.dbLattice = null;
         this.top = null;
         this.bottom = null;
-        this.createLattice();
+        this.createLattice(dbcategories, dbontologies, dbyagoclasses);
     }
 
     /**
      * Lattice creation
      */
-    public void createLattice() {
+    public void createLattice(DBCategoriesManager dbcategories, DBOntologiesManager dbontologies,
+                              DBYagoClassesManager dbyagoclasses) {
     	// Lattice objects from colibri
     	Relation rel = new TreeRelation();
     	
@@ -173,7 +178,7 @@ public class PediaLatticeFactory {
             PediaConcept upperPediaConcept = processed.get(upperConcept);
 
             if(upperPediaConcept == null) {
-                upperPediaConcept = new PediaConcept(upperConcept, this.dbPages);
+                upperPediaConcept = new PediaConcept(upperConcept, this.dbPages, dbcategories, dbontologies, dbyagoclasses);
                 processed.put(upperConcept, upperPediaConcept);
                 this.dbLattice.add(upperPediaConcept);
             }
@@ -182,7 +187,7 @@ public class PediaLatticeFactory {
             PediaConcept lowerPediaConcept = processed.get(lowerConcept);
 
             if(lowerPediaConcept == null) {
-                lowerPediaConcept = new PediaConcept(lowerConcept, this.dbPages);
+                lowerPediaConcept = new PediaConcept(lowerConcept, this.dbPages, dbcategories, dbontologies, dbyagoclasses);
                 processed.put(lowerConcept, lowerPediaConcept);
                 this.dbLattice.add(lowerPediaConcept);
             }

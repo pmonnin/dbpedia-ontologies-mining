@@ -1,5 +1,6 @@
 package dbpediaobjects;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -12,5 +13,12 @@ public class DBYagoClassesManager {
 
     public DBYagoClassesManager(HashMap<String, DBYagoClass> yagoClasses) {
         this.yagoClasses = yagoClasses;
+    }
+
+    public ArrayList<String> getSelfAndAncestors(String yagoClass) {
+        ArrayList<String> retVal = new ArrayList<>();
+        retVal.add(yagoClass);
+
+        return retVal;
     }
 }

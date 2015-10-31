@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import colibri.lib.Concept;
+import dbpediaobjects.DBCategoriesManager;
+import dbpediaobjects.DBOntologiesManager;
 import dbpediaobjects.DBPage;
+import dbpediaobjects.DBYagoClassesManager;
 
 /**
  * Class of PediaConcept object
@@ -27,7 +30,8 @@ public class PediaConcept {
 
     private int depth;
 
-    public PediaConcept(Concept concept, HashMap<String, DBPage> dbPages) {
+    public PediaConcept(Concept concept, HashMap<String, DBPage> dbPages, DBCategoriesManager dbcategories,
+                        DBOntologiesManager dbontologies, DBYagoClassesManager dbyagoclasses) {
     	// Concept objects (DBPedia pages) & attributes (DBPedia relationship)
         this.objects = new ArrayList<>();
         for(Object o : concept.getObjects()) {
@@ -48,69 +52,80 @@ public class PediaConcept {
         this.ontologies = new ArrayList<>();
         this.yagoClasses = new ArrayList<>();
 
-        if(this.objects.size() > 0) {
-            for(String o : this.objects) {
-                DBPage page = dbPages.get(o);
+        boolean initialized = false;
+        for(String o : this.objects) {
+            DBPage page = dbPages.get(o);
 
-                if(page != null) {
-                    for(String cat : page.getCategories()) {
-                        if(!this.categories.contains(cat))  {
-                            boolean toAdd = true;
+            if(page != null) {
+                if(!initialized) {
+                    initializeHierarchiesFromPage(page, dbcategories, dbontologies, dbyagoclasses);
+                    initialized = true;
+                }
 
-                            for(String o2 : this.objects) {
-                                DBPage p = dbPages.get(o2);
-
-                                if(p != null && !p.getCategories().contains(cat)) {
-                                    toAdd = false;
-                                }
-                            }
-
-                            if(toAdd) {
-                                this.categories.add(cat);
-                            }
-                        }
-                    }
-
-                    for(String onto : page.getOntologies()) {
-                        if(!this.ontologies.contains(onto)) {
-                            boolean toAdd = true;
-
-                            for(String o2 : this.objects) {
-                                DBPage p = dbPages.get(o2);
-
-                                if(p != null && !p.getOntologies().contains(onto)) {
-                                    toAdd = false;
-                                }
-                            }
-
-                            if(toAdd) {
-                                this.ontologies.add(onto);
-                            }
-                        }
-                    }
-
-                    for(String yagoClass : page.getYagoClasses()) {
-                        if(!this.yagoClasses.contains(yagoClass)) {
-                            boolean toAdd = true;
-
-                            for(String o2 : this.objects) {
-                                DBPage p = dbPages.get(o2);
-
-                                if(p != null && !p.getYagoClasses().contains(yagoClass)) {
-                                    toAdd = false;
-                                }
-                            }
-
-                            if(toAdd) {
-                                this.yagoClasses.add(yagoClass);
-                            }
-                        }
-                    }
+                else {
+                    hierarchiesIntersectionWithPage(page, dbcategories, dbontologies, dbyagoclasses);
                 }
             }
         }
 
         this.depth = -1;
+    }
+
+    private void initializeHierarchiesFromPage(DBPage page, DBCategoriesManager dbcategories, DBOntologiesManager dbontologies,
+                                               DBYagoClassesManager dbyagoclasses) {
+
+        for(int i = 0 ; i < page.getCategories().size() ; i++) {
+            if(i == 0) {
+                this.categories.addAll(dbcategories.getSelfAndAncestors(page.getCategories().get(0)));
+            }
+
+            else {
+                ArrayList<String> selfAndAncestors = dbcategories.getSelfAndAncestors(page.getCategories().get(i));
+
+                for(String cat : selfAndAncestors) {
+                    if(!this.categories.contains(cat)) {
+                        this.categories.add(cat);
+                    }
+                }
+            }
+        }
+
+        for(int i = 0 ; i < page.getOntologies().size() ; i++) {
+            if(i == 0) {
+                this.ontologies.addAll(dbontologies.getSelfAndAncestors(page.getOntologies().get(0)));
+            }
+
+            else {
+                ArrayList<String> selfAndAncestors = dbontologies.getSelfAndAncestors(page.getOntologies().get(i));
+
+                for(String ontology : selfAndAncestors) {
+                    if(!this.ontologies.contains(ontology)) {
+                        this.ontologies.add(ontology);
+                    }
+                }
+            }
+        }
+
+        for(int i = 0 ; i < page.getYagoClasses().size() ; i++) {
+            if(i == 0) {
+                this.yagoClasses.addAll(dbyagoclasses.getSelfAndAncestors(page.getYagoClasses().get(0)));
+            }
+
+            else {
+                ArrayList<String> selfAndAncestors = dbyagoclasses.getSelfAndAncestors(page.getYagoClasses().get(i));
+
+                for(String yagoClass : selfAndAncestors) {
+                    if (!this.yagoClasses.contains(yagoClass)) {
+                        this.yagoClasses.add(yagoClass);
+                    }
+                }
+            }
+        }
+    }
+
+    private void hierarchiesIntersectionWithPage(DBPage page, DBCategoriesManager dbCategoriesManager, DBOntologiesManager dbontologies,
+                                                 DBYagoClassesManager dbyagoclasses) {
+
     }
 
     public int getDepth() {

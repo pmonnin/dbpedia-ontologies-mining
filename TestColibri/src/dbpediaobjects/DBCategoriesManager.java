@@ -1,5 +1,6 @@
 package dbpediaobjects;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -12,5 +13,12 @@ public class DBCategoriesManager {
 
     public DBCategoriesManager(HashMap<String, DBCategory> categories) {
         this.categories = categories;
+    }
+
+    public ArrayList<String> getSelfAndAncestors(String category) {
+        ArrayList<String> retVal = new ArrayList<>();
+        retVal.add(category);
+
+        return retVal;
     }
 }
