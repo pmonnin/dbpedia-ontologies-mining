@@ -182,7 +182,31 @@ public class PediaConcept {
         this.ontologies.removeAll(ontologiesToRemove);
 
         // Yago classes
+        ArrayList<String> pageYagoClasses = new ArrayList<>();
+        for(int i = 0 ; i < page.getYagoClasses().size() ; i++) {
+            if(i == 0) {
+                pageYagoClasses.addAll(dbyagoclasses.getSelfAndAncestors(page.getYagoClasses().get(0)));
+            }
 
+            else {
+                ArrayList<String> selfAndAncestors = dbyagoclasses.getSelfAndAncestors(page.getYagoClasses().get(i));
+
+                for(String yagoClass : selfAndAncestors) {
+                    if(!pageYagoClasses.contains(yagoClass)) {
+                        pageYagoClasses.add(yagoClass);
+                    }
+                }
+            }
+        }
+
+        ArrayList<String> yagoClassesToRemove = new ArrayList<>();
+        for(String yagoClass : this.yagoClasses) {
+            if(!pageYagoClasses.contains(yagoClass)) {
+                yagoClassesToRemove.add(yagoClass);
+            }
+        }
+
+        this.yagoClasses.removeAll(yagoClassesToRemove);
     }
 
     public int getDepth() {
