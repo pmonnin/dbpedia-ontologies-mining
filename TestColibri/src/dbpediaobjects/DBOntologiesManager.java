@@ -2,6 +2,8 @@ package dbpediaobjects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Manager of DB Ontologies list created from DBOntologiesCrawler
@@ -31,7 +33,24 @@ public class DBOntologiesManager {
 
     public ArrayList<String> getSelfAndAncestors(String ontology) {
         ArrayList<String> retVal = new ArrayList<>();
-        retVal.add(ontology);
+
+        Queue<String> queue = new LinkedList<>();
+        queue.add(ontology);
+
+        while(!queue.isEmpty()) {
+            String o = queue.poll();
+
+            if(this.ontologies.containsKey(o)) {
+                DBOntology dbo = this.ontologies.get(o);
+                if(!retVal.contains(o)) {
+                    retVal.add(o);
+                }
+
+                for(String parent : dbo.getParents()) {
+                    queue.add(parent);
+                }
+            }
+        }
 
         return retVal;
     }

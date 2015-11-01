@@ -2,6 +2,8 @@ package dbpediaobjects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Manager of DB Categories list created from DBCategoriesCrawler
@@ -31,7 +33,24 @@ public class DBCategoriesManager {
 
     public ArrayList<String> getSelfAndAncestors(String category) {
         ArrayList<String> retVal = new ArrayList<>();
-        retVal.add(category);
+
+        Queue<String> queue = new LinkedList<>();
+        queue.add(category);
+
+        while(!queue.isEmpty()) {
+            String c = queue.poll();
+
+            if(this.categories.containsKey(c)) {
+                DBCategory dbc = this.categories.get(c);
+                if(!retVal.contains(c)) {
+                    retVal.add(c);
+                }
+
+                for(String parent : dbc.getParents()) {
+                    queue.add(parent);
+                }
+            }
+        }
 
         return retVal;
     }

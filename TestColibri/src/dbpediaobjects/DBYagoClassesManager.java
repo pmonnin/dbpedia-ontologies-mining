@@ -2,6 +2,8 @@ package dbpediaobjects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Manager of DB Yago Classes list created from DBYagoClassesCrawler
@@ -30,8 +32,25 @@ public class DBYagoClassesManager {
     }
 
     public ArrayList<String> getSelfAndAncestors(String yagoClass) {
-        ArrayList<String> retVal =  new ArrayList<>();
-        retVal.add(yagoClass);
+        ArrayList<String> retVal = new ArrayList<>();
+
+        Queue<String> queue = new LinkedList<>();
+        queue.add(yagoClass);
+
+        while(!queue.isEmpty()) {
+            String y = queue.poll();
+
+            if(this.yagoClasses.containsKey(y)) {
+                DBYagoClass dby = this.yagoClasses.get(y);
+                if(!retVal.contains(y)) {
+                    retVal.add(y);
+                }
+
+                for(String parent : dby.getParents()) {
+                    queue.add(parent);
+                }
+            }
+        }
 
         return retVal;
     }
