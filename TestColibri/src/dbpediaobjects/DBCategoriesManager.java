@@ -15,10 +15,7 @@ public class DBCategoriesManager {
         this.categories = categories;
     }
 
-    public ArrayList<String> getSelfAndAncestors(String category) {
-        ArrayList<String> retVal = new ArrayList<>();
-        retVal.add(category);
-
-        return retVal;
+    public ArrayList<String> getPageCategoriesAndAncestors(DBPage page) {
+        return new ArrayList<>();
     }
 }
