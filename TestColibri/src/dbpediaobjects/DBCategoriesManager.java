@@ -16,6 +16,23 @@ public class DBCategoriesManager {
     }
 
     public ArrayList<String> getPageCategoriesAndAncestors(DBPage page) {
-        return new ArrayList<>();
+        ArrayList<String> retVal = new ArrayList<>();
+
+        for(String category : page.getCategories()) {
+            for(String c : getSelfAndAncestors(category)) {
+                if(!retVal.contains(c)) {
+                    retVal.add(c);
+                }
+            }
+        }
+
+        return retVal;
+    }
+
+    public ArrayList<String> getSelfAndAncestors(String category) {
+        ArrayList<String> retVal = new ArrayList<>();
+        retVal.add(category);
+
+        return retVal;
     }
 }

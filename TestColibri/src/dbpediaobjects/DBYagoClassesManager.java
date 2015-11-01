@@ -16,6 +16,23 @@ public class DBYagoClassesManager {
     }
 
     public ArrayList<String> getPageYagoClassesAndAncestors(DBPage page) {
-        return new ArrayList<>();
+        ArrayList<String> retVal = new ArrayList<>();
+
+        for(String yagoClass : page.getYagoClasses()) {
+            for(String y : getSelfAndAncestors(yagoClass)) {
+                if(!retVal.contains(y)) {
+                    retVal.add(y);
+                }
+            }
+        }
+
+        return retVal;
+    }
+
+    public ArrayList<String> getSelfAndAncestors(String yagoClass) {
+        ArrayList<String> retVal =  new ArrayList<>();
+        retVal.add(yagoClass);
+
+        return retVal;
     }
 }

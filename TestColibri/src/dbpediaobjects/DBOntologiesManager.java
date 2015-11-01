@@ -16,6 +16,23 @@ public class DBOntologiesManager {
     }
 
     public ArrayList<String> getPageOntologiesAndAncestors(DBPage page) {
-        return new ArrayList<>();
+        ArrayList<String> retVal = new ArrayList<>();
+
+        for(String ontology : page.getOntologies()) {
+            for(String o : getSelfAndAncestors(ontology)) {
+                if(!retVal.contains(o)) {
+                    retVal.add(o);
+                }
+            }
+        }
+
+        return retVal;
+    }
+
+    public ArrayList<String> getSelfAndAncestors(String ontology) {
+        ArrayList<String> retVal = new ArrayList<>();
+        retVal.add(ontology);
+
+        return retVal;
     }
 }
