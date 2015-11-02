@@ -169,6 +169,7 @@ public class PediaLatticeFactory {
                 rate = (int) ((double) i / (double) edgesNumber * 100 % 100);
                 System.out.print(rate + " % ... ");
             }
+            System.out.println(i);
 
             Edge currentEdge = it.next();
             i++;
