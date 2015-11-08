@@ -81,7 +81,7 @@ public class DBCategoriesCrawler {
         // Hierarchy relationship creation
         for(ChildAndParent childAndParent : childrenAndParents) {
             DBCategory child = this.dbcategories.get(childAndParent.getChild().getValue());
-            DBCategory parent = this.dbcategories.get(childAndParent.getParent().getValue());
+            DBCategory parent = (childAndParent.getParent() != null) ? this.dbcategories.get(childAndParent.getParent().getValue()) : null;
 
             if(child != null && parent != null) {
                 child.addParent(parent);
