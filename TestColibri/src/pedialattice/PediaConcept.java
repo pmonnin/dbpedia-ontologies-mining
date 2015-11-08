@@ -52,26 +52,6 @@ public class PediaConcept {
         this.ontologies = new ArrayList<>();
         this.yagoClasses = new ArrayList<>();
 
-        boolean initialized = false;
-        for(String o : this.objects) {
-            DBPage page = dbPages.get(o);
-
-            if(page != null) {
-                if(!initialized) {
-                    this.categories.addAll(dbcategories.getPageCategoriesAndAncestors(page));
-                    this.ontologies.addAll(dbontologies.getPageOntologiesAndAncestors(page));
-                    this.yagoClasses.addAll(dbyagoclasses.getPageYagoClassesAndAncestors(page));
-                    initialized = true;
-                }
-
-                else {
-                    this.categories.retainAll(dbcategories.getPageCategoriesAndAncestors(page));
-                    this.ontologies.retainAll(dbontologies.getPageOntologiesAndAncestors(page));
-                    this.yagoClasses.retainAll(dbyagoclasses.getPageYagoClassesAndAncestors(page));
-                }
-            }
-        }
-
         this.depth = -1;
     }
 
