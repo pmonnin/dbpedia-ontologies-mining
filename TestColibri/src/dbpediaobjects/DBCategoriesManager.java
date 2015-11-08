@@ -1,9 +1,6 @@
 package dbpediaobjects;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  * Manager of DB Categories list created from DBCategoriesCrawler

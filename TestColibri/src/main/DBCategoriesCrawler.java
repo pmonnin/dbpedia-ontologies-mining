@@ -1,7 +1,6 @@
 package main;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
@@ -51,11 +50,10 @@ public class DBCategoriesCrawler {
     
     /**
      * Method computing the DBPedia categories hierarchy
-     * @throws UnsupportedEncodingException
      * @throws IOException
      * @throws ParseException
      */
-    public void computeCategoriesHierarchy() throws UnsupportedEncodingException, IOException, ParseException {
+    public void computeCategoriesHierarchy() throws IOException, ParseException {
     	// Ask for all the categories
         List<ChildAndParent> childrenAndParents = JSONReader.getChildrenAndParents(URLEncoder.encode(
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
@@ -70,32 +68,27 @@ public class DBCategoriesCrawler {
                 + "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/resource/Category\", \"i\"))"
                 + "}}", "UTF-8"));
 
-        this.dbcategories = new HashMap<String, DBCategory>();
+        this.dbcategories = new HashMap<>();
         
-        for (ChildAndParent childAndParent : childrenAndParents) {
+        for(ChildAndParent childAndParent : childrenAndParents) {
             String child = childAndParent.getChild().getValue();
-            String parent = childAndParent.getParent() == null ? null : childAndParent.getParent().getValue();
 
             if(this.dbcategories.get(child) == null) {
             	this.dbcategories.put(child, new DBCategory(child));
             }
-            
-            if(parent != null && !this.dbcategories.get(child).hasParent(parent)) {
-            	this.dbcategories.get(child).addParent(parent);
+        }
+
+        // Hierarchy relationship creation
+        for(ChildAndParent childAndParent : childrenAndParents) {
+            DBCategory child = this.dbcategories.get(childAndParent.getChild().getValue());
+            DBCategory parent = this.dbcategories.get(childAndParent.getParent().getValue());
+
+            if(child != null && parent != null) {
+                child.addParent(parent);
+                parent.addChild(child);
             }
         }
         
         childrenAndParents.clear();
-        
-        // Children relationship creation
-        for(String key : this.dbcategories.keySet()) {
-        	for(String parent : this.dbcategories.get(key).getParents()) {
-				DBCategory parentCat = this.dbcategories.get(parent);
-				
-				if(parentCat != null) {
-					parentCat.addChild(key);
-				}
-			}
-        }
     }
 }

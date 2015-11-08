@@ -38,7 +38,6 @@ public class Main {
 	 */
     public static void main(String[] args) throws ParseException, IOException {
         Date startDate = new Date();
-        int found = 0, proposed = 0;
         
         System.out.println("== MAIN ALGORITHM OF COMPARISON ==");
         

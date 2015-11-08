@@ -36,12 +36,12 @@ public class DBCategoriesStatistics {
 		
 		// Orphans number, direct subsumptions number,
 		Set<String> keys = this.categories.keySet();
-		ArrayList<String> orphans = new ArrayList<String>();
+		ArrayList<DBCategory> orphans = new ArrayList<>();
 		for(String key : keys) {	
 			// Orphans
 			if(this.categories.get(key).getParentsNumber() == 0) {
 				this.orphansNumber++;
-				orphans.add(key);
+				orphans.add(this.categories.get(key));
 			}
 			
 			// Direct subsumptions
@@ -64,8 +64,8 @@ public class DBCategoriesStatistics {
 		System.out.println("Depth: " + this.depth);
 	}
 	
-	private void computeDepth(ArrayList<String> orphans) {
-		LinkedList<String> queue = new LinkedList<String>();
+	private void computeDepth(ArrayList<DBCategory> orphans) {
+		LinkedList<DBCategory> queue = new LinkedList<>();
 		this.depth = 1;
 		
 		// Algorithm initialization
@@ -73,30 +73,24 @@ public class DBCategoriesStatistics {
 			this.categories.get(category).setDepth(-1);
 		}
 		
-		for(String orphan : orphans) {
-			this.categories.get(orphan).setDepth(1);
+		for(DBCategory orphan : orphans) {
+			orphan.setDepth(1);
 			queue.add(orphan);
 		}
 		
 		// Algorithm computation
 		while(!queue.isEmpty()) {
-			String cat = queue.pollFirst();
-			DBCategory dbCat = this.categories.get(cat);
-			
-			if(dbCat != null) {
-				for(String child : dbCat.getChildren()) {
-					DBCategory childClass = this.categories.get(child);
-					
-					if(childClass != null && childClass.getDepth() == -1) {
-						childClass.setDepth(dbCat.getDepth() + 1);
-						queue.add(child);
-					}
+			DBCategory cat = queue.pollFirst();
+
+			for(DBCategory child : cat.getChildren()) {
+				if(child.getDepth() == -1) {
+					child.setDepth(cat.getDepth() + 1);
+					queue.add(child);
 				}
-				
-				if(dbCat.getDepth() > this.depth) {
-					this.depth = dbCat.getDepth();
-				}
-				
+			}
+
+			if(cat.getDepth() > this.depth) {
+				this.depth = cat.getDepth();
 			}
 		}
 	}
@@ -109,33 +103,24 @@ public class DBCategoriesStatistics {
 				this.categories.get(cat).setSeen(false);
 			}
 			
-			LinkedList<String> queue = new LinkedList<String>();
+			LinkedList<DBCategory> queue = new LinkedList<>();
 			this.categories.get(key).setSeen(true);
-			for(String parent : this.categories.get(key).getParents()) {
-				DBCategory cat = this.categories.get(parent);
-				
-				if(cat != null) {
-					cat.setSeen(true);
-					queue.add(parent);
-				}
+			for(DBCategory parent : this.categories.get(key).getParents()) {
+				parent.setSeen(true);
+				queue.add(parent);
 			}
 			
 			// Algorithm computation
 			while(!queue.isEmpty()) {
-				String cat = queue.pollFirst();
-				DBCategory dbCat = this.categories.get(cat);
-				
-				if(dbCat != null) {
-					for(String parent : dbCat.getParents()) {
-						DBCategory dbParent = this.categories.get(parent);
-						
-						if(dbParent != null && !dbParent.getSeen()) {
-							dbParent.setSeen(true);
-							queue.add(parent);
-							this.inferredSubsumptions++;
-						}
-					}
-				}
+				DBCategory cat = queue.pollFirst();
+
+                for(DBCategory parent : cat.getParents()) {
+                    if(!parent.getSeen()) {
+                        parent.setSeen(true);
+                        queue.add(parent);
+                        this.inferredSubsumptions++;
+                    }
+                }
 			}
 		}
 	}

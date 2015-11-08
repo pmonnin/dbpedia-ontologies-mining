@@ -11,21 +11,23 @@ import java.util.ArrayList;
  */
 public class DBCategory {
 	private String uri;
-	private ArrayList<String> parents;
-	private ArrayList<String> children;
+	private ArrayList<DBCategory> parents;
+	private ArrayList<DBCategory> children;
 	private int depth;
 	private boolean seen;
 	
 	public DBCategory(String uri) {
         this.uri = uri;
-        this.parents = new ArrayList<String>();
-        this.children = new ArrayList<String>();
+        this.parents = new ArrayList<>();
+        this.children = new ArrayList<>();
         this.depth = -1;
         this.seen = false;
     }
 
-	public void addParent(String parent) {
-		this.parents.add(parent);
+	public void addParent(DBCategory parent) {
+		if(!this.parents.contains(parent)) {
+            this.parents.add(parent);
+        }
 	}
 	
 	public String getUri() {
@@ -40,24 +42,22 @@ public class DBCategory {
 		return this.parents.size();
 	}
 	
-	public ArrayList<String> getParents() {
+	public ArrayList<DBCategory> getParents() {
 		return this.parents;
 	}
 	
 	@Override
     public String toString() {
-        return "DBCategory [uri=" + this.uri + ", parents=" + this.parents + "]";
-    }
-
-    public boolean hasParent(String parent) {
-        return this.parents.contains(parent);
+        return "DBCategory [uri=" + this.uri + "]";
     }
     
-    public void addChild(String uri) {
-    	this.children.add(uri);
+    public void addChild(DBCategory child) {
+        if(!this.children.contains(child)) {
+            this.children.add(child);
+        }
     }
     
-    public ArrayList<String> getChildren() {
+    public ArrayList<DBCategory> getChildren() {
     	return this.children;
     }
 
