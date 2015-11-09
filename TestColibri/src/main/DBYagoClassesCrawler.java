@@ -55,7 +55,7 @@ public class DBYagoClassesCrawler {
      * @throws IOException
      * @throws ParseException
      */
-    public void computeParents() throws UnsupportedEncodingException, IOException, ParseException {
+    public void computeParents() throws IOException, ParseException {
     	// Ask for all the yago classes that don't have parents
     	List<ChildAndParent> children = JSONReader.getChildrenAndParents(URLEncoder.encode(
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
@@ -86,31 +86,27 @@ public class DBYagoClassesCrawler {
         // Building complete list
         childrenAndParents.addAll(children);
         
-        this.dbyagoclasses = new HashMap<String, DBYagoClass>();
+        this.dbyagoclasses = new HashMap<>();
         
         for (ChildAndParent childAndParent : childrenAndParents) {
             String child = childAndParent.getChild().getValue();
-            String parent = childAndParent.getParent() == null ? null : childAndParent.getParent().getValue();
 
             if(this.dbyagoclasses.get(child) == null) {
-            	this.dbyagoclasses.put(child, new DBYagoClass(child));
-            }
-            
-            if(parent != null && !this.dbyagoclasses.get(child).hasParent(parent)) {
-            	this.dbyagoclasses.get(child).addParent(parent);
+                this.dbyagoclasses.put(child, new DBYagoClass(child));
             }
         }
         
-        childrenAndParents.clear();
-        
         // Children relationship creation
-        for(String key : this.dbyagoclasses.keySet()) {
-			for(String parent : this.dbyagoclasses.get(key).getParents()) {
-				DBYagoClass p = this.dbyagoclasses.get(parent);
-				
-				if(p != null)
-					p.addChild(key);
-			}
-		}
+        for(ChildAndParent childAndParent : childrenAndParents) {
+            DBYagoClass child = this.dbyagoclasses.get(childAndParent.getChild().getValue());
+            DBYagoClass parent = (childAndParent.getParent() == null) ? null : this.dbyagoclasses.get(childAndParent.getParent().getValue());
+
+            if(child != null && parent != null) {
+                child.addParent(parent);
+                parent.addChild(child);
+            }
+        }
+
+        childrenAndParents.clear();
     }
 }

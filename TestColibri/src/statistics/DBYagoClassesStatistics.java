@@ -33,13 +33,13 @@ public class DBYagoClassesStatistics {
 		// Yago classes number
 		this.yagoClassesNumber = this.yagoClasses.size();
 		
-		// Orphans number anddirect subsumptions number
-		ArrayList<String> orphans = new ArrayList<String>();
+		// Orphans number and direct subsumptions number
+		ArrayList<DBYagoClass> orphans = new ArrayList<>();
 		for(String key : this.yagoClasses.keySet()) {
 			if(this.yagoClasses.get(key).getParentsNumber() == 0) {
 				// Orphans
 				this.orphansNumber++;
-				orphans.add(key);
+				orphans.add(this.yagoClasses.get(key));
 			}
 			
 			// Direct subsumptions
@@ -62,8 +62,8 @@ public class DBYagoClassesStatistics {
 		System.out.println("Depth: " + this.depth);
 	}
 	
-	private void computeDepth(ArrayList<String> orphans) {
-		LinkedList<String> queue = new LinkedList<String>();
+	private void computeDepth(ArrayList<DBYagoClass> orphans) {
+		LinkedList<DBYagoClass> queue = new LinkedList<>();
 		this.depth = 1;
 		
 		// Algorithm initialization
@@ -71,30 +71,24 @@ public class DBYagoClassesStatistics {
 			this.yagoClasses.get(yago).setDepth(-1);
 		}
 		
-		for(String orphan : orphans) {
-			this.yagoClasses.get(orphan).setDepth(1);
+		for(DBYagoClass orphan : orphans) {
+			orphan.setDepth(1);
 			queue.add(orphan);
 		}
 		
 		// Algorithm computation
 		while(!queue.isEmpty()) {
-			String yago = queue.pollFirst();
-			DBYagoClass dbYago = this.yagoClasses.get(yago);
-			
-			if(dbYago != null) {
-				for(String child : dbYago.getChildren()) {
-					DBYagoClass childClass = this.yagoClasses.get(child);
-					
-					if(childClass != null && childClass.getDepth() == -1) {
-						childClass.setDepth(dbYago.getDepth() + 1);
-						queue.add(child);
-					}
+			DBYagoClass yago = queue.pollFirst();
+
+			for(DBYagoClass child : yago.getChildren()) {
+				if(child.getDepth() == -1) {
+					child.setDepth(yago.getDepth() + 1);
+					queue.add(child);
 				}
-				
-				if(dbYago.getDepth() > this.depth) {
-					this.depth = dbYago.getDepth();
-				}
-				
+			}
+
+			if(yago.getDepth() > this.depth) {
+				this.depth = yago.getDepth();
 			}
 		}
 	}
@@ -107,35 +101,25 @@ public class DBYagoClassesStatistics {
 				this.yagoClasses.get(yago).setSeen(false);
 			}
 			
-			LinkedList<String> queue = new LinkedList<String>();
+			LinkedList<DBYagoClass> queue = new LinkedList<>();
 			this.yagoClasses.get(key).setSeen(true);
-			for(String parent : this.yagoClasses.get(key).getParents()) {
-				DBYagoClass yago = this.yagoClasses.get(parent);
-				
-				if(yago != null) {
-					yago.setSeen(true);
-					queue.add(parent);
-				}
+			for(DBYagoClass parent : this.yagoClasses.get(key).getParents()) {
+				parent.setSeen(true);
+				queue.add(parent);
 			}
 			
 			// Algorithm computation
 			while(!queue.isEmpty()) {
-				String yago = queue.pollFirst();
-				DBYagoClass dbYago = this.yagoClasses.get(yago);
-				
-				if(dbYago != null) {
-					for(String parent : dbYago.getParents()) {
-						DBYagoClass dbParent = this.yagoClasses.get(parent);
-						
-						if(dbParent != null && !dbParent.getSeen()) {
-							dbParent.setSeen(true);
-							queue.add(parent);
-							this.inferredSubsumptions++;
-						}
+				DBYagoClass yago = queue.pollFirst();
+
+				for(DBYagoClass parent : yago.getParents()) {
+					if(!parent.getSeen()) {
+						parent.setSeen(true);
+						queue.add(parent);
+						this.inferredSubsumptions++;
 					}
 				}
 			}
-		
 		}
 	}
 }
