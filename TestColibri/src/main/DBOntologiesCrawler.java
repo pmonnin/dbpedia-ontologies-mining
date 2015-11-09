@@ -69,28 +69,26 @@ public class DBOntologiesCrawler {
                 + "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/ontology\", \"i\"))"
                 + "}}", "UTF-8"));
 
-        this.dbontologies = new HashMap<String, DBOntology>();
+        this.dbontologies = new HashMap<>();
         for (ChildAndParent childAndParent : childrenAndParents) {
             String child = childAndParent.getChild().getValue();
-            String parent = childAndParent.getParent() == null ? null : childAndParent.getParent().getValue();
 
             if(this.dbontologies.get(child) == null) {
             	this.dbontologies.put(child, new DBOntology(child));
             }
-            
-            if(parent != null && !this.dbontologies.get(child).hasParent(parent)) {
-            	this.dbontologies.get(child).addParent(parent);
-            }
         }
         
         // Children relationship creation
-        for(String key : this.dbontologies.keySet()) {
-        	for(String parent : this.dbontologies.get(key).getParents()) {
-				DBOntology parentOnto = this.dbontologies.get(parent);
-				
-				if(parentOnto != null)
-					parentOnto.addChildren(key);
-			}
+        for(ChildAndParent childAndParent : childrenAndParents) {
+            DBOntology child = this.dbontologies.get(childAndParent.getChild().getValue());
+            DBOntology parent = (childAndParent.getParent() == null) ? null : this.dbontologies.get(childAndParent.getParent().getValue());
+
+            if(child != null && parent != null) {
+                child.addParent(parent);
+                parent.addChild(child);
+            }
         }
+
+        childrenAndParents.clear();
     }
 }

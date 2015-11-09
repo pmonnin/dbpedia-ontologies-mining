@@ -10,33 +10,31 @@ import java.util.ArrayList;
  *
  */
 public class DBOntology {
-    private String uri = "";
-    private int depth = -1;
-    private boolean seen = false;
-    private ArrayList<String> parents = new ArrayList<String>();
-    private ArrayList<String> children = new ArrayList<String>();
+    private String uri;
+    private int depth;
+    private boolean seen;
+    private ArrayList<DBOntology> parents;
+    private ArrayList<DBOntology> children;
 
     public DBOntology(String uri) {
         this.uri = uri;
+        this.depth = -1;
+        this.seen = false;
+        this.parents = new ArrayList<>();
+        this.children = new ArrayList<>();
     }
 
     public String getUri() {
         return this.uri;
     }
 
-    public void setUri(String uri) {
-        this.uri = uri;
+    public void addParent(DBOntology parent) {
+        if(!this.parents.contains(parent)) {
+            this.parents.add(parent);
+        }
     }
 
-    public void addParent(String parent) {
-        this.parents.add(parent);
-    }
-    
-    public boolean hasParent(String parent) {
-        return this.parents.contains(parent);
-    }
-
-    public ArrayList<String> getParents() {
+    public ArrayList<DBOntology> getParents() {
         return this.parents;
     }
 
@@ -54,12 +52,14 @@ public class DBOntology {
     	return this.depth;
     }
     
-    public ArrayList<String> getChildren() {
+    public ArrayList<DBOntology> getChildren() {
     	return this.children;
     }
     
-    public void addChildren(String child) {
-    	this.children.add(child);
+    public void addChild(DBOntology child) {
+        if(!this.children.contains(child)) {
+            this.children.add(child);
+        }
     }
     
     public boolean getSeen() {

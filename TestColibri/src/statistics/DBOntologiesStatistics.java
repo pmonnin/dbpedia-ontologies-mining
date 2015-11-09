@@ -34,12 +34,12 @@ public class DBOntologiesStatistics {
 		this.ontologiesNumber = this.ontologies.size();
 		
 		// Orphans number, direct subsumptions number
-		ArrayList<String> orphans = new ArrayList<String>();
+		ArrayList<DBOntology> orphans = new ArrayList<>();
 		for(String key : this.ontologies.keySet()) {
 			// Orphans
 			if(this.ontologies.get(key).getParentsNumber() == 0) {
 				this.orphansNumber++;
-				orphans.add(key);
+				orphans.add(this.ontologies.get(key));
 			}
 		
 			// Direct subsumptions
@@ -62,8 +62,8 @@ public class DBOntologiesStatistics {
 		System.out.println("Depth: " + this.depth);
 	}
 	
-	private void computeDepth(ArrayList<String> orphans) {
-		LinkedList<String> queue = new LinkedList<String>();
+	private void computeDepth(ArrayList<DBOntology> orphans) {
+		LinkedList<DBOntology> queue = new LinkedList<>();
 		this.depth = 1;
 		
 		// Algorithm initialization
@@ -71,30 +71,24 @@ public class DBOntologiesStatistics {
 			this.ontologies.get(ontology).setDepth(-1);
 		}
 		
-		for(String orphan : orphans) {
-			this.ontologies.get(orphan).setDepth(1);
+		for(DBOntology orphan : orphans) {
+			orphan.setDepth(1);
 			queue.add(orphan);
 		}
 		
 		// Algorithm computation
 		while(!queue.isEmpty()) {
-			String onto = queue.pollFirst();
-			DBOntology dbOnto = this.ontologies.get(onto);
-			
-			if(dbOnto != null) {
-				for(String child : dbOnto.getChildren()) {
-					DBOntology childClass = this.ontologies.get(child);
-					
-					if(childClass != null && childClass.getDepth() == -1) {
-						childClass.setDepth(dbOnto.getDepth() + 1);
-						queue.add(child);
-					}
+			DBOntology ontology = queue.pollFirst();
+
+			for(DBOntology child : ontology.getChildren()) {
+				if(child.getDepth() == -1) {
+					child.setDepth(ontology.getDepth() + 1);
+					queue.add(child);
 				}
-				
-				if(dbOnto.getDepth() > this.depth) {
-					this.depth = dbOnto.getDepth();
-				}
-				
+			}
+
+			if(ontology.getDepth() > this.depth) {
+				this.depth = ontology.getDepth();
 			}
 		}
 	}
@@ -107,31 +101,22 @@ public class DBOntologiesStatistics {
 				this.ontologies.get(onto).setSeen(false);
 			}
 			
-			LinkedList<String> queue = new LinkedList<String>();
+			LinkedList<DBOntology> queue = new LinkedList<>();
 			this.ontologies.get(key).setSeen(true);
-			for(String parent : this.ontologies.get(key).getParents()) {
-				DBOntology onto = this.ontologies.get(parent);
-				
-				if(onto != null) {
-					onto.setSeen(true);
-					queue.add(parent);
-				}
+			for(DBOntology parent : this.ontologies.get(key).getParents()) {
+				parent.setSeen(true);
+				queue.add(parent);
 			}
 			
 			// Algorithm computation
 			while(!queue.isEmpty()) {
-				String onto = queue.pollFirst();
-				DBOntology dbOnto = this.ontologies.get(onto);
-				
-				if(dbOnto != null) {
-					for(String parent : dbOnto.getParents()) {
-						DBOntology dbParent = this.ontologies.get(parent);
-						
-						if(dbParent != null && !dbParent.getSeen()) {
-							dbParent.setSeen(true);
-							queue.add(parent);
-							this.inferredSubsumptions++;
-						}
+				DBOntology ontology = queue.pollFirst();
+
+				for(DBOntology parent : ontology.getParents()) {
+					if(!parent.getSeen()) {
+						parent.setSeen(true);
+						queue.add(parent);
+						this.inferredSubsumptions++;
 					}
 				}
 			}

@@ -34,10 +34,6 @@ public class DBCategory {
 		return this.uri;
 	}
 	
-	public void setUri(String uri) {
-		this.uri = uri;
-	}
-	
 	public int getParentsNumber() {
 		return this.parents.size();
 	}
