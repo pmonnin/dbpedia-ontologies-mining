@@ -55,7 +55,7 @@ public class DBOntologiesCrawler {
      * @throws IOException
      * @throws ParseException
      */
-    public void computeOntologiesHierarchy() throws UnsupportedEncodingException, IOException, ParseException {
+    public void computeOntologiesHierarchy() throws IOException, ParseException {
     	// Ask for all the ontology classes
         List<ChildAndParent> childrenAndParents = JSONReader.getChildrenAndParents(URLEncoder.encode(
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
