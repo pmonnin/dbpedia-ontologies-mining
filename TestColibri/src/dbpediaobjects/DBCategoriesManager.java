@@ -13,4 +13,8 @@ public class DBCategoriesManager {
     public DBCategoriesManager(HashMap<String, DBCategory> categories) {
         this.categories = categories;
     }
+
+    public DBCategory getCategoryFromUri(String uri) {
+        return this.categories.get(uri);
+    }
 }

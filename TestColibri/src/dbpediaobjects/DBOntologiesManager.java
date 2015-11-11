@@ -1,9 +1,6 @@
 package dbpediaobjects;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  * Manager of DB Ontologies list created from DBOntologiesCrawler
@@ -15,5 +12,9 @@ public class DBOntologiesManager {
 
     public DBOntologiesManager(HashMap<String, DBOntology> ontologies) {
         this.ontologies = ontologies;
+    }
+
+    public DBOntology getOntologyFromUri(String uri) {
+        return this.ontologies.get(uri);
     }
 }

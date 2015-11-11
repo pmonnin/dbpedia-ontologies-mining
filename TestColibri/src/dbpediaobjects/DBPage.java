@@ -12,9 +12,9 @@ public class DBPage {
 
     private String uri;
     private ArrayList<String> relationships;
-    private ArrayList<String> ontologies;
-    private ArrayList<String> categories;
-    private ArrayList<String> yagoClasses;
+    private ArrayList<DBOntology> ontologies;
+    private ArrayList<DBCategory> categories;
+    private ArrayList<DBYagoClass> yagoClasses;
 
     public DBPage(String uri) {
         this.uri = uri;
@@ -28,28 +28,34 @@ public class DBPage {
         this.relationships.add(r);
     }
 
-    public ArrayList<String> getCategories() {
+    public void addCategory(DBCategory category) {
+        if(!this.categories.contains(category)) {
+            this.categories.add(category);
+        }
+    }
+
+    public ArrayList<DBCategory> getCategories() {
         return this.categories;
     }
 
-    public void addOntology(String ontology) {
-        this.ontologies.add(ontology);
+    public void addOntology(DBOntology ontology) {
+        if(!this.ontologies.contains(ontology)) {
+            this.ontologies.add(ontology);
+        }
     }
 
-    public ArrayList<String> getOntologies() {
+    public ArrayList<DBOntology> getOntologies() {
         return this.ontologies;
     }
 
-    public void addYagoClass(String yagoClass) {
-    	this.yagoClasses.add(yagoClass);
+    public void addYagoClass(DBYagoClass yagoClass) {
+        if(!this.yagoClasses.contains(yagoClass)) {
+            this.yagoClasses.add(yagoClass);
+        }
     }
     
-    public ArrayList<String> getYagoClasses() {
+    public ArrayList<DBYagoClass> getYagoClasses() {
         return this.yagoClasses;
-    }
-
-    public void addCategory(String category) {
-    	this.categories.add(category);
     }
 
     public String getURI() {

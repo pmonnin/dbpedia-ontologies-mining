@@ -1,9 +1,6 @@
 package dbpediaobjects;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  * Manager of DB Yago Classes list created from DBYagoClassesCrawler
@@ -15,5 +12,9 @@ public class DBYagoClassesManager {
 
     public DBYagoClassesManager(HashMap<String, DBYagoClass> yagoClasses) {
         this.yagoClasses = yagoClasses;
+    }
+
+    public DBYagoClass getYagoClassFromUri(String uri) {
+        return this.yagoClasses.get(uri);
     }
 }

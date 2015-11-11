@@ -106,7 +106,9 @@ public class PediaLatticeFactory {
 	        			+ "}", "UTF-8"));
 	        	
 	        	for(ChildAndParent c : categories) {
-	        		page.addCategory(c.getChild().getValue());
+                    if(dbcategories.getCategoryFromUri(c.getChild().getValue()) != null) {
+                        page.addCategory(dbcategories.getCategoryFromUri(c.getChild().getValue()));
+                    }
 	        	}
 	        	
 	        	// Ontologies
@@ -118,7 +120,9 @@ public class PediaLatticeFactory {
 	        			+ "}", "UTF-8"));
 	        	
 	        	for(ChildAndParent o : ontologies) {
-	        		page.addOntology(o.getChild().getValue());
+                    if(dbontologies.getOntologyFromUri(o.getChild().getValue()) != null) {
+                        page.addOntology(dbontologies.getOntologyFromUri(o.getChild().getValue()));
+                    }
 	        	}
 	        	
 	        	// Yago classes
@@ -130,7 +134,9 @@ public class PediaLatticeFactory {
 	        			+ "}", "UTF-8"));
 	        	
 	        	for(ChildAndParent y : yagoClasses) {
-	        		page.addYagoClass(y.getChild().getValue());
+                    if(dbyagoclasses.getYagoClassFromUri(y.getChild().getValue()) != null) {
+                        page.addYagoClass(dbyagoclasses.getYagoClassFromUri(y.getChild().getValue()));
+                    }
 	        	}
 	        	
 	        	i++;
