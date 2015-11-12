@@ -17,7 +17,6 @@ public class DBPediaLatticeStatistics {
     private int latticeDepth;
     private int conceptsNumber;
     private int edgesNumber;
-    private int pagesNumber;
     private int conceptsWithoutCategories;
     private int conceptsWithoutOntologies;
     private int conceptsWithoutYagoClasses;
@@ -26,17 +25,14 @@ public class DBPediaLatticeStatistics {
         this.latticeDepth = 0;
         this.conceptsNumber = 0;
         this.edgesNumber = 0;
-        this.pagesNumber = 0;
         this.conceptsWithoutCategories = 0;
         this.conceptsWithoutOntologies = 0;
         this.conceptsWithoutYagoClasses = 0;
     }
 
-    public void computeStatistics(ArrayList<PediaConcept> pediaLattice, PediaConcept top, PediaConcept bottom,
-                                  HashMap<String, DBPage> pages) {
+    public void computeStatistics(ArrayList<PediaConcept> pediaLattice, PediaConcept top, PediaConcept bottom) {
 
         this.conceptsNumber = pediaLattice.size();
-        this.pagesNumber = pages.size();
 
         for(PediaConcept c : pediaLattice) {
             this.edgesNumber += c.getChildren().size();
@@ -76,7 +72,6 @@ public class DBPediaLatticeStatistics {
 
     public void displayStatistics() {
         System.out.println("=== LATTICE STATISTICS ===");
-        System.out.println("Selected pages number: " + this.pagesNumber);
         System.out.println("Lattice edges number: " + this.edgesNumber);
         System.out.println("Lattice concepts number: " + this.conceptsNumber);
         System.out.println("Lattice concepts without categories: " + this.conceptsWithoutCategories);

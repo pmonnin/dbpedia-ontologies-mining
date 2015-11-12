@@ -18,6 +18,7 @@ import colibri.lib.Relation;
 import colibri.lib.Traversal;
 import colibri.lib.TreeRelation;
 import dbpediaobjects.DBPage;
+import statistics.DBDataSetStatistics;
 import statistics.DBPediaLatticeStatistics;
 
 /**
@@ -255,10 +256,15 @@ public class PediaLatticeFactory {
         }
 
         System.out.print("\n");
-        
+
+        // Data set statistics
+        DBDataSetStatistics dataSetStatistics = new DBDataSetStatistics();
+        dataSetStatistics.computeStatistics(this.dbPages);
+        dataSetStatistics.displayStatistics();
+
         // Lattice statistics
         DBPediaLatticeStatistics latticeStatistics = new DBPediaLatticeStatistics();
-        latticeStatistics.computeStatistics(this.dbLattice, this.top, this.bottom, this.dbPages);
+        latticeStatistics.computeStatistics(this.dbLattice, this.top, this.bottom);
         latticeStatistics.displayStatistics();
 
     }
