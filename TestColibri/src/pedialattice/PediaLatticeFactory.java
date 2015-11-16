@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.*;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import dbpediaobjects.DBCategoriesManager;
 import dbpediaobjects.DBOntologiesManager;
 import dbpediaobjects.DBYagoClassesManager;
@@ -258,11 +259,13 @@ public class PediaLatticeFactory {
         System.out.print("\n");
 
         // Data set statistics
+        System.out.println("Computing data set statistics");
         DBDataSetStatistics dataSetStatistics = new DBDataSetStatistics();
         dataSetStatistics.computeStatistics(this.dbPages, dbcategories, dbontologies, dbyagoclasses);
         dataSetStatistics.displayStatistics();
 
         // Lattice statistics
+        System.out.println("Computing lattice statistics");
         DBPediaLatticeStatistics latticeStatistics = new DBPediaLatticeStatistics();
         latticeStatistics.computeStatistics(this.dbLattice, this.top, this.bottom);
         latticeStatistics.displayStatistics();
