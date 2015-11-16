@@ -17,4 +17,8 @@ public class DBYagoClassesManager {
     public DBYagoClass getYagoClassFromUri(String uri) {
         return this.yagoClasses.get(uri);
     }
+
+    public int getDataSetYagoClassesNumber(HashMap<String, DBPage> dataSet) {
+        return -1;
+    }
 }

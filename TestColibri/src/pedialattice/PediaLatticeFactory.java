@@ -259,7 +259,7 @@ public class PediaLatticeFactory {
 
         // Data set statistics
         DBDataSetStatistics dataSetStatistics = new DBDataSetStatistics();
-        dataSetStatistics.computeStatistics(this.dbPages);
+        dataSetStatistics.computeStatistics(this.dbPages, dbcategories, dbontologies, dbyagoclasses);
         dataSetStatistics.displayStatistics();
 
         // Lattice statistics

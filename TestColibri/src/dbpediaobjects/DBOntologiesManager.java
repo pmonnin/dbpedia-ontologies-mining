@@ -17,4 +17,8 @@ public class DBOntologiesManager {
     public DBOntology getOntologyFromUri(String uri) {
         return this.ontologies.get(uri);
     }
+
+    public int getDataSetOntologiesNumber(HashMap<String, DBPage> dataSet) {
+        return -1;
+    }
 }
