@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.*;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import dbpediaobjects.DBCategoriesManager;
 import dbpediaobjects.DBOntologiesManager;
 import dbpediaobjects.DBYagoClassesManager;
