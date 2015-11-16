@@ -39,7 +39,7 @@ public class DBCategoriesManager {
 
         // Categories traversal
         while(!queue.isEmpty()) {
-            DBCategory category = queue.peek();
+            DBCategory category = queue.poll();
 
             for(DBCategory parent : category.getParents()) {
                 if(!parent.getSeen()) {
