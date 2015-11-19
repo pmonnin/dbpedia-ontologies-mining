@@ -1,5 +1,6 @@
 package dbpediaobjects;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -20,7 +21,7 @@ public class DBOntologiesManager {
         return this.ontologies.get(uri);
     }
 
-    public int getDataSetOntologiesNumber(HashMap<String, DBPage> dataSet) {
+    public ArrayList<DBOntology> getDataSetOntologies(HashMap<String, DBPage> dataSet) {
         // Initialization of ontologies
         for(String ontoUri : ontologies.keySet()) {
             ontologies.get(ontoUri).setSeen(false);
@@ -49,15 +50,19 @@ public class DBOntologiesManager {
             }
         }
 
-        // Count + ontologies reset
-        int retVal = 0;
+        // Add each ontology to return value + ontologies reset
+        ArrayList<DBOntology> retVal = new ArrayList<>();
         for(String ontoUri : ontologies.keySet()) {
             if(ontologies.get(ontoUri).getSeen()) {
-                retVal++;
+                retVal.add(ontologies.get(ontoUri));
                 ontologies.get(ontoUri).setSeen(false);
             }
         }
 
         return retVal;
+    }
+
+    public int getDataSetOntologiesNumber(HashMap<String, DBPage> dataSet) {
+        return getDataSetOntologies(dataSet).size();
     }
 }

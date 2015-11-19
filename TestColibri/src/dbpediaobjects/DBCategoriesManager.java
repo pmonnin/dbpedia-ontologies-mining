@@ -1,5 +1,6 @@
 package dbpediaobjects;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -20,7 +21,7 @@ public class DBCategoriesManager {
         return this.categories.get(uri);
     }
 
-    public int getDataSetCategoriesNumber(HashMap<String, DBPage> dataSet) {
+    public ArrayList<DBCategory> getDataSetCategories(HashMap<String, DBPage> dataSet) {
         // Initialization of categories
         for(String catUri : categories.keySet()) {
             categories.get(catUri).setSeen(false);
@@ -49,15 +50,19 @@ public class DBCategoriesManager {
             }
         }
 
-        // Count + categories reset
-        int retVal = 0;
+        // Add each category to return value + categories reset
+        ArrayList<DBCategory> retVal = new ArrayList<>();
         for(String catUri : categories.keySet()) {
             if(categories.get(catUri).getSeen()) {
-                retVal++;
+                retVal.add(categories.get(catUri));
                 categories.get(catUri).setSeen(false);
             }
         }
 
         return retVal;
+    }
+
+    public int getDataSetCategoriesNumber(HashMap<String, DBPage> dataSet) {
+        return getDataSetCategories(dataSet).size();
     }
 }

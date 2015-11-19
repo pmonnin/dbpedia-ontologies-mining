@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import colibri.lib.Concept;
-import dbpediaobjects.DBCategoriesManager;
-import dbpediaobjects.DBOntologiesManager;
-import dbpediaobjects.DBPage;
-import dbpediaobjects.DBYagoClassesManager;
+import dbpediaobjects.*;
 
 /**
  * Class of PediaConcept object
@@ -21,9 +18,9 @@ import dbpediaobjects.DBYagoClassesManager;
 public class PediaConcept {
     private ArrayList<String> objects;
     private ArrayList<String> attributes;
-    private ArrayList<String> categories;
-    private ArrayList<String> ontologies;
-    private ArrayList<String> yagoClasses;
+    private ArrayList<DBCategory> categories;
+    private ArrayList<DBOntology> ontologies;
+    private ArrayList<DBYagoClass> yagoClasses;
 
     private ArrayList<PediaConcept> parents;
     private ArrayList<PediaConcept> children;
@@ -47,10 +44,14 @@ public class PediaConcept {
         this.parents = new ArrayList<>();
         this.children = new ArrayList<>();
         
-        // Concept intersection of DB Pedia categories, ontologies and yago classes associated to each concept's page
-        this.categories = new ArrayList<>();
-        this.ontologies = new ArrayList<>();
-        this.yagoClasses = new ArrayList<>();
+        // Concept intersection of DB Pedia categories, ontologies and yago classes associated (directly or not) to each concept's page
+        HashMap<String, DBPage> conceptPages = new HashMap<>();
+        for(String pageUri : this.objects) {
+            conceptPages.put(pageUri, dbPages.get(pageUri));
+        }
+        this.categories = dbcategories.getDataSetCategories(conceptPages);
+        this.ontologies = dbontologies.getDataSetOntologies(conceptPages);
+        this.yagoClasses = dbyagoclasses.getDataSetYagoClasses(conceptPages);
 
         this.depth = -1;
     }
@@ -65,15 +66,15 @@ public class PediaConcept {
         }
     }
 
-    public ArrayList<String> getCategories() {
+    public ArrayList<DBCategory> getCategories() {
         return this.categories;
     }
 
-    public ArrayList<String> getOntologies() {
+    public ArrayList<DBOntology> getOntologies() {
         return this.ontologies;
     }
     
-    public ArrayList<String> getYagoClasses() {
+    public ArrayList<DBYagoClass> getYagoClasses() {
         return this.yagoClasses;
     }
 

@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.*;
 
-import dbpediaobjects.DBCategoriesManager;
-import dbpediaobjects.DBOntologiesManager;
-import dbpediaobjects.DBYagoClassesManager;
+import dbpediaobjects.*;
 import org.json.simple.parser.ParseException;
 
 import serverlink.ChildAndParent;
@@ -17,7 +15,6 @@ import colibri.lib.HybridLattice;
 import colibri.lib.Relation;
 import colibri.lib.Traversal;
 import colibri.lib.TreeRelation;
-import dbpediaobjects.DBPage;
 import statistics.DBDataSetStatistics;
 import statistics.DBPediaLatticeStatistics;
 
@@ -241,15 +238,15 @@ public class PediaLatticeFactory {
                     seen.add(parent);
                 }
 
-                for(String category : parent.getCategories()) {
+                for(DBCategory category : parent.getCategories()) {
                     concept.getCategories().remove(category);
                 }
 
-                for(String ontology : parent.getOntologies()) {
+                for(DBOntology ontology : parent.getOntologies()) {
                     concept.getOntologies().remove(ontology);
                 }
 
-                for(String yagoClass : parent.getYagoClasses()) {
+                for(DBYagoClass yagoClass : parent.getYagoClasses()) {
                     concept.getYagoClasses().remove(yagoClass);
                 }
             }

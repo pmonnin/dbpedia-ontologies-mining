@@ -1,5 +1,6 @@
 package dbpediaobjects;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -20,7 +21,7 @@ public class DBYagoClassesManager {
         return this.yagoClasses.get(uri);
     }
 
-    public int getDataSetYagoClassesNumber(HashMap<String, DBPage> dataSet) {
+    public ArrayList<DBYagoClass> getDataSetYagoClasses(HashMap<String, DBPage> dataSet) {
         // Initialization of yago classes
         for(String yagoUri : yagoClasses.keySet()) {
             yagoClasses.get(yagoUri).setSeen(false);
@@ -50,14 +51,18 @@ public class DBYagoClassesManager {
         }
 
         // Count + yago classes reset
-        int retVal = 0;
+        ArrayList<DBYagoClass> retVal = new ArrayList<>();
         for(String yagoUri : yagoClasses.keySet()) {
             if(yagoClasses.get(yagoUri).getSeen()) {
-                retVal++;
+                retVal.add(yagoClasses.get(yagoUri));
                 yagoClasses.get(yagoUri).setSeen(false);
             }
         }
 
         return retVal;
+    }
+
+    public int getDataSetYagoClassesNumber(HashMap<String, DBPage> dataSet) {
+        return getDataSetYagoClasses(dataSet).size();
     }
 }
