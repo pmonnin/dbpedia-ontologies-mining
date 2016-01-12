@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import dbpediaobjects.DBCategoriesManager;
-import org.json.simple.parser.ParseException;
 
 import serverlink.ChildAndParent;
 import serverlink.JSONReader;
@@ -29,9 +28,8 @@ public class DBCategoriesCrawler {
      * Main method to test the crawler 
      * @param args not used
      * @throws IOException thrown when server is unavailable
-     * @throws ParseException thrown when JSON is not valid
      */
-    public static void main(String[] args) throws IOException, ParseException {
+    public static void main(String[] args) throws IOException {
         System.out.println("== START MAIN DB CATEGORIES CRAWLER ==");
         DBCategoriesCrawler crawler = new DBCategoriesCrawler();
         crawler.computeCategoriesHierarchy();
@@ -51,9 +49,8 @@ public class DBCategoriesCrawler {
     /**
      * Method computing the DBPedia categories hierarchy
      * @throws IOException
-     * @throws ParseException
      */
-    public void computeCategoriesHierarchy() throws IOException, ParseException {
+    public void computeCategoriesHierarchy() throws IOException {
     	// Ask for all the categories
         List<ChildAndParent> childrenAndParents = JSONReader.getChildrenAndParents(URLEncoder.encode(
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "

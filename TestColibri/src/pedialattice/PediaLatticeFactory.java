@@ -5,7 +5,6 @@ import java.net.URLEncoder;
 import java.util.*;
 
 import dbpediaobjects.*;
-import org.json.simple.parser.ParseException;
 
 import serverlink.ChildAndParent;
 import serverlink.JSONReader;
@@ -34,7 +33,7 @@ public class PediaLatticeFactory {
     private PediaConcept bottom;
 
     public PediaLatticeFactory(DBCategoriesManager dbcategories, DBOntologiesManager dbontologies,
-                               DBYagoClassesManager dbyagoclasses) throws ParseException, IOException {
+                               DBYagoClassesManager dbyagoclasses) {
         this.dbPages = new HashMap<>();
         this.dbLattice = null;
         this.top = null;
@@ -45,8 +44,8 @@ public class PediaLatticeFactory {
     /**
      * Lattice creation
      */
-    public void createLattice(DBCategoriesManager dbcategories, DBOntologiesManager dbontologies,
-                              DBYagoClassesManager dbyagoclasses) {
+    private void createLattice(DBCategoriesManager dbcategories, DBOntologiesManager dbontologies,
+                               DBYagoClassesManager dbyagoclasses) {
     	// Lattice objects from colibri
     	Relation rel = new TreeRelation();
     	
@@ -65,7 +64,7 @@ public class PediaLatticeFactory {
                 + "?child dbo:wikiPageID ?pageId ."
                 + "?child rdf:type/rdfs:subClassOf* dbo:Person ."
                 + "?child dbo:deathDate ?deathDate."
-                + "} LIMIT 500", "UTF-8"));
+                + "}", "UTF-8"));
         }
         
         catch(IOException e) {

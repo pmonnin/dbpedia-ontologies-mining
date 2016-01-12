@@ -11,7 +11,7 @@ import java.util.Queue;
  * @author Pierre Monnin
  */
 public class DBOntologiesManager {
-    public HashMap<String, DBOntology> ontologies;
+    private HashMap<String, DBOntology> ontologies;
 
     public DBOntologiesManager(HashMap<String, DBOntology> ontologies) {
         this.ontologies = ontologies;

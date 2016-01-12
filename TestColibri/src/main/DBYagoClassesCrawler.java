@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import dbpediaobjects.DBYagoClassesManager;
-import org.json.simple.parser.ParseException;
 
 import serverlink.ChildAndParent;
 import serverlink.JSONReader;
@@ -30,9 +29,8 @@ public class DBYagoClassesCrawler {
      * Main method to test the crawler 
      * @param args not used
      * @throws IOException thrown when server is unavailable
-     * @throws ParseException thrown when JSON is not valid
      */
-    public static void main(String[] args) throws IOException, ParseException {
+    public static void main(String[] args) throws IOException {
         System.out.println("== START MAIN DB YAGO CLASSES CRAWLER ==");
         DBYagoClassesCrawler crawler = new DBYagoClassesCrawler();
         crawler.computeParents();
@@ -53,9 +51,8 @@ public class DBYagoClassesCrawler {
      * Method computing the DBPedia yago classes hierarchy
      * @throws UnsupportedEncodingException
      * @throws IOException
-     * @throws ParseException
      */
-    public void computeParents() throws IOException, ParseException {
+    public void computeParents() throws IOException {
     	// Ask for all the yago classes that don't have parents
     	List<ChildAndParent> children = JSONReader.getChildrenAndParents(URLEncoder.encode(
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "

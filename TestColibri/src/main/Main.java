@@ -3,17 +3,14 @@ package main;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Scanner;
 
 import dbpediaobjects.DBCategoriesManager;
 import dbpediaobjects.DBOntologiesManager;
 import dbpediaobjects.DBYagoClassesManager;
-import org.json.simple.parser.ParseException;
 
 import pedialattice.PediaConcept;
 import pedialattice.PediaLatticeFactory;
-import dbpediaobjects.DBYagoClass;
 
 /**
  * Main class for the application
@@ -33,10 +30,9 @@ public class Main {
 	/**
 	 * Main function of the algorithm
 	 * @param args not used
-	 * @throws ParseException thrown when there is a JSON parse exception from the server output parsing
 	 * @throws IOException thrown when the server is unavailable
 	 */
-    public static void main(String[] args) throws ParseException, IOException {
+    public static void main(String[] args) throws IOException {
         Date startDate = new Date();
         
         System.out.println("== MAIN ALGORITHM OF COMPARISON ==");
@@ -159,7 +155,7 @@ public class Main {
      * Function used to break between two comparison and give time to 
      * read the text output
      */
-    public static final void pause() {
+    public static void pause() {
         System.out.flush();
         System.out.print("Press Enter to continue");
         Scanner sc = new Scanner(System.in);

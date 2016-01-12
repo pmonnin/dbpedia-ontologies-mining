@@ -11,7 +11,7 @@ import java.util.Queue;
  * @author Pierre Monnin
  */
 public class DBCategoriesManager {
-    public HashMap<String, DBCategory> categories;
+    private HashMap<String, DBCategory> categories;
 
     public DBCategoriesManager(HashMap<String, DBCategory> categories) {
         this.categories = categories;
