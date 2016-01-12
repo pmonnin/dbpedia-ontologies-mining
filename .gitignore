@@ -79,6 +79,7 @@ local.properties
 
 # IntelliJ
 /out/
+/TestColibri/out/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/

@@ -42,11 +42,6 @@ public class DBYagoClass {
         return this.parents.size();
     }
 
-    @Override
-    public String toString() {
-        return "DBYagoClass [uri=" + this.uri + "]";
-    }
-    
     public void addChild(DBYagoClass child) {
         if(!this.children.contains(child)) {
             this.children.add(child);

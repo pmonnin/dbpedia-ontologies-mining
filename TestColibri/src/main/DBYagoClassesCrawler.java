@@ -33,7 +33,7 @@ public class DBYagoClassesCrawler {
     public static void main(String[] args) throws IOException {
         System.out.println("== START MAIN DB YAGO CLASSES CRAWLER ==");
         DBYagoClassesCrawler crawler = new DBYagoClassesCrawler();
-        crawler.computeParents();
+        crawler.computeYagoCLassesHierarchy();
         DBYagoClassesStatistics stats = new DBYagoClassesStatistics(crawler.dbyagoclasses);
         stats.computeStatistics();
         stats.displayStatistics();
@@ -41,7 +41,7 @@ public class DBYagoClassesCrawler {
 
     /**
      * Getter on the parsed yago classes
-     * @return the parsed yago classes as a manager object)
+     * @return the parsed yago classes as a manager object
      */
     public DBYagoClassesManager getDBYagoClassesManager() {
         return new DBYagoClassesManager(this.dbyagoclasses);
@@ -52,7 +52,7 @@ public class DBYagoClassesCrawler {
      * @throws UnsupportedEncodingException
      * @throws IOException
      */
-    public void computeParents() throws IOException {
+    public void computeYagoCLassesHierarchy() throws IOException {
     	// Ask for all the yago classes that don't have parents
     	List<ChildAndParent> children = JSONReader.getChildrenAndParents(URLEncoder.encode(
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "

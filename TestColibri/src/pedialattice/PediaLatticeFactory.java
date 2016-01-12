@@ -49,8 +49,8 @@ public class PediaLatticeFactory {
     	// Lattice objects from colibri
     	Relation rel = new TreeRelation();
     	
-    	// Ask for pages related to dbo:Person
-    	System.out.println("Crawling pages related to dbo:Person hierarchy...");
+    	// Ask for pages related to dbo:Person with a death date
+    	System.out.println("Crawling pages related to dbo:Person hierarchy with a death date set...");
         List<ChildAndParent> pages = null;
         		
         try {

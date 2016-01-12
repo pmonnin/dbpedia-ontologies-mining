@@ -35,28 +35,28 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Date startDate = new Date();
         
-        System.out.println("== MAIN ALGORITHM OF COMPARISON ==");
+        System.out.println("=== MAIN ALGORITHM OF COMPARISON ===");
         
         // Crawling DB categories
-        System.out.println("== CATEGORIES CRAWLING AND PARSING ==");
+        System.out.println("=== CATEGORIES CRAWLING AND PARSING ===");
         DBCategoriesCrawler dbCategoriesCrawler = new DBCategoriesCrawler();
         dbCategoriesCrawler.computeCategoriesHierarchy();
         DBCategoriesManager dbcategories = dbCategoriesCrawler.getDBCategoriesManager();
 
         // Crawling DB ontologies
-        System.out.println("== ONTOLOGIES CRAWLING AND PARSING ==");
+        System.out.println("=== ONTOLOGIES CRAWLING AND PARSING ===");
         DBOntologiesCrawler dbOntologyClasses = new DBOntologiesCrawler();
         dbOntologyClasses.computeOntologiesHierarchy();
         DBOntologiesManager dbontologies = dbOntologyClasses.getDBOntologiesManager();
         
         // Crawling Yago classes
-        System.out.println("== YAGO CLASSES CRAWLING AND PARSING ==");
+        System.out.println("=== YAGO CLASSES CRAWLING AND PARSING ===");
         DBYagoClassesCrawler dbYagoClasses = new DBYagoClassesCrawler();
-        dbYagoClasses.computeParents();
+        dbYagoClasses.computeYagoCLassesHierarchy();
         DBYagoClassesManager dbyagoclasses = dbYagoClasses.getDBYagoClassesManager();
 
-        // We create the lattice
-        System.out.println("== LATTICE CREATION ==");
+        // Lattice creation
+        System.out.println("=== LATTICE CREATION ===");
         PediaLatticeFactory latticeFactory = new PediaLatticeFactory(dbcategories, dbontologies, dbyagoclasses);
         ArrayList<PediaConcept> dbLattice = latticeFactory.getDBLattice();
 

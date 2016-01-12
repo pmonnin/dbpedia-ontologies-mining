@@ -30,7 +30,7 @@ public class DBCategoriesCrawler {
      * @throws IOException thrown when server is unavailable
      */
     public static void main(String[] args) throws IOException {
-        System.out.println("== START MAIN DB CATEGORIES CRAWLER ==");
+        System.out.println("=== START MAIN DB CATEGORIES CRAWLER ===");
         DBCategoriesCrawler crawler = new DBCategoriesCrawler();
         crawler.computeCategoriesHierarchy();
         DBCategoriesStatistics stats = new DBCategoriesStatistics(crawler.dbcategories);
@@ -40,7 +40,7 @@ public class DBCategoriesCrawler {
 
     /**
      * Getter on the parsed categories
-     * @return the parsed categories as a manager object)
+     * @return the parsed categories as a manager object
      */
     public DBCategoriesManager getDBCategoriesManager() {
         return new DBCategoriesManager(this.dbcategories);
