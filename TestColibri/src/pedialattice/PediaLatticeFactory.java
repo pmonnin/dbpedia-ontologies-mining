@@ -63,7 +63,9 @@ public class PediaLatticeFactory {
                 + "select distinct ?child where {"
                 + "?child dbo:wikiPageID ?pageId ."
                 + "?child rdf:type/rdfs:subClassOf* dbo:Person ."
-                + "?child dbo:deathDate ?deathDate."
+                + "?child dbo:deathDate ?deathDate ."
+                + "FILTER(?deathDate >= \"1900-01-01\"^^xsd:date) ."
+                + "FILTER(?deathDate < \"2000-01-01\"^^xsd:date) ."
                 + "}", "UTF-8"));
         }
         
