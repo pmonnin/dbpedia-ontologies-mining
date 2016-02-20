@@ -8,6 +8,7 @@ import java.util.ArrayList;
  * @author Pierre Monnin
  *
  */
+@Deprecated
 public class DBPage {
 
     private String uri;

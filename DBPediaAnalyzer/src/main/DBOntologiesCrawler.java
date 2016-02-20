@@ -21,6 +21,7 @@ import dbpediaobjects.DBOntology;
  * @author Pierre Monnin
  *
  */
+@Deprecated
 public class DBOntologiesCrawler {
 
     private HashMap<String, DBOntology> dbontologies;

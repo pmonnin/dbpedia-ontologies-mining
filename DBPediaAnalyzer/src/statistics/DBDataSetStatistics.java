@@ -12,6 +12,7 @@ import java.util.HashMap;
  *
  * @author Pierre Monnin
  */
+@Deprecated
 public class DBDataSetStatistics {
     private int pagesNumber;
     private int dataSetCategoriesNumber;

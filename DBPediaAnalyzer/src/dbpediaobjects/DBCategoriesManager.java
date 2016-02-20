@@ -10,6 +10,7 @@ import java.util.Queue;
  *
  * @author Pierre Monnin
  */
+@Deprecated
 public class DBCategoriesManager {
     private HashMap<String, DBCategory> categories;
 

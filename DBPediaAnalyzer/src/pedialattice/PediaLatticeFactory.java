@@ -25,6 +25,7 @@ import statistics.DBPediaLatticeStatistics;
  * @author Pierre Monnin
  *
  */
+@Deprecated
 public class PediaLatticeFactory {
 
     private HashMap<String, DBPage> dbPages;

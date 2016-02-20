@@ -26,12 +26,14 @@ import pedialattice.PediaLatticeFactory;
  * @author Pierre Monnin
  *
  */
+@Deprecated
 public class Main {
 	/**
 	 * Main function of the algorithm
 	 * @param args not used
 	 * @throws IOException thrown when the server is unavailable
 	 */
+    @Deprecated
     public static void main(String[] args) throws IOException {
         Date startDate = new Date();
         

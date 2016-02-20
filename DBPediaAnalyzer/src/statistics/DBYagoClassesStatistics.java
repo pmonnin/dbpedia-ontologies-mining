@@ -12,6 +12,7 @@ import dbpediaobjects.DBYagoClass;
  * @author Pierre Monnin
  *
  */
+@Deprecated
 public class DBYagoClassesStatistics {
 	private HashMap<String, DBYagoClass> yagoClasses;
 	private int yagoClassesNumber;

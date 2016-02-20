@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Deprecated
 public class SparqlResults {
     private boolean distinct;
     private boolean ordered;

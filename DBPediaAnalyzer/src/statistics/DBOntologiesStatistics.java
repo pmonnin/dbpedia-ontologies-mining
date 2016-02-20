@@ -12,6 +12,7 @@ import dbpediaobjects.DBOntology;
  * @author Pierre Monnin
  *
  */
+@Deprecated
 public class DBOntologiesStatistics {
 	private HashMap<String, DBOntology> ontologies;
 	private int ontologiesNumber;

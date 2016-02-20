@@ -13,6 +13,7 @@ import dbpediaobjects.DBCategory;
  * @author Pierre Monnin
  *
  */
+@Deprecated
 public class DBCategoriesStatistics {
 	private HashMap<String, DBCategory> categories;
 	private int categoriesNumber;

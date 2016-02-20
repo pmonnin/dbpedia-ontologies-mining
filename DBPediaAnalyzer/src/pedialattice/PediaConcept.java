@@ -15,6 +15,7 @@ import dbpediaobjects.*;
  * @author Pierre Monnin
  * 
  */
+@Deprecated
 public class PediaConcept {
     private ArrayList<String> objects;
     private ArrayList<String> attributes;

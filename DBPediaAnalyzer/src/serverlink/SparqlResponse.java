@@ -3,6 +3,7 @@ package serverlink;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Deprecated
 public class SparqlResponse {
     private SparqlHeader head;
     private SparqlResults results;

@@ -21,6 +21,7 @@ import dbpediaobjects.DBYagoClass;
  * @author Pierre Monnin
  *
  */
+@Deprecated
 public class DBYagoClassesCrawler {
 
     private HashMap<String, DBYagoClass> dbyagoclasses;

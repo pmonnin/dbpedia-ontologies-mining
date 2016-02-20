@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * @author Pierre Monnin
  *
  */
+@Deprecated
 public class DBYagoClass {
     private String uri;
     private int depth;

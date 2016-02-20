@@ -20,6 +20,7 @@ import dbpediaobjects.DBCategory;
  * @author Pierre Monnin
  *
  */
+@Deprecated
 public class DBCategoriesCrawler {
 
     private HashMap<String, DBCategory> dbcategories;

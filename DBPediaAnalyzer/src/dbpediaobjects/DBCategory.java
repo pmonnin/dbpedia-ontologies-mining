@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * @author Pierre Monnin
  *
  */
+@Deprecated
 public class DBCategory {
 	private String uri;
 	private ArrayList<DBCategory> parents;

@@ -11,6 +11,7 @@ import java.util.Queue;
  *
  * @author Pierre Monnin
  */
+@Deprecated
 public class DBPediaLatticeStatistics {
     private int latticeDepth;
     private int conceptsNumber;

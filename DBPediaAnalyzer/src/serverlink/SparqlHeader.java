@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Deprecated
 public class SparqlHeader {
     private ArrayList<String> link;
     private ArrayList<String> vars;

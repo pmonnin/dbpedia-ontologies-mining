@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 /**
  * Java requests to HTTP Server. Automatic crawling of server answer and auto-binding to given model class. Server answer must be JSON 
  */
+@Deprecated
 public final class JSONReader {
     /**
      * Server address

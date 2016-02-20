@@ -10,6 +10,7 @@ import java.util.Queue;
  *
  * @author Pierre Monnin
  */
+@Deprecated
 public class DBOntologiesManager {
     private HashMap<String, DBOntology> ontologies;
 
