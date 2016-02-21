@@ -17,7 +17,7 @@ All useful files
 * http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/fr/ : french data
 * http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/en/ : english data (warning: big files)
 * http://wiki.dbpedia.org/services-resources/ontology : ontologies (warning: some files are also available on previous links)
-* http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/links/ : files used for the Yago hierarchy (see below)
+* http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/links/ : files used for the Yago hierarchy
 
 
 API Colibri
