@@ -1,7 +1,9 @@
 ﻿Repository sbc-treillis
 =======================
 
-For the SBC project at TELECOM Nancy
+Work started as a project at TELECOM Nancy (SBC module).
+Work still in progress.
+It aims at mining DBPedia data and suggesting new categories or new links between categories.
 
 Authors
 -------
@@ -23,7 +25,7 @@ All useful files
 API Colibri
 -----------
 
-Used to build the lattice. Available here : https://code.google.com/p/colibri-java/
+Used to build the lattice. Available at: https://code.google.com/p/colibri-java/
 
 
 Access to SPARQL endpoint
