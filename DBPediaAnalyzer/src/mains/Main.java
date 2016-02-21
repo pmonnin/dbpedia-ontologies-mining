@@ -1,4 +1,4 @@
-package main;
+package mains;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,7 +68,7 @@ public class Main {
         for (PediaConcept c : lc) {
         	// We get the union of parents ontology classes
             ArrayList<String> latticeOntologyParents = c.unionOntologiesParent();
-            ArrayList<String> latticeOntologies = c.getOntologies();
+            ArrayList<String> latticeOntologies = c.getOntologyClasses();
 
             // For each present concept ontology class
             for (String ontoChild : latticeOntologies) {

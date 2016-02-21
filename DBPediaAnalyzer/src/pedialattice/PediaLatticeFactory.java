@@ -28,7 +28,7 @@ import statistics.DBPediaLatticeStatistics;
 @Deprecated
 public class PediaLatticeFactory {
 
-    private HashMap<String, DBPage> dbPages;
+    private HashMap<String, Page> dbPages;
     private ArrayList<PediaConcept> dbLattice;
     private PediaConcept top;
     private PediaConcept bottom;
@@ -85,7 +85,7 @@ public class PediaLatticeFactory {
         	}
         	
         	try {
-	        	DBPage page = new DBPage(pages.get(i).getChild().getValue());
+	        	Page page = new Page(pages.get(i).getChild().getValue());
 	        	
 	        	// Relationships + addition to lattice relation
 	        	List<ChildAndParent> relationships = JSONReader.getChildrenAndParents(URLEncoder.encode(

@@ -1,4 +1,4 @@
-package main;
+package mains;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -14,7 +14,7 @@ import dbpediaobjects.DBCategory;
 
 /**
  * Crawler of the DBPedia categories
- * Also contains a main method to just test the crawler (no comparison)
+ * Also contains a mains method to just test the crawler (no comparison)
  * 
  * @author Thomas Herbeth
  * @author Pierre Monnin

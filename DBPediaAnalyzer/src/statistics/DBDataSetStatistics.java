@@ -2,7 +2,7 @@ package statistics;
 
 import dbpediaobjects.DBCategoriesManager;
 import dbpediaobjects.DBOntologiesManager;
-import dbpediaobjects.DBPage;
+import dbpediaobjects.Page;
 import dbpediaobjects.DBYagoClassesManager;
 
 import java.util.HashMap;
@@ -32,7 +32,7 @@ public class DBDataSetStatistics {
         this.averageYagoClassesNumber = -1;
     }
 
-    public void computeStatistics(HashMap<String, DBPage> pages, DBCategoriesManager dbcategories, DBOntologiesManager dbontologies,
+    public void computeStatistics(HashMap<String, Page> pages, DBCategoriesManager dbcategories, DBOntologiesManager dbontologies,
                                   DBYagoClassesManager dbyagoClasses) {
         this.pagesNumber = pages.size();
 
@@ -42,7 +42,7 @@ public class DBDataSetStatistics {
 
         for(String uri : pages.keySet()) {
             this.averageCategoriesNumber += pages.get(uri).getCategories().size();
-            this.averageOntologiesNumber += pages.get(uri).getOntologies().size();
+            this.averageOntologiesNumber += pages.get(uri).getOntologyClasses().size();
             this.averageYagoClassesNumber += pages.get(uri).getYagoClasses().size();
         }
 

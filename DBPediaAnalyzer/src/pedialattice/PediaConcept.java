@@ -28,7 +28,7 @@ public class PediaConcept {
 
     private int depth;
 
-    public PediaConcept(Concept concept, HashMap<String, DBPage> dbPages, DBCategoriesManager dbcategories,
+    public PediaConcept(Concept concept, HashMap<String, Page> dbPages, DBCategoriesManager dbcategories,
                         DBOntologiesManager dbontologies, DBYagoClassesManager dbyagoclasses) {
     	// Concept objects (DBPedia pages) & attributes (DBPedia relationship)
         this.objects = new ArrayList<>();
@@ -46,7 +46,7 @@ public class PediaConcept {
         this.children = new ArrayList<>();
         
         // Concept intersection of DB Pedia categories, ontologies and yago classes associated (directly or not) to each concept's page
-        HashMap<String, DBPage> conceptPages = new HashMap<>();
+        HashMap<String, Page> conceptPages = new HashMap<>();
         for(String pageUri : this.objects) {
             conceptPages.put(pageUri, dbPages.get(pageUri));
         }

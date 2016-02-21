@@ -1,4 +1,4 @@
-package main;
+package mains;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -15,7 +15,7 @@ import dbpediaobjects.DBOntology;
 
 /**
  * Crawler of the DBPedia ontology classes
- * Also contains a main method to just test the crawler (no comparison)
+ * Also contains a mains method to just test the crawler (no comparison)
  * 
  * @author Thomas Herbeth
  * @author Pierre Monnin

@@ -22,7 +22,7 @@ public class DBYagoClassesManager {
         return this.yagoClasses.get(uri);
     }
 
-    public ArrayList<DBYagoClass> getDataSetYagoClasses(HashMap<String, DBPage> dataSet) {
+    public ArrayList<DBYagoClass> getDataSetYagoClasses(HashMap<String, Page> dataSet) {
         // Initialization of yago classes
         for(String yagoUri : yagoClasses.keySet()) {
             yagoClasses.get(yagoUri).setSeen(false);
@@ -63,7 +63,7 @@ public class DBYagoClassesManager {
         return retVal;
     }
 
-    public int getDataSetYagoClassesNumber(HashMap<String, DBPage> dataSet) {
+    public int getDataSetYagoClassesNumber(HashMap<String, Page> dataSet) {
         return getDataSetYagoClasses(dataSet).size();
     }
 }

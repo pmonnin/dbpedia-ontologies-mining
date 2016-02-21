@@ -22,7 +22,7 @@ public class DBCategoriesManager {
         return this.categories.get(uri);
     }
 
-    public ArrayList<DBCategory> getDataSetCategories(HashMap<String, DBPage> dataSet) {
+    public ArrayList<DBCategory> getDataSetCategories(HashMap<String, Page> dataSet) {
         // Initialization of categories
         for(String catUri : categories.keySet()) {
             categories.get(catUri).setSeen(false);
@@ -63,7 +63,7 @@ public class DBCategoriesManager {
         return retVal;
     }
 
-    public int getDataSetCategoriesNumber(HashMap<String, DBPage> dataSet) {
+    public int getDataSetCategoriesNumber(HashMap<String, Page> dataSet) {
         return getDataSetCategories(dataSet).size();
     }
 }

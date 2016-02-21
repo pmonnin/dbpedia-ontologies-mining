@@ -22,7 +22,7 @@ public class DBOntologiesManager {
         return this.ontologies.get(uri);
     }
 
-    public ArrayList<DBOntology> getDataSetOntologies(HashMap<String, DBPage> dataSet) {
+    public ArrayList<DBOntology> getDataSetOntologies(HashMap<String, Page> dataSet) {
         // Initialization of ontologies
         for(String ontoUri : ontologies.keySet()) {
             ontologies.get(ontoUri).setSeen(false);
@@ -31,7 +31,7 @@ public class DBOntologiesManager {
         // Initialization of queue
         Queue<DBOntology> queue = new LinkedList<>();
         for(String pageUri : dataSet.keySet()) {
-            for(DBOntology ontology : dataSet.get(pageUri).getOntologies()) {
+            for(DBOntology ontology : dataSet.get(pageUri).getOntologyClasses()) {
                 if(!ontology.getSeen()) {
                     ontology.setSeen(true);
                     queue.add(ontology);
@@ -63,7 +63,7 @@ public class DBOntologiesManager {
         return retVal;
     }
 
-    public int getDataSetOntologiesNumber(HashMap<String, DBPage> dataSet) {
+    public int getDataSetOntologiesNumber(HashMap<String, Page> dataSet) {
         return getDataSetOntologies(dataSet).size();
     }
 }
