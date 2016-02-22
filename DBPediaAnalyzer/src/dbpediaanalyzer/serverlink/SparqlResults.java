@@ -1,4 +1,4 @@
-package serverlink;
+package dbpediaanalyzer.serverlink;
 
 import java.util.ArrayList;
 

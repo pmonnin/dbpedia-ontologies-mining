@@ -1,4 +1,4 @@
-package mains;
+package dbpediaanalyzer.mains;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -6,12 +6,12 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
-import dbpediaobjects.DBOntologiesManager;
+import dbpediaanalyzer.dbpediaobjects.DBOntologiesManager;
 
-import serverlink.ChildAndParent;
-import serverlink.JSONReader;
-import statistics.DBOntologiesStatistics;
-import dbpediaobjects.DBOntology;
+import dbpediaanalyzer.serverlink.ChildAndParent;
+import dbpediaanalyzer.serverlink.JSONReader;
+import dbpediaanalyzer.statistics.DBOntologiesStatistics;
+import dbpediaanalyzer.dbpediaobjects.DBOntology;
 
 /**
  * Crawler of the DBPedia ontology classes

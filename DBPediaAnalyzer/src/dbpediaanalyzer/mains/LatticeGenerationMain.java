@@ -1,4 +1,4 @@
-package mains;
+package dbpediaanalyzer.mains;
 
 /**
  * Main class crawling objects from Virtuoso server (DBPedia information), computing
@@ -19,8 +19,8 @@ public class LatticeGenerationMain {
         System.out.println("=== LATTICE GENERATION ===");
 
         if(args.length != 1) {
-            System.out.println("Usage: java mains.LatticeGenerationMain output");
-            System.out.println("output: JSON file used to store generated lattice");
+            System.out.println("Usage: java LatticeGenerationMain output");
+            System.out.println("\t output: JSON file used to store generated lattice");
         }
 
         else {

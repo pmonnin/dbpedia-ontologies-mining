@@ -1,21 +1,21 @@
-package pedialattice;
+package dbpediaanalyzer.pedialattice;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.*;
 
-import dbpediaobjects.*;
+import dbpediaanalyzer.dbpediaobjects.*;
 
-import serverlink.ChildAndParent;
-import serverlink.JSONReader;
+import dbpediaanalyzer.serverlink.ChildAndParent;
+import dbpediaanalyzer.serverlink.JSONReader;
 import colibri.lib.Concept;
 import colibri.lib.Edge;
 import colibri.lib.HybridLattice;
 import colibri.lib.Relation;
 import colibri.lib.Traversal;
 import colibri.lib.TreeRelation;
-import statistics.DBDataSetStatistics;
-import statistics.DBPediaLatticeStatistics;
+import dbpediaanalyzer.statistics.DBDataSetStatistics;
+import dbpediaanalyzer.statistics.DBPediaLatticeStatistics;
 
 /**
  * Lattice's construction

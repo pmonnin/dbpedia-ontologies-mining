@@ -1,14 +1,14 @@
-package statistics;
+package dbpediaanalyzer.statistics;
 
-import dbpediaobjects.DBCategoriesManager;
-import dbpediaobjects.DBOntologiesManager;
-import dbpediaobjects.Page;
-import dbpediaobjects.DBYagoClassesManager;
+import dbpediaanalyzer.dbpediaobjects.DBCategoriesManager;
+import dbpediaanalyzer.dbpediaobjects.DBOntologiesManager;
+import dbpediaanalyzer.dbpediaobjects.Page;
+import dbpediaanalyzer.dbpediaobjects.DBYagoClassesManager;
 
 import java.util.HashMap;
 
 /**
- * Class computing statistics over the DB Data set selected
+ * Class computing dbpediaanalyzer.statistics over the DB Data set selected
  *
  * @author Pierre Monnin
  */

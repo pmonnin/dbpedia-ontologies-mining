@@ -1,13 +1,13 @@
-package statistics;
+package dbpediaanalyzer.statistics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import dbpediaobjects.DBOntology;
+import dbpediaanalyzer.dbpediaobjects.DBOntology;
 
 /**
- * Class computing statistics over DB Ontology classes hierarchy
+ * Class computing dbpediaanalyzer.statistics over DB Ontology classes hierarchy
  * 
  * @author Pierre Monnin
  *
@@ -55,7 +55,7 @@ public class DBOntologiesStatistics {
 	}
 	
 	public void displayStatistics() {
-		System.out.println("== DB Pedia Ontology classes statistics ==");
+		System.out.println("== DB Pedia Ontology classes dbpediaanalyzer.statistics ==");
 		System.out.println("Classes number: " + this.ontologiesNumber);
 		System.out.println("Direct subsumptions number: " + this.directSubsumptions);
 		System.out.println("Inferred subsumptions number: " + this.inferredSubsumptions);

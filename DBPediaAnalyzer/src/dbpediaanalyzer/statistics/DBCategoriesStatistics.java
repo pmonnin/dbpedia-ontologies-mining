@@ -1,14 +1,14 @@
-package statistics;
+package dbpediaanalyzer.statistics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
 
-import dbpediaobjects.DBCategory;
+import dbpediaanalyzer.dbpediaobjects.DBCategory;
 
 /**
- * Class computing statistics over the DB Categories hierarchy
+ * Class computing dbpediaanalyzer.statistics over the DB Categories hierarchy
  * 
  * @author Pierre Monnin
  *
@@ -57,7 +57,7 @@ public class DBCategoriesStatistics {
 	}
 	
 	public void displayStatistics() {
-		System.out.println("== DBPedia categories statistics ==");
+		System.out.println("== DBPedia categories dbpediaanalyzer.statistics ==");
 		System.out.println("Classes number: " + this.categoriesNumber);
 		System.out.println("Direct subsumptions number: " + this.directSubsumptions);
 		System.out.println("Inferred subsumptions number: " + this.inferredSubsumptions);

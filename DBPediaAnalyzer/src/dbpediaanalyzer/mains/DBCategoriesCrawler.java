@@ -1,16 +1,16 @@
-package mains;
+package dbpediaanalyzer.mains;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
-import dbpediaobjects.DBCategoriesManager;
+import dbpediaanalyzer.dbpediaobjects.DBCategoriesManager;
 
-import serverlink.ChildAndParent;
-import serverlink.JSONReader;
-import statistics.DBCategoriesStatistics;
-import dbpediaobjects.DBCategory;
+import dbpediaanalyzer.serverlink.ChildAndParent;
+import dbpediaanalyzer.serverlink.JSONReader;
+import dbpediaanalyzer.statistics.DBCategoriesStatistics;
+import dbpediaanalyzer.dbpediaobjects.DBCategory;
 
 /**
  * Crawler of the DBPedia categories

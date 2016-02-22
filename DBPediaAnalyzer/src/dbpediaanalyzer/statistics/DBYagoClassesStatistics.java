@@ -1,13 +1,13 @@
-package statistics;
+package dbpediaanalyzer.statistics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import dbpediaobjects.DBYagoClass;
+import dbpediaanalyzer.dbpediaobjects.DBYagoClass;
 
 /**
- * Class computing statistics over DB Yago classes hierarchy
+ * Class computing dbpediaanalyzer.statistics over DB Yago classes hierarchy
  * 
  * @author Pierre Monnin
  *
@@ -55,7 +55,7 @@ public class DBYagoClassesStatistics {
 	}
 	
 	public void displayStatistics() {
-		System.out.println("== DB Yago classes hierarchy statistics ==");
+		System.out.println("== DB Yago classes hierarchy dbpediaanalyzer.statistics ==");
 		System.out.println("Classes number: " + this.yagoClassesNumber);
 		System.out.println("Direct subsumptions number: " + this.directSubsumptions);
 		System.out.println("Inferred subsumptions number: " + this.inferredSubsumptions);

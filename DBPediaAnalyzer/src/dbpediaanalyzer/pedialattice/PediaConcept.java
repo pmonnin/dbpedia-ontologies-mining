@@ -1,10 +1,10 @@
-package pedialattice;
+package dbpediaanalyzer.pedialattice;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import colibri.lib.Concept;
-import dbpediaobjects.*;
+import dbpediaanalyzer.dbpediaobjects.*;
 
 /**
  * Class of PediaConcept object

@@ -1,4 +1,4 @@
-package serverlink;
+package dbpediaanalyzer.serverlink;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

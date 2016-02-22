@@ -1,13 +1,13 @@
-package statistics;
+package dbpediaanalyzer.statistics;
 
-import pedialattice.PediaConcept;
+import dbpediaanalyzer.pedialattice.PediaConcept;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * Class computing statistics over the built pedia lattice
+ * Class computing dbpediaanalyzer.statistics over the built pedia lattice
  *
  * @author Pierre Monnin
  */

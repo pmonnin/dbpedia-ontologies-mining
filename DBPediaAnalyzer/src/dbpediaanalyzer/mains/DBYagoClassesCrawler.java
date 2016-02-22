@@ -1,4 +1,4 @@
-package mains;
+package dbpediaanalyzer.mains;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -6,12 +6,12 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
-import dbpediaobjects.DBYagoClassesManager;
+import dbpediaanalyzer.dbpediaobjects.DBYagoClassesManager;
 
-import serverlink.ChildAndParent;
-import serverlink.JSONReader;
-import statistics.DBYagoClassesStatistics;
-import dbpediaobjects.DBYagoClass;
+import dbpediaanalyzer.serverlink.ChildAndParent;
+import dbpediaanalyzer.serverlink.JSONReader;
+import dbpediaanalyzer.statistics.DBYagoClassesStatistics;
+import dbpediaanalyzer.dbpediaobjects.DBYagoClass;
 
 /**
  * Crawler of the DBPedia Yago classes
