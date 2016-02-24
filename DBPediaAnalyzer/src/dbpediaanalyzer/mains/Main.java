@@ -9,8 +9,8 @@ import dbpediaanalyzer.dbpediaobjects.DBCategoriesManager;
 import dbpediaanalyzer.dbpediaobjects.DBOntologiesManager;
 import dbpediaanalyzer.dbpediaobjects.DBYagoClassesManager;
 
-import dbpediaanalyzer.pedialattice.PediaConcept;
-import dbpediaanalyzer.pedialattice.PediaLatticeFactory;
+import dbpediaanalyzer.dbpedialattice.PediaConcept;
+import dbpediaanalyzer.dbpedialattice.PediaLatticeFactory;
 
 /**
  * Main class for the application

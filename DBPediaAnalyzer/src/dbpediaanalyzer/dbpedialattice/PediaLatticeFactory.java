@@ -1,4 +1,4 @@
-package dbpediaanalyzer.pedialattice;
+package dbpediaanalyzer.dbpedialattice;
 
 import java.io.IOException;
 import java.net.URLEncoder;
