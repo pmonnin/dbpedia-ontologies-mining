@@ -1,6 +1,7 @@
 package dbpediaanalyzer.serverlink;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import dbpediaanalyzer.io.SparqlValue;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Deprecated

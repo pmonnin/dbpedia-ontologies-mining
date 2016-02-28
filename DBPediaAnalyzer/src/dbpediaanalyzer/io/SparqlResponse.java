@@ -1,23 +1,29 @@
-package dbpediaanalyzer.serverlink;
+package dbpediaanalyzer.io;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * TODO JAVADOC
+ *
+ * @author Thomas Herbeth
+ * @author Pierre Monnin
+ *
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Deprecated
 public class SparqlResponse {
-    private SparqlHeader head;
+    private SparqlHead head;
     private SparqlResults results;
 
-    public SparqlHeader getHead() {
-        return head;
+    public SparqlHead getHead() {
+        return this.head;
     }
 
-    public void setHead(SparqlHeader head) {
+    public void setHead(SparqlHead head) {
         this.head = head;
     }
 
     public SparqlResults getResults() {
-        return results;
+        return this.results;
     }
 
     public void setResults(SparqlResults results) {

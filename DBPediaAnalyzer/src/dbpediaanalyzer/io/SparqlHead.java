@@ -1,17 +1,23 @@
-package dbpediaanalyzer.serverlink;
+package dbpediaanalyzer.io;
 
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * TODO JAVADOC
+ *
+ * @author Thomas Herbeth
+ * @author Pierre Monnin
+ *
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Deprecated
-public class SparqlHeader {
+public class SparqlHead {
     private ArrayList<String> link;
     private ArrayList<String> vars;
 
     public ArrayList<String> getLink() {
-        return link;
+        return this.link;
     }
 
     public void setLink(ArrayList<String> link) {
@@ -19,7 +25,7 @@ public class SparqlHeader {
     }
 
     public ArrayList<String> getVars() {
-        return vars;
+        return this.vars;
     }
 
     public void setVars(ArrayList<String> vars) {

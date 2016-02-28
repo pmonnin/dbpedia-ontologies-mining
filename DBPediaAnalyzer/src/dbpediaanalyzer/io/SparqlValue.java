@@ -1,15 +1,21 @@
-package dbpediaanalyzer.serverlink;
+package dbpediaanalyzer.io;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * TODO JAVADOC
+ *
+ * @author Thomas Herbeth
+ * @author Pierre Monnin
+ *
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Deprecated
 public class SparqlValue {
     private String type;
     private String value;
 
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public void setType(String type) {
@@ -17,7 +23,7 @@ public class SparqlValue {
     }
 
     public String getValue() {
-        return value;
+        return this.value;
     }
 
     public void setValue(String value) {

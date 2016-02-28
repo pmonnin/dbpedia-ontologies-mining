@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import dbpediaanalyzer.io.SparqlResponse;
 
 /**
  * Java requests to HTTP Server. Automatic crawling of server answer and auto-binding to given model class. Server answer must be JSON 
@@ -41,6 +42,6 @@ public final class JSONReader {
             e.printStackTrace();
         }
 
-        return response.getResults().getBindings();
+        return null;
     }
 }

@@ -1,18 +1,24 @@
-package dbpediaanalyzer.serverlink;
+package dbpediaanalyzer.io;
 
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * TODO JAVADOC
+ *
+ * @author Thomas Herbeth
+ * @author Pierre Monnin
+ *
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Deprecated
 public class SparqlResults {
     private boolean distinct;
     private boolean ordered;
-    private ArrayList<ChildAndParent> bindings;
+    private ArrayList<SparqlRecord> bindings;
 
     public boolean isDistinct() {
-        return distinct;
+        return this.distinct;
     }
 
     public void setDistinct(boolean distinct) {
@@ -20,18 +26,18 @@ public class SparqlResults {
     }
 
     public boolean isOrdered() {
-        return ordered;
+        return this.ordered;
     }
 
     public void setOrdered(boolean ordered) {
         this.ordered = ordered;
     }
 
-    public ArrayList<ChildAndParent> getBindings() {
-        return bindings;
+    public ArrayList<SparqlRecord> getBindings() {
+        return this.bindings;
     }
 
-    public void setBindings(ArrayList<ChildAndParent> bindings) {
+    public void setBindings(ArrayList<SparqlRecord> bindings) {
         this.bindings = bindings;
     }
 }
