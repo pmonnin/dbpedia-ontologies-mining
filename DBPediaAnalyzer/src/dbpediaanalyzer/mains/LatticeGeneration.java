@@ -1,5 +1,11 @@
 package dbpediaanalyzer.mains;
 
+import dbpediaanalyzer.factories.DataSetFactory;
+
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
@@ -22,7 +28,7 @@ public class LatticeGeneration {
      */
     public static void main(String[] args) {
         System.out.println("=== LATTICE GENERATION ===");
-        boolean incorrectParams = false;
+        boolean incorrectParams;
 
         if(args.length != 4) {
             incorrectParams = true;
@@ -43,7 +49,7 @@ public class LatticeGeneration {
         }
 
         else {
-            System.out.println("Querying data set from server...");
+            (new DataSetFactory()).createDataSet(args[0], args[1]);
         }
     }
 }
