@@ -2,10 +2,6 @@ package dbpediaanalyzer.mains;
 
 import dbpediaanalyzer.factories.DataSetFactory;
 
-import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
-import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
