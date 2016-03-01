@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 /**
  * TODO JAVADOC
@@ -37,7 +38,7 @@ public class ServerQuerier {
      * @throws IOException
      */
     public SparqlResponse runQuery(String query) throws IOException {
-        return mapper.readValue(new URL(ServerQuerier.SERVER_BASE_URL + query), SparqlResponse.class);
+        return mapper.readValue(new URL(ServerQuerier.SERVER_BASE_URL + URLEncoder.encode(query, "UTF-8")), SparqlResponse.class);
     }
 
 }
