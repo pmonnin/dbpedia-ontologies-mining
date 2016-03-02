@@ -1,36 +1,36 @@
 package dbpediaanalyzer.serverlink;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import dbpediaanalyzer.io.SparqlValue;
+import dbpediaanalyzer.io.SparqlField;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Deprecated
 public class ChildAndParent {
-    private SparqlValue child;
-    private SparqlValue parent;
-    private SparqlValue label;
+    private SparqlField child;
+    private SparqlField parent;
+    private SparqlField label;
 
-    public SparqlValue getChild() {
+    public SparqlField getChild() {
         return child;
     }
 
-    public void setChild(SparqlValue child) {
+    public void setChild(SparqlField child) {
         this.child = child;
     }
 
-    public SparqlValue getParent() {
+    public SparqlField getParent() {
         return parent;
     }
 
-    public void setParent(SparqlValue parent) {
+    public void setParent(SparqlField parent) {
         this.parent = parent;
     }
 
-    public SparqlValue getLabel() {
+    public SparqlField getLabel() {
         return label;
     }
 
-    public void setLabel(SparqlValue label) {
+    public void setLabel(SparqlField label) {
         this.label = label;
     }
 

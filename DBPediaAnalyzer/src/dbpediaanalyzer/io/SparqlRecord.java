@@ -12,13 +12,13 @@ import java.util.HashMap;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SparqlRecord {
-    private HashMap<String, SparqlValue> fields;
+    private HashMap<String, SparqlField> fields;
 
-    public HashMap<String, SparqlValue> getFields() {
+    public HashMap<String, SparqlField> getFields() {
         return this.fields;
     }
 
-    public void setFields(HashMap<String, SparqlValue> fields) {
+    public void setFields(HashMap<String, SparqlField> fields) {
         this.fields = fields;
     }
 }

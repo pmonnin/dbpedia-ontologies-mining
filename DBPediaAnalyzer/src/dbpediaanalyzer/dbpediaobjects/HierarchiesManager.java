@@ -13,9 +13,10 @@ public class HierarchiesManager {
     private HashMap<String, OntologyClass> ontologyClasses;
     private HashMap<String, YagoClass> yagoClasses;
 
-    public HierarchiesManager() {
-        this.categories = new HashMap<>();
-        this.ontologyClasses = new HashMap<>();
-        this.yagoClasses = new HashMap<>();
+    public HierarchiesManager(HashMap<String, Category> categories, HashMap<String, OntologyClass> ontologyClasses,
+                              HashMap<String, YagoClass> yagoClasses) {
+        this.categories = categories;
+        this.ontologyClasses = ontologyClasses;
+        this.yagoClasses = yagoClasses;
     }
 }
