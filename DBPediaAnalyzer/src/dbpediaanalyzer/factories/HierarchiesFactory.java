@@ -7,7 +7,7 @@ import dbpediaanalyzer.dbpediaobjects.YagoClass;
 import dbpediaanalyzer.io.ServerQuerier;
 import dbpediaanalyzer.io.SparqlRecord;
 import dbpediaanalyzer.io.SparqlResponse;
-import dbpediaanalyzer.io.SparqlField;
+import dbpediaanalyzer.io.SparqlValue;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -45,13 +45,13 @@ public class HierarchiesFactory {
 
             if(response.getResults() != null && response.getResults().getBindings() != null) {
                 for(SparqlRecord r : response.getResults().getBindings()) {
-                    SparqlField child = r.getFields().get("child");
+                    SparqlValue child = r.getFields().get("child");
 
                     if(!categories.containsKey(child.getValue())) {
                         categories.put(child.getValue(), new Category(child.getValue()));
                     }
 
-                    SparqlField parent = r.getFields().get("parent");
+                    SparqlValue parent = r.getFields().get("parent");
                     if(parent != null) {
                         if(!categories.containsKey(parent.getValue())) {
                             categories.put(parent.getValue(), new Category(parent.getValue()));
@@ -77,7 +77,52 @@ public class HierarchiesFactory {
     }
 
     private HashMap<String, OntologyClass> createOntologyClassesHierarchy() {
-        return null;
+        HashMap<String, OntologyClass> ontologyClasses = new HashMap<>();
+
+        try {
+            SparqlResponse response = (new ServerQuerier()).runQuery(
+                    "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                    "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+                    "PREFIX owl:<http://www.w3.org/2002/07/owl#> " +
+                    "select distinct ?child ?parent where { " +
+                    "?child rdf:type owl:Class . " +
+                    "FILTER (REGEX(STR(?child), \"http://dbpedia.org/ontology\", \"i\")) . " +
+                    "OPTIONAL { " +
+                    "?child rdfs:subClassOf ?parent . " +
+                    "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/ontology\", \"i\")) } }"
+                    );
+
+            if(response.getResults() != null && response.getResults().getBindings() != null) {
+                for(SparqlRecord r : response.getResults().getBindings()) {
+                    SparqlValue child = r.getFields().get("child");
+
+                    if(!ontologyClasses.containsKey(child.getValue())) {
+                        ontologyClasses.put(child.getValue(), new OntologyClass(child.getValue()));
+                    }
+
+                    SparqlValue parent = r.getFields().get("parent");
+                    if(parent != null) {
+                        if(!ontologyClasses.containsKey(parent.getValue())) {
+                            ontologyClasses.put(parent.getValue(), new OntologyClass(parent.getValue()));
+                        }
+
+                        OntologyClass childOntology = ontologyClasses.get(child.getValue());
+                        OntologyClass parentOntology = ontologyClasses.get(parent.getValue());
+
+                        childOntology.addParent(parentOntology);
+                        parentOntology.addChild(childOntology);
+                    }
+                }
+            }
+        }
+
+        catch(IOException e) {
+            System.err.println("An exception was caught during ontology classes hierarchy creation. Consequently, an " +
+                    "empty hierarchy was created");
+            System.err.println("Caused by:\n" + e.getMessage());
+        }
+
+        return ontologyClasses;
     }
 
     private HashMap<String, YagoClass> createYagoClassesHierarchy() {
