@@ -130,7 +130,6 @@ public class HierarchiesFactory {
 
         try {
             SparqlResponse response = (new ServerQuerier()).runQuery(
-                    "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
                     "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
                     "PREFIX owl:<http://www.w3.org/2002/07/owl#> " +
                     "select distinct ?child ?parent where {" +
