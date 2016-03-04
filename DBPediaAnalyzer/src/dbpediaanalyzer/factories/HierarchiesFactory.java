@@ -126,6 +126,52 @@ public class HierarchiesFactory {
     }
 
     private HashMap<String, YagoClass> createYagoClassesHierarchy() {
-        return null;
+        HashMap<String, YagoClass> yagoClasses = new HashMap<>();
+
+        try {
+            SparqlResponse response = (new ServerQuerier()).runQuery(
+                    "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                    "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+                    "PREFIX owl:<http://www.w3.org/2002/07/owl#> " +
+                    "select distinct ?child ?parent where {" +
+                    "?child owl:equivalentClass ?ec ." +
+                    "FILTER (REGEX(STR(?child), \"http://dbpedia.org/class/yago\", \"i\")) ." +
+                    "FILTER (REGEX(STR(?ec), \"http://yago-knowledge.org\", \"i\")) . " +
+                    "OPTIONAL {" +
+                    "?child rdfs:subClassOf ?parent . " +
+                    "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/class/yago\", \"i\")) } }"
+                    );
+
+            if(response.getResults() != null && response.getResults().getBindings() != null) {
+                for(SparqlRecord r : response.getResults().getBindings()) {
+                    SparqlValue child = r.getFields().get("child");
+
+                    if(!yagoClasses.containsKey(child.getValue())) {
+                        yagoClasses.put(child.getValue(), new YagoClass(child.getValue()));
+                    }
+
+                    SparqlValue parent = r.getFields().get("parent");
+                    if(parent != null) {
+                        if(!yagoClasses.containsKey(parent.getValue())) {
+                            yagoClasses.put(parent.getValue(), new YagoClass(parent.getValue()));
+                        }
+
+                        YagoClass childYago = yagoClasses.get(child.getValue());
+                        YagoClass parentYago = yagoClasses.get(parent.getValue());
+
+                        childYago.addParent(parentYago);
+                        parentYago.addChild(childYago);
+                    }
+                }
+            }
+        }
+
+        catch(IOException e) {
+            System.err.println("An exception was caught during yago classes hierarchy creation. Consequently, an " +
+                    "empty hierarchy was created");
+            System.err.println("Caused by:\n" + e.getMessage());
+        }
+
+        return yagoClasses;
     }
 }
