@@ -2,7 +2,7 @@ package dbpediaanalyzer.statistics;
 
 import dbpediaanalyzer.dbpediaobjects.HierarchyElement;
 
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * TODO JAVADOC
@@ -32,13 +32,52 @@ public class HierarchyStatistics {
 
         this.orphansNumber = 0;
         this.directSubsumptions = 0;
+        ArrayList<HierarchyElement> orphans = new ArrayList<>();
         for(String key : hierarchy.keySet()) {
             if(hierarchy.get(key).getParents().size() == 0) {
                 this.orphansNumber++;
+                orphans.add(hierarchy.get(key));
             }
 
             this.directSubsumptions += hierarchy.get(key).getParents().size();
         }
+
+        computeDepth(hierarchy, orphans);
+    }
+
+    private void computeDepth(HashMap<String, ? extends HierarchyElement> hierarchy, ArrayList<HierarchyElement> orphans) {
+        HashMap<String, Integer> elementsDepth = new HashMap<>();
+        Queue<HierarchyElement> queue = new LinkedList<>();
+
+        for(String key : hierarchy.keySet()) {
+            elementsDepth.put(key, -1);
+        }
+
+        for(HierarchyElement he : orphans) {
+            elementsDepth.put(he.getUri(), 1);
+            queue.add(he);
+        }
+        
+        this.depth = -1;
+        while(!queue.isEmpty()) {
+            HierarchyElement he = queue.poll();
+            int currentDepth = elementsDepth.get(he.getUri());
+
+            if(currentDepth > this.depth) {
+                this.depth = currentDepth;
+            }
+
+            for(HierarchyElement child : he.getChildren()) {
+                if(elementsDepth.get(child.getUri()) == -1) {
+                    elementsDepth.put(child.getUri(), currentDepth + 1);
+                    queue.add(child);
+                }
+            }
+        }
+    }
+
+    private void computeInferredSubsumptions() {
+
     }
 
     public void display() {

@@ -31,7 +31,15 @@ public abstract class HierarchyElement {
         }
     }
 
+    public String getUri() {
+        return this.uri;
+    }
+
     public ArrayList<HierarchyElement> getParents() {
         return new ArrayList<>(this.parents);
+    }
+
+    public ArrayList<HierarchyElement> getChildren() {
+        return new ArrayList<>(this.children);
     }
 }
