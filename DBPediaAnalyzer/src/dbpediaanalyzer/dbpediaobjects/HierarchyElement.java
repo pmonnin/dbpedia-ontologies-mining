@@ -30,4 +30,8 @@ public abstract class HierarchyElement {
             this.children.add(child);
         }
     }
+
+    public ArrayList<HierarchyElement> getParents() {
+        return new ArrayList<>(this.parents);
+    }
 }

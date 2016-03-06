@@ -1,5 +1,7 @@
 package dbpediaanalyzer.dbpediaobjects;
 
+import dbpediaanalyzer.statistics.HierarchyStatistics;
+
 import java.util.HashMap;
 
 /**
@@ -19,4 +21,17 @@ public class HierarchiesManager {
         this.ontologyClasses = ontologyClasses;
         this.yagoClasses = yagoClasses;
     }
+
+    public HierarchyStatistics getCategoriesStatistics() {
+        return new HierarchyStatistics(this.categories);
+    }
+
+    public HierarchyStatistics getOntologyClassesStatistics() {
+        return new HierarchyStatistics(this.ontologyClasses);
+    }
+
+    public HierarchyStatistics getYagoClassesStatistics() {
+        return new HierarchyStatistics(this.yagoClasses);
+    }
+
 }
