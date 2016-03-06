@@ -20,7 +20,7 @@ public class LatticeGeneration {
      *             - YYYY-MM-DD minimal death date for data set creation
      *             - YYYY-MM-DD maximal death date for data set creation
      *             - Name of JSON output file for lattice
-     *             - Name of JSON output file for data set and lattice statistics
+     *             - Name of output file for data set and lattice statistics
      */
     public static void main(String[] args) {
         System.out.println("=== LATTICE GENERATION ===");
@@ -41,7 +41,7 @@ public class LatticeGeneration {
             System.out.println("\t minimalDeathDate\n\t\t minimal death date for data set creation (YYYY-MM-DD)");
             System.out.println("\t maximalDeathDate\n\t\t maximal death date for data set creation (YYYY-MM-DD)");
             System.out.println("\t output\n\t\t JSON file used to store generated lattice");
-            System.out.println("\t statistics\n\t\t JSON File used to store data set and lattice statistics");
+            System.out.println("\t statistics\n\t\t file used to store data set and lattice statistics");
         }
 
         else {
