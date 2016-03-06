@@ -1,9 +1,9 @@
 package dbpediaanalyzer.io;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * TODO JAVADOC
@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class SparqlResults {
     private boolean distinct;
     private boolean ordered;
-    private ArrayList<HashMap<String, SparqlValue>> bindings;
+    @JsonDeserialize(contentAs = SparqlRecord.class)
+    private ArrayList<SparqlRecord> bindings;
 
     public boolean isDistinct() {
         return this.distinct;
@@ -34,11 +35,11 @@ public class SparqlResults {
         this.ordered = ordered;
     }
 
-    public ArrayList<HashMap<String, SparqlValue>> getBindings() {
+    public ArrayList<SparqlRecord> getBindings() {
         return this.bindings;
     }
 
-    public void setBindings(ArrayList<HashMap<String, SparqlValue>> bindings) {
+    public void setBindings(ArrayList<SparqlRecord> bindings) {
         this.bindings = bindings;
     }
 }

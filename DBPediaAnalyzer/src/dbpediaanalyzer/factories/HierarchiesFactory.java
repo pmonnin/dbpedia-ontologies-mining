@@ -10,7 +10,6 @@ import dbpediaanalyzer.io.SparqlResponse;
 import dbpediaanalyzer.io.SparqlValue;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -45,14 +44,14 @@ public class HierarchiesFactory {
                     );
 
             if(response.getResults() != null && response.getResults().getBindings() != null) {
-                for(HashMap<String, SparqlValue> r : response.getResults().getBindings()) {
-                    SparqlValue child = r.get("child");
+                for(SparqlRecord r : response.getResults().getBindings()) {
+                    SparqlValue child = r.getFields().get("child");
 
                     if(!categories.containsKey(child.getValue())) {
                         categories.put(child.getValue(), new Category(child.getValue()));
                     }
 
-                    SparqlValue parent = r.get("parent");
+                    SparqlValue parent = r.getFields().get("parent");
                     if(parent != null) {
                         if(!categories.containsKey(parent.getValue())) {
                             categories.put(parent.getValue(), new Category(parent.getValue()));
@@ -94,14 +93,14 @@ public class HierarchiesFactory {
                     );
 
             if(response.getResults() != null && response.getResults().getBindings() != null) {
-                for(HashMap<String, SparqlValue> r : response.getResults().getBindings()) {
-                    SparqlValue child = r.get("child");
+                for(SparqlRecord r : response.getResults().getBindings()) {
+                    SparqlValue child = r.getFields().get("child");
 
                     if(!ontologyClasses.containsKey(child.getValue())) {
                         ontologyClasses.put(child.getValue(), new OntologyClass(child.getValue()));
                     }
 
-                    SparqlValue parent = r.get("parent");
+                    SparqlValue parent = r.getFields().get("parent");
                     if(parent != null) {
                         if(!ontologyClasses.containsKey(parent.getValue())) {
                             ontologyClasses.put(parent.getValue(), new OntologyClass(parent.getValue()));
@@ -143,14 +142,14 @@ public class HierarchiesFactory {
                     );
 
             if(response.getResults() != null && response.getResults().getBindings() != null) {
-                for(HashMap<String, SparqlValue> r : response.getResults().getBindings()) {
-                    SparqlValue child = r.get("child");
+                for(SparqlRecord r : response.getResults().getBindings()) {
+                    SparqlValue child = r.getFields().get("child");
 
                     if(!yagoClasses.containsKey(child.getValue())) {
                         yagoClasses.put(child.getValue(), new YagoClass(child.getValue()));
                     }
 
-                    SparqlValue parent = r.get("parent");
+                    SparqlValue parent = r.getFields().get("parent");
                     if(parent != null) {
                         if(!yagoClasses.containsKey(parent.getValue())) {
                             yagoClasses.put(parent.getValue(), new YagoClass(parent.getValue()));
