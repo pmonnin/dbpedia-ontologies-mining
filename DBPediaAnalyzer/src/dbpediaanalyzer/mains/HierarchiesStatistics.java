@@ -25,8 +25,11 @@ public class HierarchiesStatistics {
 
             HierarchiesManager hm = (new HierarchiesFactory()).createHierarchies();
 
+            System.out.println("--- Categories statistics ---");
             hm.getCategoriesStatistics().display();
+            System.out.println("--- Ontology classes statistics ---");
             hm.getOntologyClassesStatistics().display();
+            System.out.println("--- Yago classes statistics ---");
             hm.getYagoClassesStatistics().display();
         }
     }
