@@ -1,6 +1,7 @@
 package dbpediaanalyzer.io;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -15,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class SparqlResults {
     private boolean distinct;
     private boolean ordered;
-    private ArrayList<SparqlRecord> bindings;
+    private ArrayList<HashMap<String, SparqlValue>> bindings;
 
     public boolean isDistinct() {
         return this.distinct;
@@ -33,11 +34,11 @@ public class SparqlResults {
         this.ordered = ordered;
     }
 
-    public ArrayList<SparqlRecord> getBindings() {
+    public ArrayList<HashMap<String, SparqlValue>> getBindings() {
         return this.bindings;
     }
 
-    public void setBindings(ArrayList<SparqlRecord> bindings) {
+    public void setBindings(ArrayList<HashMap<String, SparqlValue>> bindings) {
         this.bindings = bindings;
     }
 }
