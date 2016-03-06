@@ -30,11 +30,14 @@ public class HierarchyStatistics {
     private void computeStatistics(HashMap<String, ? extends HierarchyElement> hierarchy) {
         this.elementsNumber = hierarchy.size();
 
-        this.orphansNumber++;
+        this.orphansNumber = 0;
+        this.directSubsumptions = 0;
         for(String key : hierarchy.keySet()) {
             if(hierarchy.get(key).getParents().size() == 0) {
                 this.orphansNumber++;
             }
+
+            this.directSubsumptions += hierarchy.get(key).getParents().size();
         }
     }
 
