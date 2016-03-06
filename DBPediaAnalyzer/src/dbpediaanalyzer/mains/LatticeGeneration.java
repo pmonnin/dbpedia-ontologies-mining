@@ -23,7 +23,6 @@ public class LatticeGeneration {
      *             - Name of output file for data set and lattice statistics
      */
     public static void main(String[] args) {
-        System.out.println("=== LATTICE GENERATION ===");
         boolean incorrectParams;
 
         if(args.length != 4) {
@@ -45,6 +44,7 @@ public class LatticeGeneration {
         }
 
         else {
+            System.out.println("=== LATTICE GENERATION ===");
             (new DataSetFactory()).createDataSet(args[0], args[1]);
         }
     }
