@@ -10,7 +10,6 @@ import dbpediaanalyzer.dbpediaobjects.DBOntologiesManager;
 
 import dbpediaanalyzer.serverlink.ChildAndParent;
 import dbpediaanalyzer.serverlink.JSONReader;
-import dbpediaanalyzer.statistics.DBOntologiesStatistics;
 import dbpediaanalyzer.dbpediaobjects.DBOntology;
 
 /**
@@ -35,9 +34,6 @@ public class DBOntologiesCrawler {
         System.out.println("== START MAIN DB ONTOLOGIES CRAWLER ==");
         DBOntologiesCrawler crawler = new DBOntologiesCrawler();
         crawler.computeOntologiesHierarchy();
-        DBOntologiesStatistics stats = new DBOntologiesStatistics(crawler.dbontologies);
-        stats.computeStatistics();
-        stats.displayStatistics();
     }
 
     /**

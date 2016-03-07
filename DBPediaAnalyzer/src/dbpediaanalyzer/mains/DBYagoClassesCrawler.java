@@ -10,7 +10,6 @@ import dbpediaanalyzer.dbpediaobjects.DBYagoClassesManager;
 
 import dbpediaanalyzer.serverlink.ChildAndParent;
 import dbpediaanalyzer.serverlink.JSONReader;
-import dbpediaanalyzer.statistics.DBYagoClassesStatistics;
 import dbpediaanalyzer.dbpediaobjects.DBYagoClass;
 
 /**
@@ -35,9 +34,6 @@ public class DBYagoClassesCrawler {
         System.out.println("== START MAIN DB YAGO CLASSES CRAWLER ==");
         DBYagoClassesCrawler crawler = new DBYagoClassesCrawler();
         crawler.computeYagoCLassesHierarchy();
-        DBYagoClassesStatistics stats = new DBYagoClassesStatistics(crawler.dbyagoclasses);
-        stats.computeStatistics();
-        stats.displayStatistics();
     }
 
     /**

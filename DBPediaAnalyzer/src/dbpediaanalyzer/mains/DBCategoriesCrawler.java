@@ -9,7 +9,6 @@ import dbpediaanalyzer.dbpediaobjects.DBCategoriesManager;
 
 import dbpediaanalyzer.serverlink.ChildAndParent;
 import dbpediaanalyzer.serverlink.JSONReader;
-import dbpediaanalyzer.statistics.DBCategoriesStatistics;
 import dbpediaanalyzer.dbpediaobjects.DBCategory;
 
 /**
@@ -34,9 +33,6 @@ public class DBCategoriesCrawler {
         System.out.println("=== START MAIN DB CATEGORIES CRAWLER ===");
         DBCategoriesCrawler crawler = new DBCategoriesCrawler();
         crawler.computeCategoriesHierarchy();
-        DBCategoriesStatistics stats = new DBCategoriesStatistics(crawler.dbcategories);
-        stats.computeStatistics();
-        stats.displayStatistics();
     }
 
     /**
