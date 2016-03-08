@@ -26,24 +26,28 @@ public class HierarchiesStatistics {
         else {
             System.out.println("=== HIERARCHIES STATISTICS ===");
 
+            System.out.println("Querying hierarchies from server...");
             HierarchiesManager hm = (new HierarchiesFactory()).createHierarchies();
 
+            System.out.println("Computing statistics...");
+            System.out.println("\tComputing categories statistics");
             HierarchyStatistics categoriesStatistics = hm.getCategoriesStatistics();
+            System.out.println("\tComputing ontology classes statistics");
             HierarchyStatistics ontologyClassesStatistics = hm.getOntologyClassesStatistics();
+            System.out.println("\tComputing yago classes statistics");
             HierarchyStatistics yagoClassesStatistics = hm.getYagoClassesStatistics();
 
-            System.out.println("--- Categories statistics ---");
-            categoriesStatistics.display();
-            System.out.println("--- Ontology classes statistics ---");
-            ontologyClassesStatistics.display();
-            System.out.println("--- Yago classes statistics ---");
-            yagoClassesStatistics.display();
-
+            System.out.println("Saving statistics into file " + args[0] + "...");
             HierarchiesStatisticsWriter writer = new HierarchiesStatisticsWriter(args[0]);
+            System.out.println("\tSaving categories statistics");
             writer.writeHierarchyStatistics(categoriesStatistics, "Categories");
+            System.out.println("\tSaving ontology classes statistics");
             writer.writeHierarchyStatistics(ontologyClassesStatistics, "Ontology classes");
+            System.out.println("\tSaving yago classes statistics");
             writer.writeHierarchyStatistics(yagoClassesStatistics, "Yago classes");
             writer.close();
+
+            System.out.println("=== End of hierarchies statistics computing program ===");
         }
     }
 }

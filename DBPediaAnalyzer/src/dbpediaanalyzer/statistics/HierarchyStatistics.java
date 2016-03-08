@@ -107,14 +107,6 @@ public class HierarchyStatistics {
         }
     }
 
-    public void display() {
-        System.out.println("Elements number: " + this.elementsNumber);
-        System.out.println("Orphans number: " + this.orphansNumber);
-        System.out.println("Depth: " + this.depth);
-        System.out.println("Direct subsumptions number: " + this.directSubsumptions);
-        System.out.println("Inferred subsumptions number: " + this.inferredSubsumptions);
-    }
-
     public int getElementsNumber() {
         return this.elementsNumber;
     }
