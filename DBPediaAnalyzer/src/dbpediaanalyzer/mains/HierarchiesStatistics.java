@@ -2,6 +2,8 @@ package dbpediaanalyzer.mains;
 
 import dbpediaanalyzer.dbpediaobjects.HierarchiesManager;
 import dbpediaanalyzer.factories.HierarchiesFactory;
+import dbpediaanalyzer.io.HierarchiesStatisticsWriter;
+import dbpediaanalyzer.statistics.HierarchyStatistics;
 
 /**
  * TODO JAVADOC
@@ -26,12 +28,22 @@ public class HierarchiesStatistics {
 
             HierarchiesManager hm = (new HierarchiesFactory()).createHierarchies();
 
+            HierarchyStatistics categoriesStatistics = hm.getCategoriesStatistics();
+            HierarchyStatistics ontologyClassesStatistics = hm.getOntologyClassesStatistics();
+            HierarchyStatistics yagoClassesStatistics = hm.getYagoClassesStatistics();
+
             System.out.println("--- Categories statistics ---");
-            hm.getCategoriesStatistics().display();
+            categoriesStatistics.display();
             System.out.println("--- Ontology classes statistics ---");
-            hm.getOntologyClassesStatistics().display();
+            ontologyClassesStatistics.display();
             System.out.println("--- Yago classes statistics ---");
-            hm.getYagoClassesStatistics().display();
+            yagoClassesStatistics.display();
+
+            HierarchiesStatisticsWriter writer = new HierarchiesStatisticsWriter(args[0]);
+            writer.writeHierarchyStatistics(categoriesStatistics, "Categories");
+            writer.writeHierarchyStatistics(ontologyClassesStatistics, "Ontology classes");
+            writer.writeHierarchyStatistics(yagoClassesStatistics, "Yago classes");
+            writer.close();
         }
     }
 }
