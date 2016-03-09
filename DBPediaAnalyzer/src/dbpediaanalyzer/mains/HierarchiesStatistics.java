@@ -4,6 +4,9 @@ import dbpediaanalyzer.dbpediaobjects.HierarchiesManager;
 import dbpediaanalyzer.factories.HierarchiesFactory;
 import dbpediaanalyzer.io.HierarchiesStatisticsWriter;
 import dbpediaanalyzer.statistics.HierarchyStatistics;
+import dbpediaanalyzer.utils.TimeMeasurer;
+
+import java.util.Date;
 
 /**
  * TODO JAVADOC
@@ -25,6 +28,8 @@ public class HierarchiesStatistics {
 
         else {
             System.out.println("=== HIERARCHIES STATISTICS ===");
+            TimeMeasurer tm = new TimeMeasurer();
+            tm.begin();
 
             System.out.println("Querying hierarchies from server...");
             HierarchiesManager hm = (new HierarchiesFactory()).createHierarchies();
@@ -47,6 +52,8 @@ public class HierarchiesStatistics {
             writer.writeHierarchyStatistics(yagoClassesStatistics, "Yago classes");
             writer.close();
 
+            tm.stop();
+            System.out.println("Processing time: " + tm.toString());
             System.out.println("=== End of hierarchies statistics computing program ===");
         }
     }
