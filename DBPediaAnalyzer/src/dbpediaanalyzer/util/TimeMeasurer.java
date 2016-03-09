@@ -1,4 +1,4 @@
-package dbpediaanalyzer.utils;
+package dbpediaanalyzer.util;
 
 import java.util.concurrent.TimeUnit;
 

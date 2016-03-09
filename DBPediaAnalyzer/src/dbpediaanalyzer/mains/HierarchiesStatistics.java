@@ -4,9 +4,7 @@ import dbpediaanalyzer.dbpediaobjects.HierarchiesManager;
 import dbpediaanalyzer.factories.HierarchiesFactory;
 import dbpediaanalyzer.io.HierarchiesStatisticsWriter;
 import dbpediaanalyzer.statistics.HierarchyStatistics;
-import dbpediaanalyzer.utils.TimeMeasurer;
-
-import java.util.Date;
+import dbpediaanalyzer.util.TimeMeasurer;
 
 /**
  * TODO JAVADOC
