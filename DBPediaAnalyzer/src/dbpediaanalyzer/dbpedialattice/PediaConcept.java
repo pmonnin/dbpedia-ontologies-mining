@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import colibri.lib.Concept;
-import dbpediaanalyzer.dbpediaobjects.*;
+import dbpediaanalyzer.dbpediaobject.*;
 
 /**
  * Class of PediaConcept object

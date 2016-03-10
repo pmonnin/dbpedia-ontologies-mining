@@ -1,6 +1,6 @@
 package dbpediaanalyzer.io;
 
-import dbpediaanalyzer.statistics.HierarchyStatistics;
+import dbpediaanalyzer.statistic.HierarchyStatistics;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

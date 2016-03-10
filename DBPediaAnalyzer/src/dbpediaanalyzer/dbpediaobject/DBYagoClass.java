@@ -1,4 +1,4 @@
-package dbpediaanalyzer.dbpediaobjects;
+package dbpediaanalyzer.dbpediaobject;
 
 import java.util.ArrayList;
 

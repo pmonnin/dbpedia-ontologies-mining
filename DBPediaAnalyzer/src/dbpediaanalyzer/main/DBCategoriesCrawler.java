@@ -1,19 +1,19 @@
-package dbpediaanalyzer.mains;
+package dbpediaanalyzer.main;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
-import dbpediaanalyzer.dbpediaobjects.DBCategoriesManager;
+import dbpediaanalyzer.dbpediaobject.DBCategoriesManager;
 
 import dbpediaanalyzer.serverlink.ChildAndParent;
 import dbpediaanalyzer.serverlink.JSONReader;
-import dbpediaanalyzer.dbpediaobjects.DBCategory;
+import dbpediaanalyzer.dbpediaobject.DBCategory;
 
 /**
  * Crawler of the DBPedia categories
- * Also contains a mains method to just test the crawler (no comparison)
+ * Also contains a main method to just test the crawler (no comparison)
  * 
  * @author Thomas Herbeth
  * @author Pierre Monnin

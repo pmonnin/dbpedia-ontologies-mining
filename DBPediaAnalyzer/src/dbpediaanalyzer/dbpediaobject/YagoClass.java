@@ -1,4 +1,4 @@
-package dbpediaanalyzer.dbpediaobjects;
+package dbpediaanalyzer.dbpediaobject;
 
 /**
  * TODO JAVADOC
@@ -6,22 +6,22 @@ package dbpediaanalyzer.dbpediaobjects;
  * @author Pierre Monnin
  *
  */
-public class Category extends HierarchyElement {
+public class YagoClass extends HierarchyElement {
 
-    public Category(String uri) {
+    public YagoClass(String uri) {
         super(uri);
     }
 
     @Override
     public void addParent(HierarchyElement parent) {
-        if(parent instanceof Category) {
+        if(parent instanceof YagoClass) {
             super.addParent(parent);
         }
     }
 
     @Override
     public void addChild(HierarchyElement child) {
-        if(child instanceof Category) {
+        if(child instanceof YagoClass) {
             super.addChild(child);
         }
     }

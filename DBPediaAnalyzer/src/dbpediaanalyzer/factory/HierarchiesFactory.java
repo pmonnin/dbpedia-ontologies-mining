@@ -1,9 +1,9 @@
-package dbpediaanalyzer.factories;
+package dbpediaanalyzer.factory;
 
-import dbpediaanalyzer.dbpediaobjects.Category;
-import dbpediaanalyzer.dbpediaobjects.HierarchiesManager;
-import dbpediaanalyzer.dbpediaobjects.OntologyClass;
-import dbpediaanalyzer.dbpediaobjects.YagoClass;
+import dbpediaanalyzer.dbpediaobject.Category;
+import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
+import dbpediaanalyzer.dbpediaobject.OntologyClass;
+import dbpediaanalyzer.dbpediaobject.YagoClass;
 import dbpediaanalyzer.io.ServerQuerier;
 import dbpediaanalyzer.io.SparqlRecord;
 import dbpediaanalyzer.io.SparqlResponse;

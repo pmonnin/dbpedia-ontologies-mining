@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.*;
 
-import dbpediaanalyzer.dbpediaobjects.*;
+import dbpediaanalyzer.dbpediaobject.*;
 
 import dbpediaanalyzer.serverlink.ChildAndParent;
 import dbpediaanalyzer.serverlink.JSONReader;
@@ -14,8 +14,8 @@ import colibri.lib.HybridLattice;
 import colibri.lib.Relation;
 import colibri.lib.Traversal;
 import colibri.lib.TreeRelation;
-import dbpediaanalyzer.statistics.DBDataSetStatistics;
-import dbpediaanalyzer.statistics.DBPediaLatticeStatistics;
+import dbpediaanalyzer.statistic.DBDataSetStatistics;
+import dbpediaanalyzer.statistic.DBPediaLatticeStatistics;
 
 /**
  * Lattice's construction

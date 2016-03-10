@@ -1,4 +1,4 @@
-package dbpediaanalyzer.dbpediaobjects;
+package dbpediaanalyzer.dbpediaobject;
 
 /**
  * TODO JAVADOC

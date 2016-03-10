@@ -1,4 +1,4 @@
-package dbpediaanalyzer.factories;
+package dbpediaanalyzer.factory;
 
 /**
  * TODO JAVADOC

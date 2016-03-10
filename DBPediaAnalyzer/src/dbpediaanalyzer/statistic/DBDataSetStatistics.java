@@ -1,9 +1,9 @@
-package dbpediaanalyzer.statistics;
+package dbpediaanalyzer.statistic;
 
-import dbpediaanalyzer.dbpediaobjects.DBCategoriesManager;
-import dbpediaanalyzer.dbpediaobjects.DBOntologiesManager;
-import dbpediaanalyzer.dbpediaobjects.Page;
-import dbpediaanalyzer.dbpediaobjects.DBYagoClassesManager;
+import dbpediaanalyzer.dbpediaobject.DBCategoriesManager;
+import dbpediaanalyzer.dbpediaobject.DBOntologiesManager;
+import dbpediaanalyzer.dbpediaobject.Page;
+import dbpediaanalyzer.dbpediaobject.DBYagoClassesManager;
 
 import java.util.HashMap;
 

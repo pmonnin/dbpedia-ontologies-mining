@@ -1,6 +1,6 @@
-package dbpediaanalyzer.mains;
+package dbpediaanalyzer.main;
 
-import dbpediaanalyzer.factories.DataSetFactory;
+import dbpediaanalyzer.factory.DataSetFactory;
 
 import java.util.regex.Pattern;
 

@@ -1,9 +1,9 @@
-package dbpediaanalyzer.mains;
+package dbpediaanalyzer.main;
 
-import dbpediaanalyzer.dbpediaobjects.HierarchiesManager;
-import dbpediaanalyzer.factories.HierarchiesFactory;
+import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
+import dbpediaanalyzer.factory.HierarchiesFactory;
 import dbpediaanalyzer.io.HierarchiesStatisticsWriter;
-import dbpediaanalyzer.statistics.HierarchyStatistics;
+import dbpediaanalyzer.statistic.HierarchyStatistics;
 import dbpediaanalyzer.util.TimeMeasurer;
 
 /**

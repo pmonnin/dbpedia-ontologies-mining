@@ -1,6 +1,6 @@
-package dbpediaanalyzer.statistics;
+package dbpediaanalyzer.statistic;
 
-import dbpediaanalyzer.dbpediaobjects.HierarchyElement;
+import dbpediaanalyzer.dbpediaobject.HierarchyElement;
 
 import java.util.*;
 

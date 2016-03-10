@@ -1,13 +1,13 @@
-package dbpediaanalyzer.mains;
+package dbpediaanalyzer.main;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
-import dbpediaanalyzer.dbpediaobjects.DBCategoriesManager;
-import dbpediaanalyzer.dbpediaobjects.DBOntologiesManager;
-import dbpediaanalyzer.dbpediaobjects.DBYagoClassesManager;
+import dbpediaanalyzer.dbpediaobject.DBCategoriesManager;
+import dbpediaanalyzer.dbpediaobject.DBOntologiesManager;
+import dbpediaanalyzer.dbpediaobject.DBYagoClassesManager;
 
 import dbpediaanalyzer.dbpedialattice.PediaConcept;
 import dbpediaanalyzer.dbpedialattice.PediaLatticeFactory;

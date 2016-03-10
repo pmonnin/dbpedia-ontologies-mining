@@ -1,4 +1,4 @@
-package dbpediaanalyzer.statistics;
+package dbpediaanalyzer.statistic;
 
 import dbpediaanalyzer.dbpedialattice.PediaConcept;
 
