@@ -31,12 +31,12 @@ public class DBYagoClassesManager {
         // Initialization of queue
         Queue<DBYagoClass> queue = new LinkedList<>();
         for(String pageUri : dataSet.keySet()) {
-            for(DBYagoClass yagoClass : dataSet.get(pageUri).getYagoClasses()) {
+            /*for(DBYagoClass yagoClass : dataSet.get(pageUri).getYagoClasses()) {
                 if(!yagoClass.getSeen()) {
                     yagoClass.setSeen(true);
                     queue.add(yagoClass);
                 }
-            }
+            }*/
         }
 
         // Yago classes traversal

@@ -31,12 +31,12 @@ public class DBOntologiesManager {
         // Initialization of queue
         Queue<DBOntology> queue = new LinkedList<>();
         for(String pageUri : dataSet.keySet()) {
-            for(DBOntology ontology : dataSet.get(pageUri).getOntologyClasses()) {
+            /*for(DBOntology ontology : dataSet.get(pageUri).getOntologyClasses()) {
                 if(!ontology.getSeen()) {
                     ontology.setSeen(true);
                     queue.add(ontology);
                 }
-            }
+            }*/
         }
 
         // Ontologies traversal

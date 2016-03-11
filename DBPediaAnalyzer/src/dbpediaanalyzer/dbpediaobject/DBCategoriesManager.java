@@ -31,12 +31,12 @@ public class DBCategoriesManager {
         // Initialization of queue
         Queue<DBCategory> queue = new LinkedList<>();
         for(String pageUri : dataSet.keySet()) {
-            for(DBCategory category : dataSet.get(pageUri).getCategories()) {
+            /*for(DBCategory category : dataSet.get(pageUri).getCategories()) {
                 if(!category.getSeen()) {
                     category.setSeen(true);
                     queue.add(category);
                 }
-            }
+            }*/
         }
 
         // Categories traversal

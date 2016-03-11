@@ -17,9 +17,9 @@ import java.util.ArrayList;
 public class Page {
     private String uri;
     private ArrayList<String> relationships;
-    private ArrayList<DBCategory> categories;
-    private ArrayList<DBOntology> ontologyClasses;
-    private ArrayList<DBYagoClass> yagoClasses;
+    private ArrayList<Category> categories;
+    private ArrayList<OntologyClass> ontologyClasses;
+    private ArrayList<YagoClass> yagoClasses;
 
     /**
      * Constructs a basic DBPedia page object. All information (relationships, categories, ontology classes, yago
@@ -58,7 +58,7 @@ public class Page {
      * If the category has already been added, nothing happens
      * @param category the category to add
      */
-    public void addCategory(DBCategory category) {
+    public void addCategory(Category category) {
         if(!this.categories.contains(category)) {
             this.categories.add(category);
         }
@@ -68,7 +68,7 @@ public class Page {
      * Returns the categories associated with the page
      * @return the categories associated with the page
      */
-    public ArrayList<DBCategory> getCategories() {
+    public ArrayList<Category> getCategories() {
         return this.categories;
     }
 
@@ -77,7 +77,7 @@ public class Page {
      * If the ontology class has already been added, nothing happens
      * @param ontology the ontology class to add
      */
-    public void addOntology(DBOntology ontology) {
+    public void addOntology(OntologyClass ontology) {
         if(!this.ontologyClasses.contains(ontology)) {
             this.ontologyClasses.add(ontology);
         }
@@ -87,7 +87,7 @@ public class Page {
      * Returns the ontology classes associated with the page
      * @return the ontology classes associated with the page
      */
-    public ArrayList<DBOntology> getOntologyClasses() {
+    public ArrayList<OntologyClass> getOntologyClasses() {
         return this.ontologyClasses;
     }
 
@@ -96,7 +96,7 @@ public class Page {
      * If the yago class has already been added, nothing happens
      * @param yagoClass the yago class to add
      */
-    public void addYagoClass(DBYagoClass yagoClass) {
+    public void addYagoClass(YagoClass yagoClass) {
         if(!this.yagoClasses.contains(yagoClass)) {
             this.yagoClasses.add(yagoClass);
         }
@@ -106,7 +106,7 @@ public class Page {
      * Returns the yago classes associated with the page
      * @return the yago classes associated with the page
      */
-    public ArrayList<DBYagoClass> getYagoClasses() {
+    public ArrayList<YagoClass> getYagoClasses() {
         return this.yagoClasses;
     }
 }

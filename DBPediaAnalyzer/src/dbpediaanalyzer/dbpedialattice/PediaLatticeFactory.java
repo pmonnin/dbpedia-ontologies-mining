@@ -107,7 +107,7 @@ public class PediaLatticeFactory {
 	        	
 	        	for(ChildAndParent c : categories) {
                     if(dbcategories.getCategoryFromUri(c.getChild().getValue()) != null) {
-                        page.addCategory(dbcategories.getCategoryFromUri(c.getChild().getValue()));
+                        //page.addCategory(dbcategories.getCategoryFromUri(c.getChild().getValue()));
                     }
 	        	}
 	        	
@@ -121,7 +121,7 @@ public class PediaLatticeFactory {
 	        	
 	        	for(ChildAndParent o : ontologies) {
                     if(dbontologies.getOntologyFromUri(o.getChild().getValue()) != null) {
-                        page.addOntology(dbontologies.getOntologyFromUri(o.getChild().getValue()));
+                        //page.addOntology(dbontologies.getOntologyFromUri(o.getChild().getValue()));
                     }
 	        	}
 	        	
@@ -135,7 +135,7 @@ public class PediaLatticeFactory {
 	        	
 	        	for(ChildAndParent y : yagoClasses) {
                     if(dbyagoclasses.getYagoClassFromUri(y.getChild().getValue()) != null) {
-                        page.addYagoClass(dbyagoclasses.getYagoClassFromUri(y.getChild().getValue()));
+                        //page.addYagoClass(dbyagoclasses.getYagoClassFromUri(y.getChild().getValue()));
                     }
 	        	}
 	        	
