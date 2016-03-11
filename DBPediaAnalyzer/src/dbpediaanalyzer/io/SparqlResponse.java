@@ -2,6 +2,8 @@ package dbpediaanalyzer.io;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.ArrayList;
+
 /**
  * TODO JAVADOC
  *
@@ -28,5 +30,13 @@ public class SparqlResponse {
 
     public void setResults(SparqlResults results) {
         this.results = results;
+    }
+
+    public ArrayList<SparqlRecord> getRecords() {
+        if(this.results != null && this.results.getBindings() != null) {
+            return this.results.getBindings();
+        }
+
+        return new ArrayList<>();
     }
 }

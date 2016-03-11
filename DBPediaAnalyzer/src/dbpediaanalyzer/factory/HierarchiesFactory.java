@@ -43,26 +43,24 @@ public class HierarchiesFactory {
                     "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/resource/Category\", \"i\")) } }"
                     );
 
-            if(response.getResults() != null && response.getResults().getBindings() != null) {
-                for(SparqlRecord r : response.getResults().getBindings()) {
-                    SparqlValue child = r.getFields().get("child");
+            for(SparqlRecord r : response.getRecords()) {
+                SparqlValue child = r.getFields().get("child");
 
-                    if(!categories.containsKey(child.getValue())) {
-                        categories.put(child.getValue(), new Category(child.getValue()));
+                if(!categories.containsKey(child.getValue())) {
+                    categories.put(child.getValue(), new Category(child.getValue()));
+                }
+
+                SparqlValue parent = r.getFields().get("parent");
+                if(parent != null) {
+                    if(!categories.containsKey(parent.getValue())) {
+                        categories.put(parent.getValue(), new Category(parent.getValue()));
                     }
 
-                    SparqlValue parent = r.getFields().get("parent");
-                    if(parent != null) {
-                        if(!categories.containsKey(parent.getValue())) {
-                            categories.put(parent.getValue(), new Category(parent.getValue()));
-                        }
+                    Category childCategory = categories.get(child.getValue());
+                    Category parentCategory = categories.get(parent.getValue());
 
-                        Category childCategory = categories.get(child.getValue());
-                        Category parentCategory = categories.get(parent.getValue());
-
-                        childCategory.addParent(parentCategory);
-                        parentCategory.addChild(childCategory);
-                    }
+                    childCategory.addParent(parentCategory);
+                    parentCategory.addChild(childCategory);
                 }
             }
         }
@@ -92,26 +90,24 @@ public class HierarchiesFactory {
                     "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/ontology\", \"i\")) } }"
                     );
 
-            if(response.getResults() != null && response.getResults().getBindings() != null) {
-                for(SparqlRecord r : response.getResults().getBindings()) {
-                    SparqlValue child = r.getFields().get("child");
+            for(SparqlRecord r : response.getRecords()) {
+                SparqlValue child = r.getFields().get("child");
 
-                    if(!ontologyClasses.containsKey(child.getValue())) {
-                        ontologyClasses.put(child.getValue(), new OntologyClass(child.getValue()));
+                if(!ontologyClasses.containsKey(child.getValue())) {
+                    ontologyClasses.put(child.getValue(), new OntologyClass(child.getValue()));
+                }
+
+                SparqlValue parent = r.getFields().get("parent");
+                if(parent != null) {
+                    if(!ontologyClasses.containsKey(parent.getValue())) {
+                        ontologyClasses.put(parent.getValue(), new OntologyClass(parent.getValue()));
                     }
 
-                    SparqlValue parent = r.getFields().get("parent");
-                    if(parent != null) {
-                        if(!ontologyClasses.containsKey(parent.getValue())) {
-                            ontologyClasses.put(parent.getValue(), new OntologyClass(parent.getValue()));
-                        }
+                    OntologyClass childOntology = ontologyClasses.get(child.getValue());
+                    OntologyClass parentOntology = ontologyClasses.get(parent.getValue());
 
-                        OntologyClass childOntology = ontologyClasses.get(child.getValue());
-                        OntologyClass parentOntology = ontologyClasses.get(parent.getValue());
-
-                        childOntology.addParent(parentOntology);
-                        parentOntology.addChild(childOntology);
-                    }
+                    childOntology.addParent(parentOntology);
+                    parentOntology.addChild(childOntology);
                 }
             }
         }
@@ -141,26 +137,24 @@ public class HierarchiesFactory {
                     "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/class/yago\", \"i\")) } }"
                     );
 
-            if(response.getResults() != null && response.getResults().getBindings() != null) {
-                for(SparqlRecord r : response.getResults().getBindings()) {
-                    SparqlValue child = r.getFields().get("child");
+            for(SparqlRecord r : response.getRecords()) {
+                SparqlValue child = r.getFields().get("child");
 
-                    if(!yagoClasses.containsKey(child.getValue())) {
-                        yagoClasses.put(child.getValue(), new YagoClass(child.getValue()));
+                if(!yagoClasses.containsKey(child.getValue())) {
+                    yagoClasses.put(child.getValue(), new YagoClass(child.getValue()));
+                }
+
+                SparqlValue parent = r.getFields().get("parent");
+                if(parent != null) {
+                    if(!yagoClasses.containsKey(parent.getValue())) {
+                        yagoClasses.put(parent.getValue(), new YagoClass(parent.getValue()));
                     }
 
-                    SparqlValue parent = r.getFields().get("parent");
-                    if(parent != null) {
-                        if(!yagoClasses.containsKey(parent.getValue())) {
-                            yagoClasses.put(parent.getValue(), new YagoClass(parent.getValue()));
-                        }
+                    YagoClass childYago = yagoClasses.get(child.getValue());
+                    YagoClass parentYago = yagoClasses.get(parent.getValue());
 
-                        YagoClass childYago = yagoClasses.get(child.getValue());
-                        YagoClass parentYago = yagoClasses.get(parent.getValue());
-
-                        childYago.addParent(parentYago);
-                        parentYago.addChild(childYago);
-                    }
+                    childYago.addParent(parentYago);
+                    parentYago.addChild(childYago);
                 }
             }
         }
