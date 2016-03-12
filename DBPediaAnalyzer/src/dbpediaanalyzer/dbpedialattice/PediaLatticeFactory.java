@@ -121,7 +121,7 @@ public class PediaLatticeFactory {
 	        	
 	        	for(ChildAndParent o : ontologies) {
                     if(dbontologies.getOntologyFromUri(o.getChild().getValue()) != null) {
-                        //page.addOntology(dbontologies.getOntologyFromUri(o.getChild().getValue()));
+                        //page.addOntologyClass(dbontologies.getOntologyFromUri(o.getChild().getValue()));
                     }
 	        	}
 	        	

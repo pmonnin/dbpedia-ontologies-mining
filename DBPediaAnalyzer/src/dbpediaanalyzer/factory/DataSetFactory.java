@@ -74,7 +74,7 @@ public class DataSetFactory {
                 );
 
                 for(SparqlRecord record : responseOntologyClasses.getRecords()) {
-                    page.addOntology(hierarchiesManager.getOntologyClassFromUri(record.getFields().get("o").getValue()));
+                    page.addOntologyClass(hierarchiesManager.getOntologyClassFromUri(record.getFields().get("o").getValue()));
                 }
 
                     // Yago classes

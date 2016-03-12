@@ -77,7 +77,7 @@ public class Page {
      * If the ontology class has already been added, nothing happens
      * @param ontology the ontology class to add
      */
-    public void addOntology(OntologyClass ontology) {
+    public void addOntologyClass(OntologyClass ontology) {
         if(ontology != null && !this.ontologyClasses.contains(ontology)) {
             this.ontologyClasses.add(ontology);
         }
