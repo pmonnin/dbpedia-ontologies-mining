@@ -1,5 +1,6 @@
 package dbpediaanalyzer.factory;
 
+import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
 import dbpediaanalyzer.dbpediaobject.Page;
 import dbpediaanalyzer.io.ServerQuerier;
 import dbpediaanalyzer.io.SparqlRecord;
@@ -21,7 +22,7 @@ public class DataSetFactory {
      * @param minDeathDate
      * @param maxDeathDate
      */
-    public HashMap<String, Page> createDataSet(String minDeathDate, String maxDeathDate) {
+    public HashMap<String, Page> createDataSet(String minDeathDate, String maxDeathDate, HierarchiesManager hierarchiesManager) {
         HashMap<String, Page> dataSet = new HashMap<>();
 
         try {
@@ -34,7 +35,7 @@ public class DataSetFactory {
                     "?page rdf:type/rdfs:subClassOf* dbo:Person . " +
                     "?page dbo:deathDate ?deathDate . " +
                     "FILTER(?deathDate >= \"" + minDeathDate + "\"^^xsd:date) . " +
-                    "FILTER(?deathDate < \"" + maxDeathDate + "\"^^xsd:date) . }"
+                    "FILTER(?deathDate < \"" + maxDeathDate + "\"^^xsd:date) }"
                     );
 
             for(SparqlRecord r : response.getRecords()) {
@@ -42,13 +43,50 @@ public class DataSetFactory {
                 dataSet.put(r.getFields().get("page").getValue(), page);
 
                 // For each page, we get additional data
+                    // Relationships
                 SparqlResponse responseRelationships = (new ServerQuerier()).runQuery(
                         "select distinct ?r where {" +
-                        "<" + page.getURI() + "> ?r ?other . }"
-                        );
+                        "<" + page.getURI() + "> ?r ?other }"
+                );
 
-                for(SparqlRecord relationship : responseRelationships.getRecords()) {
-                    page.addRelationship(relationship.getFields().get("r").getValue());
+                for(SparqlRecord record : responseRelationships.getRecords()) {
+                    page.addRelationship(record.getFields().get("r").getValue());
+                }
+
+                    // Categories
+                SparqlResponse responseCategories = (new ServerQuerier()).runQuery(
+                        "PREFIX dcterms:<http://purl.org/dc/terms/> " +
+                        "select distinct ?c where { " +
+                        "<" + page.getURI() + "> dcterms:subject ?c . " +
+                        "FILTER (REGEX(STR(?c), \"http://dbpedia.org/resource/Category\", \"i\")) }"
+                );
+
+                for(SparqlRecord record : responseCategories.getRecords()) {
+                    page.addCategory(hierarchiesManager.getCategoryFromUri(record.getFields().get("c").getValue()));
+                }
+
+                    // Ontology classes
+                SparqlResponse responseOntologyClasses = (new ServerQuerier()).runQuery(
+                        "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "select distinct ?o where { " +
+                        "<" + page.getURI() + "> rdf:type ?o . " +
+                        "FILTER(REGEX(STR(?o), \"http://dbpedia.org/ontology\", \"i\")) }"
+                );
+
+                for(SparqlRecord record : responseOntologyClasses.getRecords()) {
+                    page.addOntology(hierarchiesManager.getOntologyClassFromUri(record.getFields().get("o").getValue()));
+                }
+
+                    // Yago classes
+                SparqlResponse responseYagoClasses = (new ServerQuerier()).runQuery(
+                        "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "select distinct ?y where { " +
+                        "<" + page.getURI() + "> rdf:type ?y . " +
+                        "FILTER(REGEX(STR(?y), \"http://dbpedia.org/class/yago\", \"i\")) }"
+                );
+
+                for(SparqlRecord record : responseYagoClasses.getRecords()) {
+                    page.addYagoClass(hierarchiesManager.getYagoClassFromUri(record.getFields().get("y").getValue()));
                 }
             }
         }

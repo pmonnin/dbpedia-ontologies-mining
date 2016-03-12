@@ -22,6 +22,18 @@ public class HierarchiesManager {
         this.yagoClasses = yagoClasses;
     }
 
+    public Category getCategoryFromUri(String uri) {
+        return this.categories.get(uri);
+    }
+
+    public OntologyClass getOntologyClassFromUri(String uri) {
+        return this.ontologyClasses.get(uri);
+    }
+
+    public YagoClass getYagoClassFromUri(String uri) {
+        return this.yagoClasses.get(uri);
+    }
+
     public HierarchyStatistics getCategoriesStatistics() {
         return new HierarchyStatistics(this.categories);
     }

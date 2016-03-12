@@ -1,6 +1,8 @@
 package dbpediaanalyzer.main;
 
+import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
 import dbpediaanalyzer.factory.DataSetFactory;
+import dbpediaanalyzer.factory.HierarchiesFactory;
 
 import java.util.regex.Pattern;
 
@@ -45,7 +47,11 @@ public class LatticeGeneration {
 
         else {
             System.out.println("=== LATTICE GENERATION ===");
-            (new DataSetFactory()).createDataSet(args[0], args[1]);
+            System.out.println("Querying and parsing DBPedia hierarchies...");
+            HierarchiesManager hm = (new HierarchiesFactory()).createHierarchies();
+
+            System.out.println("Querying and parsing data set...");
+            (new DataSetFactory()).createDataSet(args[0], args[1], hm);
         }
     }
 }

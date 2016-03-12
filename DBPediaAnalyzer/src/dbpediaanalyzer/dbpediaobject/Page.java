@@ -48,7 +48,7 @@ public class Page {
      * @param r the relationship predicate to add
      */
     public void addRelationship(String r) {
-        if(!this.relationships.contains(r)) {
+        if(r != null && !this.relationships.contains(r)) {
             this.relationships.add(r);
         }
     }
@@ -59,7 +59,7 @@ public class Page {
      * @param category the category to add
      */
     public void addCategory(Category category) {
-        if(!this.categories.contains(category)) {
+        if(category != null && !this.categories.contains(category)) {
             this.categories.add(category);
         }
     }
@@ -78,7 +78,7 @@ public class Page {
      * @param ontology the ontology class to add
      */
     public void addOntology(OntologyClass ontology) {
-        if(!this.ontologyClasses.contains(ontology)) {
+        if(ontology != null && !this.ontologyClasses.contains(ontology)) {
             this.ontologyClasses.add(ontology);
         }
     }
@@ -97,7 +97,7 @@ public class Page {
      * @param yagoClass the yago class to add
      */
     public void addYagoClass(YagoClass yagoClass) {
-        if(!this.yagoClasses.contains(yagoClass)) {
+        if(yagoClass != null && !this.yagoClasses.contains(yagoClass)) {
             this.yagoClasses.add(yagoClass);
         }
     }

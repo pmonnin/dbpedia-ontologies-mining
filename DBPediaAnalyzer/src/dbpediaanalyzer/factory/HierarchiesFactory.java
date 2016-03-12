@@ -41,7 +41,7 @@ public class HierarchiesFactory {
                     "OPTIONAL {" +
                     "?child skos:broader ?parent . " +
                     "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/resource/Category\", \"i\")) } }"
-                    );
+            );
 
             for(SparqlRecord r : response.getRecords()) {
                 SparqlValue child = r.getFields().get("child");
@@ -88,7 +88,7 @@ public class HierarchiesFactory {
                     "OPTIONAL { " +
                     "?child rdfs:subClassOf ?parent . " +
                     "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/ontology\", \"i\")) } }"
-                    );
+            );
 
             for(SparqlRecord r : response.getRecords()) {
                 SparqlValue child = r.getFields().get("child");
@@ -135,7 +135,7 @@ public class HierarchiesFactory {
                     "OPTIONAL {" +
                     "?child rdfs:subClassOf ?parent . " +
                     "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/class/yago\", \"i\")) } }"
-                    );
+            );
 
             for(SparqlRecord r : response.getRecords()) {
                 SparqlValue child = r.getFields().get("child");
