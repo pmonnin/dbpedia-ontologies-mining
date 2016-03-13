@@ -1,9 +1,11 @@
 package dbpediaanalyzer.main;
 
 import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
+import dbpediaanalyzer.dbpediaobject.Page;
 import dbpediaanalyzer.factory.DataSetFactory;
 import dbpediaanalyzer.factory.HierarchiesFactory;
 
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 /**
@@ -49,11 +51,14 @@ public class LatticeGeneration {
 
         else {
             System.out.println("=== LATTICE GENERATION ===");
-            System.out.println("Querying and parsing DBPedia hierarchies...");
-            HierarchiesManager hm = (new HierarchiesFactory()).createHierarchies();
 
-            System.out.println("Querying and parsing data set...");
-            (new DataSetFactory()).createDataSet(args[0], args[1], hm);
+            System.out.println("Data set creation...");
+            System.out.println("\t Querying and parsing DBPedia hierarchies...");
+            HierarchiesManager hm = (new HierarchiesFactory()).createHierarchies();
+            System.out.println("\t Querying and parsin;g data set pages...");
+            HashMap<String, Page> dataSet = (new DataSetFactory()).createDataSet(args[0], args[1], hm);
+            System.out.println("\t Computing data set statistics...");
+            System.out.println("\t Saving data set statistics...");
         }
     }
 }

@@ -14,7 +14,7 @@ import colibri.lib.HybridLattice;
 import colibri.lib.Relation;
 import colibri.lib.Traversal;
 import colibri.lib.TreeRelation;
-import dbpediaanalyzer.statistic.DBDataSetStatistics;
+import dbpediaanalyzer.statistic.DataSetStatistics;
 import dbpediaanalyzer.statistic.DBPediaLatticeStatistics;
 
 /**
@@ -255,12 +255,6 @@ public class PediaLatticeFactory {
         }
 
         System.out.print("\n");
-
-        // Data set statistics
-        System.out.println("Computing data set statistics");
-        DBDataSetStatistics dataSetStatistics = new DBDataSetStatistics();
-        dataSetStatistics.computeStatistics(this.dbPages, dbcategories, dbontologies, dbyagoclasses);
-        dataSetStatistics.displayStatistics();
 
         // Lattice statistics
         System.out.println("Computing lattice statistics");
