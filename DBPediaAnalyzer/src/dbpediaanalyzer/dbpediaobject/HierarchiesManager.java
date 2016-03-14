@@ -1,8 +1,9 @@
 package dbpediaanalyzer.dbpediaobject;
 
+import dbpediaanalyzer.main.HierarchiesStatistics;
 import dbpediaanalyzer.statistic.HierarchyStatistics;
 
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * TODO JAVADOC
@@ -32,6 +33,62 @@ public class HierarchiesManager {
 
     public YagoClass getYagoClassFromUri(String uri) {
         return this.yagoClasses.get(uri);
+    }
+
+    public ArrayList<Category> getAccessibleCategories(Collection<Category> fromCategoriesSubset) {
+        ArrayList<Category> retVal = new ArrayList<>();
+        Collection<HierarchyElement> accessible = getAccessibleElements(fromCategoriesSubset, this.categories);
+
+        for(HierarchyElement he : accessible) {
+            retVal.add((Category) he);
+        }
+
+        return retVal;
+    }
+
+    public ArrayList<OntologyClass> getAccessibleOntologyClasses(Collection<OntologyClass> fromOntologyClassesSubset) {
+        ArrayList<OntologyClass> retVal = new ArrayList<>();
+        Collection<HierarchyElement> accessible = getAccessibleElements(fromOntologyClassesSubset, this.ontologyClasses);
+
+        for(HierarchyElement he : accessible) {
+            retVal.add((OntologyClass) he);
+        }
+
+        return retVal;
+    }
+
+    public ArrayList<YagoClass> getAccessibleYagoClasses(Collection<YagoClass> fromYagoClassesSubset) {
+        ArrayList<YagoClass> retVal = new ArrayList<>();
+        Collection<HierarchyElement> accessible = getAccessibleElements(fromYagoClassesSubset, this.yagoClasses);
+
+        for(HierarchyElement he : accessible) {
+            retVal.add((YagoClass) he);
+        }
+
+        return retVal;
+    }
+
+    private Collection<HierarchyElement> getAccessibleElements(Collection<? extends HierarchyElement> fromSubset, HashMap<String, ? extends HierarchyElement> hierarchy) {
+        HashMap<String, HierarchyElement> accessible = new HashMap<>();
+        for(HierarchyElement he : fromSubset) {
+            accessible.put(he.getUri(), he);
+        }
+
+        Queue<HierarchyElement> queue = new LinkedList<>();
+        queue.addAll(fromSubset);
+
+        while(!queue.isEmpty()) {
+            HierarchyElement he = queue.poll();
+
+            for(HierarchyElement parent : he.getParents()) {
+                if(!accessible.containsKey(parent.getUri())) {
+                    accessible.put(parent.getUri(), parent);
+                    queue.add(parent);
+                }
+            }
+        }
+
+        return accessible.values();
     }
 
     public HierarchyStatistics getCategoriesStatistics() {
