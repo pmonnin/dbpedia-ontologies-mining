@@ -37,7 +37,7 @@ public class HierarchiesManager {
 
     public ArrayList<Category> getAccessibleCategories(Collection<Category> fromCategoriesSubset) {
         ArrayList<Category> retVal = new ArrayList<>();
-        Collection<HierarchyElement> accessible = getAccessibleElements(fromCategoriesSubset, this.categories);
+        Collection<HierarchyElement> accessible = getAccessibleElements(fromCategoriesSubset);
 
         for(HierarchyElement he : accessible) {
             retVal.add((Category) he);
@@ -48,7 +48,7 @@ public class HierarchiesManager {
 
     public ArrayList<OntologyClass> getAccessibleOntologyClasses(Collection<OntologyClass> fromOntologyClassesSubset) {
         ArrayList<OntologyClass> retVal = new ArrayList<>();
-        Collection<HierarchyElement> accessible = getAccessibleElements(fromOntologyClassesSubset, this.ontologyClasses);
+        Collection<HierarchyElement> accessible = getAccessibleElements(fromOntologyClassesSubset);
 
         for(HierarchyElement he : accessible) {
             retVal.add((OntologyClass) he);
@@ -59,7 +59,7 @@ public class HierarchiesManager {
 
     public ArrayList<YagoClass> getAccessibleYagoClasses(Collection<YagoClass> fromYagoClassesSubset) {
         ArrayList<YagoClass> retVal = new ArrayList<>();
-        Collection<HierarchyElement> accessible = getAccessibleElements(fromYagoClassesSubset, this.yagoClasses);
+        Collection<HierarchyElement> accessible = getAccessibleElements(fromYagoClassesSubset);
 
         for(HierarchyElement he : accessible) {
             retVal.add((YagoClass) he);
@@ -68,7 +68,7 @@ public class HierarchiesManager {
         return retVal;
     }
 
-    private Collection<HierarchyElement> getAccessibleElements(Collection<? extends HierarchyElement> fromSubset, HashMap<String, ? extends HierarchyElement> hierarchy) {
+    private Collection<HierarchyElement> getAccessibleElements(Collection<? extends HierarchyElement> fromSubset) {
         HashMap<String, HierarchyElement> accessible = new HashMap<>();
         for(HierarchyElement he : fromSubset) {
             accessible.put(he.getUri(), he);
