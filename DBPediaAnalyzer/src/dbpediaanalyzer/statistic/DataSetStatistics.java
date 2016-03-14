@@ -29,6 +29,7 @@ public class DataSetStatistics {
         this.averageOntologyClassesNumberPerPage = 0;
         this.averageYagoClassesNumberPerPage = 0;
 
+        // Computing averages
         for(String uri : dataSet.keySet()) {
             this.averageCategoriesNumberPerPage += dataSet.get(uri).getCategories().size();
             this.averageOntologyClassesNumberPerPage += dataSet.get(uri).getOntologyClasses().size();
@@ -38,6 +39,33 @@ public class DataSetStatistics {
         this.averageCategoriesNumberPerPage /= (double) this.pagesNumber;
         this.averageOntologyClassesNumberPerPage /= (double) this.pagesNumber;
         this.averageYagoClassesNumberPerPage /= (double) this.pagesNumber;
+
+        // Computing direct links
+        HashMap<String, Category> dataSetDirectCategories = new HashMap<>();
+        HashMap<String, OntologyClass> dataSetDirectOntologyClasses = new HashMap<>();
+        HashMap<String, YagoClass> dataSetDirectYagoClasses = new HashMap<>();
+
+        for(String uri : dataSet.keySet()) {
+            /* If a category, ontology class or yago class is put multiple times inside the hashmaps, this will still be
+            counted as 1 hashmap entry */
+            for(Category c : dataSet.get(uri).getCategories()) {
+                dataSetDirectCategories.put(c.getUri(), c);
+            }
+
+            for(OntologyClass o : dataSet.get(uri).getOntologyClasses()) {
+                dataSetDirectOntologyClasses.put(o.getUri(), o);
+            }
+
+            for(YagoClass y : dataSet.get(uri).getYagoClasses()) {
+                dataSetDirectYagoClasses.put(y.getUri(), y);
+            }
+        }
+
+        this.dataSetDirectLinkCategoriesNumber = dataSetDirectCategories.size();
+        this.dataSetDirectLinkOntologyClassNumber = dataSetDirectOntologyClasses.size();
+        this.dataSetDirectLinkYagoClassesNumber = dataSetDirectYagoClasses.size();
+
+        // Computing indirect links
 
     }
 
