@@ -15,12 +15,12 @@ public class DataSetStatistics {
     private double averageCategoriesNumberPerPage;
     private double averageOntologyClassesNumberPerPage;
     private double averageYagoClassesNumberPerPage;
-    private int dataSetDirectLinkCategoriesNumber;
-    private int dataSetDirectLinkOntologyClassNumber;
-    private int dataSetDirectLinkYagoClassesNumber;
-    private int dataSetIndirectLinkCategoriesNumber;
-    private int dataSetIndirectLinkOntologyClassesNumber;
-    private int dataSetIndirectLinkYagoClassesNumber;
+    private int directLinkedCategoriesNumber;
+    private int directLinkedOntologyClassNumber;
+    private int directLinkedYagoClassesNumber;
+    private int indirectLinkedCategoriesNumber;
+    private int indirectLinkedOntologyClassesNumber;
+    private int indirectLinkedYagoClassesNumber;
 
     public DataSetStatistics(HashMap<String, Page> dataSet, HierarchiesManager hierarchiesManager) {
         this.pagesNumber = dataSet.size();
@@ -61,14 +61,14 @@ public class DataSetStatistics {
             }
         }
 
-        this.dataSetDirectLinkCategoriesNumber = dataSetDirectCategories.size();
-        this.dataSetDirectLinkOntologyClassNumber = dataSetDirectOntologyClasses.size();
-        this.dataSetDirectLinkYagoClassesNumber = dataSetDirectYagoClasses.size();
+        this.directLinkedCategoriesNumber = dataSetDirectCategories.size();
+        this.directLinkedOntologyClassNumber = dataSetDirectOntologyClasses.size();
+        this.directLinkedYagoClassesNumber = dataSetDirectYagoClasses.size();
 
         // Computing indirect links
-        this.dataSetIndirectLinkCategoriesNumber = hierarchiesManager.getAccessibleCategories(dataSetDirectCategories.values()).size();
-        this.dataSetIndirectLinkOntologyClassesNumber = hierarchiesManager.getAccessibleOntologyClasses(dataSetDirectOntologyClasses.values()).size();
-        this.dataSetIndirectLinkYagoClassesNumber = hierarchiesManager.getAccessibleYagoClasses(dataSetDirectYagoClasses.values()).size();
+        this.indirectLinkedCategoriesNumber = hierarchiesManager.getAccessibleCategories(dataSetDirectCategories.values()).size();
+        this.indirectLinkedOntologyClassesNumber = hierarchiesManager.getAccessibleOntologyClasses(dataSetDirectOntologyClasses.values()).size();
+        this.indirectLinkedYagoClassesNumber = hierarchiesManager.getAccessibleYagoClasses(dataSetDirectYagoClasses.values()).size();
 
     }
 
@@ -92,47 +92,47 @@ public class DataSetStatistics {
      * Returns the number of categories linked to the data set directly
      * @return the number of categories linked to the data set directly
      */
-    public int getDataSetDirectLinkCategoriesNumber() {
-        return this.dataSetDirectLinkCategoriesNumber;
+    public int getDirectLinkedCategoriesNumber() {
+        return this.directLinkedCategoriesNumber;
     }
 
     /**
      * Returns the number of ontology classes linked to the data set directly
      * @return the number of ontology classes linked to the data set directly
      */
-    public int getDataSetDirectLinkOntologyClassNumber() {
-        return this.dataSetDirectLinkOntologyClassNumber;
+    public int getDirectLinkedOntologyClassNumber() {
+        return this.directLinkedOntologyClassNumber;
     }
 
     /**
      * Returns the number of yago classes linked to the data set directly
      * @return the number of yago classes linked to the data set directly
      */
-    public int getDataSetDirectLinkYagoClassesNumber() {
-        return this.dataSetDirectLinkYagoClassesNumber;
+    public int getDirectLinkedYagoClassesNumber() {
+        return this.directLinkedYagoClassesNumber;
     }
 
     /**
      * Returns the number of categories linked to the data set directly and indirectly
      * @return the number of categories linked to the data set directly and indirectly
      */
-    public int getDataSetIndirectLinkCategoriesNumber() {
-        return this.dataSetIndirectLinkCategoriesNumber;
+    public int getIndirectLinkedCategoriesNumber() {
+        return this.indirectLinkedCategoriesNumber;
     }
 
     /**
      * Returns the number of ontology classes linked to the data set directly and indirectly
      * @return the number of ontology classes linked to the data set directly and indirectly
      */
-    public int getDataSetIndirectLinkOntologyClassesNumber() {
-        return this.dataSetIndirectLinkOntologyClassesNumber;
+    public int getIndirectLinkedOntologyClassesNumber() {
+        return this.indirectLinkedOntologyClassesNumber;
     }
 
     /**
      * Returns the number of yago classes linked to the data set directly and indirectly
      * @return the number of yago classes linked to the data set directly and indirectly
      */
-    public int getDataSetIndirectLinkYagoClassesNumber() {
-        return this.dataSetIndirectLinkYagoClassesNumber;
+    public int getIndirectLinkedYagoClassesNumber() {
+        return this.indirectLinkedYagoClassesNumber;
     }
 }

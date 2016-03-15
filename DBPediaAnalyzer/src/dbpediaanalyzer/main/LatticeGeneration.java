@@ -4,6 +4,8 @@ import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
 import dbpediaanalyzer.dbpediaobject.Page;
 import dbpediaanalyzer.factory.DataSetFactory;
 import dbpediaanalyzer.factory.HierarchiesFactory;
+import dbpediaanalyzer.io.DataSetStatisticsWriter;
+import dbpediaanalyzer.statistic.DataSetStatistics;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -11,9 +13,10 @@ import java.util.regex.Pattern;
 /**
  * Main class crawling objects from Virtuoso server (DBPedia information), computing
  * the lattice and storing it in a file using JSON format. Statistics are calculated
- * on data set and lattice and displayed in the standard output.
+ * on data set and lattice and stored in files.
  *
  * @author Pierre Monnin
+ *
  */
 public class LatticeGeneration {
 
@@ -55,10 +58,17 @@ public class LatticeGeneration {
             System.out.println("Data set creation...");
             System.out.println("\t Querying and parsing DBPedia hierarchies...");
             HierarchiesManager hm = (new HierarchiesFactory()).createHierarchies();
-            System.out.println("\t Querying and parsin;g data set pages...");
+
+            System.out.println("\t Querying and parsing data set pages...");
             HashMap<String, Page> dataSet = (new DataSetFactory()).createDataSet(args[0], args[1], hm);
+
             System.out.println("\t Computing data set statistics...");
+            DataSetStatistics dataSetStatistics = new DataSetStatistics(dataSet, hm);
+
             System.out.println("\t Saving data set statistics...");
+            DataSetStatisticsWriter dataSetStatisticsWriter = new DataSetStatisticsWriter(args[3]);
+            dataSetStatisticsWriter.writeDataSetStatistics(dataSetStatistics);
+            dataSetStatisticsWriter.close();
         }
     }
 }
