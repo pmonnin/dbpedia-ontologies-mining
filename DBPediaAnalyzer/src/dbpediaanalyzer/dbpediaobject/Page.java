@@ -53,6 +53,15 @@ public class Page {
         }
     }
 
+
+    /**
+     * Returns the relationship predicates associated with the page
+     * @return the relationship predicates associated with the page
+     */
+    public ArrayList<String> getRelationships() {
+        return new ArrayList<>(this.relationships);
+    }
+
     /**
      * Adds a category to the page categories.
      * If the category has already been added, nothing happens
@@ -69,7 +78,7 @@ public class Page {
      * @return the categories associated with the page
      */
     public ArrayList<Category> getCategories() {
-        return this.categories;
+        return new ArrayList<>(this.categories);
     }
 
     /**
@@ -88,7 +97,7 @@ public class Page {
      * @return the ontology classes associated with the page
      */
     public ArrayList<OntologyClass> getOntologyClasses() {
-        return this.ontologyClasses;
+        return new ArrayList<>(this.ontologyClasses);
     }
 
     /**
@@ -107,6 +116,6 @@ public class Page {
      * @return the yago classes associated with the page
      */
     public ArrayList<YagoClass> getYagoClasses() {
-        return this.yagoClasses;
+        return new ArrayList<>(this.yagoClasses);
     }
 }

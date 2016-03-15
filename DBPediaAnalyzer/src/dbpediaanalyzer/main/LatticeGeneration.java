@@ -4,6 +4,7 @@ import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
 import dbpediaanalyzer.dbpediaobject.Page;
 import dbpediaanalyzer.factory.DataSetFactory;
 import dbpediaanalyzer.factory.HierarchiesFactory;
+import dbpediaanalyzer.factory.LatticeFactory;
 import dbpediaanalyzer.io.DataSetStatisticsWriter;
 import dbpediaanalyzer.statistic.DataSetStatistics;
 
@@ -69,6 +70,10 @@ public class LatticeGeneration {
             DataSetStatisticsWriter dataSetStatisticsWriter = new DataSetStatisticsWriter(args[3]);
             dataSetStatisticsWriter.writeDataSetStatistics(dataSetStatistics);
             dataSetStatisticsWriter.close();
+
+            System.out.println("Lattice creation...");
+            System.out.println("\t Computing lattice from data set...");
+            (new LatticeFactory()).createLatticeFromDataSet(dataSet);
         }
     }
 }
