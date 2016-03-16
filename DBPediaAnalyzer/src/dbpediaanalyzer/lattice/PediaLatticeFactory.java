@@ -1,4 +1,4 @@
-package dbpediaanalyzer.dbpedialattice;
+package dbpediaanalyzer.lattice;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -14,7 +14,6 @@ import colibri.lib.HybridLattice;
 import colibri.lib.Relation;
 import colibri.lib.Traversal;
 import colibri.lib.TreeRelation;
-import dbpediaanalyzer.statistic.DataSetStatistics;
 import dbpediaanalyzer.statistic.DBPediaLatticeStatistics;
 
 /**

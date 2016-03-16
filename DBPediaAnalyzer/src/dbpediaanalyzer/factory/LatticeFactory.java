@@ -1,10 +1,9 @@
 package dbpediaanalyzer.factory;
 
-import colibri.lib.HybridLattice;
-import colibri.lib.Lattice;
 import colibri.lib.Relation;
 import colibri.lib.TreeRelation;
 import dbpediaanalyzer.dbpediaobject.Page;
+import dbpediaanalyzer.lattice.Lattice;
 
 import java.util.HashMap;
 
@@ -19,8 +18,7 @@ public class LatticeFactory {
     /**
      * TODO JAVADOC
      */
-    public void createLatticeFromDataSet(HashMap<String, Page> dataSet) {
-
+    public Lattice createLatticeFromDataSet(HashMap<String, Page> dataSet) {
         // Colibri lattice creation
         Relation relation = new TreeRelation(); // TODO test other relation types?
 
@@ -32,8 +30,9 @@ public class LatticeFactory {
             }
         }
 
-        Lattice colibriLattice = new HybridLattice(relation); // TODO test other lattice types?
+        colibri.lib.Lattice colibriLattice = new colibri.lib.HybridLattice(relation); // TODO test other lattice types?
 
         // DBPediaAnalyzer lattice creation from colibri lattice
+        return new Lattice(colibriLattice);
     }
 }

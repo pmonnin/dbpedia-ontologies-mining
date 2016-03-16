@@ -1,6 +1,7 @@
 package dbpediaanalyzer.main;
 
 import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
+import dbpediaanalyzer.lattice.Lattice;
 import dbpediaanalyzer.dbpediaobject.Page;
 import dbpediaanalyzer.factory.DataSetFactory;
 import dbpediaanalyzer.factory.HierarchiesFactory;
@@ -73,7 +74,7 @@ public class LatticeGeneration {
 
             System.out.println("Lattice creation...");
             System.out.println("\t Computing lattice from data set...");
-            (new LatticeFactory()).createLatticeFromDataSet(dataSet);
+            Lattice lattice = (new LatticeFactory()).createLatticeFromDataSet(dataSet);
         }
     }
 }

@@ -1,6 +1,6 @@
 package dbpediaanalyzer.statistic;
 
-import dbpediaanalyzer.dbpedialattice.PediaConcept;
+import dbpediaanalyzer.lattice.PediaConcept;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

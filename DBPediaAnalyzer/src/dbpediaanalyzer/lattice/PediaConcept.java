@@ -1,4 +1,4 @@
-package dbpediaanalyzer.dbpedialattice;
+package dbpediaanalyzer.lattice;
 
 import java.util.ArrayList;
 import java.util.HashMap;
