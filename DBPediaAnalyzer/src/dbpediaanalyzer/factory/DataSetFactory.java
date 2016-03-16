@@ -39,54 +39,67 @@ public class DataSetFactory {
                     );
 
             for(SparqlRecord r : response.getRecords()) {
-                Page page = new Page(r.getFields().get("page").getValue());
-                dataSet.put(r.getFields().get("page").getValue(), page);
+                boolean tryAgain = true;
 
-                // For each page, we get additional data
-                    // Relationships
-                SparqlResponse responseRelationships = (new ServerQuerier()).runQuery(
-                        "select distinct ?r where {" +
-                        "<" + page.getURI() + "> ?r ?other }"
-                );
+                while(tryAgain) {
+                    tryAgain = false;
 
-                for(SparqlRecord record : responseRelationships.getRecords()) {
-                    page.addRelationship(record.getFields().get("r").getValue());
-                }
+                    try {
+                        Page page = new Page(r.getFields().get("page").getValue());
+                        dataSet.put(r.getFields().get("page").getValue(), page);
 
-                    // Categories
-                SparqlResponse responseCategories = (new ServerQuerier()).runQuery(
-                        "PREFIX dcterms:<http://purl.org/dc/terms/> " +
-                        "select distinct ?c where { " +
-                        "<" + page.getURI() + "> dcterms:subject ?c . " +
-                        "FILTER (REGEX(STR(?c), \"http://dbpedia.org/resource/Category\", \"i\")) }"
-                );
+                        // For each page, we get additional data
+                        // Relationships
+                        SparqlResponse responseRelationships = (new ServerQuerier()).runQuery(
+                                "select distinct ?r where {" +
+                                        "<" + page.getURI() + "> ?r ?other }"
+                        );
 
-                for(SparqlRecord record : responseCategories.getRecords()) {
-                    page.addCategory(hierarchiesManager.getCategoryFromUri(record.getFields().get("c").getValue()));
-                }
+                        for (SparqlRecord record : responseRelationships.getRecords()) {
+                            page.addRelationship(record.getFields().get("r").getValue());
+                        }
 
-                    // Ontology classes
-                SparqlResponse responseOntologyClasses = (new ServerQuerier()).runQuery(
-                        "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                        "select distinct ?o where { " +
-                        "<" + page.getURI() + "> rdf:type ?o . " +
-                        "FILTER(REGEX(STR(?o), \"http://dbpedia.org/ontology\", \"i\")) }"
-                );
+                        // Categories
+                        SparqlResponse responseCategories = (new ServerQuerier()).runQuery(
+                                "PREFIX dcterms:<http://purl.org/dc/terms/> " +
+                                        "select distinct ?c where { " +
+                                        "<" + page.getURI() + "> dcterms:subject ?c . " +
+                                        "FILTER (REGEX(STR(?c), \"http://dbpedia.org/resource/Category\", \"i\")) }"
+                        );
 
-                for(SparqlRecord record : responseOntologyClasses.getRecords()) {
-                    page.addOntologyClass(hierarchiesManager.getOntologyClassFromUri(record.getFields().get("o").getValue()));
-                }
+                        for (SparqlRecord record : responseCategories.getRecords()) {
+                            page.addCategory(hierarchiesManager.getCategoryFromUri(record.getFields().get("c").getValue()));
+                        }
 
-                    // Yago classes
-                SparqlResponse responseYagoClasses = (new ServerQuerier()).runQuery(
-                        "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                        "select distinct ?y where { " +
-                        "<" + page.getURI() + "> rdf:type ?y . " +
-                        "FILTER(REGEX(STR(?y), \"http://dbpedia.org/class/yago\", \"i\")) }"
-                );
+                        // Ontology classes
+                        SparqlResponse responseOntologyClasses = (new ServerQuerier()).runQuery(
+                                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                                        "select distinct ?o where { " +
+                                        "<" + page.getURI() + "> rdf:type ?o . " +
+                                        "FILTER(REGEX(STR(?o), \"http://dbpedia.org/ontology\", \"i\")) }"
+                        );
 
-                for(SparqlRecord record : responseYagoClasses.getRecords()) {
-                    page.addYagoClass(hierarchiesManager.getYagoClassFromUri(record.getFields().get("y").getValue()));
+                        for (SparqlRecord record : responseOntologyClasses.getRecords()) {
+                            page.addOntologyClass(hierarchiesManager.getOntologyClassFromUri(record.getFields().get("o").getValue()));
+                        }
+
+                        // Yago classes
+                        SparqlResponse responseYagoClasses = (new ServerQuerier()).runQuery(
+                                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                                        "select distinct ?y where { " +
+                                        "<" + page.getURI() + "> rdf:type ?y . " +
+                                        "FILTER(REGEX(STR(?y), \"http://dbpedia.org/class/yago\", \"i\")) }"
+                        );
+
+                        for (SparqlRecord record : responseYagoClasses.getRecords()) {
+                            page.addYagoClass(hierarchiesManager.getYagoClassFromUri(record.getFields().get("y").getValue()));
+                        }
+                    }
+
+                    catch(IOException e) {
+                        tryAgain = true;
+                        System.err.println("Error while fetching more data from server for a page (" + e.getMessage() + ")... New try...");
+                    }
                 }
             }
         }
