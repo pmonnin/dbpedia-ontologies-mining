@@ -1,6 +1,9 @@
 package dbpediaanalyzer.lattice;
 
+import dbpediaanalyzer.dbpediaobject.Category;
+import dbpediaanalyzer.dbpediaobject.OntologyClass;
 import dbpediaanalyzer.dbpediaobject.Page;
+import dbpediaanalyzer.dbpediaobject.YagoClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,12 +15,23 @@ import java.util.HashMap;
  *
  */
 public class Concept {
+    // Basic concept data
     private ArrayList<Page> objects;
     private ArrayList<String> attributes;
+
+    // Relationships
     private ArrayList<Concept> parents;
     private ArrayList<Concept> children;
 
+    // Annotations
+    private ArrayList<Category> categories;
+    private ArrayList<OntologyClass> ontologyClasses;
+    private ArrayList<YagoClass> yagoClasses;
+
     public Concept(colibri.lib.Concept colibriConcept, HashMap<String, Page> dataSet) {
+        this.objects = new ArrayList<>();
+        this.attributes = new ArrayList<>();
+
         for(Object o : colibriConcept.getObjects()) {
             this.objects.add(dataSet.get(o));
         }
@@ -25,6 +39,13 @@ public class Concept {
         for(Object a : colibriConcept.getAttributes()) {
             this.attributes.add((String) a);
         }
+
+        this.parents = new ArrayList<>();
+        this.children = new ArrayList<>();
+
+        this.categories = new ArrayList<>();
+        this.ontologyClasses = new ArrayList<>();
+        this.yagoClasses = new ArrayList<>();
     }
 
     void addParent(Concept parent) {

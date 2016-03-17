@@ -2,6 +2,7 @@ package dbpediaanalyzer.lattice;
 
 import colibri.lib.Edge;
 import colibri.lib.Traversal;
+import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
 import dbpediaanalyzer.dbpediaobject.Page;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class Lattice {
     private Concept top;
     private Concept bottom;
 
-    public Lattice(colibri.lib.Lattice colibriLattice, HashMap<String, Page> dataSet) {
+    public Lattice(colibri.lib.Lattice colibriLattice, HashMap<String, Page> dataSet, HierarchiesManager hm) {
         this.concepts = new ArrayList<>();
 
         // Traversing colibri lattice and creating custom lattice
@@ -60,6 +61,12 @@ public class Lattice {
                 this.bottom = c;
             }
         }
+
+        makeLatticeAnnotations(hm);
+    }
+
+    private void makeLatticeAnnotations(HierarchiesManager hm) {
+
     }
 
     public Concept getTop() {

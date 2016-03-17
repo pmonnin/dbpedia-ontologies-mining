@@ -74,7 +74,7 @@ public class LatticeGeneration {
 
             System.out.println("Lattice creation...");
             System.out.println("\t Computing lattice from data set...");
-            Lattice lattice = (new LatticeFactory()).createLatticeFromDataSet(dataSet);
+            Lattice lattice = (new LatticeFactory()).createLatticeFromDataSet(dataSet, hm);
         }
     }
 }
