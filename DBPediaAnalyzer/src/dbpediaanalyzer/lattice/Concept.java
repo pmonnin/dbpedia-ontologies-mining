@@ -3,6 +3,7 @@ package dbpediaanalyzer.lattice;
 import dbpediaanalyzer.dbpediaobject.Page;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * TODO JAVADOC
@@ -16,16 +17,13 @@ public class Concept {
     private ArrayList<Concept> parents;
     private ArrayList<Concept> children;
 
-    public Concept() {
-        this.objects = new ArrayList<>();
-        this.attributes = new ArrayList<>();
-        this.parents = new ArrayList<>();
-        this.children = new ArrayList<>();
-    }
+    public Concept(colibri.lib.Concept colibriConcept, HashMap<String, Page> dataSet) {
+        for(Object o : colibriConcept.getObjects()) {
+            this.objects.add(dataSet.get(o));
+        }
 
-    void addAttributes(String attribute) {
-        if(!this.attributes.contains(attribute)) {
-            this.attributes.add(attribute);
+        for(Object a : colibriConcept.getAttributes()) {
+            this.attributes.add((String) a);
         }
     }
 

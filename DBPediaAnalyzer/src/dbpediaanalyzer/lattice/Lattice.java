@@ -2,6 +2,7 @@ package dbpediaanalyzer.lattice;
 
 import colibri.lib.Edge;
 import colibri.lib.Traversal;
+import dbpediaanalyzer.dbpediaobject.Page;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ public class Lattice {
     private Concept top;
     private Concept bottom;
 
-    public Lattice(colibri.lib.Lattice colibriLattice) {
+    public Lattice(colibri.lib.Lattice colibriLattice, HashMap<String, Page> dataSet) {
         this.concepts = new ArrayList<>();
 
         // Traversing colibri lattice and creating custom lattice
@@ -31,13 +32,13 @@ public class Lattice {
             colibri.lib.Concept colibriLowerConcept = edge.getLower();
 
             if(!processed.containsKey(colibriUpperConcept)) {
-                Concept c = createConceptFromColibriConcept(colibriUpperConcept);
+                Concept c = new Concept(colibriUpperConcept, dataSet);
                 processed.put(colibriUpperConcept, c);
                 this.concepts.add(c);
             }
 
             if(!processed.containsKey(colibriLowerConcept)) {
-                Concept c = createConceptFromColibriConcept(colibriLowerConcept);
+                Concept c = new Concept(colibriLowerConcept, dataSet);
                 processed.put(colibriLowerConcept, c);
                 this.concepts.add(c);
             }
@@ -59,14 +60,6 @@ public class Lattice {
                 this.bottom = c;
             }
         }
-    }
-
-    private Concept createConceptFromColibriConcept(colibri.lib.Concept colibriConcept) {
-        Concept concept = new Concept();
-
-        // TODO under development
-
-        return concept;
     }
 
     public Concept getTop() {
