@@ -4,12 +4,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.List;
 
 import dbpediaanalyzer.dbpediaobject.DBYagoClassesManager;
 
-import dbpediaanalyzer.serverlink.ChildAndParent;
-import dbpediaanalyzer.serverlink.JSONReader;
 import dbpediaanalyzer.dbpediaobject.DBYagoClass;
 
 /**
@@ -50,57 +47,6 @@ public class DBYagoClassesCrawler {
      * @throws IOException
      */
     public void computeYagoCLassesHierarchy() throws IOException {
-    	// Ask for all the yago classes that don't have parents
-    	List<ChildAndParent> children = JSONReader.getChildrenAndParents(URLEncoder.encode(
-                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-                + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
-                + "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
-                + "select distinct ?child where {"
-                + "[] rdfs:subClassOf ?child . "
-            	+ "FILTER (NOT EXISTS "
-    			+ " { "
-    			+ "?child rdfs:subClassOf ?parent . "
-    			+ "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/class/yago\", \"i\")) . "
-    			+ "}) ." 
-    			+ "FILTER (REGEX(STR(?child), \"http://dbpedia.org/class/yago\", \"i\")) ."
-                + "}", "UTF-8"));
     	
-        // Ask for all the yago classes that have parents
-        List<ChildAndParent> childrenAndParents = JSONReader.getChildrenAndParents(URLEncoder.encode(
-                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-                + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
-                + "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
-                + "select distinct ?child ?parent where {"
-                + "FILTER (REGEX(STR(?child), \"http://dbpedia.org/class/yago\", \"i\")) ."
-                + "OPTIONAL {"
-                + "?child rdfs:subClassOf ?parent . "
-                + "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/class/yago\", \"i\"))"
-                + "}}", "UTF-8"));
-        
-        // Building complete list
-        childrenAndParents.addAll(children);
-        
-        this.dbyagoclasses = new HashMap<>();
-        
-        for (ChildAndParent childAndParent : childrenAndParents) {
-            String child = childAndParent.getChild().getValue();
-
-            if(this.dbyagoclasses.get(child) == null) {
-                this.dbyagoclasses.put(child, new DBYagoClass(child));
-            }
-        }
-        
-        // Children relationship creation
-        for(ChildAndParent childAndParent : childrenAndParents) {
-            DBYagoClass child = this.dbyagoclasses.get(childAndParent.getChild().getValue());
-            DBYagoClass parent = (childAndParent.getParent() == null) ? null : this.dbyagoclasses.get(childAndParent.getParent().getValue());
-
-            if(child != null && parent != null) {
-                child.addParent(parent);
-                parent.addChild(child);
-            }
-        }
-
-        childrenAndParents.clear();
     }
 }

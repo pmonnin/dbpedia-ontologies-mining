@@ -3,12 +3,9 @@ package dbpediaanalyzer.main;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.List;
 
 import dbpediaanalyzer.dbpediaobject.DBCategoriesManager;
 
-import dbpediaanalyzer.serverlink.ChildAndParent;
-import dbpediaanalyzer.serverlink.JSONReader;
 import dbpediaanalyzer.dbpediaobject.DBCategory;
 
 /**
@@ -48,41 +45,6 @@ public class DBCategoriesCrawler {
      * @throws IOException
      */
     public void computeCategoriesHierarchy() throws IOException {
-    	// Ask for all the categories
-        List<ChildAndParent> childrenAndParents = JSONReader.getChildrenAndParents(URLEncoder.encode(
-                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-                + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> "
-                + "PREFIX owl:<http://www.w3.org/2002/07/owl#> "
-                + "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> "
-                + "select distinct ?child ?parent where {"
-                + "?child rdf:type skos:Concept ."
-                + "FILTER (REGEX(STR(?child), \"http://dbpedia.org/resource/Category\", \"i\")) ."
-                + "OPTIONAL {"
-                + "?child skos:broader ?parent . "
-                + "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/resource/Category\", \"i\"))"
-                + "}}", "UTF-8"));
 
-        this.dbcategories = new HashMap<>();
-        
-        for(ChildAndParent childAndParent : childrenAndParents) {
-            String child = childAndParent.getChild().getValue();
-
-            if(this.dbcategories.get(child) == null) {
-            	this.dbcategories.put(child, new DBCategory(child));
-            }
-        }
-
-        // Hierarchy relationship creation
-        for(ChildAndParent childAndParent : childrenAndParents) {
-            DBCategory child = this.dbcategories.get(childAndParent.getChild().getValue());
-            DBCategory parent = (childAndParent.getParent() != null) ? this.dbcategories.get(childAndParent.getParent().getValue()) : null;
-
-            if(child != null && parent != null) {
-                child.addParent(parent);
-                parent.addChild(child);
-            }
-        }
-        
-        childrenAndParents.clear();
     }
 }
