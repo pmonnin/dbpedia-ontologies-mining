@@ -33,7 +33,7 @@ public class Concept {
         this.attributes = new ArrayList<>();
 
         for(Object o : colibriConcept.getObjects()) {
-            this.objects.add(dataSet.get(o));
+            this.objects.add(dataSet.get(o.toString()));
         }
 
         for(Object a : colibriConcept.getAttributes()) {
