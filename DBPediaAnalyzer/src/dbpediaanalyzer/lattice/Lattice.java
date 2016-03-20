@@ -2,8 +2,7 @@ package dbpediaanalyzer.lattice;
 
 import colibri.lib.Edge;
 import colibri.lib.Traversal;
-import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
-import dbpediaanalyzer.dbpediaobject.Page;
+import dbpediaanalyzer.dbpediaobject.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,7 +65,20 @@ public class Lattice {
     }
 
     private void makeLatticeAnnotations(HierarchiesManager hm) {
+        // Initial annotations
+        for(Concept c : this.concepts) {
+            if(c.getObjects().size() != 0) {
+                ArrayList<Category> conceptCategories = hm.getAccessibleCategories(c.getObjects().get(0).getCategories());
+                ArrayList<OntologyClass> conceptOntologyClasses = hm.getAccessibleOntologyClasses(c.getObjects().get(0).getOntologyClasses());
+                ArrayList<YagoClass> conceptYagoClasses = hm.getAccessibleYagoClasses(c.getObjects().get(0).getYagoClasses());
 
+                for(int i = 1 ; i < c.getObjects().size() ; i++) {
+                    conceptCategories.retainAll(hm.getAccessibleCategories(c.getObjects().get(i).getCategories()));
+                    conceptOntologyClasses.retainAll(hm.getAccessibleOntologyClasses(c.getObjects().get(i).getOntologyClasses()));
+                    conceptYagoClasses.retainAll(hm.getAccessibleYagoClasses(c.getObjects().get(i).getYagoClasses()));
+                }
+            }
+        }
     }
 
     public Concept getTop() {

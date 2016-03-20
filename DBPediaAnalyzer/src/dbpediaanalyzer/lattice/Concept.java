@@ -48,6 +48,10 @@ public class Concept {
         this.yagoClasses = new ArrayList<>();
     }
 
+    public ArrayList<Page> getObjects() {
+        return this.objects;
+    }
+
     void addParent(Concept parent) {
         if(!this.parents.contains(parent)) {
             this.parents.add(parent);
