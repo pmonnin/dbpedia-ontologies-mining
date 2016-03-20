@@ -7,6 +7,8 @@ import dbpediaanalyzer.dbpediaobject.YagoClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * TODO JAVADOC
@@ -72,15 +74,60 @@ public class Concept {
         return new ArrayList<>(this.children);
     }
 
+    public ArrayList<Concept> getDescendants() {
+        ArrayList<Concept> descendants = new ArrayList<>();
+
+        Queue<Concept> queue = new LinkedList<>();
+        queue.addAll(this.children);
+        descendants.addAll(this.children);
+
+        while(!queue.isEmpty()) {
+            Concept concept = queue.poll();
+
+            for(Concept child : concept.getChildren()) {
+                if(!descendants.contains(child)) {
+                    descendants.add(child);
+                    queue.add(child);
+                }
+            }
+        }
+
+        return descendants;
+    }
+
     void setCategories(ArrayList<Category> categories) {
         this.categories = new ArrayList<>(categories);
+    }
+
+    void removeCategories(ArrayList<Category> categories) {
+        this.categories.removeAll(categories);
+    }
+
+    public ArrayList<Category> getCategories() {
+        return new ArrayList<>(this.categories);
     }
 
     void setOntologyClasses(ArrayList<OntologyClass> ontologyClasses) {
         this.ontologyClasses = new ArrayList<>(ontologyClasses);
     }
 
+    void removeOntologyClasses(ArrayList<OntologyClass> ontologyClasses) {
+        this.ontologyClasses.removeAll(ontologyClasses);
+    }
+
+    public ArrayList<OntologyClass> getOntologyClasses() {
+        return new ArrayList<>(this.ontologyClasses);
+    }
+
     void setYagoClasses(ArrayList<YagoClass> yagoClasses) {
         this.yagoClasses = new ArrayList<>(yagoClasses);
+    }
+
+    void removeYagoClasses(ArrayList<YagoClass> yagoClasses) {
+        this.yagoClasses.removeAll(yagoClasses);
+    }
+
+    public ArrayList<YagoClass> getYagoClasses() {
+        return new ArrayList<>(this.yagoClasses);
     }
 }
