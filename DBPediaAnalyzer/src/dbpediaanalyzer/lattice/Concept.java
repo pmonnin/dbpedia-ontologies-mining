@@ -71,4 +71,16 @@ public class Concept {
     public ArrayList<Concept> getChildren() {
         return new ArrayList<>(this.children);
     }
+
+    void setCategories(ArrayList<Category> categories) {
+        this.categories = new ArrayList<>(categories);
+    }
+
+    void setOntologyClasses(ArrayList<OntologyClass> ontologyClasses) {
+        this.ontologyClasses = new ArrayList<>(ontologyClasses);
+    }
+
+    void setYagoClasses(ArrayList<YagoClass> yagoClasses) {
+        this.yagoClasses = new ArrayList<>(yagoClasses);
+    }
 }

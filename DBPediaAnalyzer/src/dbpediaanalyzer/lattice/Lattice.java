@@ -4,9 +4,7 @@ import colibri.lib.Edge;
 import colibri.lib.Traversal;
 import dbpediaanalyzer.dbpediaobject.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * TODO JAVADOC
@@ -77,6 +75,10 @@ public class Lattice {
                     conceptOntologyClasses.retainAll(hm.getAccessibleOntologyClasses(c.getObjects().get(i).getOntologyClasses()));
                     conceptYagoClasses.retainAll(hm.getAccessibleYagoClasses(c.getObjects().get(i).getYagoClasses()));
                 }
+
+                c.setCategories(conceptCategories);
+                c.setOntologyClasses(conceptOntologyClasses);
+                c.setYagoClasses(conceptYagoClasses);
             }
         }
     }
