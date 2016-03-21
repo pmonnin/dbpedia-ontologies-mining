@@ -113,4 +113,8 @@ public class Lattice {
     public Concept getBottom() {
         return this.bottom;
     }
+
+    public ArrayList<Concept> getConcepts() {
+        return new ArrayList<>(this.concepts);
+    }
 }

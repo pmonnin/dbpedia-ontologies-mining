@@ -1,5 +1,6 @@
 package dbpediaanalyzer.statistic;
 
+import dbpediaanalyzer.lattice.Concept;
 import dbpediaanalyzer.lattice.Lattice;
 
 /**
@@ -22,7 +23,23 @@ public class LatticeStatistics {
     private double averageRelationshipsNumberPerConcept;
 
     public LatticeStatistics(Lattice lattice) {
+        this.conceptsNumber = lattice.getConcepts().size();
 
+        for(Concept concept : lattice.getConcepts()) {
+            this.edgesNumber += concept.getParents().size();
+
+            if(concept.getCategories().size() == 0) {
+                this.conceptsWithoutCategoriesNumber++;
+            }
+
+            if(concept.getOntologyClasses().size() == 0) {
+                this.conceptsWithoutOntologyClassesNumber++;
+            }
+
+            if(concept.getYagoClasses().size() == 0) {
+                this.conceptsWithoutYagoClassesNumber++;
+            }
+        }
     }
 
     public int getDepth() {
