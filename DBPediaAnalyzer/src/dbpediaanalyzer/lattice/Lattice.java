@@ -81,6 +81,29 @@ public class Lattice {
                 c.setYagoClasses(conceptYagoClasses);
             }
         }
+
+        // Removing duplicated categories / ontology classes / yago classes
+        ArrayList<Concept> seen = new ArrayList<>();
+        seen.add(this.top);
+        Queue<Concept> queue = new LinkedList<>();
+        queue.add(this.top);
+
+        while(!queue.isEmpty()) {
+            Concept concept = queue.poll();
+
+            for(Concept descendant : concept.getDescendants()) {
+                descendant.removeCategories(concept.getCategories());
+                descendant.removeOntologyClasses(concept.getOntologyClasses());
+                descendant.removeYagoClasses(concept.getYagoClasses());
+            }
+
+            for(Concept child : concept.getChildren()) {
+                if(!seen.contains(child)) {
+                    queue.add(child);
+                    seen.add(child);
+                }
+            }
+        }
     }
 
     public Concept getTop() {
