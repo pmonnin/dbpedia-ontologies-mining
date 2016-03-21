@@ -8,6 +8,7 @@ import dbpediaanalyzer.factory.HierarchiesFactory;
 import dbpediaanalyzer.factory.LatticeFactory;
 import dbpediaanalyzer.io.DataSetStatisticsWriter;
 import dbpediaanalyzer.statistic.DataSetStatistics;
+import dbpediaanalyzer.statistic.LatticeStatistics;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -75,6 +76,10 @@ public class LatticeGeneration {
             System.out.println("Lattice creation...");
             System.out.println("\t Computing lattice from data set...");
             Lattice lattice = (new LatticeFactory()).createLatticeFromDataSet(dataSet, hm);
+            System.out.println("\t Computing lattice statistics...");
+            LatticeStatistics latticeStatistics = new LatticeStatistics(lattice);
+            System.out.println("\t Saving lattice statistics...");
+            System.out.println("\t Saving lattice...");
         }
     }
 }
