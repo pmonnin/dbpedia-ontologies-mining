@@ -14,7 +14,7 @@ import java.io.PrintWriter;
  *
  */
 public class DataSetStatisticsWriter {
-    PrintWriter writer;
+    private PrintWriter writer;
 
     public DataSetStatisticsWriter(String fileName) {
         try {
