@@ -3,6 +3,10 @@ package dbpediaanalyzer.statistic;
 import dbpediaanalyzer.lattice.Concept;
 import dbpediaanalyzer.lattice.Lattice;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * TODO JAVADOC
  *
@@ -57,7 +61,27 @@ public class LatticeStatistics {
     }
 
     private void computeLatticeDepth(Lattice lattice) {
+        HashMap<Concept, Integer> depths = new HashMap<>();
+        for(Concept concept : lattice.getConcepts()) {
+            depths.put(concept, -1);
+        }
 
+        Queue<Concept> queue = new LinkedList<>();
+        queue.add(lattice.getTop());
+        depths.put(lattice.getTop(), 1);
+
+        while(!queue.isEmpty()) {
+            Concept concept = queue.poll();
+
+            for(Concept child : concept.getChildren()) {
+                if(depths.get(child) < depths.get(concept) + 1) {
+                    queue.add(child);
+                    depths.put(child, depths.get(concept) + 1);
+                }
+            }
+        }
+
+        this.depth = depths.get(lattice.getBottom());
     }
 
     public int getDepth() {
