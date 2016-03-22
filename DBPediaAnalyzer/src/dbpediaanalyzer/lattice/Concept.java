@@ -51,7 +51,11 @@ public class Concept {
     }
 
     public ArrayList<Page> getObjects() {
-        return this.objects;
+        return new ArrayList<>(this.objects);
+    }
+
+    public ArrayList<String> getAttributes() {
+        return new ArrayList<>(this.attributes);
     }
 
     void addParent(Concept parent) {

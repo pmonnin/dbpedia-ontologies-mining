@@ -28,6 +28,12 @@ public class LatticeStatistics {
         for(Concept concept : lattice.getConcepts()) {
             this.edgesNumber += concept.getParents().size();
 
+            this.averageCategoriesNumberPerConcept += concept.getCategories().size();
+            this.averageOntologyClassesNumberPerConcept += concept.getOntologyClasses().size();
+            this.averageYagoClassesNumberPerConcept += concept.getYagoClasses().size();
+            this.averagePageNumberPerConcept += concept.getObjects().size();
+            this.averageRelationshipsNumberPerConcept += concept.getAttributes().size();
+
             if(concept.getCategories().size() == 0) {
                 this.conceptsWithoutCategoriesNumber++;
             }
@@ -40,6 +46,18 @@ public class LatticeStatistics {
                 this.conceptsWithoutYagoClassesNumber++;
             }
         }
+
+        this.averageCategoriesNumberPerConcept /= (double) this.conceptsNumber;
+        this.averageOntologyClassesNumberPerConcept /= (double) this.conceptsNumber;
+        this.averageYagoClassesNumberPerConcept /= (double) this.conceptsNumber;
+        this.averagePageNumberPerConcept /= (double) this.conceptsNumber;
+        this.averageRelationshipsNumberPerConcept /= (double) this.conceptsNumber;
+
+        computeLatticeDepth(lattice);
+    }
+
+    private void computeLatticeDepth(Lattice lattice) {
+
     }
 
     public int getDepth() {
