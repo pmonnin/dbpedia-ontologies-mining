@@ -3,6 +3,7 @@ package dbpediaanalyzer.io;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import dbpediaanalyzer.dbpediaobject.Page;
 import dbpediaanalyzer.lattice.Concept;
 import dbpediaanalyzer.lattice.Lattice;
@@ -22,6 +23,7 @@ public class LatticeWriter {
     public void writeLattice(Lattice lattice, LatticeStatistics latticeStatistics, String fileName) {
         try {
             JsonGenerator jsonGenerator = (new JsonFactory()).createGenerator(new File(fileName), JsonEncoding.UTF8);
+            jsonGenerator.setPrettyPrinter(new DefaultPrettyPrinter()); // Only for debug purposes
 
             // Start of JSON global object
             jsonGenerator.writeStartObject();
