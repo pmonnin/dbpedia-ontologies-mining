@@ -4,7 +4,10 @@ import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import dbpediaanalyzer.dbpediaobject.Category;
+import dbpediaanalyzer.dbpediaobject.OntologyClass;
 import dbpediaanalyzer.dbpediaobject.Page;
+import dbpediaanalyzer.dbpediaobject.YagoClass;
 import dbpediaanalyzer.lattice.Concept;
 import dbpediaanalyzer.lattice.Lattice;
 import dbpediaanalyzer.statistic.LatticeStatistics;
@@ -45,6 +48,27 @@ public class LatticeWriter {
                 jsonGenerator.writeArrayFieldStart("attributes");
                 for(String attribute : concept.getAttributes()) {
                     jsonGenerator.writeString(attribute);
+                }
+                jsonGenerator.writeEndArray();
+
+                // Categories saving
+                jsonGenerator.writeArrayFieldStart("categories");
+                for(Category category : concept.getCategories()) {
+                    jsonGenerator.writeString(category.getUri());
+                }
+                jsonGenerator.writeEndArray();
+
+                // Ontology classes saving
+                jsonGenerator.writeArrayFieldStart("ontologyClasses");
+                for(OntologyClass ontology : concept.getOntologyClasses()) {
+                    jsonGenerator.writeString(ontology.getUri());
+                }
+                jsonGenerator.writeEndArray();
+
+                // Yago classes saving
+                jsonGenerator.writeArrayFieldStart("yagoClasses");
+                for(YagoClass yagoClass : concept.getYagoClasses()) {
+                    jsonGenerator.writeString(yagoClass.getUri());
                 }
                 jsonGenerator.writeEndArray();
 
