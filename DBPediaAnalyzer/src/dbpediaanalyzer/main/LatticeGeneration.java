@@ -88,7 +88,7 @@ public class LatticeGeneration {
             latticeStatisticsWriter.close();
 
             System.out.println("\t Saving lattice...");
-            (new LatticeWriter()).writeLattice(lattice, latticeStatistics, args[2]);
+            (new LatticeWriter()).writeLattice(lattice, args[2]);
         }
     }
 }

@@ -10,7 +10,6 @@ import dbpediaanalyzer.dbpediaobject.Page;
 import dbpediaanalyzer.dbpediaobject.YagoClass;
 import dbpediaanalyzer.lattice.Concept;
 import dbpediaanalyzer.lattice.Lattice;
-import dbpediaanalyzer.statistic.LatticeStatistics;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +22,7 @@ import java.io.IOException;
  */
 public class LatticeWriter {
 
-    public void writeLattice(Lattice lattice, LatticeStatistics latticeStatistics, String fileName) {
+    public void writeLattice(Lattice lattice, String fileName) {
         try {
             JsonGenerator jsonGenerator = (new JsonFactory()).createGenerator(new File(fileName), JsonEncoding.UTF8);
             jsonGenerator.setPrettyPrinter(new DefaultPrettyPrinter()); // Only for debug purposes
