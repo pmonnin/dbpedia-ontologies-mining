@@ -2,6 +2,7 @@ package dbpediaanalyzer.main;
 
 import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
 import dbpediaanalyzer.io.LatticeStatisticsWriter;
+import dbpediaanalyzer.io.LatticeWriter;
 import dbpediaanalyzer.lattice.Lattice;
 import dbpediaanalyzer.dbpediaobject.Page;
 import dbpediaanalyzer.factory.DataSetFactory;
@@ -87,6 +88,7 @@ public class LatticeGeneration {
             latticeStatisticsWriter.close();
 
             System.out.println("\t Saving lattice...");
+            (new LatticeWriter()).writeLattice(lattice, latticeStatistics, args[2]);
         }
     }
 }
