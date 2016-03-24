@@ -1,7 +1,5 @@
 package dbpediaanalyzer.lattice;
 
-import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.*;
 
 import dbpediaanalyzer.dbpediaobject.*;
@@ -12,7 +10,6 @@ import colibri.lib.HybridLattice;
 import colibri.lib.Relation;
 import colibri.lib.Traversal;
 import colibri.lib.TreeRelation;
-import dbpediaanalyzer.statistic.DBPediaLatticeStatistics;
 
 /**
  * Lattice's construction
@@ -152,13 +149,6 @@ public class PediaLatticeFactory {
         }
 
         System.out.print("\n");
-
-        // Lattice statistics
-        System.out.println("Computing lattice statistics");
-        DBPediaLatticeStatistics latticeStatistics = new DBPediaLatticeStatistics();
-        latticeStatistics.computeStatistics(this.dbLattice, this.top, this.bottom);
-        latticeStatistics.displayStatistics();
-
     }
 
     public ArrayList<PediaConcept> getDBLattice() {
