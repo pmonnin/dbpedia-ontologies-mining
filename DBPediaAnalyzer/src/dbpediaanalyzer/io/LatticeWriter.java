@@ -78,9 +78,19 @@ public class LatticeWriter {
 
             // Edges saving
             jsonGenerator.writeArrayFieldStart("edges");
+            for(int i = 0 ; i < lattice.getConcepts().size() ; i++) {
+                for(Concept child : lattice.getConcepts().get(i).getChildren()) {
+                    jsonGenerator.writeStartObject();
+
+                    jsonGenerator.writeNumberField("top", i);
+                    jsonGenerator.writeNumberField("bottom", lattice.getConcepts().indexOf(child));
+
+                    jsonGenerator.writeEndObject();
+                }
+            }
             jsonGenerator.writeEndArray();
 
-            // End of global JSON object
+            // End of JSON global object
             jsonGenerator.writeEndObject();
 
             jsonGenerator.close();
