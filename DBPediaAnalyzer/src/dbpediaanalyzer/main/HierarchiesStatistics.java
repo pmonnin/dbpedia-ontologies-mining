@@ -20,7 +20,7 @@ public class HierarchiesStatistics {
      */
     public static void main(String[] args) {
         if(args.length != 1) {
-            System.out.println("Usage:\n  java HierarchiesStatistics output");
+            System.out.println("Usage:\n java HierarchiesStatistics output");
             System.out.println("\t output\n\t\t file used to store computed hierarchies statistics");
         }
 

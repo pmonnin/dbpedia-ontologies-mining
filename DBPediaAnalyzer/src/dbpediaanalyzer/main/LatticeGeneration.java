@@ -49,7 +49,7 @@ public class LatticeGeneration {
         }
 
         if(incorrectParams) {
-            System.out.println("Usage:\n  java LatticeGeneration minimalDeathDate maximalDeathDate output statistics");
+            System.out.println("Usage:\n java LatticeGeneration minimalDeathDate maximalDeathDate output statistics");
             System.out.println("\t minimalDeathDate\n\t\t minimal death date for data set creation (YYYY-MM-DD)");
             System.out.println("\t maximalDeathDate\n\t\t maximal death date for data set creation (YYYY-MM-DD)");
             System.out.println("\t output\n\t\t JSON file used to store generated lattice");
