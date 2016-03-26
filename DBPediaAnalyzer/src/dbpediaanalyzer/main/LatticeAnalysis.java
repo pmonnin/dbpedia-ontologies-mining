@@ -1,5 +1,10 @@
 package dbpediaanalyzer.main;
 
+import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
+import dbpediaanalyzer.factory.HierarchiesFactory;
+import dbpediaanalyzer.io.LatticeReader;
+import dbpediaanalyzer.lattice.Lattice;
+
 /**
  * TODO JAVADOC
  *
@@ -20,7 +25,13 @@ public class LatticeAnalysis {
         }
 
         else {
-            
+            System.out.println("=== LATTICE ANALYSIS ===");
+
+            System.out.println("Data loading...");
+            System.out.println("\t Querying and parsing DBPedia hierarchies...");
+            HierarchiesManager hm = (new HierarchiesFactory()).createHierarchies();
+            System.out.println("\t Loading lattice from file...");
+            Lattice lattice = (new LatticeReader()).readLattice(args[0]);
         }
     }
 }
