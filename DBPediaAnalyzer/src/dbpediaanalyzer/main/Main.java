@@ -1,16 +1,12 @@
 package dbpediaanalyzer.main;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
 import dbpediaanalyzer.dbpediaobject.DBCategoriesManager;
 import dbpediaanalyzer.dbpediaobject.DBOntologiesManager;
 import dbpediaanalyzer.dbpediaobject.DBYagoClassesManager;
-
-import dbpediaanalyzer.lattice.PediaConcept;
-import dbpediaanalyzer.lattice.PediaLatticeFactory;
 
 /**
  * Main class for the application
@@ -59,8 +55,6 @@ public class Main {
 
         // Lattice creation
         System.out.println("=== LATTICE CREATION ===");
-        PediaLatticeFactory latticeFactory = new PediaLatticeFactory(dbcategories, dbontologies, dbyagoclasses);
-        ArrayList<PediaConcept> dbLattice = latticeFactory.getDBLattice();
 
         // For each concept
         /*found = 0;
