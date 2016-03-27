@@ -4,10 +4,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Scanner;
 
-import dbpediaanalyzer.dbpediaobject.DBCategoriesManager;
-import dbpediaanalyzer.dbpediaobject.DBOntologiesManager;
-import dbpediaanalyzer.dbpediaobject.DBYagoClassesManager;
-
 /**
  * Main class for the application
  *  - Crawl DBPedia categories
@@ -36,22 +32,12 @@ public class Main {
         System.out.println("=== MAIN ALGORITHM OF COMPARISON ===");
         
         // Crawling DB categories
-        System.out.println("=== CATEGORIES CRAWLING AND PARSING ===");
-        DBCategoriesCrawler dbCategoriesCrawler = new DBCategoriesCrawler();
-        dbCategoriesCrawler.computeCategoriesHierarchy();
-        DBCategoriesManager dbcategories = dbCategoriesCrawler.getDBCategoriesManager();
+
 
         // Crawling DB ontologies
-        System.out.println("=== ONTOLOGIES CRAWLING AND PARSING ===");
-        DBOntologiesCrawler dbOntologyClasses = new DBOntologiesCrawler();
-        dbOntologyClasses.computeOntologiesHierarchy();
-        DBOntologiesManager dbontologies = dbOntologyClasses.getDBOntologiesManager();
         
         // Crawling Yago classes
         System.out.println("=== YAGO CLASSES CRAWLING AND PARSING ===");
-        DBYagoClassesCrawler dbYagoClasses = new DBYagoClassesCrawler();
-        dbYagoClasses.computeYagoCLassesHierarchy();
-        DBYagoClassesManager dbyagoclasses = dbYagoClasses.getDBYagoClassesManager();
 
         // Lattice creation
         System.out.println("=== LATTICE CREATION ===");
