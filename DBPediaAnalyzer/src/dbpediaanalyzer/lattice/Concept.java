@@ -55,6 +55,10 @@ public class Concept {
 
         this.objects = new ArrayList<>(objects);
         this.attributes = new ArrayList<>(attributes);
+
+        this.parents = new ArrayList<>();
+        this.children = new ArrayList<>();
+
         this.categories = new ArrayList<>(categories);
         this.ontologyClasses = new ArrayList<>(ontologyClasses);
         this.yagoClasses = new ArrayList<>(yagoClasses);
