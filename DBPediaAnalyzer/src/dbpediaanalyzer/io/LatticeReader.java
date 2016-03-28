@@ -3,6 +3,10 @@ package dbpediaanalyzer.io;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
+import dbpediaanalyzer.dbpediaobject.Category;
+import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
+import dbpediaanalyzer.dbpediaobject.OntologyClass;
+import dbpediaanalyzer.dbpediaobject.YagoClass;
 import dbpediaanalyzer.lattice.Concept;
 import dbpediaanalyzer.lattice.Lattice;
 
@@ -18,17 +22,18 @@ import java.util.ArrayList;
  */
 public class LatticeReader {
 
-    public Lattice readLattice(String fileName) {
+    public Lattice readLattice(String fileName, HierarchiesManager hm) {
         Lattice lattice = null;
 
         try {
             JsonParser jsonParser = (new JsonFactory()).createParser(new File(fileName));
+            ArrayList<Concept> concepts = new ArrayList<>();
 
             // Json global object start
             if(jsonParser.nextToken() == JsonToken.START_OBJECT) {
                 if(jsonParser.nextToken() == JsonToken.FIELD_NAME && jsonParser.getCurrentName().equals("concepts") && jsonParser.nextToken() == JsonToken.START_ARRAY) {
                     while(jsonParser.nextToken() != JsonToken.END_ARRAY) {
-                        parseConcept(jsonParser);
+                        concepts.add(parseConcept(jsonParser, hm));
                     }
                 }
 
@@ -38,7 +43,7 @@ public class LatticeReader {
 
                 if(jsonParser.nextToken() == JsonToken.FIELD_NAME && jsonParser.getCurrentName().equals("edges") && jsonParser.nextToken() == JsonToken.START_ARRAY) {
                     while(jsonParser.nextToken() != JsonToken.END_ARRAY) {
-                        parseEdge(jsonParser);
+                        parseEdge(jsonParser, concepts);
                     }
                 }
 
@@ -56,6 +61,8 @@ public class LatticeReader {
             }
 
             jsonParser.close();
+
+            lattice = new Lattice(concepts);
         }
 
         catch(IOException e) {
@@ -67,7 +74,7 @@ public class LatticeReader {
         return lattice;
     }
 
-    private Concept parseConcept(JsonParser jsonParser) throws IOException {
+    private Concept parseConcept(JsonParser jsonParser, HierarchiesManager hm) throws IOException {
         if(jsonParser.getCurrentToken() != JsonToken.START_OBJECT) {
             throw new IOException("JSON object describing a concept not found");
         }
@@ -109,11 +116,11 @@ public class LatticeReader {
         }
 
         // Categories
-        ArrayList<String> categories = new ArrayList<>();
+        ArrayList<Category> categories = new ArrayList<>();
         if(jsonParser.nextToken() == JsonToken.FIELD_NAME && jsonParser.getCurrentName().equals("categories") && jsonParser.nextToken() == JsonToken.START_ARRAY) {
             while(jsonParser.nextToken() != JsonToken.END_ARRAY) {
                 if(jsonParser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                    categories.add(jsonParser.getValueAsString());
+                    categories.add(hm.getCategoryFromUri(jsonParser.getValueAsString()));
                 }
 
                 else {
@@ -127,11 +134,11 @@ public class LatticeReader {
         }
 
         // Ontology classes
-        ArrayList<String> ontologyClasses = new ArrayList<>();
+        ArrayList<OntologyClass> ontologyClasses = new ArrayList<>();
         if(jsonParser.nextToken() == JsonToken.FIELD_NAME && jsonParser.getCurrentName().equals("ontologyClasses") && jsonParser.nextToken() == JsonToken.START_ARRAY) {
             while(jsonParser.nextToken() != JsonToken.END_ARRAY) {
                 if(jsonParser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                    ontologyClasses.add(jsonParser.getValueAsString());
+                    ontologyClasses.add(hm.getOntologyClassFromUri(jsonParser.getValueAsString()));
                 }
 
                 else {
@@ -145,11 +152,11 @@ public class LatticeReader {
         }
 
         // Yago classes
-        ArrayList<String> yagoClasses = new ArrayList<>();
+        ArrayList<YagoClass> yagoClasses = new ArrayList<>();
         if(jsonParser.nextToken() == JsonToken.FIELD_NAME && jsonParser.getCurrentName().equals("yagoClasses") && jsonParser.nextToken() == JsonToken.START_ARRAY) {
             while(jsonParser.nextToken() != JsonToken.END_ARRAY) {
                 if(jsonParser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                    yagoClasses.add(jsonParser.getValueAsString());
+                    yagoClasses.add(hm.getYagoClassFromUri(jsonParser.getValueAsString()));
                 }
 
                 else {
@@ -166,10 +173,10 @@ public class LatticeReader {
             throw new IOException("Extraneous JSON data after yagoClasses field for a concept");
         }
 
-        return null;
+        return new Concept(objects, attributes, categories, ontologyClasses, yagoClasses);
     }
 
-    private void parseEdge(JsonParser jsonParser) throws IOException {
+    private void parseEdge(JsonParser jsonParser, ArrayList<Concept> concepts) throws IOException {
         if(jsonParser.getCurrentToken() != JsonToken.START_OBJECT) {
             throw new IOException("JSON object describing an edge not found");
         }
@@ -184,6 +191,10 @@ public class LatticeReader {
 
         int edgeTopConceptIndex = jsonParser.getIntValue();
 
+        if(edgeTopConceptIndex < 0 || edgeTopConceptIndex >= concepts.size()) {
+            throw new IOException("JSON field top inside edge is an invalid integer");
+        }
+
         if(jsonParser.nextToken() != JsonToken.FIELD_NAME || !jsonParser.getCurrentName().equals("bottom")) {
             throw new IOException("JSON field bottom inside edge not found");
         }
@@ -194,8 +205,15 @@ public class LatticeReader {
 
         int edgeBottomConceptIndex = jsonParser.getIntValue();
 
+        if(edgeBottomConceptIndex < 0 || edgeBottomConceptIndex >= concepts.size()) {
+            throw new IOException("JSON field bottom inside edge is an invalid integer");
+        }
+
         if(jsonParser.nextToken() != JsonToken.END_OBJECT) {
             throw new IOException("Extraneous JSON data after bottom field inside edge object");
         }
+
+        concepts.get(edgeTopConceptIndex).addChild(concepts.get(edgeBottomConceptIndex));
+        concepts.get(edgeBottomConceptIndex).addParent(concepts.get(edgeTopConceptIndex));
     }
 }

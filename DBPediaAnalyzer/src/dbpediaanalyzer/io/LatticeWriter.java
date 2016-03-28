@@ -38,8 +38,8 @@ public class LatticeWriter {
 
                 // Objects saving
                 jsonGenerator.writeArrayFieldStart("objects");
-                for(Page page : concept.getObjects()) {
-                    jsonGenerator.writeString(page.getURI());
+                for(String page : concept.getObjects()) {
+                    jsonGenerator.writeString(page);
                 }
                 jsonGenerator.writeEndArray();
 

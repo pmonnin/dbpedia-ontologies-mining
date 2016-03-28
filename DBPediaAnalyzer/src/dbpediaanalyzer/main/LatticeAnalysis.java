@@ -31,7 +31,7 @@ public class LatticeAnalysis {
             System.out.println("\t Querying and parsing DBPedia hierarchies...");
             HierarchiesManager hm = (new HierarchiesFactory()).createHierarchies();
             System.out.println("\t Loading lattice from file...");
-            Lattice lattice = (new LatticeReader()).readLattice(args[0]);
+            Lattice lattice = (new LatticeReader()).readLattice(args[0], hm);
         }
     }
 }

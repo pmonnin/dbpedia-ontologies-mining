@@ -18,7 +18,7 @@ import java.util.Queue;
  */
 public class Concept {
     // Basic concept data
-    private ArrayList<Page> objects;
+    private ArrayList<String> objects;
     private ArrayList<String> attributes;
 
     // Relationships
@@ -30,12 +30,12 @@ public class Concept {
     private ArrayList<OntologyClass> ontologyClasses;
     private ArrayList<YagoClass> yagoClasses;
 
-    public Concept(colibri.lib.Concept colibriConcept, HashMap<String, Page> dataSet) {
+    public Concept(colibri.lib.Concept colibriConcept) {
         this.objects = new ArrayList<>();
         this.attributes = new ArrayList<>();
 
         for(Object o : colibriConcept.getObjects()) {
-            this.objects.add(dataSet.get(o.toString()));
+            this.objects.add(o.toString());
         }
 
         for(Object a : colibriConcept.getAttributes()) {
@@ -50,7 +50,18 @@ public class Concept {
         this.yagoClasses = new ArrayList<>();
     }
 
-    public ArrayList<Page> getObjects() {
+    public Concept(ArrayList<String> objects, ArrayList<String> attributes, ArrayList<Category> categories,
+                   ArrayList<OntologyClass> ontologyClasses, ArrayList<YagoClass> yagoClasses) {
+
+        this.objects = new ArrayList<>(objects);
+        this.attributes = new ArrayList<>(attributes);
+        this.categories = new ArrayList<>(categories);
+        this.ontologyClasses = new ArrayList<>(ontologyClasses);
+        this.yagoClasses = new ArrayList<>(yagoClasses);
+
+    }
+
+    public ArrayList<String> getObjects() {
         return new ArrayList<>(this.objects);
     }
 
@@ -58,7 +69,7 @@ public class Concept {
         return new ArrayList<>(this.attributes);
     }
 
-    void addParent(Concept parent) {
+    public void addParent(Concept parent) {
         if(!this.parents.contains(parent)) {
             this.parents.add(parent);
         }
@@ -68,7 +79,7 @@ public class Concept {
         return new ArrayList<>(this.parents);
     }
 
-    void addChild(Concept child) {
+    public void addChild(Concept child) {
         if(!this.children.contains(child)) {
             this.children.add(child);
         }
