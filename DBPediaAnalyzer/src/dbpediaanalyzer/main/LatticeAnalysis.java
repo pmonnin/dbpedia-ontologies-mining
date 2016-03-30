@@ -1,5 +1,6 @@
 package dbpediaanalyzer.main;
 
+import dbpediaanalyzer.analysis.LatticeAnalyzer;
 import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
 import dbpediaanalyzer.factory.HierarchiesFactory;
 import dbpediaanalyzer.io.LatticeReader;
@@ -37,6 +38,8 @@ public class LatticeAnalysis {
 
             System.out.println("Lattice analysis...");
             System.out.println("\t Computing comparison results...");
+            LatticeAnalyzer analyzer = new LatticeAnalyzer();
+            analyzer.analyze(lattice, hm);
             System.out.println("\t Writing results inside output file...");
         }
     }
