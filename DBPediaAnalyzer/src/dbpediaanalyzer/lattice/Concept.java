@@ -2,11 +2,9 @@ package dbpediaanalyzer.lattice;
 
 import dbpediaanalyzer.dbpediaobject.Category;
 import dbpediaanalyzer.dbpediaobject.OntologyClass;
-import dbpediaanalyzer.dbpediaobject.Page;
 import dbpediaanalyzer.dbpediaobject.YagoClass;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 

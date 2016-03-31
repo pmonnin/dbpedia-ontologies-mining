@@ -5,6 +5,7 @@ import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
 import dbpediaanalyzer.factory.HierarchiesFactory;
 import dbpediaanalyzer.io.LatticeReader;
 import dbpediaanalyzer.lattice.Lattice;
+import dbpediaanalyzer.util.TimeMeasurer;
 
 /**
  * TODO JAVADOC
@@ -29,6 +30,8 @@ public class LatticeAnalysis {
 
         else {
             System.out.println("=== LATTICE ANALYSIS ===");
+            TimeMeasurer tm = new TimeMeasurer();
+            tm.begin();
 
             System.out.println("Data loading...");
             System.out.println("\t Querying and parsing DBPedia hierarchies...");
@@ -41,6 +44,10 @@ public class LatticeAnalysis {
             LatticeAnalyzer analyzer = new LatticeAnalyzer();
             analyzer.analyze(lattice, hm);
             System.out.println("\t Writing results inside output file...");
+
+            tm.stop();
+            System.out.println("Processing time: " + tm.toString());
+            System.out.println("=== End of lattice analysis program ===");
         }
     }
 }

@@ -11,6 +11,7 @@ import dbpediaanalyzer.factory.LatticeFactory;
 import dbpediaanalyzer.io.DataSetStatisticsWriter;
 import dbpediaanalyzer.statistic.DataSetStatistics;
 import dbpediaanalyzer.statistic.LatticeStatistics;
+import dbpediaanalyzer.util.TimeMeasurer;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -60,6 +61,9 @@ public class LatticeGeneration {
         else {
             System.out.println("=== LATTICE GENERATION ===");
 
+            TimeMeasurer tm = new TimeMeasurer();
+            tm.begin();
+
             System.out.println("Data set creation...");
             System.out.println("\t Querying and parsing DBPedia hierarchies...");
             HierarchiesManager hm = (new HierarchiesFactory()).createHierarchies();
@@ -89,6 +93,10 @@ public class LatticeGeneration {
 
             System.out.println("\t Saving lattice...");
             (new LatticeWriter()).writeLattice(lattice, args[2]);
+
+            tm.stop();
+            System.out.println("Processing time: " + tm.toString());
+            System.out.println("=== End of lattice generation program ===");
         }
     }
 }

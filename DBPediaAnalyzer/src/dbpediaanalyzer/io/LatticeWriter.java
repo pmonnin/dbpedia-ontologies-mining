@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import dbpediaanalyzer.dbpediaobject.Category;
 import dbpediaanalyzer.dbpediaobject.OntologyClass;
-import dbpediaanalyzer.dbpediaobject.Page;
 import dbpediaanalyzer.dbpediaobject.YagoClass;
 import dbpediaanalyzer.lattice.Concept;
 import dbpediaanalyzer.lattice.Lattice;
