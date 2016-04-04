@@ -55,10 +55,10 @@ public abstract class HierarchyElement {
         while(!queue.isEmpty()) {
             HierarchyElement he = queue.poll();
 
-            for(HierarchyElement child : he.getChildren()) {
+            for(HierarchyElement parent : he.getParents()) {
                 if(!accessible.containsKey(he.getUri())) {
-                    accessible.put(child.getUri(), child);
-                    queue.add(child);
+                    accessible.put(parent.getUri(), parent);
+                    queue.add(parent);
                 }
             }
         }
