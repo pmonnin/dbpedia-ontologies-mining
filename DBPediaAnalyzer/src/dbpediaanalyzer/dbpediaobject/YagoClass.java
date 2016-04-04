@@ -1,5 +1,8 @@
 package dbpediaanalyzer.dbpediaobject;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * TODO JAVADOC
  *
@@ -24,5 +27,16 @@ public class YagoClass extends HierarchyElement {
         if(child instanceof YagoClass) {
             super.addChild(child);
         }
+    }
+
+    public static ArrayList<YagoClass> getAccessibleYagoClasses(Collection<YagoClass> fromSubset) {
+        Collection<HierarchyElement> accessible = HierarchyElement.getAccessibleElements(fromSubset);
+        ArrayList<YagoClass> retVal = new ArrayList<>();
+
+        for(HierarchyElement he : accessible) {
+            retVal.add((YagoClass) he);
+        }
+
+        return retVal;
     }
 }

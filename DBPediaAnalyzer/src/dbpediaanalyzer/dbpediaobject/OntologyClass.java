@@ -1,5 +1,8 @@
 package dbpediaanalyzer.dbpediaobject;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * TODO JAVADOC
  *
@@ -24,5 +27,16 @@ public class OntologyClass extends HierarchyElement {
         if(child instanceof OntologyClass) {
             super.addChild(child);
         }
+    }
+
+    public static ArrayList<OntologyClass> getAccessibleOntologyClasses(Collection<OntologyClass> fromSubset) {
+        Collection<HierarchyElement> accessible = HierarchyElement.getAccessibleElements(fromSubset);
+        ArrayList<OntologyClass> retVal = new ArrayList<>();
+
+        for(HierarchyElement he : accessible) {
+            retVal.add((OntologyClass) he);
+        }
+
+        return retVal;
     }
 }

@@ -2,7 +2,6 @@ package dbpediaanalyzer.factory;
 
 import colibri.lib.Relation;
 import colibri.lib.TreeRelation;
-import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
 import dbpediaanalyzer.dbpediaobject.Page;
 import dbpediaanalyzer.lattice.Lattice;
 
@@ -19,7 +18,7 @@ public class LatticeFactory {
     /**
      * TODO JAVADOC
      */
-    public Lattice createLatticeFromDataSet(HashMap<String, Page> dataSet, HierarchiesManager hm) {
+    public Lattice createLatticeFromDataSet(HashMap<String, Page> dataSet) {
         // Colibri lattice creation
         Relation relation = new TreeRelation(); // TODO test other relation types?
 
@@ -34,6 +33,6 @@ public class LatticeFactory {
         colibri.lib.Lattice colibriLattice = new colibri.lib.HybridLattice(relation); // TODO test other lattice types?
 
         // DBPediaAnalyzer lattice creation from colibri lattice
-        return new Lattice(colibriLattice, dataSet, hm);
+        return new Lattice(colibriLattice, dataSet);
     }
 }

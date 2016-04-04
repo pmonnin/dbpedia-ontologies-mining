@@ -17,7 +17,7 @@ public class Lattice {
     private Concept top;
     private Concept bottom;
 
-    public Lattice(colibri.lib.Lattice colibriLattice, HashMap<String, Page> dataSet, HierarchiesManager hm) {
+    public Lattice(colibri.lib.Lattice colibriLattice, HashMap<String, Page> dataSet) {
         this.concepts = new ArrayList<>();
 
         // Traversing colibri lattice and creating custom lattice
@@ -49,7 +49,7 @@ public class Lattice {
         }
 
         topBottomInit();
-        makeLatticeAnnotations(dataSet, hm);
+        makeLatticeAnnotations(dataSet);
     }
 
     public Lattice(ArrayList<Concept> concepts) {
@@ -57,18 +57,18 @@ public class Lattice {
         topBottomInit();
     }
 
-    private void makeLatticeAnnotations(HashMap<String, Page> dataSet, HierarchiesManager hm) {
+    private void makeLatticeAnnotations(HashMap<String, Page> dataSet) {
         // Initial annotations
         for(Concept c : this.concepts) {
             if(c.getObjects().size() != 0) {
-                ArrayList<Category> conceptCategories = hm.getAccessibleCategories(dataSet.get(c.getObjects().get(0)).getCategories());
-                ArrayList<OntologyClass> conceptOntologyClasses = hm.getAccessibleOntologyClasses(dataSet.get(c.getObjects().get(0)).getOntologyClasses());
-                ArrayList<YagoClass> conceptYagoClasses = hm.getAccessibleYagoClasses(dataSet.get(c.getObjects().get(0)).getYagoClasses());
+                ArrayList<Category> conceptCategories = Category.getAccessibleCategories(dataSet.get(c.getObjects().get(0)).getCategories());
+                ArrayList<OntologyClass> conceptOntologyClasses = OntologyClass.getAccessibleOntologyClasses(dataSet.get(c.getObjects().get(0)).getOntologyClasses());
+                ArrayList<YagoClass> conceptYagoClasses = YagoClass.getAccessibleYagoClasses(dataSet.get(c.getObjects().get(0)).getYagoClasses());
 
                 for(int i = 1 ; i < c.getObjects().size() ; i++) {
-                    conceptCategories.retainAll(hm.getAccessibleCategories(dataSet.get(c.getObjects().get(i)).getCategories()));
-                    conceptOntologyClasses.retainAll(hm.getAccessibleOntologyClasses(dataSet.get(c.getObjects().get(i)).getOntologyClasses()));
-                    conceptYagoClasses.retainAll(hm.getAccessibleYagoClasses(dataSet.get(c.getObjects().get(i)).getYagoClasses()));
+                    conceptCategories.retainAll(Category.getAccessibleCategories(dataSet.get(c.getObjects().get(i)).getCategories()));
+                    conceptOntologyClasses.retainAll(OntologyClass.getAccessibleOntologyClasses(dataSet.get(c.getObjects().get(i)).getOntologyClasses()));
+                    conceptYagoClasses.retainAll(YagoClass.getAccessibleYagoClasses(dataSet.get(c.getObjects().get(i)).getYagoClasses()));
                 }
 
                 c.setCategories(conceptCategories);
@@ -78,8 +78,8 @@ public class Lattice {
         }
 
         // Removing duplicated categories / ontology classes / yago classes
-        ArrayList<Concept> seen = new ArrayList<>();
-        seen.add(this.top);
+        HashMap<Concept, Boolean> seen = new HashMap<>();
+        seen.put(this.top, true);
         Queue<Concept> queue = new LinkedList<>();
         queue.add(this.top);
 
@@ -93,9 +93,9 @@ public class Lattice {
             }
 
             for(Concept child : concept.getChildren()) {
-                if(!seen.contains(child)) {
+                if(!seen.containsKey(child)) {
                     queue.add(child);
-                    seen.add(child);
+                    seen.put(child, true);
                 }
             }
         }

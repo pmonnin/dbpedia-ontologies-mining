@@ -22,7 +22,7 @@ public class DataSetStatistics {
     private int indirectLinkedOntologyClassesNumber;
     private int indirectLinkedYagoClassesNumber;
 
-    public DataSetStatistics(HashMap<String, Page> dataSet, HierarchiesManager hierarchiesManager) {
+    public DataSetStatistics(HashMap<String, Page> dataSet) {
         this.pagesNumber = dataSet.size();
 
         this.averageCategoriesNumberPerPage = 0;
@@ -66,9 +66,9 @@ public class DataSetStatistics {
         this.directLinkedYagoClassesNumber = dataSetDirectYagoClasses.size();
 
         // Computing indirect links
-        this.indirectLinkedCategoriesNumber = hierarchiesManager.getAccessibleCategories(dataSetDirectCategories.values()).size();
-        this.indirectLinkedOntologyClassesNumber = hierarchiesManager.getAccessibleOntologyClasses(dataSetDirectOntologyClasses.values()).size();
-        this.indirectLinkedYagoClassesNumber = hierarchiesManager.getAccessibleYagoClasses(dataSetDirectYagoClasses.values()).size();
+        this.indirectLinkedCategoriesNumber = Category.getAccessibleCategories(dataSetDirectCategories.values()).size();
+        this.indirectLinkedOntologyClassesNumber = OntologyClass.getAccessibleOntologyClasses(dataSetDirectOntologyClasses.values()).size();
+        this.indirectLinkedYagoClassesNumber = YagoClass.getAccessibleYagoClasses(dataSetDirectYagoClasses.values()).size();
 
     }
 

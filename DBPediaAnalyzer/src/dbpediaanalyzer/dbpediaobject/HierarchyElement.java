@@ -1,6 +1,6 @@
 package dbpediaanalyzer.dbpediaobject;
 
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * TODO JAVADOC
@@ -41,5 +41,28 @@ public abstract class HierarchyElement {
 
     public ArrayList<HierarchyElement> getChildren() {
         return new ArrayList<>(this.children);
+    }
+
+    protected static Collection<HierarchyElement> getAccessibleElements(Collection<? extends HierarchyElement> fromSubset) {
+        HashMap<String, HierarchyElement> accessible = new HashMap<>();
+        Queue<HierarchyElement> queue = new LinkedList<>();
+
+        for(HierarchyElement he : fromSubset) {
+            queue.add(he);
+            accessible.put(he.getUri(), he);
+        }
+
+        while(!queue.isEmpty()) {
+            HierarchyElement he = queue.poll();
+
+            for(HierarchyElement child : he.getChildren()) {
+                if(!accessible.containsKey(he.getUri())) {
+                    accessible.put(child.getUri(), child);
+                    queue.add(child);
+                }
+            }
+        }
+
+        return accessible.values();
     }
 }

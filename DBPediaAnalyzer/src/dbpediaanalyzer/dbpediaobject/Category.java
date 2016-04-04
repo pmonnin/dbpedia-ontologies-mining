@@ -1,5 +1,8 @@
 package dbpediaanalyzer.dbpediaobject;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * TODO JAVADOC
  *
@@ -24,5 +27,16 @@ public class Category extends HierarchyElement {
         if(child instanceof Category) {
             super.addChild(child);
         }
+    }
+
+    public static ArrayList<Category> getAccessibleCategories(Collection<Category> fromSubset) {
+        Collection<HierarchyElement> accessible = HierarchyElement.getAccessibleElements(fromSubset);
+        ArrayList<Category> retVal = new ArrayList<>();
+
+        for(HierarchyElement he : accessible) {
+            retVal.add((Category) he);
+        }
+
+        return retVal;
     }
 }
