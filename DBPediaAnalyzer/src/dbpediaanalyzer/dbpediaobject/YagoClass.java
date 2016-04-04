@@ -29,8 +29,8 @@ public class YagoClass extends HierarchyElement {
         }
     }
 
-    public static ArrayList<YagoClass> getAccessibleYagoClasses(Collection<YagoClass> fromSubset) {
-        Collection<HierarchyElement> accessible = HierarchyElement.getAccessibleElements(fromSubset);
+    public static ArrayList<YagoClass> getAccessibleUpwardYagoClasses(Collection<YagoClass> fromSubset) {
+        Collection<HierarchyElement> accessible = HierarchyElement.getAccessibleUpwardElements(fromSubset);
         ArrayList<YagoClass> retVal = new ArrayList<>();
 
         for(HierarchyElement he : accessible) {

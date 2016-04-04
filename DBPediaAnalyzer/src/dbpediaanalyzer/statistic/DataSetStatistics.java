@@ -66,9 +66,9 @@ public class DataSetStatistics {
         this.directLinkedYagoClassesNumber = dataSetDirectYagoClasses.size();
 
         // Computing indirect links
-        this.indirectLinkedCategoriesNumber = Category.getAccessibleCategories(dataSetDirectCategories.values()).size();
-        this.indirectLinkedOntologyClassesNumber = OntologyClass.getAccessibleOntologyClasses(dataSetDirectOntologyClasses.values()).size();
-        this.indirectLinkedYagoClassesNumber = YagoClass.getAccessibleYagoClasses(dataSetDirectYagoClasses.values()).size();
+        this.indirectLinkedCategoriesNumber = Category.getAccessibleUpwardCategories(dataSetDirectCategories.values()).size();
+        this.indirectLinkedOntologyClassesNumber = OntologyClass.getAccessibleUpwardOntologyClasses(dataSetDirectOntologyClasses.values()).size();
+        this.indirectLinkedYagoClassesNumber = YagoClass.getAccessibleUpwardYagoClasses(dataSetDirectYagoClasses.values()).size();
 
     }
 

@@ -61,14 +61,14 @@ public class Lattice {
         // Initial annotations
         for(Concept c : this.concepts) {
             if(c.getObjects().size() != 0) {
-                ArrayList<Category> conceptCategories = Category.getAccessibleCategories(dataSet.get(c.getObjects().get(0)).getCategories());
-                ArrayList<OntologyClass> conceptOntologyClasses = OntologyClass.getAccessibleOntologyClasses(dataSet.get(c.getObjects().get(0)).getOntologyClasses());
-                ArrayList<YagoClass> conceptYagoClasses = YagoClass.getAccessibleYagoClasses(dataSet.get(c.getObjects().get(0)).getYagoClasses());
+                ArrayList<Category> conceptCategories = Category.getAccessibleUpwardCategories(dataSet.get(c.getObjects().get(0)).getCategories());
+                ArrayList<OntologyClass> conceptOntologyClasses = OntologyClass.getAccessibleUpwardOntologyClasses(dataSet.get(c.getObjects().get(0)).getOntologyClasses());
+                ArrayList<YagoClass> conceptYagoClasses = YagoClass.getAccessibleUpwardYagoClasses(dataSet.get(c.getObjects().get(0)).getYagoClasses());
 
                 for(int i = 1 ; i < c.getObjects().size() ; i++) {
-                    conceptCategories.retainAll(Category.getAccessibleCategories(dataSet.get(c.getObjects().get(i)).getCategories()));
-                    conceptOntologyClasses.retainAll(OntologyClass.getAccessibleOntologyClasses(dataSet.get(c.getObjects().get(i)).getOntologyClasses()));
-                    conceptYagoClasses.retainAll(YagoClass.getAccessibleYagoClasses(dataSet.get(c.getObjects().get(i)).getYagoClasses()));
+                    conceptCategories.retainAll(Category.getAccessibleUpwardCategories(dataSet.get(c.getObjects().get(i)).getCategories()));
+                    conceptOntologyClasses.retainAll(OntologyClass.getAccessibleUpwardOntologyClasses(dataSet.get(c.getObjects().get(i)).getOntologyClasses()));
+                    conceptYagoClasses.retainAll(YagoClass.getAccessibleUpwardYagoClasses(dataSet.get(c.getObjects().get(i)).getYagoClasses()));
                 }
 
                 c.setCategories(conceptCategories);

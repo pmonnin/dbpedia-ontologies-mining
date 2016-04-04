@@ -29,8 +29,8 @@ public class OntologyClass extends HierarchyElement {
         }
     }
 
-    public static ArrayList<OntologyClass> getAccessibleOntologyClasses(Collection<OntologyClass> fromSubset) {
-        Collection<HierarchyElement> accessible = HierarchyElement.getAccessibleElements(fromSubset);
+    public static ArrayList<OntologyClass> getAccessibleUpwardOntologyClasses(Collection<OntologyClass> fromSubset) {
+        Collection<HierarchyElement> accessible = HierarchyElement.getAccessibleUpwardElements(fromSubset);
         ArrayList<OntologyClass> retVal = new ArrayList<>();
 
         for(HierarchyElement he : accessible) {

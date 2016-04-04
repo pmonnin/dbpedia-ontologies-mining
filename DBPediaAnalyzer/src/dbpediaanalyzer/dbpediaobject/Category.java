@@ -29,8 +29,8 @@ public class Category extends HierarchyElement {
         }
     }
 
-    public static ArrayList<Category> getAccessibleCategories(Collection<Category> fromSubset) {
-        Collection<HierarchyElement> accessible = HierarchyElement.getAccessibleElements(fromSubset);
+    public static ArrayList<Category> getAccessibleUpwardCategories(Collection<Category> fromSubset) {
+        Collection<HierarchyElement> accessible = HierarchyElement.getAccessibleUpwardElements(fromSubset);
         ArrayList<Category> retVal = new ArrayList<>();
 
         for(HierarchyElement he : accessible) {

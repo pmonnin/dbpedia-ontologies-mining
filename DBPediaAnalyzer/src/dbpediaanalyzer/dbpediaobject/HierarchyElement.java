@@ -43,7 +43,7 @@ public abstract class HierarchyElement {
         return new ArrayList<>(this.children);
     }
 
-    protected static Collection<HierarchyElement> getAccessibleElements(Collection<? extends HierarchyElement> fromSubset) {
+    protected static Collection<HierarchyElement> getAccessibleUpwardElements(Collection<? extends HierarchyElement> fromSubset) {
         HashMap<String, HierarchyElement> accessible = new HashMap<>();
         Queue<HierarchyElement> queue = new LinkedList<>();
 
@@ -56,7 +56,7 @@ public abstract class HierarchyElement {
             HierarchyElement he = queue.poll();
 
             for(HierarchyElement parent : he.getParents()) {
-                if(!accessible.containsKey(he.getUri())) {
+                if(!accessible.containsKey(parent.getUri())) {
                     accessible.put(parent.getUri(), parent);
                     queue.add(parent);
                 }
