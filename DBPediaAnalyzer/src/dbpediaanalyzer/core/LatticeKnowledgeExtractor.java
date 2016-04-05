@@ -48,24 +48,26 @@ public class LatticeKnowledgeExtractor {
     }
 
     private void analyzeEdge(Concept upper, Concept lower, DataBasedKnowledgeManager dbkm) {
+        double extensionsRatio = (double) upper.getObjects().size() / (double) lower.getObjects().size();
+
         // Categories analysis
         for(Category lCategory : lower.getCategories()) {
             for(Category uCategory : upper.getCategories()) {
-                dbkm.addSubsumption(lCategory, uCategory);
+                dbkm.addSubsumption(lCategory, uCategory, extensionsRatio);
             }
         }
 
         // Ontology classes analysis
         for(OntologyClass lOntologyClass : lower.getOntologyClasses()) {
             for(OntologyClass uOntologyClass : upper.getOntologyClasses()) {
-                dbkm.addSubsumption(lOntologyClass, uOntologyClass);
+                dbkm.addSubsumption(lOntologyClass, uOntologyClass, extensionsRatio);
             }
         }
 
         // Yago classes analysis
         for(YagoClass lYagoClass : lower.getYagoClasses()) {
             for(YagoClass uYagoClass : upper.getYagoClasses()) {
-                dbkm.addSubsumption(lYagoClass, uYagoClass);
+                dbkm.addSubsumption(lYagoClass, uYagoClass, extensionsRatio);
             }
         }
     }

@@ -18,16 +18,16 @@ public class DataBasedKnowledgeManager {
         this.knowledge = new HashMap<>();
     }
 
-    public void addSubsumption(HierarchyElement bottom, HierarchyElement top) {
+    public void addSubsumption(HierarchyElement bottom, HierarchyElement top, double extensionsRatio) {
         DataBasedSubsumption dbs = knowledge.get(bottom.getUri() + top.getUri());
 
         if(dbs == null) {
-            dbs = new DataBasedSubsumption(bottom, top);
+            dbs = new DataBasedSubsumption(bottom, top, extensionsRatio);
             this.knowledge.put(bottom.getUri() + top.getUri(), dbs);
         }
 
         else {
-            dbs.incrementNumberOfSubmissions();
+            dbs.newSubmission(extensionsRatio);
         }
     }
 }

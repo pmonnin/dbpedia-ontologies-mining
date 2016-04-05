@@ -2,6 +2,9 @@ package dbpediaanalyzer.core;
 
 import dbpediaanalyzer.dbpediaobject.HierarchyElement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * TODO JAVADOC
  *
@@ -11,15 +14,16 @@ import dbpediaanalyzer.dbpediaobject.HierarchyElement;
 public class DataBasedSubsumption {
     private HierarchyElement bottom;
     private HierarchyElement top;
-    private int numberOfSubmissions;
+    private List<Double> extensionsRatios;
 
-    public DataBasedSubsumption(HierarchyElement bottom, HierarchyElement top) {
+    public DataBasedSubsumption(HierarchyElement bottom, HierarchyElement top, double extensionsRatio) {
         this.bottom = bottom;
         this.top = top;
-        this.numberOfSubmissions = 1;
+        this.extensionsRatios = new ArrayList<>();
+        this.extensionsRatios.add(extensionsRatio);
     }
 
-    public void incrementNumberOfSubmissions() {
-        this.numberOfSubmissions++;
+    public void newSubmission(double extensionsRatio) {
+        this.extensionsRatios.add(extensionsRatio);
     }
 }
