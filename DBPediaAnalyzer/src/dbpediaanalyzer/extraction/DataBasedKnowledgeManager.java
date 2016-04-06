@@ -1,7 +1,8 @@
-package dbpediaanalyzer.core;
+package dbpediaanalyzer.extraction;
 
 import dbpediaanalyzer.dbpediaobject.HierarchyElement;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,5 +30,9 @@ public class DataBasedKnowledgeManager {
         else {
             dbs.newSubmission(extensionsRatio);
         }
+    }
+
+    public Collection<DataBasedSubsumption> getDataBasedKnowledge() {
+        return knowledge.values();
     }
 }

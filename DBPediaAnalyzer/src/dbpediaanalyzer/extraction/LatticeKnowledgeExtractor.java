@@ -1,4 +1,4 @@
-package dbpediaanalyzer.core;
+package dbpediaanalyzer.extraction;
 
 import dbpediaanalyzer.dbpediaobject.Category;
 import dbpediaanalyzer.dbpediaobject.OntologyClass;

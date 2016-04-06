@@ -1,4 +1,4 @@
-package dbpediaanalyzer.core;
+package dbpediaanalyzer.extraction;
 
 import dbpediaanalyzer.dbpediaobject.HierarchyElement;
 
@@ -25,5 +25,13 @@ public class DataBasedSubsumption {
 
     public void newSubmission(double extensionsRatio) {
         this.extensionsRatios.add(extensionsRatio);
+    }
+
+    public HierarchyElement getBottom() {
+        return this.bottom;
+    }
+
+    public HierarchyElement getTop() {
+        return this.top;
     }
 }

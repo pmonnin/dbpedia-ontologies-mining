@@ -1,8 +1,9 @@
 package dbpediaanalyzer.main;
 
-import dbpediaanalyzer.core.DataBasedKnowledgeManager;
-import dbpediaanalyzer.core.LatticeKnowledgeExtractor;
+import dbpediaanalyzer.comparison.KnowledgesComparator;
 import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
+import dbpediaanalyzer.extraction.DataBasedKnowledgeManager;
+import dbpediaanalyzer.extraction.LatticeKnowledgeExtractor;
 import dbpediaanalyzer.factory.HierarchiesFactory;
 import dbpediaanalyzer.io.LatticeReader;
 import dbpediaanalyzer.lattice.Lattice;
@@ -41,9 +42,10 @@ public class LatticeAnalysis {
             Lattice lattice = (new LatticeReader()).readLattice(args[0], hm);
 
             System.out.println("Lattice analysis...");
+            System.out.println("\t Extracting knowledge from lattice");
+            DataBasedKnowledgeManager dbkm = (new LatticeKnowledgeExtractor()).analyze(lattice);
             System.out.println("\t Computing comparison results...");
-            LatticeKnowledgeExtractor knowledgeExtractor = new LatticeKnowledgeExtractor();
-            DataBasedKnowledgeManager dbkm = knowledgeExtractor.analyze(lattice);
+            (new KnowledgesComparator()).compareKnowledges(dbkm, hm);
             System.out.println("\t Writing results inside output file...");
 
             tm.stop();
