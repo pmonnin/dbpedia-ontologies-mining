@@ -4,6 +4,9 @@ import dbpediaanalyzer.extraction.DataBasedKnowledgeManager;
 import dbpediaanalyzer.extraction.DataBasedSubsumption;
 import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * TODO JAVADOC
  *
@@ -11,7 +14,9 @@ import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
  *
  */
 public class KnowledgesComparator {
-    public void compareKnowledges(DataBasedKnowledgeManager dbkm, HierarchiesManager hm) {
+
+    public List<ComparisonResult> compareKnowledges(DataBasedKnowledgeManager dbkm, HierarchiesManager hm) {
+        List<ComparisonResult> results = new ArrayList<>();
 
         for(DataBasedSubsumption dbs : dbkm.getDataBasedKnowledge()) {
 
@@ -23,5 +28,6 @@ public class KnowledgesComparator {
 
         }
 
+        return results;
     }
 }
