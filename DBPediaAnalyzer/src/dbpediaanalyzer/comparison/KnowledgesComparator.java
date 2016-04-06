@@ -2,7 +2,6 @@ package dbpediaanalyzer.comparison;
 
 import dbpediaanalyzer.extraction.DataBasedKnowledgeManager;
 import dbpediaanalyzer.extraction.DataBasedSubsumption;
-import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
  */
 public class KnowledgesComparator {
 
-    public List<ComparisonResult> compareKnowledges(DataBasedKnowledgeManager dbkm, HierarchiesManager hm) {
+    public List<ComparisonResult> compareKnowledges(DataBasedKnowledgeManager dbkm) {
         List<ComparisonResult> results = new ArrayList<>();
 
         for(DataBasedSubsumption dbs : dbkm.getDataBasedKnowledge()) {
@@ -26,8 +25,14 @@ public class KnowledgesComparator {
             }
 
             // Is this an already existing inferred relationship?
+            else if(dbs.getBottom().getAncestors().contains(dbs.getTop())) {
+                results.add(new ProposedInferredToDirectRelationship(dbs.getBottom(), dbs.getTop()));
+            }
 
             // Is this a new relationship?
+            else {
+                results.add(new ProposedNewRelationship(dbs.getBottom(), dbs.getTop()));
+            }
 
         }
 

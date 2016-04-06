@@ -35,12 +35,16 @@ public abstract class HierarchyElement {
         return this.uri;
     }
 
-    public ArrayList<HierarchyElement> getParents() {
+    public Collection<HierarchyElement> getParents() {
         return new ArrayList<>(this.parents);
     }
 
-    public ArrayList<HierarchyElement> getChildren() {
+    public Collection<HierarchyElement> getChildren() {
         return new ArrayList<>(this.children);
+    }
+
+    public Collection<HierarchyElement> getAncestors() {
+        return HierarchyElement.getAccessibleUpwardElements(this.parents);
     }
 
     protected static Collection<HierarchyElement> getAccessibleUpwardElements(Collection<? extends HierarchyElement> fromSubset) {

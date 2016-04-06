@@ -48,7 +48,7 @@ public class LatticeAnalysis {
             System.out.println("\t Extracting knowledge from lattice");
             DataBasedKnowledgeManager dbkm = (new LatticeKnowledgeExtractor()).analyze(lattice);
             System.out.println("\t Computing comparison results...");
-            List<ComparisonResult> comparisonResults = (new KnowledgesComparator()).compareKnowledges(dbkm, hm);
+            List<ComparisonResult> comparisonResults = (new KnowledgesComparator()).compareKnowledges(dbkm);
             System.out.println("\t Writing results inside output file...");
 
             tm.stop();
