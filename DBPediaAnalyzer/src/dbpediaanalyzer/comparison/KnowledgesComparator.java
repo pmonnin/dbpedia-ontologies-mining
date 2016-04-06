@@ -21,6 +21,9 @@ public class KnowledgesComparator {
         for(DataBasedSubsumption dbs : dbkm.getDataBasedKnowledge()) {
 
             // Is this an already existing direct relationship?
+            if(dbs.getBottom().getParents().contains(dbs.getTop())) {
+                results.add(new ConfirmedDirectRelationship(dbs.getBottom(), dbs.getTop()));
+            }
 
             // Is this an already existing inferred relationship?
 
