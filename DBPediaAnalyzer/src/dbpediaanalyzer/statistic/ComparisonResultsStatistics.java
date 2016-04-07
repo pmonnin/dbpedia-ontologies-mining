@@ -49,6 +49,10 @@ public class ComparisonResultsStatistics {
         return this.confirmedDirectRelationshipNumber;
     }
 
+    public int getProposedInferredToDirectRelationshipNumber() {
+        return this.proposedInferredToDirectRelationshipNumber;
+    }
+
     public int getProposedNewRelationshipNumber() {
         return this.proposedNewRelationshipNumber;
     }

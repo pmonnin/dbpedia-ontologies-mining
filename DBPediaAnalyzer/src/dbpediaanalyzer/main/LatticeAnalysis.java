@@ -6,6 +6,7 @@ import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
 import dbpediaanalyzer.extraction.DataBasedKnowledgeManager;
 import dbpediaanalyzer.extraction.LatticeKnowledgeExtractor;
 import dbpediaanalyzer.factory.HierarchiesFactory;
+import dbpediaanalyzer.io.ComparisonResultsStatisticsWriter;
 import dbpediaanalyzer.io.LatticeReader;
 import dbpediaanalyzer.lattice.Lattice;
 import dbpediaanalyzer.statistic.ComparisonResultsStatistics;
@@ -58,6 +59,9 @@ public class LatticeAnalysis {
             System.out.println("Saving results...");
             System.out.println("\t Saving comparison results...");
             System.out.println("\t Saving comparison results statistics...");
+            ComparisonResultsStatisticsWriter statisticsWriter = new ComparisonResultsStatisticsWriter(args[2]);
+            statisticsWriter.writeComparisonResultsStatistics(statistics);
+            statisticsWriter.close();
 
             tm.stop();
             System.out.println("Processing time: " + tm.toString());
