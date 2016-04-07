@@ -15,4 +15,12 @@ public abstract class ComparisonResult {
         this.bottom = bottom;
         this.top = top;
     }
+
+    public HierarchyElement getBottom() {
+        return this.bottom;
+    }
+
+    public HierarchyElement getTop() {
+        return this.top;
+    }
 }
