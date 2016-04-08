@@ -11,6 +11,6 @@ import dbpediaanalyzer.dbpediaobject.HierarchyElement;
 public class ConfirmedDirectRelationship extends ComparisonResult {
 
     public ConfirmedDirectRelationship(HierarchyElement bottom, HierarchyElement top) {
-        super(bottom, top);
+        super(bottom, top, 0.0);
     }
 }
