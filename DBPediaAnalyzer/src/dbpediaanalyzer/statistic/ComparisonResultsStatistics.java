@@ -1,9 +1,6 @@
 package dbpediaanalyzer.statistic;
 
-import dbpediaanalyzer.comparison.ComparisonResult;
-import dbpediaanalyzer.comparison.ConfirmedDirectRelationship;
-import dbpediaanalyzer.comparison.ProposedInferredToDirectRelationship;
-import dbpediaanalyzer.comparison.ProposedNewRelationship;
+import dbpediaanalyzer.comparison.*;
 
 import java.util.List;
 
@@ -26,15 +23,15 @@ public class ComparisonResultsStatistics {
         this.proposedInferredToDirectRelationshipNumber = 0;
         this.proposedNewRelationshipNumber = 0;
         for(ComparisonResult cr : comparisonResults) {
-            if(cr instanceof ConfirmedDirectRelationship) {
+            if(cr.getType() == ComparisonResultType.CONFIRMED_DIRECT) {
                 this.confirmedDirectRelationshipNumber++;
             }
 
-            else if(cr instanceof ProposedInferredToDirectRelationship) {
+            else if(cr.getType() == ComparisonResultType.PROPOSED_INFERRED_TO_DIRECT) {
                 this.proposedInferredToDirectRelationshipNumber++;
             }
 
-            else if(cr instanceof ProposedNewRelationship) {
+            else if(cr.getType() == ComparisonResultType.PROPOSED_NEW) {
                 this.proposedNewRelationshipNumber++;
             }
         }

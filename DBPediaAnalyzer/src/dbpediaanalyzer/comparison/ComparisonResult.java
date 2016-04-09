@@ -7,15 +7,21 @@ import dbpediaanalyzer.dbpediaobject.HierarchyElement;
  *
  * @author Pierre Monnin
  */
-public abstract class ComparisonResult {
+public class ComparisonResult {
+    private ComparisonResultType type;
     private HierarchyElement bottom;
     private HierarchyElement top;
     private double value;
 
-    public ComparisonResult(HierarchyElement bottom, HierarchyElement top, double value) {
+    public ComparisonResult(ComparisonResultType type, HierarchyElement bottom, HierarchyElement top, double value) {
+        this.type = type;
         this.bottom = bottom;
         this.top = top;
         this.value = value;
+    }
+
+    public ComparisonResultType getType() {
+        return this.type;
     }
 
     public HierarchyElement getBottom() {

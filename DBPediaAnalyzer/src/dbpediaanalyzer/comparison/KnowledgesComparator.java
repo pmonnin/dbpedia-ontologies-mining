@@ -21,17 +21,17 @@ public class KnowledgesComparator {
 
             // Is this an already existing direct relationship?
             if(dbs.getBottom().getParents().contains(dbs.getTop())) {
-                results.add(new ConfirmedDirectRelationship(dbs.getBottom(), dbs.getTop()));
+                results.add(new ComparisonResult(ComparisonResultType.CONFIRMED_DIRECT, dbs.getBottom(), dbs.getTop(), 0.0));
             }
 
             // Is this an already existing inferred relationship?
             else if(dbs.getBottom().getAncestors().contains(dbs.getTop())) {
-                results.add(new ProposedInferredToDirectRelationship(dbs.getBottom(), dbs.getTop()));
+                results.add(new ComparisonResult(ComparisonResultType.PROPOSED_INFERRED_TO_DIRECT, dbs.getBottom(), dbs.getTop(), 0.0));
             }
 
             // Is this a new relationship?
             else {
-                results.add(new ProposedNewRelationship(dbs.getBottom(), dbs.getTop()));
+                results.add(new ComparisonResult(ComparisonResultType.PROPOSED_NEW, dbs.getBottom(), dbs.getTop(), 0.0));
             }
 
         }

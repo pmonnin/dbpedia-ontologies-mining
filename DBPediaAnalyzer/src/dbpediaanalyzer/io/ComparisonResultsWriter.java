@@ -1,8 +1,6 @@
 package dbpediaanalyzer.io;
 
 import dbpediaanalyzer.comparison.ComparisonResult;
-import dbpediaanalyzer.comparison.ConfirmedDirectRelationship;
-import dbpediaanalyzer.comparison.ProposedInferredToDirectRelationship;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -35,19 +33,7 @@ public class ComparisonResultsWriter {
 
     public void writeComparisonResults(List<ComparisonResult> comparisonResults) {
         for(ComparisonResult result : comparisonResults) {
-            if(result instanceof ConfirmedDirectRelationship) {
-                this.writer.print("CONFIRMED DIRECT");
-            }
-
-            else if(result instanceof ProposedInferredToDirectRelationship) {
-                this.writer.print("PROPOSED INFERRED TO DIRECT");
-            }
-
-            else {
-                this.writer.print("PROPOSED NEW");
-            }
-
-            this.writer.println("," + result.getBottom().getUri() + "," + result.getTop().getUri());
+            this.writer.println(result.getType() + "," + result.getBottom().getUri() + "," + result.getTop().getUri());
         }
     }
 
