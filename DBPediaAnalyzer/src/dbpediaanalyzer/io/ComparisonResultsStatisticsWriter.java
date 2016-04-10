@@ -29,9 +29,12 @@ public class ComparisonResultsStatisticsWriter {
     public void writeComparisonResultsStatistics(ComparisonResultsStatistics crs) {
         this.writer.println("--- Comparison results statistics ---");
         this.writer.println("Number of comparison results: " + crs.getResultsNumber());
-        this.writer.println("Number of confirmed direct relationships: " + crs.getConfirmedDirectRelationshipNumber());
-        this.writer.println("Number of relationships proposed to be changed from inferred to direct: " + crs.getProposedInferredToDirectRelationshipNumber());
-        this.writer.println("Number of new relationships proposed: " + crs.getProposedNewRelationshipNumber());
+        this.writer.println("Number of confirmed direct relationships: " + crs.getConfirmedDirectNumber());
+        this.writer.println("Average value of confirmed direct relationships: " + crs.getConfirmedDirectAverageValue());
+        this.writer.println("Number of relationships proposed to be changed from inferred to direct: " + crs.getProposedInferredToDirectNumber());
+        this.writer.println("Average value of relationships proposed to be changed from inferred to direct: " + crs.getProposedInferredToDirectAverageValue());
+        this.writer.println("Number of new relationships proposed: " + crs.getProposedNewNumber());
+        this.writer.println("Average value of new relationships proposed: " + crs.getProposedNewAverageValue());
     }
 
     public void close() {
