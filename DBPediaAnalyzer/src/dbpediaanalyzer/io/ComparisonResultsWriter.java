@@ -28,12 +28,12 @@ public class ComparisonResultsWriter {
     }
 
     public void writeColumnsHeader() {
-        this.writer.println("TYPE,BOTTOM,TOP");
+        this.writer.println("TYPE,BOTTOM,TOP,VALUE");
     }
 
     public void writeComparisonResults(List<ComparisonResult> comparisonResults) {
         for(ComparisonResult result : comparisonResults) {
-            this.writer.println(result.getType() + "," + result.getBottom().getUri() + "," + result.getTop().getUri());
+            this.writer.println(result.getType() + "," + result.getBottom().getUri() + "," + result.getTop().getUri() + "," + result.getValue());
         }
     }
 
