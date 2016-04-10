@@ -34,4 +34,12 @@ public class DataBasedSubsumption {
     public HierarchyElement getTop() {
         return this.top;
     }
+
+    public int getNumberOfSubmissions() {
+        return this.extensionsRatios.size();
+    }
+
+    public List<Double> getExtensionsRatios() {
+        return this.extensionsRatios;
+    }
 }
