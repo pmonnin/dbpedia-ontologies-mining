@@ -29,12 +29,24 @@ public class ComparisonResultsStatisticsWriter {
     public void writeComparisonResultsStatistics(ComparisonResultsStatistics crs) {
         this.writer.println("--- Comparison results statistics ---");
         this.writer.println("Number of comparison results: " + crs.getResultsNumber());
-        this.writer.println("Number of confirmed direct relationships: " + crs.getConfirmedDirectNumber());
-        this.writer.println("Average value of confirmed direct relationships: " + crs.getConfirmedDirectAverageValue());
-        this.writer.println("Number of relationships proposed to be changed from inferred to direct: " + crs.getProposedInferredToDirectNumber());
-        this.writer.println("Average value of relationships proposed to be changed from inferred to direct: " + crs.getProposedInferredToDirectAverageValue());
-        this.writer.println("Number of new relationships proposed: " + crs.getProposedNewNumber());
-        this.writer.println("Average value of new relationships proposed: " + crs.getProposedNewAverageValue());
+
+        this.writer.println("\n- Confirmed direct relationships");
+        this.writer.println("Number: " + crs.getConfirmedDirectNumber());
+        this.writer.println("Average value: " + crs.getConfirmedDirectAverageValue());
+        this.writer.println("Minimum value: " + crs.getConfirmedDirectMinimumValue());
+        this.writer.println("Maximum value: " + crs.getConfirmedDirectMaximumValue());
+
+        this.writer.println("\n- Proposed to be changed from inferred to direct relationships");
+        this.writer.println("Number: " + crs.getProposedInferredToDirectNumber());
+        this.writer.println("Average value: " + crs.getProposedInferredToDirectAverageValue());
+        this.writer.println("Minimum value: " + crs.getProposedInferredToDirectMinimumValue());
+        this.writer.println("Maximum value: " + crs.getProposedInferredToDirectMaximumValue());
+
+        this.writer.println("\n- Proposed new relationships");
+        this.writer.println("Number: " + crs.getProposedNewNumber());
+        this.writer.println("Average value: " + crs.getProposedNewAverageValue());
+        this.writer.println("Minimum value: " + crs.getProposedNewMinimumValue());
+        this.writer.println("Maximum value: " + crs.getProposedNewMaximumValue());
     }
 
     public void close() {
