@@ -1,10 +1,12 @@
 package dbpediaanalyzer.main;
 
 import dbpediaanalyzer.comparison.ComparisonResult;
+import dbpediaanalyzer.comparison.EvaluationStrategy;
 import dbpediaanalyzer.comparison.KnowledgesComparator;
 import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
 import dbpediaanalyzer.extraction.DataBasedKnowledgeManager;
 import dbpediaanalyzer.extraction.LatticeKnowledgeExtractor;
+import dbpediaanalyzer.factory.EvaluationStrategyFactory;
 import dbpediaanalyzer.factory.HierarchiesFactory;
 import dbpediaanalyzer.io.ComparisonResultsStatisticsWriter;
 import dbpediaanalyzer.io.ComparisonResultsWriter;
@@ -25,15 +27,39 @@ public class LatticeAnalysis {
 
     /**
      * TODO JAVADOC
-     * @param args should contain
-     *             - name of JSON file corresponding to the lattice to analyze
-     *             - name of output file where comparison results will be written
-     *             - name of output file where statistics of comparison results will be written
+     * @param args
      */
     public static void main(String[] args) {
-        if(args.length != 3) {
-            System.out.println("Usage:\n java LatticeAnalysis lattice output");
+        boolean argumentsCorrect = true;
+        EvaluationStrategy strategyConfirmedDirect = null, strategyProposedInferredToDirect = null, strategyProposedNew = null;
+
+        if(args.length != 6) {
+            argumentsCorrect = false;
+        }
+
+        else {
+            EvaluationStrategyFactory factory = new EvaluationStrategyFactory();
+            strategyConfirmedDirect = factory.createEvaluationStrategy(args[1]);
+            strategyProposedInferredToDirect = factory.createEvaluationStrategy(args[2]);
+            strategyProposedNew = factory.createEvaluationStrategy(args[3]);
+
+            if(strategyConfirmedDirect == null || strategyProposedInferredToDirect == null || strategyProposedNew == null) {
+                argumentsCorrect = false;
+            }
+        }
+
+        if(!argumentsCorrect) {
+            System.out.println("Usage:\n java LatticeAnalysis lattice evaluation-strategy^{3} output comparison-statistics");
             System.out.println("\t lattice\n\t\t JSON file corresponding to the lattice to analyze");
+            System.out.println("\t evaluation-strategy^{3}\n\t\t Strategies to be used when evaluating a relationship proposal");
+            System.out.println("\t\t Meaning:");
+            System.out.println("\t\t - First\n\t\t\t evaluation of confirmed direct relationships");
+            System.out.println("\t\t - Second\n\t\t\t evaluation of relationships proposed to be changed from inferred to direct");
+            System.out.println("\t\t - Third\n\t\t\t evaluation of new relationships proposed");
+            System.out.println("\t\t Possible values:");
+            System.out.println("\t\t NumberOfSubmissions\n\t\t\t value will be set to number of times the proposal has been submitted");
+            System.out.println("\t\t AverageExtensionsRatio\n\t\t\t value will be set to the average extensions ratio of each pair of concepts proposing the relationship");
+            System.out.println("\t\t DistanceFromLCA\n\t\t\t value will be set to 1 / (distance from Lowest Common Ancestor)");
             System.out.println("\t output\n\t\t file where comparison results will be written (CSV format)");
             System.out.println("\t comparison-statistics\n\t\t file where statistics of comparison results will be written");
         }
@@ -53,7 +79,8 @@ public class LatticeAnalysis {
             System.out.println("\t Extracting knowledge from lattice");
             DataBasedKnowledgeManager dbkm = (new LatticeKnowledgeExtractor()).analyze(lattice);
             System.out.println("\t Computing comparison results...");
-            List<ComparisonResult> comparisonResults = (new KnowledgesComparator()).compareKnowledges(dbkm);
+            List<ComparisonResult> comparisonResults = (new KnowledgesComparator()).compareKnowledges(dbkm,
+                    strategyConfirmedDirect, strategyProposedInferredToDirect, strategyProposedNew);
             System.out.println("\t Computing comparison statistics...");
             ComparisonResultsStatistics statistics = new ComparisonResultsStatistics(comparisonResults);
 
