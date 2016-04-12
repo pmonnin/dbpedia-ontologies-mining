@@ -19,7 +19,7 @@ import java.util.Queue;
  */
 public class DataBasedKnowledgeFactory {
 
-    public DataBasedKnowledgeManager createDataBasedKnowledge(Lattice lattice) {
+    public static DataBasedKnowledgeManager createDataBasedKnowledge(Lattice lattice) {
         DataBasedKnowledgeManager dbkm = new DataBasedKnowledgeManager();
 
         HashMap<Concept, Boolean> seen = new HashMap<>();
@@ -48,7 +48,7 @@ public class DataBasedKnowledgeFactory {
         return dbkm;
     }
 
-    private void analyzeEdge(Concept upper, Concept lower, DataBasedKnowledgeManager dbkm) {
+    private static void analyzeEdge(Concept upper, Concept lower, DataBasedKnowledgeManager dbkm) {
         double extensionsRatio = (double) upper.getObjects().size() / (double) lower.getObjects().size();
 
         // Categories analysis

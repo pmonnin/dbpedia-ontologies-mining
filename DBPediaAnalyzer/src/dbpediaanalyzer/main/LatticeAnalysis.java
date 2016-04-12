@@ -76,7 +76,7 @@ public class LatticeAnalysis {
 
             System.out.println("Lattice analysis...");
             System.out.println("\t Extracting knowledge from lattice");
-            DataBasedKnowledgeManager dbkm = (new DataBasedKnowledgeFactory()).createDataBasedKnowledge(lattice);
+            DataBasedKnowledgeManager dbkm = DataBasedKnowledgeFactory.createDataBasedKnowledge(lattice);
             System.out.println("\t Computing comparison results...");
             List<ComparisonResult> comparisonResults = (new KnowledgesComparator()).compareKnowledges(dbkm,
                     strategyConfirmedDirect, strategyProposedInferredToDirect, strategyProposedNew);
