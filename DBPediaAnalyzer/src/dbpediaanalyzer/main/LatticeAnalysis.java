@@ -3,8 +3,8 @@ package dbpediaanalyzer.main;
 import dbpediaanalyzer.comparison.ComparisonResult;
 import dbpediaanalyzer.comparison.EvaluationStrategy;
 import dbpediaanalyzer.comparison.KnowledgesComparator;
+import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
-import dbpediaanalyzer.databasedknowledge.DataBasedKnowledgeManager;
 import dbpediaanalyzer.factory.DataBasedKnowledgeFactory;
 import dbpediaanalyzer.factory.EvaluationStrategyFactory;
 import dbpediaanalyzer.factory.HierarchiesFactory;
@@ -15,6 +15,7 @@ import dbpediaanalyzer.lattice.Lattice;
 import dbpediaanalyzer.statistic.ComparisonResultsStatistics;
 import dbpediaanalyzer.util.TimeMeasurer;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -76,9 +77,9 @@ public class LatticeAnalysis {
 
             System.out.println("Lattice analysis...");
             System.out.println("\t Extracting knowledge from lattice");
-            DataBasedKnowledgeManager dbkm = DataBasedKnowledgeFactory.createDataBasedKnowledge(lattice);
+            Collection<DataBasedSubsumption> dataBasedKnowledge = DataBasedKnowledgeFactory.createDataBasedKnowledge(lattice);
             System.out.println("\t Computing comparison results...");
-            List<ComparisonResult> comparisonResults = (new KnowledgesComparator()).compareKnowledges(dbkm,
+            List<ComparisonResult> comparisonResults = (new KnowledgesComparator()).compareKnowledges(dataBasedKnowledge,
                     strategyConfirmedDirect, strategyProposedInferredToDirect, strategyProposedNew);
             System.out.println("\t Computing comparison statistics...");
             ComparisonResultsStatistics statistics = new ComparisonResultsStatistics(comparisonResults);

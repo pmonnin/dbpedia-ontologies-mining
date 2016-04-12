@@ -1,9 +1,9 @@
 package dbpediaanalyzer.comparison;
 
-import dbpediaanalyzer.databasedknowledge.DataBasedKnowledgeManager;
 import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -14,14 +14,14 @@ import java.util.List;
  */
 public class KnowledgesComparator {
 
-    public List<ComparisonResult> compareKnowledges(DataBasedKnowledgeManager dbkm,
+    public List<ComparisonResult> compareKnowledges(Collection<DataBasedSubsumption> dataBasedKnowledge,
                                                     EvaluationStrategy strategyConfirmedDirect,
                                                     EvaluationStrategy strategyProposedInferredToDirect,
                                                     EvaluationStrategy strategyProposedNew) {
 
         List<ComparisonResult> results = new ArrayList<>();
 
-        for(DataBasedSubsumption dbs : dbkm.getDataBasedKnowledge()) {
+        for(DataBasedSubsumption dbs : dataBasedKnowledge) {
 
             // Is this an already existing direct relationship?
             if(dbs.getBottom().getParents().contains(dbs.getTop())) {

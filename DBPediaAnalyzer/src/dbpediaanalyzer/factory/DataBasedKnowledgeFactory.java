@@ -1,15 +1,14 @@
 package dbpediaanalyzer.factory;
 
-import dbpediaanalyzer.databasedknowledge.DataBasedKnowledgeManager;
+import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 import dbpediaanalyzer.dbpediaobject.Category;
+import dbpediaanalyzer.dbpediaobject.HierarchyElement;
 import dbpediaanalyzer.dbpediaobject.OntologyClass;
 import dbpediaanalyzer.dbpediaobject.YagoClass;
 import dbpediaanalyzer.lattice.Concept;
 import dbpediaanalyzer.lattice.Lattice;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * TODO JAVADOC
@@ -19,8 +18,8 @@ import java.util.Queue;
  */
 public class DataBasedKnowledgeFactory {
 
-    public static DataBasedKnowledgeManager createDataBasedKnowledge(Lattice lattice) {
-        DataBasedKnowledgeManager dbkm = new DataBasedKnowledgeManager();
+    public static Collection<DataBasedSubsumption> createDataBasedKnowledge(Lattice lattice) {
+        HashMap<String, DataBasedSubsumption> dataBasedKnowledge = new HashMap<>();
 
         HashMap<Concept, Boolean> seen = new HashMap<>();
         for(Concept c : lattice.getConcepts()) {
@@ -35,7 +34,7 @@ public class DataBasedKnowledgeFactory {
             Concept concept = queue.poll();
 
             for(Concept child : concept.getChildren()) {
-                analyzeEdge(concept, child, dbkm);
+                analyzeEdge(concept, child, dataBasedKnowledge);
 
                 // Add child for next processing steps
                 if(!seen.get(child)) {
@@ -45,31 +44,46 @@ public class DataBasedKnowledgeFactory {
             }
         }
 
-        return dbkm;
+        return dataBasedKnowledge.values();
     }
 
-    private static void analyzeEdge(Concept upper, Concept lower, DataBasedKnowledgeManager dbkm) {
+    private static void analyzeEdge(Concept upper, Concept lower, HashMap<String, DataBasedSubsumption> dataBasedKnowledge) {
         double extensionsRatio = (double) upper.getObjects().size() / (double) lower.getObjects().size();
 
         // Categories analysis
         for(Category lCategory : lower.getCategories()) {
             for(Category uCategory : upper.getCategories()) {
-                dbkm.addSubsumption(lCategory, uCategory, extensionsRatio);
+                addSubsumption(lCategory, uCategory, extensionsRatio, dataBasedKnowledge);
             }
         }
 
         // Ontology classes analysis
         for(OntologyClass lOntologyClass : lower.getOntologyClasses()) {
             for(OntologyClass uOntologyClass : upper.getOntologyClasses()) {
-                dbkm.addSubsumption(lOntologyClass, uOntologyClass, extensionsRatio);
+                addSubsumption(lOntologyClass, uOntologyClass, extensionsRatio, dataBasedKnowledge);
             }
         }
 
         // Yago classes analysis
         for(YagoClass lYagoClass : lower.getYagoClasses()) {
             for(YagoClass uYagoClass : upper.getYagoClasses()) {
-                dbkm.addSubsumption(lYagoClass, uYagoClass, extensionsRatio);
+                addSubsumption(lYagoClass, uYagoClass, extensionsRatio, dataBasedKnowledge);
             }
+        }
+    }
+
+    private static void addSubsumption(HierarchyElement bottom, HierarchyElement top, double extensionsRatio,
+                                       HashMap<String, DataBasedSubsumption> dataBasedKnowledge) {
+
+        DataBasedSubsumption dbs = dataBasedKnowledge.get(bottom.getUri() + top.getUri());
+
+        if(dbs == null) {
+            dbs = new DataBasedSubsumption(bottom, top, extensionsRatio);
+            dataBasedKnowledge.put(bottom.getUri() + top.getUri(), dbs);
+        }
+
+        else {
+            dbs.newSubmission(extensionsRatio);
         }
     }
 
