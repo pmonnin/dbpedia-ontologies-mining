@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class LatticeReader {
 
     public Lattice readLattice(String fileName, HierarchiesManager hm) {
-        Lattice lattice = null;
+        Lattice lattice;
 
         try {
             JsonParser jsonParser = (new JsonFactory()).createParser(new File(fileName));

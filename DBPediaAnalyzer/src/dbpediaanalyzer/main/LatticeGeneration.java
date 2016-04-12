@@ -66,10 +66,10 @@ public class LatticeGeneration {
 
             System.out.println("Data set creation...");
             System.out.println("\t Querying and parsing DBPedia hierarchies...");
-            HierarchiesManager hm = (new HierarchiesFactory()).createHierarchies();
+            HierarchiesManager hm = HierarchiesFactory.createHierarchies();
 
             System.out.println("\t Querying and parsing data set pages...");
-            HashMap<String, Page> dataSet = (new DataSetFactory()).createDataSet(args[0], args[1], hm);
+            HashMap<String, Page> dataSet = DataSetFactory.createDataSet(args[0], args[1], hm);
 
             System.out.println("\t Computing data set statistics...");
             DataSetStatistics dataSetStatistics = new DataSetStatistics(dataSet);
@@ -81,7 +81,7 @@ public class LatticeGeneration {
 
             System.out.println("Lattice creation...");
             System.out.println("\t Computing lattice from data set...");
-            Lattice lattice = (new LatticeFactory()).createLatticeFromDataSet(dataSet);
+            Lattice lattice = LatticeFactory.createLatticeFromDataSet(dataSet);
 
             System.out.println("\t Computing lattice statistics...");
             LatticeStatistics latticeStatistics = new LatticeStatistics(lattice);

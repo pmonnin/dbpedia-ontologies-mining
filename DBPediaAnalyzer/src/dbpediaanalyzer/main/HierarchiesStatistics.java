@@ -30,7 +30,7 @@ public class HierarchiesStatistics {
             tm.begin();
 
             System.out.println("Querying hierarchies from server...");
-            HierarchiesManager hm = (new HierarchiesFactory()).createHierarchies();
+            HierarchiesManager hm = HierarchiesFactory.createHierarchies();
 
             System.out.println("Computing statistics...");
             System.out.println("\tComputing categories statistics");

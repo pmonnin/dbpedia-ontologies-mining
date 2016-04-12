@@ -13,7 +13,7 @@ import dbpediaanalyzer.comparison.NumberOfSubmissionsStrategy;
  */
 public class EvaluationStrategyFactory {
 
-    public EvaluationStrategy createEvaluationStrategy(String strategyName) {
+    public static EvaluationStrategy createEvaluationStrategy(String strategyName) {
         if("NumberOfSubmissions".equals(strategyName)) {
             return new NumberOfSubmissionsStrategy();
         }

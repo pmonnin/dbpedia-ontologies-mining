@@ -18,7 +18,7 @@ public class LatticeFactory {
     /**
      * TODO JAVADOC
      */
-    public Lattice createLatticeFromDataSet(HashMap<String, Page> dataSet) {
+    public static Lattice createLatticeFromDataSet(HashMap<String, Page> dataSet) {
         // Colibri lattice creation
         Relation relation = new TreeRelation(); // TODO test other relation types?
 
