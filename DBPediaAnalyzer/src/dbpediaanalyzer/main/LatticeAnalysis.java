@@ -2,7 +2,7 @@ package dbpediaanalyzer.main;
 
 import dbpediaanalyzer.comparison.ComparisonResult;
 import dbpediaanalyzer.comparison.EvaluationStrategy;
-import dbpediaanalyzer.comparison.KnowledgesComparator;
+import dbpediaanalyzer.factory.KnowledgesComparisonResultFactory;
 import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
 import dbpediaanalyzer.factory.DataBasedKnowledgeFactory;
@@ -79,7 +79,7 @@ public class LatticeAnalysis {
             System.out.println("\t Extracting knowledge from lattice");
             Collection<DataBasedSubsumption> dataBasedKnowledge = DataBasedKnowledgeFactory.createDataBasedKnowledge(lattice);
             System.out.println("\t Computing comparison results...");
-            List<ComparisonResult> comparisonResults = (new KnowledgesComparator()).compareKnowledges(dataBasedKnowledge,
+            List<ComparisonResult> comparisonResults = KnowledgesComparisonResultFactory.createKnowledgesComparisonResults(dataBasedKnowledge,
                     strategyConfirmedDirect, strategyProposedInferredToDirect, strategyProposedNew);
             System.out.println("\t Computing comparison statistics...");
             ComparisonResultsStatistics statistics = new ComparisonResultsStatistics(comparisonResults);

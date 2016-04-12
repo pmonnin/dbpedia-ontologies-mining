@@ -1,5 +1,8 @@
-package dbpediaanalyzer.comparison;
+package dbpediaanalyzer.factory;
 
+import dbpediaanalyzer.comparison.ComparisonResult;
+import dbpediaanalyzer.comparison.ComparisonResultType;
+import dbpediaanalyzer.comparison.EvaluationStrategy;
 import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 
 import java.util.ArrayList;
@@ -12,12 +15,12 @@ import java.util.List;
  * @author Pierre Monnin
  *
  */
-public class KnowledgesComparator {
+public class KnowledgesComparisonResultFactory {
 
-    public List<ComparisonResult> compareKnowledges(Collection<DataBasedSubsumption> dataBasedKnowledge,
-                                                    EvaluationStrategy strategyConfirmedDirect,
-                                                    EvaluationStrategy strategyProposedInferredToDirect,
-                                                    EvaluationStrategy strategyProposedNew) {
+    public static List<ComparisonResult> createKnowledgesComparisonResults(Collection<DataBasedSubsumption> dataBasedKnowledge,
+                                                                    EvaluationStrategy strategyConfirmedDirect,
+                                                                    EvaluationStrategy strategyProposedInferredToDirect,
+                                                                    EvaluationStrategy strategyProposedNew) {
 
         List<ComparisonResult> results = new ArrayList<>();
 
