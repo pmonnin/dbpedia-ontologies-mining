@@ -1,6 +1,6 @@
 package dbpediaanalyzer.comparison;
 
-import dbpediaanalyzer.extraction.DataBasedSubsumption;
+import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 
 /**
  * TODO JAVADOC

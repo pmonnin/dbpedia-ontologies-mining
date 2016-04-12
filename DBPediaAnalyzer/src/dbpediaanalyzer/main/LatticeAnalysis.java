@@ -4,8 +4,8 @@ import dbpediaanalyzer.comparison.ComparisonResult;
 import dbpediaanalyzer.comparison.EvaluationStrategy;
 import dbpediaanalyzer.comparison.KnowledgesComparator;
 import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
-import dbpediaanalyzer.extraction.DataBasedKnowledgeManager;
-import dbpediaanalyzer.extraction.LatticeKnowledgeExtractor;
+import dbpediaanalyzer.databasedknowledge.DataBasedKnowledgeManager;
+import dbpediaanalyzer.factory.DataBasedKnowledgeFactory;
 import dbpediaanalyzer.factory.EvaluationStrategyFactory;
 import dbpediaanalyzer.factory.HierarchiesFactory;
 import dbpediaanalyzer.io.ComparisonResultsStatisticsWriter;
@@ -38,10 +38,9 @@ public class LatticeAnalysis {
         }
 
         else {
-            EvaluationStrategyFactory factory = new EvaluationStrategyFactory();
-            strategyConfirmedDirect = factory.createEvaluationStrategy(args[1]);
-            strategyProposedInferredToDirect = factory.createEvaluationStrategy(args[2]);
-            strategyProposedNew = factory.createEvaluationStrategy(args[3]);
+            strategyConfirmedDirect = EvaluationStrategyFactory.createEvaluationStrategy(args[1]);
+            strategyProposedInferredToDirect = EvaluationStrategyFactory.createEvaluationStrategy(args[2]);
+            strategyProposedNew = EvaluationStrategyFactory.createEvaluationStrategy(args[3]);
 
             if(strategyConfirmedDirect == null || strategyProposedInferredToDirect == null || strategyProposedNew == null) {
                 argumentsCorrect = false;
@@ -77,7 +76,7 @@ public class LatticeAnalysis {
 
             System.out.println("Lattice analysis...");
             System.out.println("\t Extracting knowledge from lattice");
-            DataBasedKnowledgeManager dbkm = (new LatticeKnowledgeExtractor()).analyze(lattice);
+            DataBasedKnowledgeManager dbkm = (new DataBasedKnowledgeFactory()).createDataBasedKnowledge(lattice);
             System.out.println("\t Computing comparison results...");
             List<ComparisonResult> comparisonResults = (new KnowledgesComparator()).compareKnowledges(dbkm,
                     strategyConfirmedDirect, strategyProposedInferredToDirect, strategyProposedNew);

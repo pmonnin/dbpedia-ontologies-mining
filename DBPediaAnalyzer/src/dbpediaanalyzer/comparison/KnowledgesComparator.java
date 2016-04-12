@@ -1,7 +1,7 @@
 package dbpediaanalyzer.comparison;
 
-import dbpediaanalyzer.extraction.DataBasedKnowledgeManager;
-import dbpediaanalyzer.extraction.DataBasedSubsumption;
+import dbpediaanalyzer.databasedknowledge.DataBasedKnowledgeManager;
+import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,6 @@
-package dbpediaanalyzer.extraction;
+package dbpediaanalyzer.factory;
 
+import dbpediaanalyzer.databasedknowledge.DataBasedKnowledgeManager;
 import dbpediaanalyzer.dbpediaobject.Category;
 import dbpediaanalyzer.dbpediaobject.OntologyClass;
 import dbpediaanalyzer.dbpediaobject.YagoClass;
@@ -16,9 +17,9 @@ import java.util.Queue;
  * @author Pierre Monnin
  *
  */
-public class LatticeKnowledgeExtractor {
+public class DataBasedKnowledgeFactory {
 
-    public DataBasedKnowledgeManager analyze(Lattice lattice) {
+    public DataBasedKnowledgeManager createDataBasedKnowledge(Lattice lattice) {
         DataBasedKnowledgeManager dbkm = new DataBasedKnowledgeManager();
 
         HashMap<Concept, Boolean> seen = new HashMap<>();

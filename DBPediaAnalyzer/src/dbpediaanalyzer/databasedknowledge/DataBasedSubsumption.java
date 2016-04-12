@@ -1,4 +1,4 @@
-package dbpediaanalyzer.extraction;
+package dbpediaanalyzer.databasedknowledge;
 
 import dbpediaanalyzer.dbpediaobject.HierarchyElement;
 
