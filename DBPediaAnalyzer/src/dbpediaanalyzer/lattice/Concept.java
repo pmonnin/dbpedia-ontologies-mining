@@ -112,11 +112,11 @@ public class Concept {
         return descendants;
     }
 
-    void setCategories(ArrayList<Category> categories) {
+    public void setCategories(ArrayList<Category> categories) {
         this.categories = new ArrayList<>(categories);
     }
 
-    void removeCategories(ArrayList<Category> categories) {
+    public void removeCategories(ArrayList<Category> categories) {
         this.categories.removeAll(categories);
     }
 
@@ -124,11 +124,11 @@ public class Concept {
         return new ArrayList<>(this.categories);
     }
 
-    void setOntologyClasses(ArrayList<OntologyClass> ontologyClasses) {
+    public void setOntologyClasses(ArrayList<OntologyClass> ontologyClasses) {
         this.ontologyClasses = new ArrayList<>(ontologyClasses);
     }
 
-    void removeOntologyClasses(ArrayList<OntologyClass> ontologyClasses) {
+    public void removeOntologyClasses(ArrayList<OntologyClass> ontologyClasses) {
         this.ontologyClasses.removeAll(ontologyClasses);
     }
 
@@ -136,11 +136,11 @@ public class Concept {
         return new ArrayList<>(this.ontologyClasses);
     }
 
-    void setYagoClasses(ArrayList<YagoClass> yagoClasses) {
+    public void setYagoClasses(ArrayList<YagoClass> yagoClasses) {
         this.yagoClasses = new ArrayList<>(yagoClasses);
     }
 
-    void removeYagoClasses(ArrayList<YagoClass> yagoClasses) {
+    public void removeYagoClasses(ArrayList<YagoClass> yagoClasses) {
         this.yagoClasses.removeAll(yagoClasses);
     }
 
