@@ -23,7 +23,18 @@ public class DistanceFromLCAStrategy extends EvaluationStrategy {
             return 0;
         }
 
-        return -1.0;
+        int distanceFromLCA = -1;
+
+        for(HierarchyElement commonAncestor : commonAncestors) {
+            int currentDistance = subsumption.getBottom().getDistanceFromAncestor(commonAncestor) +
+                    subsumption.getTop().getDistanceFromAncestor(commonAncestor);
+
+            if(currentDistance >= 0 && currentDistance < distanceFromLCA || distanceFromLCA == -1) {
+                distanceFromLCA = currentDistance;
+            }
+        }
+
+        return 1.0 / (double) distanceFromLCA;
     }
 
 }

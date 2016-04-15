@@ -47,6 +47,37 @@ public abstract class HierarchyElement {
         return HierarchyElement.getAccessibleUpwardElements(this.parents);
     }
 
+    public int getDistanceFromAncestor(HierarchyElement ancestor) {
+        if(this.parents.contains(ancestor)) {
+            return 1;
+        }
+
+        HashMap<HierarchyElement, Integer> distances = new HashMap<>();
+        Queue<HierarchyElement> queue = new LinkedList<>();
+
+        for(HierarchyElement parent : this.parents) {
+            distances.put(parent, 1);
+            queue.add(parent);
+        }
+
+        while(!queue.isEmpty()) {
+            HierarchyElement element = queue.poll();
+
+            for(HierarchyElement parent : element.getParents()) {
+                if(parent == ancestor) {
+                    return distances.get(element) + 1;
+                }
+
+                if(!distances.containsKey(parent)) {
+                    distances.put(parent, distances.get(element) + 1);
+                    queue.add(parent);
+                }
+            }
+        }
+
+        return -1;
+    }
+
     protected static Collection<HierarchyElement> getAccessibleUpwardElements(Collection<? extends HierarchyElement> fromSubset) {
         HashMap<String, HierarchyElement> accessible = new HashMap<>();
         Queue<HierarchyElement> queue = new LinkedList<>();
