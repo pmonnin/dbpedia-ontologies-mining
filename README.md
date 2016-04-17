@@ -20,7 +20,7 @@ hierarchies (DBPedia categories, ontology classes and yago classes)
 Creates a lattice based on a set of pages linked to the dbo:Person ontology class and having a death date.
 
 Crawls objects from Virtuoso server (DBPedia information), computes the lattice and stores it in a file using
-JSON format. Statistics are calculated on data set and lattice and displayed in the standard output
+JSON format. Statistics are calculated on data set and lattice and saved in files.
 
 Can be executed with the following command:
 
