@@ -59,6 +59,9 @@ java dbpediaanalyzer.main.LatticeAnalysis lattice evaluation-strategy^{3} output
         * *CONFIRMED_DIRECT*: direct relationship already existing
         * *PROPOSED_INFERRED_TO_DIRECT*: relationship already existing as inferred, proposed to be changed to direct subsumption
         * *PROPOSED_NEW*: relationship not existing inside DBPedia hierarchies
+    * *BOTTOM*: URI of the bottom object of the proposed subsumption
+    * *TOP*: URI of the top object ofo the proposed subsumption
+    * *VALUE*: value of the proposed subsumption according to the chosen evaluation strategy
 * *comparison-statistics*: file where statistics of comparison results will be written
 
 ### Comparison results statistics histograms
