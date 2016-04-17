@@ -2,7 +2,7 @@
 
 ## Context
 
-Work started as a project at TELECOM Nancy (Knowledge based system - SBC class)
+Work started as a project at [TELECOM Nancy](http://telecomnancy.univ-lorraine.fr/) (Knowledge based system - SBC class)
 
 It aims at mining DBPedia data by comparing data-based classification with existing classifications
 hierarchies (DBPedia categories, ontology classes and yago classes)
@@ -44,12 +44,12 @@ Can be executed with the following command:
 java dbpediaanalyzer.main.LatticeAnalysis lattice evaluation-strategy^{3} output comparison-statistics
 ```
 
-* *lattice*: JSON file corresponding to the lattice to analyzep
+* *lattice*: JSON file corresponding to the lattice to analyze
 * *evaluation-strategy*:
     * Evaluation strategy for knowledge proposal:
         1. confirmed direct relationships
         2. relationships proposed to be changed from inferred to direct
-        3. evaluation of new relationships proposed
+        3. new relationships
     * Possibles values:
         * *NumberOfSubmissions*: value will be set to number of times the proposal has been submitted
         * *AverageExtensionsRatio*: value will be set to the average extensions ratio of each pair of concepts proposing the relationship
