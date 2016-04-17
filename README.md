@@ -66,7 +66,24 @@ java dbpediaanalyzer.main.LatticeAnalysis lattice evaluation-strategy^{3} output
 
 ### Comparison results statistics histograms
 
-Under construction :-)
+Generates histograms of values of knowledge comparison results.
+If there are 0 values for a relationship type, related histogram is not produced.
+
+Can be executed with the following command:
+
+```shell
+python dbpediaresultsgraphs.py comparison-results hist-confirmed strategy-confirmed hist-proposed-inferred-to-direct strategy-proposed-inferred-to-direct hist-proposed-new strategy-proposed-new
+```
+
+* *comparison-results*: CSV file produced by LatticeAnalysis program to be analyzed
+* *hist-confirmed*: file where histogram of values of confirmed relationships will be saved
+* *strategy-confirmed*: strategy used during analysis to evaluate confirmed relationships
+* *hist-proposed-inferred-to-direct*: file where histogram of values of relationships proposed to be changed from inferred to direct will be saved
+* *strategy-proposed-inferred-to-direct*: strategy used during analysis to evaluate relationships proposed to be changed from inferred to direct
+* *hist-proposed-new*: file where histogram of values of proposed new relationships will be saved
+* *strategy-proposed-new*: strategy used during analysis to evaluate proposed new relationships
+* Possible values for strategies: NumberOfSubmissions, AverageExtensionsRatio, DistanceFromLCA
+
 
 ### Hierarchies statistics
 
