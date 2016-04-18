@@ -2,6 +2,7 @@ package dbpediaanalyzer.dbpediaobject;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * TODO JAVADOC
@@ -29,7 +30,7 @@ public class OntologyClass extends HierarchyElement {
         }
     }
 
-    public static ArrayList<OntologyClass> getAccessibleUpwardOntologyClasses(Collection<OntologyClass> fromSubset) {
+    public static List<OntologyClass> getAccessibleUpwardOntologyClasses(Collection<OntologyClass> fromSubset) {
         Collection<HierarchyElement> accessible = HierarchyElement.getAccessibleUpwardElements(fromSubset);
         ArrayList<OntologyClass> retVal = new ArrayList<>();
 

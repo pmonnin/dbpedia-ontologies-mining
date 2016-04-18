@@ -1,6 +1,7 @@
 package dbpediaanalyzer.dbpediaobject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a page of DBPedia.
@@ -16,10 +17,10 @@ import java.util.ArrayList;
  */
 public class Page {
     private String uri;
-    private ArrayList<String> relationships;
-    private ArrayList<Category> categories;
-    private ArrayList<OntologyClass> ontologyClasses;
-    private ArrayList<YagoClass> yagoClasses;
+    private List<String> relationships;
+    private List<Category> categories;
+    private List<OntologyClass> ontologyClasses;
+    private List<YagoClass> yagoClasses;
 
     /**
      * Constructs a basic DBPedia page object. All information (relationships, categories, ontology classes, yago
@@ -58,7 +59,7 @@ public class Page {
      * Returns the relationship predicates associated with the page
      * @return the relationship predicates associated with the page
      */
-    public ArrayList<String> getRelationships() {
+    public List<String> getRelationships() {
         return new ArrayList<>(this.relationships);
     }
 
@@ -77,7 +78,7 @@ public class Page {
      * Returns the categories associated with the page
      * @return the categories associated with the page
      */
-    public ArrayList<Category> getCategories() {
+    public List<Category> getCategories() {
         return new ArrayList<>(this.categories);
     }
 
@@ -96,7 +97,7 @@ public class Page {
      * Returns the ontology classes associated with the page
      * @return the ontology classes associated with the page
      */
-    public ArrayList<OntologyClass> getOntologyClasses() {
+    public List<OntologyClass> getOntologyClasses() {
         return new ArrayList<>(this.ontologyClasses);
     }
 
@@ -115,7 +116,7 @@ public class Page {
      * Returns the yago classes associated with the page
      * @return the yago classes associated with the page
      */
-    public ArrayList<YagoClass> getYagoClasses() {
+    public List<YagoClass> getYagoClasses() {
         return new ArrayList<>(this.yagoClasses);
     }
 }

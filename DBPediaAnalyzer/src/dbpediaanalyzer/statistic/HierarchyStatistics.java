@@ -17,7 +17,7 @@ public class HierarchyStatistics {
     private int directSubsumptions;
     private int inferredSubsumptions;
 
-    public HierarchyStatistics(HashMap<String, ? extends HierarchyElement> hierarchy) {
+    public HierarchyStatistics(Map<String, ? extends HierarchyElement> hierarchy) {
         this.elementsNumber= -1;
         this.orphansNumber = -1;
         this.depth = -1;
@@ -27,7 +27,7 @@ public class HierarchyStatistics {
         computeStatistics(hierarchy);
     }
 
-    private void computeStatistics(HashMap<String, ? extends HierarchyElement> hierarchy) {
+    private void computeStatistics(Map<String, ? extends HierarchyElement> hierarchy) {
         this.elementsNumber = hierarchy.size();
 
         this.orphansNumber = 0;
@@ -46,7 +46,7 @@ public class HierarchyStatistics {
         computeInferredSubsumptions(hierarchy);
     }
 
-    private void computeDepth(HashMap<String, ? extends HierarchyElement> hierarchy, ArrayList<HierarchyElement> orphans) {
+    private void computeDepth(Map<String, ? extends HierarchyElement> hierarchy, ArrayList<HierarchyElement> orphans) {
         HashMap<String, Integer> elementsDepth = new HashMap<>();
         Queue<HierarchyElement> queue = new LinkedList<>();
 
@@ -77,7 +77,7 @@ public class HierarchyStatistics {
         }
     }
 
-    private void computeInferredSubsumptions(HashMap<String, ? extends HierarchyElement> hierarchy) {
+    private void computeInferredSubsumptions(Map<String, ? extends HierarchyElement> hierarchy) {
         this.inferredSubsumptions = 0;
 
         for(String key : hierarchy.keySet()) {

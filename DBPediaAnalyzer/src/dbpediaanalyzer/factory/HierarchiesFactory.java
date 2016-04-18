@@ -11,6 +11,7 @@ import dbpediaanalyzer.io.SparqlValue;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * TODO JAVADOC
@@ -28,7 +29,7 @@ public class HierarchiesFactory {
                 createYagoClassesHierarchy());
     }
 
-    private static HashMap<String, Category> createCategoriesHierarchy() {
+    private static Map<String, Category> createCategoriesHierarchy() {
         HashMap<String, Category> categories = new HashMap<>();
 
         try {
@@ -74,7 +75,7 @@ public class HierarchiesFactory {
         return categories;
     }
 
-    private static HashMap<String, OntologyClass> createOntologyClassesHierarchy() {
+    private static Map<String, OntologyClass> createOntologyClassesHierarchy() {
         HashMap<String, OntologyClass> ontologyClasses = new HashMap<>();
 
         try {
@@ -121,7 +122,7 @@ public class HierarchiesFactory {
         return ontologyClasses;
     }
 
-    private static HashMap<String, YagoClass> createYagoClassesHierarchy() {
+    private static Map<String, YagoClass> createYagoClassesHierarchy() {
         HashMap<String, YagoClass> yagoClasses = new HashMap<>();
 
         try {

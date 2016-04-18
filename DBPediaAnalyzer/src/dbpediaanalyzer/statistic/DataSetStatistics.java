@@ -3,6 +3,7 @@ package dbpediaanalyzer.statistic;
 import dbpediaanalyzer.dbpediaobject.*;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class computing statistics over the selected DBPedia data set
@@ -22,7 +23,7 @@ public class DataSetStatistics {
     private int indirectLinkedOntologyClassesNumber;
     private int indirectLinkedYagoClassesNumber;
 
-    public DataSetStatistics(HashMap<String, Page> dataSet) {
+    public DataSetStatistics(Map<String, Page> dataSet) {
         this.pagesNumber = dataSet.size();
 
         this.averageCategoriesNumberPerPage = 0;

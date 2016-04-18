@@ -85,9 +85,9 @@ public class LatticeFactory {
     private static void initializeLatticeAnnotations(List<Concept> concepts, Map<String, Page> dataSet) {
         for(Concept c : concepts) {
             if(c.getObjects().size() != 0) {
-                ArrayList<Category> conceptCategories = Category.getAccessibleUpwardCategories(dataSet.get(c.getObjects().get(0)).getCategories());
-                ArrayList<OntologyClass> conceptOntologyClasses = OntologyClass.getAccessibleUpwardOntologyClasses(dataSet.get(c.getObjects().get(0)).getOntologyClasses());
-                ArrayList<YagoClass> conceptYagoClasses = YagoClass.getAccessibleUpwardYagoClasses(dataSet.get(c.getObjects().get(0)).getYagoClasses());
+                List<Category> conceptCategories = Category.getAccessibleUpwardCategories(dataSet.get(c.getObjects().get(0)).getCategories());
+                List<OntologyClass> conceptOntologyClasses = OntologyClass.getAccessibleUpwardOntologyClasses(dataSet.get(c.getObjects().get(0)).getOntologyClasses());
+                List<YagoClass> conceptYagoClasses = YagoClass.getAccessibleUpwardYagoClasses(dataSet.get(c.getObjects().get(0)).getYagoClasses());
 
                 for(int i = 1 ; i < c.getObjects().size() ; i++) {
                     conceptCategories.retainAll(Category.getAccessibleUpwardCategories(dataSet.get(c.getObjects().get(i)).getCategories()));

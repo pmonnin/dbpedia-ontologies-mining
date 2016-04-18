@@ -11,15 +11,17 @@ import java.util.*;
  *
  */
 public class HierarchiesManager {
-    private HashMap<String, Category> categories;
-    private HashMap<String, OntologyClass> ontologyClasses;
-    private HashMap<String, YagoClass> yagoClasses;
+    private Map<String, Category> categories;
+    private Map<String, OntologyClass> ontologyClasses;
+    private Map<String, YagoClass> yagoClasses;
 
-    public HierarchiesManager(HashMap<String, Category> categories, HashMap<String, OntologyClass> ontologyClasses,
-                              HashMap<String, YagoClass> yagoClasses) {
-        this.categories = categories;
-        this.ontologyClasses = ontologyClasses;
-        this.yagoClasses = yagoClasses;
+    public HierarchiesManager(Map<String, Category> categories, Map<String, OntologyClass> ontologyClasses,
+                              Map<String, YagoClass> yagoClasses) {
+
+        this.categories = new HashMap<>(categories);
+        this.ontologyClasses = new HashMap<>(ontologyClasses);
+        this.yagoClasses = new HashMap<>(yagoClasses);
+
     }
 
     public Category getCategoryFromUri(String uri) {

@@ -6,6 +6,7 @@ import dbpediaanalyzer.dbpediaobject.YagoClass;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -16,17 +17,17 @@ import java.util.Queue;
  */
 public class Concept {
     // Basic concept data
-    private ArrayList<String> objects;
-    private ArrayList<String> attributes;
+    private List<String> objects;
+    private List<String> attributes;
 
     // Relationships
-    private ArrayList<Concept> parents;
-    private ArrayList<Concept> children;
+    private List<Concept> parents;
+    private List<Concept> children;
 
     // Annotations
-    private ArrayList<Category> categories;
-    private ArrayList<OntologyClass> ontologyClasses;
-    private ArrayList<YagoClass> yagoClasses;
+    private List<Category> categories;
+    private List<OntologyClass> ontologyClasses;
+    private List<YagoClass> yagoClasses;
 
     public Concept(colibri.lib.Concept colibriConcept) {
         this.objects = new ArrayList<>();
@@ -48,8 +49,8 @@ public class Concept {
         this.yagoClasses = new ArrayList<>();
     }
 
-    public Concept(ArrayList<String> objects, ArrayList<String> attributes, ArrayList<Category> categories,
-                   ArrayList<OntologyClass> ontologyClasses, ArrayList<YagoClass> yagoClasses) {
+    public Concept(List<String> objects, List<String> attributes, List<Category> categories,
+                   List<OntologyClass> ontologyClasses, List<YagoClass> yagoClasses) {
 
         this.objects = new ArrayList<>(objects);
         this.attributes = new ArrayList<>(attributes);
@@ -63,11 +64,11 @@ public class Concept {
 
     }
 
-    public ArrayList<String> getObjects() {
+    public List<String> getObjects() {
         return new ArrayList<>(this.objects);
     }
 
-    public ArrayList<String> getAttributes() {
+    public List<String> getAttributes() {
         return new ArrayList<>(this.attributes);
     }
 
@@ -77,7 +78,7 @@ public class Concept {
         }
     }
 
-    public ArrayList<Concept> getParents() {
+    public List<Concept> getParents() {
         return new ArrayList<>(this.parents);
     }
 
@@ -87,11 +88,11 @@ public class Concept {
         }
     }
 
-    public ArrayList<Concept> getChildren() {
+    public List<Concept> getChildren() {
         return new ArrayList<>(this.children);
     }
 
-    public ArrayList<Concept> getDescendants() {
+    public List<Concept> getDescendants() {
         ArrayList<Concept> descendants = new ArrayList<>();
 
         Queue<Concept> queue = new LinkedList<>();
@@ -112,39 +113,39 @@ public class Concept {
         return descendants;
     }
 
-    public void setCategories(ArrayList<Category> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = new ArrayList<>(categories);
     }
 
-    public void removeCategories(ArrayList<Category> categories) {
+    public void removeCategories(List<Category> categories) {
         this.categories.removeAll(categories);
     }
 
-    public ArrayList<Category> getCategories() {
+    public List<Category> getCategories() {
         return new ArrayList<>(this.categories);
     }
 
-    public void setOntologyClasses(ArrayList<OntologyClass> ontologyClasses) {
+    public void setOntologyClasses(List<OntologyClass> ontologyClasses) {
         this.ontologyClasses = new ArrayList<>(ontologyClasses);
     }
 
-    public void removeOntologyClasses(ArrayList<OntologyClass> ontologyClasses) {
+    public void removeOntologyClasses(List<OntologyClass> ontologyClasses) {
         this.ontologyClasses.removeAll(ontologyClasses);
     }
 
-    public ArrayList<OntologyClass> getOntologyClasses() {
+    public List<OntologyClass> getOntologyClasses() {
         return new ArrayList<>(this.ontologyClasses);
     }
 
-    public void setYagoClasses(ArrayList<YagoClass> yagoClasses) {
+    public void setYagoClasses(List<YagoClass> yagoClasses) {
         this.yagoClasses = new ArrayList<>(yagoClasses);
     }
 
-    public void removeYagoClasses(ArrayList<YagoClass> yagoClasses) {
+    public void removeYagoClasses(List<YagoClass> yagoClasses) {
         this.yagoClasses.removeAll(yagoClasses);
     }
 
-    public ArrayList<YagoClass> getYagoClasses() {
+    public List<YagoClass> getYagoClasses() {
         return new ArrayList<>(this.yagoClasses);
     }
 }

@@ -40,6 +40,6 @@ public class DataBasedSubsumption {
     }
 
     public List<Double> getExtensionsRatios() {
-        return this.extensionsRatios;
+        return new ArrayList<>(this.extensionsRatios);
     }
 }

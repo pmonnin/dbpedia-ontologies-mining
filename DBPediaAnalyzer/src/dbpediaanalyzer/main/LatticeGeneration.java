@@ -14,6 +14,7 @@ import dbpediaanalyzer.statistic.LatticeStatistics;
 import dbpediaanalyzer.util.TimeMeasurer;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -70,7 +71,7 @@ public class LatticeGeneration {
             HierarchiesManager hm = HierarchiesFactory.createHierarchies();
 
             System.out.println("\t Querying and parsing data set pages...");
-            HashMap<String, Page> dataSet = DataSetFactory.createDataSet(args[0], args[1], hm);
+            Map<String, Page> dataSet = DataSetFactory.createDataSet(args[0], args[1], hm);
 
             System.out.println("\t Computing data set statistics...");
             DataSetStatistics dataSetStatistics = new DataSetStatistics(dataSet);

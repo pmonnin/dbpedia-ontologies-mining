@@ -2,6 +2,7 @@ package dbpediaanalyzer.dbpediaobject;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * TODO JAVADOC
@@ -29,7 +30,7 @@ public class Category extends HierarchyElement {
         }
     }
 
-    public static ArrayList<Category> getAccessibleUpwardCategories(Collection<Category> fromSubset) {
+    public static List<Category> getAccessibleUpwardCategories(Collection<Category> fromSubset) {
         Collection<HierarchyElement> accessible = HierarchyElement.getAccessibleUpwardElements(fromSubset);
         ArrayList<Category> retVal = new ArrayList<>();
 

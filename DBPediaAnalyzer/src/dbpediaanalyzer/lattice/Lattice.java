@@ -1,6 +1,7 @@
 package dbpediaanalyzer.lattice;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * TODO JAVADOC
@@ -9,7 +10,7 @@ import java.util.*;
  *
  */
 public class Lattice {
-    private ArrayList<Concept> concepts;
+    private List<Concept> concepts;
     private Concept top;
     private Concept bottom;
 
@@ -38,7 +39,7 @@ public class Lattice {
         return this.bottom;
     }
 
-    public ArrayList<Concept> getConcepts() {
+    public List<Concept> getConcepts() {
         return new ArrayList<>(this.concepts);
     }
 }

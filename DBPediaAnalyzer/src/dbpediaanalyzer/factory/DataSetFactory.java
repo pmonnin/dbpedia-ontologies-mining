@@ -8,6 +8,7 @@ import dbpediaanalyzer.io.SparqlResponse;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * TODO JAVADOC
@@ -22,7 +23,7 @@ public class DataSetFactory {
      * @param minDeathDate
      * @param maxDeathDate
      */
-    public static HashMap<String, Page> createDataSet(String minDeathDate, String maxDeathDate, HierarchiesManager hierarchiesManager) {
+    public static Map<String, Page> createDataSet(String minDeathDate, String maxDeathDate, HierarchiesManager hierarchiesManager) {
         HashMap<String, Page> dataSet = new HashMap<>();
 
         try {

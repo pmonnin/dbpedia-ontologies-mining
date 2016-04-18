@@ -10,8 +10,8 @@ import java.util.*;
  */
 public abstract class HierarchyElement {
     private String uri;
-    private ArrayList<HierarchyElement> parents;
-    private ArrayList<HierarchyElement> children;
+    private List<HierarchyElement> parents;
+    private List<HierarchyElement> children;
 
     public HierarchyElement(String uri) {
         this.uri = uri;
