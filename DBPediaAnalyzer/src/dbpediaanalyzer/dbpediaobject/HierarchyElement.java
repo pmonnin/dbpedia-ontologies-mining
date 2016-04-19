@@ -12,11 +12,13 @@ public abstract class HierarchyElement {
     private String uri;
     private List<HierarchyElement> parents;
     private List<HierarchyElement> children;
+    private Map<HierarchyElement, Integer> ancestorsAndDistances;
 
     public HierarchyElement(String uri) {
         this.uri = uri;
         this.parents = new ArrayList<>();
         this.children = new ArrayList<>();
+        this.ancestorsAndDistances = null;
     }
 
     public void addParent(HierarchyElement parent) {
@@ -35,69 +37,59 @@ public abstract class HierarchyElement {
         return this.uri;
     }
 
-    public Collection<HierarchyElement> getParents() {
+    public List<HierarchyElement> getParents() {
         return new ArrayList<>(this.parents);
     }
 
-    public Collection<HierarchyElement> getChildren() {
+    public List<HierarchyElement> getChildren() {
         return new ArrayList<>(this.children);
     }
 
-    public Collection<HierarchyElement> getAncestors() {
-        return HierarchyElement.getAccessibleUpwardElements(this.parents);
-    }
-
-    public int getDistanceFromAncestor(HierarchyElement ancestor) {
-        if(this.parents.contains(ancestor)) {
-            return 1;
+    public Map<HierarchyElement, Integer> getAncestorsAndDistances() {
+        if(this.ancestorsAndDistances == null) {
+            computeAncestorsAndDistances();
         }
 
-        HashMap<HierarchyElement, Integer> distances = new HashMap<>();
-        Queue<HierarchyElement> queue = new LinkedList<>();
+        return new HashMap<>(this.ancestorsAndDistances);
+    }
 
+    public boolean hasAncestor(HierarchyElement element) {
+        if(this.ancestorsAndDistances == null) {
+            computeAncestorsAndDistances();
+        }
+
+        return this.ancestorsAndDistances.containsKey(element);
+    }
+
+    private void computeAncestorsAndDistances() {
+        this.ancestorsAndDistances = new HashMap<>();
+
+        Queue<HierarchyElement> queue = new LinkedList<>();
         for(HierarchyElement parent : this.parents) {
-            distances.put(parent, 1);
+            this.ancestorsAndDistances.put(parent, 1);
             queue.add(parent);
         }
 
         while(!queue.isEmpty()) {
-            HierarchyElement element = queue.poll();
+            HierarchyElement ancestor = queue.poll();
 
-            for(HierarchyElement parent : element.getParents()) {
-                if(parent == ancestor) {
-                    return distances.get(element) + 1;
-                }
-
-                if(!distances.containsKey(parent)) {
-                    distances.put(parent, distances.get(element) + 1);
+            for(HierarchyElement parent : ancestor.getParents()) {
+                if(!this.ancestorsAndDistances.containsKey(parent) || this.ancestorsAndDistances.get(ancestor) + 1 < this.ancestorsAndDistances.get(parent)) {
+                    this.ancestorsAndDistances.put(parent, this.ancestorsAndDistances.get(ancestor) + 1);
                     queue.add(parent);
                 }
             }
         }
-
-        return -1;
     }
 
-    protected static Collection<HierarchyElement> getAccessibleUpwardElements(Collection<? extends HierarchyElement> fromSubset) {
-        HashMap<String, HierarchyElement> accessible = new HashMap<>();
-        Queue<HierarchyElement> queue = new LinkedList<>();
+    protected static List<HierarchyElement> getAccessibleUpwardElements(Collection<? extends HierarchyElement> fromSubset) {
+        HashMap<HierarchyElement, Integer> accessibleElements = new HashMap<>();
 
-        for(HierarchyElement he : fromSubset) {
-            queue.add(he);
-            accessible.put(he.getUri(), he);
+        for(HierarchyElement element : fromSubset) {
+            accessibleElements.put(element, 0);
+            accessibleElements.putAll(element.getAncestorsAndDistances());
         }
 
-        while(!queue.isEmpty()) {
-            HierarchyElement he = queue.poll();
-
-            for(HierarchyElement parent : he.getParents()) {
-                if(!accessible.containsKey(parent.getUri())) {
-                    accessible.put(parent.getUri(), parent);
-                    queue.add(parent);
-                }
-            }
-        }
-
-        return accessible.values();
+        return new ArrayList<>(accessibleElements.keySet());
     }
 }

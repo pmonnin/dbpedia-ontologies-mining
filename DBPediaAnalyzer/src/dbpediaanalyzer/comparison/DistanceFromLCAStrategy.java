@@ -5,6 +5,7 @@ import dbpediaanalyzer.dbpediaobject.HierarchyElement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * TODO JAVADOC
@@ -16,8 +17,11 @@ public class DistanceFromLCAStrategy extends EvaluationStrategy {
 
     @Override
     public double computeValue(DataBasedSubsumption subsumption) {
-        List<HierarchyElement> commonAncestors = new ArrayList<>(subsumption.getBottom().getAncestors());
-        commonAncestors.retainAll(subsumption.getTop().getAncestors());
+        Map<HierarchyElement, Integer> ancestorsTop = subsumption.getTop().getAncestorsAndDistances();
+        Map<HierarchyElement, Integer> ancestorsBottom = subsumption.getBottom().getAncestorsAndDistances();
+
+        List<HierarchyElement> commonAncestors = new ArrayList<>(ancestorsTop.keySet());
+        commonAncestors.retainAll(ancestorsBottom.keySet());
 
         if(commonAncestors.isEmpty()) {
             return 0;
@@ -26,8 +30,7 @@ public class DistanceFromLCAStrategy extends EvaluationStrategy {
         int distanceFromLCA = -1;
 
         for(HierarchyElement commonAncestor : commonAncestors) {
-            int currentDistance = subsumption.getBottom().getDistanceFromAncestor(commonAncestor) +
-                    subsumption.getTop().getDistanceFromAncestor(commonAncestor);
+            int currentDistance = ancestorsTop.get(commonAncestor) + ancestorsBottom.get(commonAncestor);
 
             if(currentDistance >= 0 && currentDistance < distanceFromLCA || distanceFromLCA == -1) {
                 distanceFromLCA = currentDistance;

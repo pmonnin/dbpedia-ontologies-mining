@@ -33,7 +33,7 @@ public class KnowledgesComparisonResultFactory {
             }
 
             // Is this an already existing inferred relationship?
-            else if(dbs.getBottom().getAncestors().contains(dbs.getTop())) {
+            else if(dbs.getBottom().hasAncestor(dbs.getTop())) {
                 results.add(new ComparisonResult(ComparisonResultType.PROPOSED_INFERRED_TO_DIRECT,
                         dbs.getBottom(), dbs.getTop(), strategyProposedInferredToDirect.computeValue(dbs)));
             }
