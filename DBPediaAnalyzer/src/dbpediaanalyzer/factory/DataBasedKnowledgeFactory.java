@@ -18,7 +18,7 @@ import java.util.*;
  */
 public class DataBasedKnowledgeFactory {
 
-    public static Collection<DataBasedSubsumption> createDataBasedKnowledge(Lattice lattice) {
+    public static List<DataBasedSubsumption> createDataBasedKnowledge(Lattice lattice) {
         HashMap<String, DataBasedSubsumption> dataBasedKnowledge = new HashMap<>();
 
         HashMap<Concept, Boolean> seen = new HashMap<>();
@@ -44,7 +44,7 @@ public class DataBasedKnowledgeFactory {
             }
         }
 
-        return dataBasedKnowledge.values();
+        return new ArrayList<>(dataBasedKnowledge.values());
     }
 
     private static void analyzeEdge(Concept upper, Concept lower, HashMap<String, DataBasedSubsumption> dataBasedKnowledge) {
