@@ -4,10 +4,7 @@ import dbpediaanalyzer.dbpediaobject.Category;
 import dbpediaanalyzer.dbpediaobject.OntologyClass;
 import dbpediaanalyzer.dbpediaobject.YagoClass;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * TODO JAVADOC
@@ -93,24 +90,26 @@ public class Concept {
     }
 
     public List<Concept> getDescendants() {
-        ArrayList<Concept> descendants = new ArrayList<>();
+        HashMap<Concept, Boolean> seen = new HashMap<>();
 
         Queue<Concept> queue = new LinkedList<>();
         queue.addAll(this.children);
-        descendants.addAll(this.children);
+        for(Concept child : this.children) {
+            seen.put(child, true);
+        }
 
         while(!queue.isEmpty()) {
             Concept concept = queue.poll();
 
             for(Concept child : concept.getChildren()) {
-                if(!descendants.contains(child)) {
-                    descendants.add(child);
+                if(!seen.containsKey(child)) {
+                    seen.put(child, true);
                     queue.add(child);
                 }
             }
         }
 
-        return descendants;
+        return new ArrayList<>(seen.keySet());
     }
 
     public void setCategories(List<Category> categories) {
