@@ -48,7 +48,7 @@ public class DataBasedKnowledgeFactory {
     }
 
     private static void analyzeEdge(Concept upper, Concept lower, HashMap<String, DataBasedSubsumption> dataBasedKnowledge) {
-        double extensionsRatio = (double) upper.getObjects().size() / (double) lower.getObjects().size();
+        double extensionsRatio = (double) lower.getObjects().size() / (double) upper.getObjects().size();
 
         // Categories analysis
         for(Category lCategory : lower.getCategories()) {
