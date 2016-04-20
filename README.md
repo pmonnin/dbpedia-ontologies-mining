@@ -54,14 +54,15 @@ java dbpediaanalyzer.main.LatticeAnalysis lattice evaluation-strategy^{3} output
         * *NumberOfSubmissions*: value will be set to number of times the proposal has been submitted
         * *AverageExtensionsRatio*: value will be set to the average extensions ratio of each pair of concepts proposing the relationship
         * *DistanceFromLCA*: value will be set to 1 / (distance from Lowest Common Ancestor)
-* *output*: file where comparison results will be written. CSV format with the following columns:
-    * *TYPE*: type of the relationship. Possible values:
+* *output*: file where comparison results will be written. JSON format is used with a global array containing one JSON object per result.
+    These JSON objects contain the following fields:
+    * *type* (string): type of the relationship. Possible values:
         * *CONFIRMED_DIRECT*: direct relationship already existing
         * *PROPOSED_INFERRED_TO_DIRECT*: relationship already existing as inferred, proposed to be changed to direct subsumption
         * *PROPOSED_NEW*: relationship not existing inside DBPedia hierarchies
-    * *BOTTOM*: URI of the bottom object of the proposed subsumption
-    * *TOP*: URI of the top object ofo the proposed subsumption
-    * *VALUE*: value of the proposed subsumption according to the chosen evaluation strategy
+    * *bottom* (string): URI of the bottom object of the proposed subsumption
+    * *top* (string): URI of the top object of the proposed subsumption
+    * *value* (number): value of the proposed subsumption according to the chosen evaluation strategy
 * *comparison-statistics*: file where statistics of comparison results will be written
 
 ### Comparison results statistics histograms
@@ -75,7 +76,7 @@ Can be executed with the following command:
 python dbpediaresultsgraphs.py comparison-results hist-confirmed strategy-confirmed hist-proposed-inferred-to-direct strategy-proposed-inferred-to-direct hist-proposed-new strategy-proposed-new
 ```
 
-* *comparison-results*: CSV file produced by LatticeAnalysis program to be analyzed
+* *comparison-results*: JSON file produced by LatticeAnalysis program to be analyzed
 * *hist-confirmed*: file where histogram of values of confirmed relationships will be saved
 * *strategy-confirmed*: strategy used during analysis to evaluate confirmed relationships
 * *hist-proposed-inferred-to-direct*: file where histogram of values of relationships proposed to be changed from inferred to direct will be saved
