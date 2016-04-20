@@ -86,10 +86,7 @@ public class LatticeAnalysis {
 
             System.out.println("Saving results...");
             System.out.println("\t Saving comparison results...");
-            ComparisonResultsWriter resultsWriter = new ComparisonResultsWriter(args[4]);
-            resultsWriter.writeColumnsHeader();
-            resultsWriter.writeComparisonResults(comparisonResults);
-            resultsWriter.close();
+            (new ComparisonResultsWriter()).writeComparisonResults(comparisonResults, args[4]);
             System.out.println("\t Saving comparison results statistics...");
             ComparisonResultsStatisticsWriter statisticsWriter = new ComparisonResultsStatisticsWriter(args[5]);
             statisticsWriter.writeComparisonResultsStatistics(statistics);

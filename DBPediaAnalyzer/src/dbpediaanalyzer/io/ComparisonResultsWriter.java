@@ -1,11 +1,13 @@
 package dbpediaanalyzer.io;
 
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import dbpediaanalyzer.comparison.ComparisonResult;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 /**
@@ -15,29 +17,34 @@ import java.util.List;
  *
  */
 public class ComparisonResultsWriter {
-    private PrintWriter writer;
 
-    public ComparisonResultsWriter(String fileName) {
+    public void writeComparisonResults(List<ComparisonResult> comparisonResults, String fileName) {
         try {
-            this.writer = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
+            JsonGenerator jsonGenerator = (new JsonFactory()).createGenerator(new File(fileName), JsonEncoding.UTF8);
+            jsonGenerator.setPrettyPrinter(new DefaultPrettyPrinter()); // Only for debug purposes
+
+            // Global array begin
+            jsonGenerator.writeStartArray();
+
+            for (ComparisonResult result : comparisonResults) {
+                jsonGenerator.writeStartObject();
+
+                jsonGenerator.writeStringField("type", result.getType().toString());
+                jsonGenerator.writeStringField("bottom", result.getBottom().getUri());
+                jsonGenerator.writeStringField("top", result.getTop().getUri());
+                jsonGenerator.writeNumberField("value", result.getValue());
+
+                jsonGenerator.writeEndObject();
+            }
+
+            // Global array end
+            jsonGenerator.writeEndArray();
+
+            jsonGenerator.close();
         }
 
         catch(IOException e) {
-            System.err.println("Error while trying to open file " + fileName + " to save comparison results");
+            System.err.println("Error while trying to save comparison results inside file " + fileName + ".");
         }
-    }
-
-    public void writeColumnsHeader() {
-        this.writer.println("TYPE,BOTTOM,TOP,VALUE");
-    }
-
-    public void writeComparisonResults(List<ComparisonResult> comparisonResults) {
-        for(ComparisonResult result : comparisonResults) {
-            this.writer.println(result.getType() + "," + result.getBottom().getUri() + "," + result.getTop().getUri() + "," + result.getValue());
-        }
-    }
-
-    public void close() {
-        this.writer.close();
     }
 }
