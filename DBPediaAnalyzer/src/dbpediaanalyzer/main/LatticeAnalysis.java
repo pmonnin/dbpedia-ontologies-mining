@@ -60,7 +60,7 @@ public class LatticeAnalysis {
             System.out.println("\t\t NumberOfSubmissions\n\t\t\t value will be set to number of times the proposal has been submitted");
             System.out.println("\t\t AverageExtensionsRatio\n\t\t\t value will be set to the average extensions ratio of each pair of concepts proposing the relationship");
             System.out.println("\t\t DistanceFromLCA\n\t\t\t value will be set to 1 / (distance from Lowest Common Ancestor)");
-            System.out.println("\t output\n\t\t file where comparison results will be written (CSV format)");
+            System.out.println("\t output\n\t\t file where comparison results will be written (JSON format)");
             System.out.println("\t comparison-statistics\n\t\t file where statistics of comparison results will be written");
         }
 

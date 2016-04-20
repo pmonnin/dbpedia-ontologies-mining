@@ -1,8 +1,10 @@
 #!/usr/bin/python
 
 import sys
-import csv
+import json
 import matplotlib.pyplot
+
+__author__ = "Pierre Monnin"
 
 possible_strategies = ["NumberOfSubmissions", "AverageExtensionsRatio", "DistanceFromLCA"]
 
@@ -11,7 +13,7 @@ def print_usage():
     print("Usage:\n python dbpediaresultsgraphs.py comparison-results hist-confirmed strategy-confirmed "
           "hist-proposed-inferred-to-direct strategy-proposed-inferred-to-direct "
           "hist-proposed-new strategy-proposed-new")
-    print("\t comparison-results\n\t\t CSV file produced by LatticeAnalysis program to be analyzed")
+    print("\t comparison-results\n\t\t JSON file produced by LatticeAnalysis program to be analyzed")
     print("\t hist-confirmed\n\t\t histogram of values of confirmed relationships")
     print("\t strategy-confirmed\n\t\t strategy used during analysis to evaluate confirmed relationships")
     print("\t hist-proposed-inferred-to-direct\n\t\t histogram of values of relationships proposed to be changed from "
@@ -36,20 +38,20 @@ def check_command_arguments():
     return correct_arguments
 
 
-def read_values_from_csv(csv_file):
-    fp = open(csv_file, 'r')
-    csvreader = csv.reader(fp)
+def read_values_from_json(json_file):
+    fp = open(json_file, 'r')
+    json_values = json.load(fp)
 
     confirmed = []
     inferred = []
     new = []
-    for line in csvreader:
-        if line[0] == "CONFIRMED_DIRECT":
-            confirmed.append(float(line[3]))
-        elif line[0] == "PROPOSED_INFERRED_TO_DIRECT":
-            inferred.append(float(line[3]))
-        elif line[0] == "PROPOSED_NEW":
-            new.append(float(line[3]))
+    for o in json_values:
+        if o['type'] == "CONFIRMED_DIRECT":
+            confirmed.append(float(o['value']))
+        elif o['type'] == "PROPOSED_INFERRED_TO_DIRECT":
+            inferred.append(float(o['value']))
+        elif o['type'] == "PROPOSED_NEW":
+            new.append(float(o['value']))
 
     fp.close()
     return confirmed, inferred, new
@@ -73,7 +75,7 @@ def strategy_values_to_hist_bins(strategy, values):
 
 
 if check_command_arguments():
-    values_confirmed, values_inferred, values_new = read_values_from_csv(sys.argv[1])
+    values_confirmed, values_inferred, values_new = read_values_from_json(sys.argv[1])
 
     # Plotting confirmed relationships histogram
     if len(values_confirmed) != 0:
