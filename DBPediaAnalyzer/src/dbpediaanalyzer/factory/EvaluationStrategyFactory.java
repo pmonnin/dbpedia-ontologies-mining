@@ -1,7 +1,7 @@
 package dbpediaanalyzer.factory;
 
 import dbpediaanalyzer.comparison.AverageExtensionsRatioStrategy;
-import dbpediaanalyzer.comparison.DistanceFromLCAStrategy;
+import dbpediaanalyzer.comparison.DistanceViaLCAStrategy;
 import dbpediaanalyzer.comparison.EvaluationStrategy;
 import dbpediaanalyzer.comparison.NumberOfSubmissionsStrategy;
 
@@ -23,7 +23,7 @@ public class EvaluationStrategyFactory {
         }
 
         else if("DistanceFromLCA".equals(strategyName)) {
-            return new DistanceFromLCAStrategy();
+            return new DistanceViaLCAStrategy();
         }
 
         return null;

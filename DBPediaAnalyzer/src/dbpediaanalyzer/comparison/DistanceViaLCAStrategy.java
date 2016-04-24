@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Pierre Monnin
  *
  */
-public class DistanceFromLCAStrategy extends EvaluationStrategy {
+public class DistanceViaLCAStrategy extends EvaluationStrategy {
 
     @Override
     public double computeValue(DataBasedSubsumption subsumption) {
