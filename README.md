@@ -41,19 +41,10 @@ Extracts knowledge from lattice and compares it with the existing DBPedia hierar
 Can be executed with the following command:
 
 ```shell
-java dbpediaanalyzer.main.LatticeAnalysis lattice evaluation-strategy^{3} output comparison-statistics
+java dbpediaanalyzer.main.LatticeAnalysis lattice output comparison-statistics
 ```
 
 * *lattice*: JSON file corresponding to the lattice to analyze
-* *evaluation-strategy*:
-    * Evaluation strategy for knowledge proposal:
-        1. confirmed direct relationships
-        2. relationships proposed to be changed from inferred to direct
-        3. new relationships
-    * Possibles values:
-        * *NumberOfSubmissions*: value will be set to number of times the proposal has been submitted
-        * *AverageExtensionsRatio*: value will be set to the average extensions ratio of each pair of concepts proposing the relationship
-        * *DistanceFromLCA*: value will be set to 1 / (distance from Lowest Common Ancestor)
 * *output*: file where comparison results will be written. JSON format is used with a global array containing one JSON object per result.
     These JSON objects contain the following fields:
     * *type* (string): type of the relationship. Possible values:
@@ -62,7 +53,8 @@ java dbpediaanalyzer.main.LatticeAnalysis lattice evaluation-strategy^{3} output
         * *PROPOSED_NEW*: relationship not existing inside DBPedia hierarchies
     * *bottom* (string): URI of the bottom object of the proposed subsumption
     * *top* (string): URI of the top object of the proposed subsumption
-    * *value* (number): value of the proposed subsumption according to the chosen evaluation strategy
+    * *values* (object): values of the proposed subsumption according to available evaluation strategies. Object written
+    with fields: `"strategy-name":computed-value`.
 * *comparison-statistics*: file where statistics of comparison results will be written
 
 ### Comparison results statistics histograms

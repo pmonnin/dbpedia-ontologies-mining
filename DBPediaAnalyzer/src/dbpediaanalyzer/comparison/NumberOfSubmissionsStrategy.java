@@ -11,6 +11,11 @@ import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 public class NumberOfSubmissionsStrategy extends EvaluationStrategy{
 
     @Override
+    public String getName() {
+        return "NumberOfSubmissions";
+    }
+
+    @Override
     public double computeValue(DataBasedSubsumption subsumption) {
         return subsumption.getNumberOfSubmissions();
     }

@@ -13,6 +13,11 @@ import java.util.List;
 public class AverageExtensionsRatioStrategy extends EvaluationStrategy {
 
     @Override
+    public String getName() {
+        return "AverageExtensionsRatio";
+    }
+
+    @Override
     public double computeValue(DataBasedSubsumption subsumption) {
         double retVal = 0.0;
         List<Double> extensionsRatios = subsumption.getExtensionsRatios();

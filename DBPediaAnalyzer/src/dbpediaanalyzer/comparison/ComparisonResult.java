@@ -2,6 +2,9 @@ package dbpediaanalyzer.comparison;
 
 import dbpediaanalyzer.dbpediaobject.HierarchyElement;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * TODO JAVADOC
  *
@@ -11,13 +14,13 @@ public class ComparisonResult {
     private ComparisonResultType type;
     private HierarchyElement bottom;
     private HierarchyElement top;
-    private double value;
+    private Map<String, Double> values;
 
-    public ComparisonResult(ComparisonResultType type, HierarchyElement bottom, HierarchyElement top, double value) {
+    public ComparisonResult(ComparisonResultType type, HierarchyElement bottom, HierarchyElement top) {
         this.type = type;
         this.bottom = bottom;
         this.top = top;
-        this.value = value;
+        this.values = new HashMap<>();
     }
 
     public ComparisonResultType getType() {
@@ -32,7 +35,11 @@ public class ComparisonResult {
         return this.top;
     }
 
-    public double getValue() {
-        return this.value;
+    public void addValue(String strategy, double value) {
+        this.values.put(strategy, value);
+    }
+
+    public Map<String, Double> getValues() {
+        return new HashMap<>(this.values);
     }
 }

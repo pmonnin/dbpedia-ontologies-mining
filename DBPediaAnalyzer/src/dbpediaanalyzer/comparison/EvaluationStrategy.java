@@ -10,6 +10,8 @@ import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
  */
 public abstract class EvaluationStrategy {
 
+    public abstract String getName();
+
     public abstract double computeValue(DataBasedSubsumption subsumption);
 
 }

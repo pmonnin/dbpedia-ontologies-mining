@@ -16,6 +16,11 @@ import java.util.Map;
 public class DistanceViaLCAStrategy extends EvaluationStrategy {
 
     @Override
+    public String getName() {
+        return "DistanceViaLCA";
+    }
+
+    @Override
     public double computeValue(DataBasedSubsumption subsumption) {
         Map<HierarchyElement, Integer> ancestorsTop = subsumption.getTop().getAncestorsAndDistances();
         Map<HierarchyElement, Integer> ancestorsBottom = subsumption.getBottom().getAncestorsAndDistances();

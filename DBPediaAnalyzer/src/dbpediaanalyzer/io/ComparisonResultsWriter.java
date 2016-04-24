@@ -9,6 +9,7 @@ import dbpediaanalyzer.comparison.ComparisonResult;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * TODO JAVADOC
@@ -32,7 +33,12 @@ public class ComparisonResultsWriter {
                 jsonGenerator.writeStringField("type", result.getType().toString());
                 jsonGenerator.writeStringField("bottom", result.getBottom().getUri());
                 jsonGenerator.writeStringField("top", result.getTop().getUri());
-                jsonGenerator.writeNumberField("value", result.getValue());
+
+                jsonGenerator.writeObjectFieldStart("values");
+                for(Map.Entry<String, Double> entry : result.getValues().entrySet()) {
+                    jsonGenerator.writeNumberField(entry.getKey(), entry.getValue());
+                }
+                jsonGenerator.writeEndObject();
 
                 jsonGenerator.writeEndObject();
             }

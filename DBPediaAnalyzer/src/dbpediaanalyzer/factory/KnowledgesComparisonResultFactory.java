@@ -17,10 +17,7 @@ import java.util.List;
  */
 public class KnowledgesComparisonResultFactory {
 
-    public static List<ComparisonResult> createKnowledgesComparisonResults(Collection<DataBasedSubsumption> dataBasedKnowledge,
-                                                                    EvaluationStrategy strategyConfirmedDirect,
-                                                                    EvaluationStrategy strategyProposedInferredToDirect,
-                                                                    EvaluationStrategy strategyProposedNew) {
+    public static List<ComparisonResult> createKnowledgesComparisonResults(Collection<DataBasedSubsumption> dataBasedKnowledge) {
 
         List<ComparisonResult> results = new ArrayList<>();
 
@@ -28,25 +25,34 @@ public class KnowledgesComparisonResultFactory {
 
             // Is this an already existing direct relationship?
             if(dbs.getBottom().getParents().contains(dbs.getTop())) {
-                results.add(new ComparisonResult(ComparisonResultType.CONFIRMED_DIRECT,
-                        dbs.getBottom(), dbs.getTop(), strategyConfirmedDirect.computeValue(dbs)));
+                results.add(createComparisonResult(ComparisonResultType.CONFIRMED_DIRECT, dbs));
             }
 
             // Is this an already existing inferred relationship?
             else if(dbs.getBottom().hasAncestor(dbs.getTop())) {
-                results.add(new ComparisonResult(ComparisonResultType.PROPOSED_INFERRED_TO_DIRECT,
-                        dbs.getBottom(), dbs.getTop(), strategyProposedInferredToDirect.computeValue(dbs)));
+                results.add(createComparisonResult(ComparisonResultType.PROPOSED_INFERRED_TO_DIRECT, dbs));
             }
 
             // Is this a new relationship?
             else {
-                results.add(new ComparisonResult(ComparisonResultType.PROPOSED_NEW,
-                        dbs.getBottom(), dbs.getTop(), strategyProposedNew.computeValue(dbs)));
+                results.add(createComparisonResult(ComparisonResultType.PROPOSED_NEW, dbs));
             }
 
         }
 
         return results;
 
+    }
+
+    private static ComparisonResult createComparisonResult(ComparisonResultType type, DataBasedSubsumption dbs) {
+        List<EvaluationStrategy> strategies = EvaluationStrategiesFactory.getEvaluationStrategies();
+
+        ComparisonResult cr = new ComparisonResult(type, dbs.getBottom(), dbs.getTop());
+
+        for(EvaluationStrategy strategy : strategies) {
+            cr.addValue(strategy.getName(), strategy.computeValue(dbs));
+        }
+
+        return cr;
     }
 }
