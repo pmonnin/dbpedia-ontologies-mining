@@ -2,7 +2,9 @@ package dbpediaanalyzer.statistic;
 
 import dbpediaanalyzer.comparison.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * TODO JAVADOC
@@ -11,51 +13,80 @@ import java.util.List;
  *
  */
 public class ComparisonResultsStatistics {
-    private static final double UNDEFINED_VALUE = -1.0;
+    private ComparisonResultType type;
+    private String uriPrefix;
+    private int number;
+    private Map<String, Double> averageValues;
+    private Map<String, Double> minimumValues;
+    private Map<String, Double> maximumValues;
 
-    private int resultsNumber;
+    public ComparisonResultsStatistics(List<ComparisonResult> comparisonResults, ComparisonResultType type, String uriPrefix) {
+        this.type = type;
+        this.uriPrefix = uriPrefix;
+        this.number = 0;
+        this.averageValues = new HashMap<>();
+        this.minimumValues = new HashMap<>();
+        this.maximumValues = new HashMap<>();
 
-    private int confirmedDirectNumber;
-    private int proposedInferredToDirectNumber;
-    private int proposedNewNumber;
+        for(ComparisonResult result : comparisonResults) {
+            if(result.getType() == type && result.getBottom().getUri().startsWith(uriPrefix)) {
+                this.number++;
 
-    public ComparisonResultsStatistics(List<ComparisonResult> comparisonResults) {
-        this.resultsNumber = comparisonResults.size();
+                for(Map.Entry<String, Double> value : result.getValues().entrySet()) {
+                    if(!this.averageValues.containsKey(value.getKey())) {
+                        this.averageValues.put(value.getKey(), value.getValue());
+                        this.minimumValues.put(value.getKey(), value.getValue());
+                        this.maximumValues.put(value.getKey(), value.getValue());
+                    }
 
-        this.confirmedDirectNumber = 0;
-        this.proposedInferredToDirectNumber = 0;
-        this.proposedNewNumber = 0;
+                    else {
+                        if(value.getValue() < this.minimumValues.get(value.getKey())) {
+                            this.minimumValues.put(value.getKey(), value.getValue());
+                        }
 
-        for(ComparisonResult cr : comparisonResults) {
-            if(cr.getType() == ComparisonResultType.CONFIRMED_DIRECT) {
-                this.confirmedDirectNumber++;
-            }
+                        if(value.getValue() > this.maximumValues.get(value.getKey())) {
+                            this.maximumValues.put(value.getKey(), value.getValue());
+                        }
 
-            else if(cr.getType() == ComparisonResultType.PROPOSED_INFERRED_TO_DIRECT) {
-                this.proposedInferredToDirectNumber++;
-            }
-
-            else if(cr.getType() == ComparisonResultType.PROPOSED_NEW) {
-                this.proposedNewNumber++;
+                        this.averageValues.put(value.getKey(), this.averageValues.get(value.getKey()) + value.getValue());
+                    }
+                }
             }
         }
 
+        if(this.number != 0) {
+            HashMap<String, Double> temp = new HashMap<>();
+
+            for(Map.Entry<String, Double> average : this.averageValues.entrySet()) {
+                temp.put(average.getKey(), average.getValue() / (double) this.number);
+            }
+
+            this.averageValues = temp;
+        }
     }
 
-    public int getResultsNumber() {
-        return this.resultsNumber;
+    public ComparisonResultType getType() {
+        return this.type;
     }
 
-    public int getConfirmedDirectNumber() {
-        return this.confirmedDirectNumber;
+    public String getUriPrefix() {
+        return this.uriPrefix;
     }
 
-    public int getProposedInferredToDirectNumber() {
-        return this.proposedInferredToDirectNumber;
+    public int getNumber() {
+        return this.number;
     }
 
-    public int getProposedNewNumber() {
-        return this.proposedNewNumber;
+    public Map<String, Double> getAverageValues() {
+        return new HashMap<>(this.averageValues);
+    }
+
+    public Map<String, Double> getMinimumValues() {
+        return new HashMap<>(this.minimumValues);
+    }
+
+    public Map<String, Double> getMaximumValues() {
+        return new HashMap<>(this.maximumValues);
     }
 
 }

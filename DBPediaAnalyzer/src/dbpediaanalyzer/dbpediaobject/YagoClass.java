@@ -11,6 +11,7 @@ import java.util.List;
  *
  */
 public class YagoClass extends HierarchyElement {
+    public static final String DBPEDIA_YAGO_CLASS_URI_PREFIX = "http://dbpedia.org/class/yago";
 
     public YagoClass(String uri) {
         super(uri);

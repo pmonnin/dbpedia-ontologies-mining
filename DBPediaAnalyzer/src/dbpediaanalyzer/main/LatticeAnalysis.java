@@ -1,6 +1,10 @@
 package dbpediaanalyzer.main;
 
 import dbpediaanalyzer.comparison.ComparisonResult;
+import dbpediaanalyzer.comparison.ComparisonResultType;
+import dbpediaanalyzer.dbpediaobject.Category;
+import dbpediaanalyzer.dbpediaobject.OntologyClass;
+import dbpediaanalyzer.dbpediaobject.YagoClass;
 import dbpediaanalyzer.factory.KnowledgesComparisonResultFactory;
 import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
@@ -13,6 +17,7 @@ import dbpediaanalyzer.lattice.Lattice;
 import dbpediaanalyzer.statistic.ComparisonResultsStatistics;
 import dbpediaanalyzer.util.TimeMeasurer;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -53,14 +58,34 @@ public class LatticeAnalysis {
             System.out.println("\t Computing comparison results...");
             List<ComparisonResult> comparisonResults = KnowledgesComparisonResultFactory.createKnowledgesComparisonResults(dataBasedKnowledge);
             System.out.println("\t Computing comparison statistics...");
-            ComparisonResultsStatistics statistics = new ComparisonResultsStatistics(comparisonResults);
+            List<ComparisonResultsStatistics> statistics = new ArrayList<>();
+            statistics.add(new ComparisonResultsStatistics(comparisonResults, ComparisonResultType.CONFIRMED_DIRECT,
+                    Category.DBPEDIA_CATEGORY_URI_PREFIX));
+            statistics.add(new ComparisonResultsStatistics(comparisonResults, ComparisonResultType.PROPOSED_INFERRED_TO_DIRECT,
+                    Category.DBPEDIA_CATEGORY_URI_PREFIX));
+            statistics.add(new ComparisonResultsStatistics(comparisonResults, ComparisonResultType.PROPOSED_NEW,
+                    Category.DBPEDIA_CATEGORY_URI_PREFIX));
+            statistics.add(new ComparisonResultsStatistics(comparisonResults, ComparisonResultType.CONFIRMED_DIRECT,
+                    OntologyClass.DBPEDIA_ONTOLOGY_CLASS_URI_PREFIX));
+            statistics.add(new ComparisonResultsStatistics(comparisonResults, ComparisonResultType.PROPOSED_INFERRED_TO_DIRECT,
+                    OntologyClass.DBPEDIA_ONTOLOGY_CLASS_URI_PREFIX));
+            statistics.add(new ComparisonResultsStatistics(comparisonResults, ComparisonResultType.PROPOSED_NEW,
+                    OntologyClass.DBPEDIA_ONTOLOGY_CLASS_URI_PREFIX));
+            statistics.add(new ComparisonResultsStatistics(comparisonResults, ComparisonResultType.CONFIRMED_DIRECT,
+                    YagoClass.DBPEDIA_YAGO_CLASS_URI_PREFIX));
+            statistics.add(new ComparisonResultsStatistics(comparisonResults, ComparisonResultType.PROPOSED_INFERRED_TO_DIRECT,
+                    YagoClass.DBPEDIA_YAGO_CLASS_URI_PREFIX));
+            statistics.add(new ComparisonResultsStatistics(comparisonResults, ComparisonResultType.PROPOSED_NEW,
+                    YagoClass.DBPEDIA_YAGO_CLASS_URI_PREFIX));
 
             System.out.println("Saving results...");
             System.out.println("\t Saving comparison results...");
             (new ComparisonResultsWriter()).writeComparisonResults(comparisonResults, args[1]);
             System.out.println("\t Saving comparison results statistics...");
             ComparisonResultsStatisticsWriter statisticsWriter = new ComparisonResultsStatisticsWriter(args[2]);
-            statisticsWriter.writeComparisonResultsStatistics(statistics);
+            for(ComparisonResultsStatistics stat : statistics) {
+                statisticsWriter.writeComparisonResultsStatistics(stat);
+            }
             statisticsWriter.close();
 
             tm.stop();

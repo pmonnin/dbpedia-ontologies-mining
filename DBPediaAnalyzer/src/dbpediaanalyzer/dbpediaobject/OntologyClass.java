@@ -11,6 +11,7 @@ import java.util.List;
  *
  */
 public class OntologyClass extends HierarchyElement {
+    public static final String DBPEDIA_ONTOLOGY_CLASS_URI_PREFIX = "http://dbpedia.org/ontology";
 
     public OntologyClass(String uri) {
         super(uri);

@@ -6,6 +6,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 /**
  * TODO JAVADOC
@@ -27,17 +28,23 @@ public class ComparisonResultsStatisticsWriter {
     }
 
     public void writeComparisonResultsStatistics(ComparisonResultsStatistics crs) {
-        this.writer.println("--- Comparison results statistics ---");
-        this.writer.println("Number of comparison results: " + crs.getResultsNumber());
+        this.writer.println("--- Comparison results statistics " + crs.getUriPrefix() + " " + crs.getType() + " ---");
+        this.writer.println("Number: " + crs.getNumber());
+        this.writer.println("Averages values: ");
+        for(Map.Entry<String, Double> avg : crs.getAverageValues().entrySet()) {
+            this.writer.println("\t" + avg.getKey() + ": " + avg.getValue());
+        }
 
-        this.writer.println("\n- Confirmed direct relationships");
-        this.writer.println("Number: " + crs.getConfirmedDirectNumber());
+        this.writer.println("Minimum values: ");
+        for(Map.Entry<String, Double> min : crs.getMinimumValues().entrySet()) {
+            this.writer.println("\t" + min.getKey() + ": " + min.getValue());
+        }
 
-        this.writer.println("\n- Proposed to be changed from inferred to direct relationships");
-        this.writer.println("Number: " + crs.getProposedInferredToDirectNumber());
+        this.writer.println("Maximum values: ");
+        for(Map.Entry<String, Double> max : crs.getMaximumValues().entrySet()) {
+            this.writer.println("\t" + max.getKey() + ": " + max.getValue());
+        }
 
-        this.writer.println("\n- Proposed new relationships");
-        this.writer.println("Number: " + crs.getProposedNewNumber());
     }
 
     public void close() {

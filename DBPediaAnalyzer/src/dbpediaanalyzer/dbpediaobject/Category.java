@@ -11,6 +11,7 @@ import java.util.List;
  *
  */
 public class Category extends HierarchyElement {
+    public static final String DBPEDIA_CATEGORY_URI_PREFIX = "http://dbpedia.org/resource/Category";
 
     public Category(String uri) {
         super(uri);
