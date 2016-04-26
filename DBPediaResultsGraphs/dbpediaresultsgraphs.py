@@ -15,14 +15,14 @@ classes_prefixes = {"DBCategories": "http://dbpedia.org/resource/Category",
 
 comparison_results_types = ["CONFIRMED_DIRECT", "PROPOSED_INFERRED_TO_DIRECT", "PROPOSED_NEW"]
 
-strategies_bins = {"NumberOfSubmissions": "range",
+strategies_bins_types = {"NumberOfSubmissions": "range",
                    "AverageExtensionsRatio": "default",
                    "DistanceViaLCA": "default"}
 
 
 def print_usage():
     print("Usage:\n python dbpediaresultsgraphs.py comparison-results output-prefix")
-    print("\t comparison-results\n\t\t knowledge comparison results JSON file produced by LatticeAnalysis program")
+    print("\t comparison-results\n\t\t JSON file with knowledge comparison results produced by LatticeAnalysis program")
     print("\t output-prefix\n\t\t prefix to be used for output files")
     print("\t\t Each output file will be named according to the following pattern:")
     print("\t\t\t output-prefix-class-type-strategy.png")
@@ -37,12 +37,12 @@ def check_command_arguments():
     return True
 
 
-def read_json_comparison_results(json_file):
+def read_comparison_results_from_json(json_file):
     fp = open(json_file, 'r')
-    json_values = json.load(fp)
+    json_objects = json.load(fp)
 
     fp.close()
-    return json_values
+    return json_objects
 
 
 def get_values_from_comparison_results(json_values, class_prefix, comparison_result_type, strategy):
@@ -74,16 +74,16 @@ def plot_histogram_to_file(values, bins, title, histogram_file):
 
 def main():
     if check_command_arguments():
-        comparison_results = read_json_comparison_results(sys.argv[1])
+        comparison_results = read_comparison_results_from_json(sys.argv[1])
 
         for class_name in classes_prefixes:
             for type in comparison_results_types:
-                for strategy in strategies_bins:
+                for strategy in strategies_bins_types:
                     filtered_values = get_values_from_comparison_results(comparison_results,
                                                                          classes_prefixes[class_name], type, strategy)
 
                     if len(filtered_values) != 0:
-                        bins = bins_type_to_bins(strategies_bins[strategy], filtered_values)
+                        bins = bins_type_to_bins(strategies_bins_types[strategy], filtered_values)
                         title = "Values for " + type + " relationships on " + class_name + "\nStrategy " + strategy
                         file_name = sys.argv[2] + "-" + class_name + "-" + type + "-" + strategy
 
