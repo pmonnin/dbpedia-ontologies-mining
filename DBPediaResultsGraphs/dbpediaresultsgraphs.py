@@ -2,6 +2,9 @@
 
 import sys
 import json
+import matplotlib
+# Use this only if your are on SSH session and don't have a graphic environment
+# matplotlib.use('Agg')
 import matplotlib.pyplot
 
 __author__ = "Pierre Monnin"
