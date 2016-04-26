@@ -9,55 +9,57 @@ import matplotlib.pyplot
 
 __author__ = "Pierre Monnin"
 
-possible_strategies = ["NumberOfSubmissions", "AverageExtensionsRatio", "DistanceFromLCA"]
+classes_prefixes = {"DBCategories": "http://dbpedia.org/resource/Category",
+                    "DBOntologyClasses": "http://dbpedia.org/ontology",
+                    "DBYagoClasses": "http://dbpedia.org/class/yago"}
+
+comparison_results_types = ["CONFIRMED_DIRECT", "PROPOSED_INFERRED_TO_DIRECT", "PROPOSED_NEW"]
+
+strategies_bins = {"NumberOfSubmissions": "range",
+                   "AverageExtensionsRatio": "default",
+                   "DistanceViaLCA": "default"}
 
 
 def print_usage():
-    print("Usage:\n python dbpediaresultsgraphs.py comparison-results hist-confirmed strategy-confirmed "
-          "hist-proposed-inferred-to-direct strategy-proposed-inferred-to-direct "
-          "hist-proposed-new strategy-proposed-new")
-    print("\t comparison-results\n\t\t JSON file produced by LatticeAnalysis program to be analyzed")
-    print("\t hist-confirmed\n\t\t histogram of values of confirmed relationships")
-    print("\t strategy-confirmed\n\t\t strategy used during analysis to evaluate confirmed relationships")
-    print("\t hist-proposed-inferred-to-direct\n\t\t histogram of values of relationships proposed to be changed from "
-          "inferred to direct")
-    print("\t strategy-proposed-inferred-to-direct\n\t\t strategy used during analysis to evaluate relationships "
-          "proposed to be changed from inferred to direct")
-    print("\t hist-proposed-new\n\t\t histogram of values of proposed new relationships")
-    print("\t strategy-proposed-new\n\t\t strategy used during analysis to evaluate proposed new relationships")
-    print("Possible values for strategies: NumberOfSubmissions, AverageExtensionsRatio, DistanceFromLCA")
-    print("If there are 0 values for a relationship type, related histogram is not produced")
+    print("Usage:\n python dbpediaresultsgraphs.py comparison-results output-prefix")
+    print("\t comparison-results\n\t\t Knowledge comparison results JSON file produced by LatticeAnalysis program")
+    print("\t output-prefix\n\t\t Prefix to be used for output files")
+    print("\t\t Each output file will be named according to the following pattern:")
+    print("\t\t\t output-prefix-class-type-strategy.png")
+    print("If there are 0 values for a class, a type and a strategy, related histogram is not produced")
 
 
 def check_command_arguments():
-    correct_arguments = len(sys.argv) == 8 and \
-                        sys.argv[3] in possible_strategies and \
-                        sys.argv[5] in possible_strategies and \
-                        sys.argv[7] in possible_strategies
-
-    if not correct_arguments:
+    if len(sys.argv) != 3:
         print_usage()
+        return False
 
-    return correct_arguments
+    return True
 
 
-def read_values_from_json(json_file):
+def read_json_comparison_results(json_file):
     fp = open(json_file, 'r')
     json_values = json.load(fp)
 
-    confirmed = []
-    inferred = []
-    new = []
-    for o in json_values:
-        if o['type'] == "CONFIRMED_DIRECT":
-            confirmed.append(float(o['value']))
-        elif o['type'] == "PROPOSED_INFERRED_TO_DIRECT":
-            inferred.append(float(o['value']))
-        elif o['type'] == "PROPOSED_NEW":
-            new.append(float(o['value']))
-
     fp.close()
-    return confirmed, inferred, new
+    return json_values
+
+
+def get_values_from_comparison_results(json_values, class_prefix, comparison_result_type, strategy):
+    values = []
+
+    for v in json_values:
+        if v["type"] == comparison_result_type and v["top"].startswith(class_prefix):
+            values.append(float(v["values"][strategy]))
+
+    return values
+
+
+def bins_type_to_bins(bins_type, values):
+    if bins_type == "range":
+        return range(1, int(max(values)) + 2)
+
+    return 100
 
 
 def plot_histogram_to_file(values, bins, title, histogram_file):
@@ -70,27 +72,22 @@ def plot_histogram_to_file(values, bins, title, histogram_file):
     matplotlib.pyplot.clf()
 
 
-def strategy_values_to_hist_bins(strategy, values):
-    if strategy == possible_strategies[0]:
-        return range(1, int(max(values)) + 2)
+def main():
+    if check_command_arguments():
+        comparison_results = read_json_comparison_results(sys.argv[1])
 
-    return 100
+        for class_name in classes_prefixes:
+            for type in comparison_results_types:
+                for strategy in strategies_bins:
+                    filtered_values = get_values_from_comparison_results(comparison_results,
+                                                                         classes_prefixes[class_name], type, strategy)
+
+                    if len(filtered_values) != 0:
+                        bins = bins_type_to_bins(strategies_bins[strategy], filtered_values)
+                        title = "Values for " + type + " relationships on " + class_name + "\nStrategy " + strategy
+                        file_name = sys.argv[2] + "-" + class_name + "-" + type + "-" + strategy
+
+                        plot_histogram_to_file(filtered_values, bins, title, file_name)
 
 
-if check_command_arguments():
-    values_confirmed, values_inferred, values_new = read_values_from_json(sys.argv[1])
-
-    # Plotting confirmed relationships histogram
-    if len(values_confirmed) != 0:
-        plot_histogram_to_file(values_confirmed, strategy_values_to_hist_bins(sys.argv[3], values_confirmed),
-                               "Values of confirmed relationships", sys.argv[2])
-
-    # Plotting relationships changed from inferred to direct histogram
-    if len(values_inferred) != 0:
-        plot_histogram_to_file(values_inferred, strategy_values_to_hist_bins(sys.argv[5], values_inferred),
-                               "Values of relationships to be changed from inferred to direct", sys.argv[4])
-
-    # Plotting new relationships histogram
-    if len(values_new) != 0:
-        plot_histogram_to_file(values_new, strategy_values_to_hist_bins(sys.argv[7], values_new),
-                               "Values of new relationships", sys.argv[6])
+main()
