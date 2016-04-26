@@ -61,6 +61,7 @@ java dbpediaanalyzer.main.LatticeAnalysis lattice output comparison-statistics
 
 Generates histograms of values of knowledge comparison results. One histogram will be generated per ontology class
 (Categories, Ontology classes, Yago classes), comparison result type and evaluation strategy.
+
 If there are 0 values for a class, a type and a strategy, related histogram is not produced
 
 Can be executed with the following command:
@@ -70,7 +71,7 @@ python dbpediaresultsgraphs.py comparison-results output-prefix
 ```
 
 * *comparison-results*: JSON file produced by LatticeAnalysis program to be analyzed
-* *output-prefix*: Prefix to be used for output files. Each output file will be named according to the following
+* *output-prefix*: prefix to be used for output files. Each output file will be named according to the following
    pattern: `output-prefix-class-type-strategy.png`
 
 

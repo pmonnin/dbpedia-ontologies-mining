@@ -22,8 +22,8 @@ strategies_bins = {"NumberOfSubmissions": "range",
 
 def print_usage():
     print("Usage:\n python dbpediaresultsgraphs.py comparison-results output-prefix")
-    print("\t comparison-results\n\t\t Knowledge comparison results JSON file produced by LatticeAnalysis program")
-    print("\t output-prefix\n\t\t Prefix to be used for output files")
+    print("\t comparison-results\n\t\t knowledge comparison results JSON file produced by LatticeAnalysis program")
+    print("\t output-prefix\n\t\t prefix to be used for output files")
     print("\t\t Each output file will be named according to the following pattern:")
     print("\t\t\t output-prefix-class-type-strategy.png")
     print("If there are 0 values for a class, a type and a strategy, related histogram is not produced")
