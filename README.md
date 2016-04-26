@@ -59,23 +59,19 @@ java dbpediaanalyzer.main.LatticeAnalysis lattice output comparison-statistics
 
 ### Comparison results statistics histograms
 
-Generates histograms of values of knowledge comparison results.
-If there are 0 values for a relationship type, related histogram is not produced.
+Generates histograms of values of knowledge comparison results. One histogram will be generated per ontology class
+(Categories, Ontology classes, Yago classes), comparison result type and evaluation strategy.
+If there are 0 values for a class, a type and a strategy, related histogram is not produced
 
 Can be executed with the following command:
 
 ```shell
-python dbpediaresultsgraphs.py comparison-results hist-confirmed strategy-confirmed hist-proposed-inferred-to-direct strategy-proposed-inferred-to-direct hist-proposed-new strategy-proposed-new
+python dbpediaresultsgraphs.py comparison-results output-prefix
 ```
 
 * *comparison-results*: JSON file produced by LatticeAnalysis program to be analyzed
-* *hist-confirmed*: file where histogram of values of confirmed relationships will be saved
-* *strategy-confirmed*: strategy used during analysis to evaluate confirmed relationships
-* *hist-proposed-inferred-to-direct*: file where histogram of values of relationships proposed to be changed from inferred to direct will be saved
-* *strategy-proposed-inferred-to-direct*: strategy used during analysis to evaluate relationships proposed to be changed from inferred to direct
-* *hist-proposed-new*: file where histogram of values of proposed new relationships will be saved
-* *strategy-proposed-new*: strategy used during analysis to evaluate proposed new relationships
-* Possible values for strategies: NumberOfSubmissions, AverageExtensionsRatio, DistanceFromLCA
+* *output-prefix*: Prefix to be used for output files. Each output file will be named according to the following
+   pattern: `output-prefix-class-type-strategy.png`
 
 
 ### Hierarchies statistics
