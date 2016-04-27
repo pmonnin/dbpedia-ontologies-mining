@@ -14,10 +14,10 @@ classes_prefixes = {"DBCategories": "http://dbpedia.org/resource/Category",
                     "DBYagoClasses": "http://dbpedia.org/class/yago"}
 
 comparison_results_types = ["CONFIRMED_DIRECT", "PROPOSED_INFERRED_TO_DIRECT", "PROPOSED_NEW"]
+strategies = ["NumberOfSubmissions", "AverageExtensionsRatio", "DistanceViaLCA"]
 
-strategies_bins_types = {"NumberOfSubmissions": "range",
-                   "AverageExtensionsRatio": "default",
-                   "DistanceViaLCA": "default"}
+histograms_targets = {"NumberOfSubmissions": ["range"], "AverageExtensionsRatio": ["default"],
+                      "DistanceViaLCA": ["default", "exclude-0-values"]}
 
 
 def print_usage():
@@ -55,16 +55,24 @@ def get_values_from_comparison_results(json_values, class_prefix, comparison_res
     return values
 
 
-def bins_type_to_bins(bins_type, values):
-    if bins_type == "range":
+def histogram_target_to_bins(histogram_target, values):
+    if histogram_target == "range":
         return range(1, int(max(values)) + 2)
 
     return 100
 
 
-def plot_histogram_to_file(values, bins, title, histogram_file):
+def histogram_target_to_values(histogram_target, values):
+    if histogram_target == "exclude-0-values":
+        return [x for x in values if x != 0.0]
+
+    return values
+
+
+def plot_histogram_to_file(values, histogram_target, title, histogram_file):
     matplotlib.pyplot.figure()
-    matplotlib.pyplot.hist(values, bins)
+    matplotlib.pyplot.hist(histogram_target_to_values(histogram_target, values),
+                           histogram_target_to_bins(histogram_target, values))
     matplotlib.pyplot.title(title)
     matplotlib.pyplot.xlabel("Values")
     matplotlib.pyplot.ylabel("Number")
@@ -78,16 +86,20 @@ def main():
 
         for class_name in classes_prefixes:
             for type in comparison_results_types:
-                for strategy in strategies_bins_types:
-                    filtered_values = get_values_from_comparison_results(comparison_results,
-                                                                         classes_prefixes[class_name], type, strategy)
+                for strategy in strategies:
+                    for histogram_target in histograms_targets[strategy]:
+                        filtered_values = get_values_from_comparison_results(comparison_results,
+                                                                             classes_prefixes[class_name], type, strategy)
 
-                    if len(filtered_values) != 0:
-                        bins = bins_type_to_bins(strategies_bins_types[strategy], filtered_values)
-                        title = "Values for " + type + " relationships on " + class_name + "\nStrategy " + strategy
-                        file_name = sys.argv[2] + "-" + class_name + "-" + type + "-" + strategy
+                        if len(filtered_values) != 0:
+                            title = "Values for " + type + " relationships on " + class_name + "\nStrategy " + strategy
+                            file_name = sys.argv[2] + "-" + class_name + "-" + type + "-" + strategy
 
-                        plot_histogram_to_file(filtered_values, bins, title, file_name)
+                            if histogram_target == "exclude-0-values":
+                                title += " (0 values excluded)"
+                                file_name += "-0-excluded"
+
+                            plot_histogram_to_file(filtered_values, histogram_target, title, file_name)
 
 
 main()
