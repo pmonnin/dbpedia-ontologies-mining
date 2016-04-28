@@ -2,6 +2,7 @@
 
 import sys
 import json
+from pymongo import MongoClient
 import matplotlib
 # Use this only if your are on SSH session and don't have a graphic environment
 # matplotlib.use('Agg')
@@ -21,8 +22,9 @@ histograms_targets = {"NumberOfSubmissions": ["range"], "AverageExtensionsRatio"
 
 
 def print_usage():
-    print("Usage:\n python dbpediaresultsgraphs.py comparison-results output-prefix")
-    print("\t comparison-results\n\t\t JSON file with knowledge comparison results produced by LatticeAnalysis program")
+    print("Usage:\n python dbpediaresultsgraphs.py mongodb mongocollection output-prefix")
+    print("\t mongodb name of MongoDB database to use to fetch comparison results")
+    print("\t mongocollection name of MongoDB collection of documents where comparison results are stored")
     print("\t output-prefix\n\t\t prefix to be used for output files")
     print("\t\t Each output file will be named according to the following pattern:")
     print("\t\t\t output-prefix-class-type-strategy.png")
@@ -30,27 +32,22 @@ def print_usage():
 
 
 def check_command_arguments():
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 4:
         print_usage()
         return False
 
     return True
 
 
-def read_comparison_results_from_json(json_file):
-    fp = open(json_file, 'r')
-    json_objects = json.load(fp)
-
-    fp.close()
-    return json_objects
-
-
-def get_values_from_comparison_results(json_values, class_prefix, comparison_result_type, strategy):
+def read_values_from_mongodb(class_prefix, comparison_result_type, strategy):
     values = []
 
-    for v in json_values:
-        if v["type"] == comparison_result_type and v["top"].startswith(class_prefix):
-            values.append(float(v["values"][strategy]))
+    client = MongoClient()
+    db = client[sys.argv[1]]
+    cursor = db[sys.argv[2]].find({"type": comparison_result_type, "bottom": {"$regex": class_prefix + ".*"}}, {"_id": 0, "values." + strategy: 1})
+
+    for document in cursor:
+        values.append(document["values"][strategy])
 
     return values
 
@@ -70,7 +67,7 @@ def histogram_target_to_values(histogram_target, values):
 
 
 def plot_histogram_to_file(values, histogram_target, title, histogram_file):
-    matplotlib.pyplot.figure()
+    fig = matplotlib.pyplot.figure()
     matplotlib.pyplot.hist(histogram_target_to_values(histogram_target, values),
                            histogram_target_to_bins(histogram_target, values))
     matplotlib.pyplot.title(title)
@@ -78,22 +75,20 @@ def plot_histogram_to_file(values, histogram_target, title, histogram_file):
     matplotlib.pyplot.ylabel("Number")
     matplotlib.pyplot.savefig(histogram_file)
     matplotlib.pyplot.clf()
+    matplotlib.pyplot.close(fig)
 
 
 def main():
     if check_command_arguments():
-        comparison_results = read_comparison_results_from_json(sys.argv[1])
-
         for class_name in classes_prefixes:
             for type in comparison_results_types:
                 for strategy in strategies:
                     for histogram_target in histograms_targets[strategy]:
-                        filtered_values = get_values_from_comparison_results(comparison_results,
-                                                                             classes_prefixes[class_name], type, strategy)
+                        filtered_values = read_values_from_mongodb(classes_prefixes[class_name], type, strategy)
 
                         if len(filtered_values) != 0:
                             title = "Values for " + type + " relationships on " + class_name + "\nStrategy " + strategy
-                            file_name = sys.argv[2] + "-" + class_name + "-" + type + "-" + strategy
+                            file_name = sys.argv[3] + "-" + class_name + "-" + type + "-" + strategy
 
                             if histogram_target == "exclude-0-values":
                                 title += " (0 values excluded)"
