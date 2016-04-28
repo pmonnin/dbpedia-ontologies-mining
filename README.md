@@ -62,15 +62,19 @@ java dbpediaanalyzer.main.LatticeAnalysis lattice output comparison-statistics
 Generates histograms of values of knowledge comparison results. One histogram will be generated per ontology class
 (Categories, Ontology classes, Yago classes), comparison result type and evaluation strategy.
 
-If there are 0 values for a class, a type and a strategy, related histogram is not produced
+If there are 0 values for a class, a type and a strategy, related histogram is not produced.
+
+This script fetches comparison results from a MongoDB database. The latter has to be set up with the output file
+of the lattice analysis program.
 
 Can be executed with the following command:
 
 ```shell
-python dbpediaresultsgraphs.py comparison-results output-prefix
+python dbpediaresultsgraphs.py mongodb mongocollection output-prefix
 ```
 
-* *comparison-results*: JSON file produced by LatticeAnalysis program to be analyzed
+* *mongodb*: name of the MongoDB database to use to fetch comparison results
+* *mongocollection*: name of the MongoDB collection of documents where comparison results are stored
 * *output-prefix*: prefix to be used for output files. Each output file will be named according to the following
    pattern: `output-prefix-class-type-strategy.png`
 
@@ -101,6 +105,7 @@ java dbpediaanalyzer.main.HierarchiesStatistics output
 ### Python dependencies
 
 * [Matplotlib](http://matplotlib.org/) - [license](http://matplotlib.org/users/license.html)
+* [Pymongo](https://docs.mongodb.org/getting-started/python/query/)
 
 ### Access to a SPARQL endpoint
 
@@ -109,6 +114,16 @@ all the files listed above. Its access can be configured in DBPediaAnalyzer/src/
 changing `SERVER_BASE_URL`
 
 For our work, a Virtuoso server has been used. It is not available for outside queries.
+
+### Access to a MongoDB database
+
+To execute the Python script generating histograms on comparison results' values, a
+MongoDB database must be set up and loaded with the output file of the lattice analysis program.
+To do so, you can use the following command:
+
+```shell
+mongoimport --jsonArray --db dbName --collection collectionName --file outputFromLatticeAnalysis
+```
 
 ## Authors
 

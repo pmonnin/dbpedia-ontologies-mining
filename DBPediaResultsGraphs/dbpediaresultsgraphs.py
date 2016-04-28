@@ -23,8 +23,8 @@ histograms_targets = {"NumberOfSubmissions": ["range"], "AverageExtensionsRatio"
 
 def print_usage():
     print("Usage:\n python dbpediaresultsgraphs.py mongodb mongocollection output-prefix")
-    print("\t mongodb name of MongoDB database to use to fetch comparison results")
-    print("\t mongocollection name of MongoDB collection of documents where comparison results are stored")
+    print("\t mongodb name of the MongoDB database to use to fetch comparison results")
+    print("\t mongocollection name of the MongoDB collection of documents where comparison results are stored")
     print("\t output-prefix\n\t\t prefix to be used for output files")
     print("\t\t Each output file will be named according to the following pattern:")
     print("\t\t\t output-prefix-class-type-strategy.png")
