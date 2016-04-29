@@ -1,9 +1,6 @@
 package dbpediaanalyzer.factory;
 
-import dbpediaanalyzer.comparison.AverageExtensionsRatioStrategy;
-import dbpediaanalyzer.comparison.DistanceViaLCAStrategy;
-import dbpediaanalyzer.comparison.EvaluationStrategy;
-import dbpediaanalyzer.comparison.NumberOfSubmissionsStrategy;
+import dbpediaanalyzer.comparison.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +19,7 @@ public class EvaluationStrategiesFactory {
         strategies.add(new NumberOfSubmissionsStrategy());
         strategies.add(new AverageExtensionsRatioStrategy());
         strategies.add(new DistanceViaLCAStrategy());
+        strategies.add(new WuPalmerSimilarityStrategy());
 
         return strategies;
     }

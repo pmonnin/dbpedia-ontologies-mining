@@ -17,8 +17,10 @@ classes_prefixes = {"DBCategories": "http://dbpedia.org/resource/Category",
 comparison_results_types = ["CONFIRMED_DIRECT", "PROPOSED_INFERRED_TO_DIRECT", "PROPOSED_NEW"]
 strategies = ["NumberOfSubmissions", "AverageExtensionsRatio", "DistanceViaLCA"]
 
-histograms_targets = {"NumberOfSubmissions": ["range"], "AverageExtensionsRatio": ["default"],
-                      "DistanceViaLCA": ["default", "exclude-0-values"]}
+histograms_targets = {"NumberOfSubmissions": ["range"],
+                      "AverageExtensionsRatio": ["default"],
+                      "DistanceViaLCA": ["default", "exclude-0-values"],
+                      "WuPalmerSimilarity": ["default", "exclude-0-values"]}
 
 
 def print_usage():
