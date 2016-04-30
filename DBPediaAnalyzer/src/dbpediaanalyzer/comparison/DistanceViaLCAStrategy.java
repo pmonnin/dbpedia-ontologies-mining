@@ -25,11 +25,15 @@ public class DistanceViaLCAStrategy extends EvaluationStrategy {
         Map<HierarchyElement, Integer> ancestorsTop = subsumption.getTop().getAncestorsAndDistances();
         Map<HierarchyElement, Integer> ancestorsBottom = subsumption.getBottom().getAncestorsAndDistances();
 
+        // If bottom is a parent or an ancestor of top, the proposition creates a cycle (forbidden)
+        if(ancestorsTop.containsKey(subsumption.getBottom())) {
+            return 0.0;
+        }
+
         // If top is a parent or an ancestor of bottom, we can have direct distance between them
         if(ancestorsBottom.containsKey(subsumption.getTop())) {
             return 1.0 / (double) ancestorsBottom.get(subsumption.getTop());
         }
-
 
         // Else, use LCA to compute distance
         List<HierarchyElement> commonAncestors = new ArrayList<>(ancestorsTop.keySet());
