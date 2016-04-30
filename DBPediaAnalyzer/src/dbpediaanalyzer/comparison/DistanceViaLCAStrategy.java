@@ -43,17 +43,17 @@ public class DistanceViaLCAStrategy extends EvaluationStrategy {
             return 0;
         }
 
-        int distanceFromLCA = -1;
+        int distanceViaLCA = -1;
 
         for(HierarchyElement commonAncestor : commonAncestors) {
             int currentDistance = ancestorsTop.get(commonAncestor) + ancestorsBottom.get(commonAncestor);
 
-            if(currentDistance >= 0 && currentDistance < distanceFromLCA || distanceFromLCA == -1) {
-                distanceFromLCA = currentDistance;
+            if(currentDistance >= 0 && currentDistance < distanceViaLCA || distanceViaLCA == -1) {
+                distanceViaLCA = currentDistance;
             }
         }
 
-        return 1.0 / (double) distanceFromLCA;
+        return 1.0 / (double) distanceViaLCA;
     }
 
 }
