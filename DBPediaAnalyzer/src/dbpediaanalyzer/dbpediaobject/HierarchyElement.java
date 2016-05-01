@@ -83,12 +83,10 @@ public abstract class HierarchyElement {
         }
 
         List<HierarchyElement> commonAncestors = new ArrayList<>(o.ancestorsAndDistances.keySet());
-        commonAncestors.retainAll(ancestorsAndDistances.keySet());
+        commonAncestors.retainAll(this.ancestorsAndDistances.keySet());
 
-        if(commonAncestors.isEmpty()) {
-            return null;
-        }
 
+        // If commonAncestors is empty, null is returned
         int minDistance = -1;
         HierarchyElement lca = null;
         for(HierarchyElement commonAncestor : commonAncestors) {
