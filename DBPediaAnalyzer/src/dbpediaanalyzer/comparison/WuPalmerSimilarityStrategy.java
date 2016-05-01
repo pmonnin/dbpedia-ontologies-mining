@@ -3,12 +3,11 @@ package dbpediaanalyzer.comparison;
 import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 import dbpediaanalyzer.dbpediaobject.HierarchyElement;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * TODO JAVADOC
+ *
+ * Value = (2*dist(lca, root)) / (dist(lca, subsumption.top) + dist(lca, subsumption.bottom) + 2*dist(lca, root))
+ * where root is owl:Thing
  *
  * @author Pierre Monnin
  *
@@ -27,46 +26,16 @@ public class WuPalmerSimilarityStrategy extends EvaluationStrategy {
             return 0.0;
         }
 
-        // First compute LCA and distance from each hierarchy element
-        HierarchyElement lca = null;
-        int lcaDistanceFromBottom = 0, lcaDistanceFromTop = 0;
+        HierarchyElement lca = subsumption.getBottom().getLowestCommonAncestor(subsumption.getTop());
 
-        if(subsumption.getBottom().hasAncestor(subsumption.getTop())) {
-            lca = subsumption.getTop();
-            lcaDistanceFromBottom = subsumption.getBottom().getAncestorsAndDistances().get(subsumption.getTop());
-        }
-
-        else {
-            List<HierarchyElement> commonAncestors = new ArrayList<>(subsumption.getTop().getAncestorsAndDistances().keySet());
-            commonAncestors.retainAll(subsumption.getBottom().getAncestorsAndDistances().keySet());
-
-            int distanceViaLCA = -1;
-
-            for(HierarchyElement commonAncestor : commonAncestors) {
-                int currentDistance = subsumption.getTop().getAncestorsAndDistances().get(commonAncestor) +
-                        subsumption.getBottom().getAncestorsAndDistances().get(commonAncestor);
-
-                if(currentDistance >= 0 && currentDistance < distanceViaLCA || distanceViaLCA == -1) {
-                    distanceViaLCA = currentDistance;
-                    lca = commonAncestor;
-                    lcaDistanceFromBottom = subsumption.getBottom().getAncestorsAndDistances().get(lca);
-                    lcaDistanceFromTop = subsumption.getTop().getAncestorsAndDistances().get(lca);
-                }
-            }
-        }
-
-        // If there is no common ancestor
+        // If there is no common ancestor, owl:Thing is the LCA then dist(lca, root) = 0 as root is owl:Thing
         if(lca == null) {
             return 0.0;
         }
 
-        // Then compute distance from LCA and root
-        int rootDistanceFromLca = 0;
-        for(Map.Entry<HierarchyElement, Integer> ancestorAndDistance : lca.getAncestorsAndDistances().entrySet()) {
-            if(ancestorAndDistance.getKey().getParents().isEmpty() && ancestorAndDistance.getValue() > rootDistanceFromLca) {
-                rootDistanceFromLca = ancestorAndDistance.getValue();
-            }
-        }
+        int rootDistanceFromLca = lca.getDistanceFromClosestTopLevelClass() + 1;
+        int lcaDistanceFromBottom = (lca == subsumption.getBottom()) ? 0 : subsumption.getBottom().getDistanceFromAncestor(lca);
+        int lcaDistanceFromTop = (lca == subsumption.getTop()) ? 0 : subsumption.getTop().getDistanceFromAncestor(lca);
 
         return ((double) 2 * rootDistanceFromLca) / ((double) lcaDistanceFromBottom + lcaDistanceFromTop + 2 * rootDistanceFromLca);
     }

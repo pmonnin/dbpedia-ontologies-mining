@@ -3,10 +3,6 @@ package dbpediaanalyzer.comparison;
 import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 import dbpediaanalyzer.dbpediaobject.HierarchyElement;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * TODO JAVADOC
  *
@@ -22,35 +18,29 @@ public class DistanceViaLCAStrategy extends EvaluationStrategy {
 
     @Override
     public double computeValue(DataBasedSubsumption subsumption) {
-        Map<HierarchyElement, Integer> ancestorsTop = subsumption.getTop().getAncestorsAndDistances();
-        Map<HierarchyElement, Integer> ancestorsBottom = subsumption.getBottom().getAncestorsAndDistances();
-
         // If bottom is a parent or an ancestor of top, the proposition creates a cycle (forbidden)
-        if(ancestorsTop.containsKey(subsumption.getBottom())) {
+        if(subsumption.getTop().hasAncestor(subsumption.getBottom())) {
             return 0.0;
         }
 
-        // If top is a parent or an ancestor of bottom, we can have direct distance between them
-        if(ancestorsBottom.containsKey(subsumption.getTop())) {
-            return 1.0 / (double) ancestorsBottom.get(subsumption.getTop());
-        }
+        HierarchyElement lca = subsumption.getBottom().getLowestCommonAncestor(subsumption.getTop());
 
-        // Else, use LCA to compute distance
-        List<HierarchyElement> commonAncestors = new ArrayList<>(ancestorsTop.keySet());
-        commonAncestors.retainAll(ancestorsBottom.keySet());
+        int distanceViaLCA = 0;
 
-        if(commonAncestors.isEmpty()) {
-            return 0;
-        }
-
-        int distanceViaLCA = -1;
-
-        for(HierarchyElement commonAncestor : commonAncestors) {
-            int currentDistance = ancestorsTop.get(commonAncestor) + ancestorsBottom.get(commonAncestor);
-
-            if(currentDistance >= 0 && currentDistance < distanceViaLCA || distanceViaLCA == -1) {
-                distanceViaLCA = currentDistance;
+        if(lca != null) {
+            if(lca != subsumption.getBottom()) {
+                distanceViaLCA += subsumption.getBottom().getDistanceFromAncestor(lca);
             }
+
+            if(lca != subsumption.getTop()) {
+                distanceViaLCA += subsumption.getTop().getDistanceFromAncestor(lca);
+            }
+        }
+
+        // owl:Thing is the lca
+        else {
+            distanceViaLCA = subsumption.getBottom().getDistanceFromClosestTopLevelClass() + 1
+                    + subsumption.getTop().getDistanceFromClosestTopLevelClass() + 1;
         }
 
         return 1.0 / (double) distanceViaLCA;
