@@ -16,7 +16,7 @@ public class NumberOfSubmissionsStrategy extends EvaluationStrategy{
     }
 
     @Override
-    public double computeValue(DataBasedSubsumption subsumption) {
+    protected double computeValue(DataBasedSubsumption subsumption) {
         return subsumption.getNumberOfSubmissions();
     }
 

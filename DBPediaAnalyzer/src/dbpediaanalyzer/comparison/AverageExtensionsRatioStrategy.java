@@ -18,7 +18,7 @@ public class AverageExtensionsRatioStrategy extends EvaluationStrategy {
     }
 
     @Override
-    public double computeValue(DataBasedSubsumption subsumption) {
+    protected double computeValue(DataBasedSubsumption subsumption) {
         double retVal = 0.0;
         List<Double> extensionsRatios = subsumption.getExtensionsRatios();
 

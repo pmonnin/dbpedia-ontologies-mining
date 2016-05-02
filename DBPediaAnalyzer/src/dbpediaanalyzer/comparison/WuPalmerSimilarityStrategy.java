@@ -20,12 +20,7 @@ public class WuPalmerSimilarityStrategy extends EvaluationStrategy {
     }
 
     @Override
-    public double computeValue(DataBasedSubsumption subsumption) {
-        // If bottom is a parent or an ancestor of top, the proposition creates a cycle (forbidden)
-        if(subsumption.getTop().hasAncestor(subsumption.getBottom())) {
-            return 0.0;
-        }
-
+    protected double computeValue(DataBasedSubsumption subsumption) {
         HierarchyElement lca = subsumption.getBottom().getLowestCommonAncestor(subsumption.getTop());
 
         // If there is no common ancestor, owl:Thing is the LCA then dist(lca, root) = 0 as root is owl:Thing

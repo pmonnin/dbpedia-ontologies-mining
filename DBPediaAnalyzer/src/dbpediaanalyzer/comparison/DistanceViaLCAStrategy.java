@@ -17,12 +17,7 @@ public class DistanceViaLCAStrategy extends EvaluationStrategy {
     }
 
     @Override
-    public double computeValue(DataBasedSubsumption subsumption) {
-        // If bottom is a parent or an ancestor of top, the proposition creates a cycle (forbidden)
-        if(subsumption.getTop().hasAncestor(subsumption.getBottom())) {
-            return 0.0;
-        }
-
+    protected double computeValue(DataBasedSubsumption subsumption) {
         HierarchyElement lca = subsumption.getBottom().getLowestCommonAncestor(subsumption.getTop());
 
         int distanceViaLCA = 0;

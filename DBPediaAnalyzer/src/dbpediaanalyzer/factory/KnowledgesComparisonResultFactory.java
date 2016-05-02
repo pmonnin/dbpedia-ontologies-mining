@@ -50,7 +50,7 @@ public class KnowledgesComparisonResultFactory {
         ComparisonResult cr = new ComparisonResult(type, dbs.getBottom(), dbs.getTop());
 
         for(EvaluationStrategy strategy : strategies) {
-            cr.addValue(strategy.getName(), strategy.computeValue(dbs));
+            cr.addValue(strategy.getName(), strategy.evaluateSubsumption(dbs));
         }
 
         return cr;
