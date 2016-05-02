@@ -42,4 +42,14 @@ public class ComparisonResult {
     public Map<String, Double> getValues() {
         return new HashMap<>(this.values);
     }
+
+    public boolean isInvalid() {
+        for(Map.Entry<String, Double> entry : this.values.entrySet()) {
+            if(entry.getValue() == EvaluationStrategy.INVALID_RESULT_VALUE) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

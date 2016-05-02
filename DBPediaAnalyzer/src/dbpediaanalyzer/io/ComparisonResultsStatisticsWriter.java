@@ -29,7 +29,8 @@ public class ComparisonResultsStatisticsWriter {
 
     public void writeComparisonResultsStatistics(ComparisonResultsStatistics crs) {
         this.writer.println("--- Comparison results statistics " + crs.getUriPrefix() + " " + crs.getType() + " ---");
-        this.writer.println("Number: " + crs.getNumber());
+        this.writer.println("Number of invalid results: " + crs.getInvalidNumber() + " (creating cycles)");
+        this.writer.println("Number of valid results: " + crs.getValidNumber() + " with the following values:");
         this.writer.println("Averages values: ");
         for(Map.Entry<String, Double> avg : crs.getAverageValues().entrySet()) {
             this.writer.println("\t" + avg.getKey() + ": " + avg.getValue());
