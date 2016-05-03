@@ -74,8 +74,16 @@ public class DataInfo {
         if(element != null) {
             System.out.println("Result: ");
             System.out.println("URI: " + element.getUri());
-            System.out.println("Children: " + element.getChildren());
-            System.out.println("Parents: " + element.getParents());
+
+            System.out.println("Children: ");
+            for(HierarchyElement child : element.getChildren()) {
+                System.out.println(child.getUri() + " ");
+            }
+
+            System.out.println("Parents: ");
+            for(HierarchyElement parent : element.getParents()) {
+                System.out.println(parent.getUri() + " ");
+            }
         }
 
         else {
