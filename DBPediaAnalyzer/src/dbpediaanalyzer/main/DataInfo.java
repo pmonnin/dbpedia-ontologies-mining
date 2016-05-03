@@ -16,7 +16,7 @@ public class DataInfo {
 
 
     public static void main(String[] args) {
-        System.out.println("=== DATA INFO  ===");
+        System.out.println("=== DATA INFO ===");
         System.out.println("Please wait... Setting up... Querying hierarchies from server...");
         HierarchiesManager hm = HierarchiesFactory.createHierarchies();
 
@@ -77,12 +77,12 @@ public class DataInfo {
 
             System.out.println("Children: ");
             for(HierarchyElement child : element.getChildren()) {
-                System.out.println(child.getUri() + " ");
+                System.out.println(child.getUri());
             }
 
             System.out.println("Parents: ");
             for(HierarchyElement parent : element.getParents()) {
-                System.out.println(parent.getUri() + " ");
+                System.out.println(parent.getUri());
             }
         }
 
