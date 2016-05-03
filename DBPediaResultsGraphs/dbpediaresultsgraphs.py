@@ -15,7 +15,7 @@ classes_prefixes = {"DBCategories": "http://dbpedia.org/resource/Category",
                     "DBYagoClasses": "http://dbpedia.org/class/yago"}
 
 comparison_results_types = ["CONFIRMED_DIRECT", "PROPOSED_INFERRED_TO_DIRECT", "PROPOSED_NEW"]
-strategies = ["NumberOfSubmissions", "AverageExtensionsRatio", "DistanceViaLCA"]
+strategies = ["NumberOfSubmissions", "AverageExtensionsRatio", "DistanceViaLCA", "WuPalmerSimilarity"]
 
 histograms_targets = {"NumberOfSubmissions": ["range"],
                       "AverageExtensionsRatio": ["default"],
