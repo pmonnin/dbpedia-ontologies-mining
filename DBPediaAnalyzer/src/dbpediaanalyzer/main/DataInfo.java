@@ -19,6 +19,9 @@ public class DataInfo {
         System.out.println("=== DATA INFO ===");
         System.out.println("Please wait... Setting up... Querying hierarchies from server...");
         HierarchiesManager hm = HierarchiesFactory.createHierarchies();
+        System.out.println("Loaded " + hm.getCategoriesNumber() + " DBPedia categories");
+        System.out.println("Loaded " + hm.getOntologyClassesNumber() + " DBPedia ontology classes");
+        System.out.println("Loaded " + hm.getYagoClassesNumber() + " DBPedia yago classes");
 
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;

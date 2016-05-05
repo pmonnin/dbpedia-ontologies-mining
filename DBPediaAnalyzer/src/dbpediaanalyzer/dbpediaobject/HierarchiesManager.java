@@ -36,6 +36,18 @@ public class HierarchiesManager {
         return this.yagoClasses.get(uri);
     }
 
+    public int getCategoriesNumber() {
+        return this.categories.size();
+    }
+
+    public int getOntologyClassesNumber() {
+        return this.ontologyClasses.size();
+    }
+
+    public int getYagoClassesNumber() {
+        return this.yagoClasses.size();
+    }
+
     public HierarchyStatistics getCategoriesStatistics() {
         return new HierarchyStatistics(this.categories);
     }
