@@ -84,14 +84,15 @@ public class HierarchiesFactory {
                             if(!categories.containsKey(parentUri.getValue())) {
                                 System.err.println(parentUri.getValue() + " was discovered as parent but not found in " +
                                         "all categories");
-                                categories.put(parentUri.getValue(), new Category(parentUri.getValue()));
                             }
 
-                            Category parent = categories.get(parentUri.getValue());
-                            Category child = entry.getValue();
+                            else {
+                                Category parent = categories.get(parentUri.getValue());
+                                Category child = entry.getValue();
 
-                            child.addParent(parent);
-                            parent.addChild(child);
+                                child.addParent(parent);
+                                parent.addChild(child);
+                            }
                         }
                     }
 
@@ -162,14 +163,15 @@ public class HierarchiesFactory {
                             if(!ontologyClasses.containsKey(parentUri.getValue())) {
                                 System.err.println(parentUri.getValue() + " was discovered as parent but not found in " +
                                         "all ontology classes");
-                                ontologyClasses.put(parentUri.getValue(), new OntologyClass(parentUri.getValue()));
                             }
 
-                            OntologyClass parent = ontologyClasses.get(parentUri.getValue());
-                            OntologyClass child = entry.getValue();
+                            else {
+                                OntologyClass parent = ontologyClasses.get(parentUri.getValue());
+                                OntologyClass child = entry.getValue();
 
-                            parent.addChild(child);
-                            child.addParent(parent);
+                                parent.addChild(child);
+                                child.addParent(parent);
+                            }
                         }
                     }
 
@@ -238,14 +240,15 @@ public class HierarchiesFactory {
                             if(!yagoClasses.containsKey(parentUri.getValue())) {
                                 System.err.println(parentUri.getValue() + " was discovered as parent but not found in " +
                                         "all yago classes");
-                                yagoClasses.put(parentUri.getValue(), new YagoClass(parentUri.getValue()));
                             }
 
-                            YagoClass parent = yagoClasses.get(parentUri.getValue());
-                            YagoClass child = entry.getValue();
+                            else {
+                                YagoClass parent = yagoClasses.get(parentUri.getValue());
+                                YagoClass child = entry.getValue();
 
-                            child.addParent(parent);
-                            parent.addChild(child);
+                                child.addParent(parent);
+                                parent.addChild(child);
+                            }
                         }
                     }
 
