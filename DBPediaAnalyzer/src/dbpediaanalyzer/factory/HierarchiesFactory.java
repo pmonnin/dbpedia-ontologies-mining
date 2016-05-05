@@ -43,9 +43,7 @@ public class HierarchiesFactory {
                         "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
                         "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> " +
                         "select distinct ?category where {" +
-                        "{ ?category rdf:type skos:Concept . }" +
-                        "UNION" +
-                        "{ ?a ?b ?category . }" +
+                        "?category rdf:type skos:Concept . " +
                         "FILTER (REGEX(STR(?category), \"http://dbpedia.org/resource/Category:" + suffix + "\", \"i\")) . }"
                     );
 
