@@ -191,45 +191,74 @@ public class HierarchiesFactory {
     private static Map<String, YagoClass> createYagoClassesHierarchy() {
         HashMap<String, YagoClass> yagoClasses = new HashMap<>();
 
-        try {
-            SparqlResponse response = (new ServerQuerier()).runQuery(
-                    "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
-                    "PREFIX owl:<http://www.w3.org/2002/07/owl#> " +
-                    "select distinct ?child ?parent where {" +
-                    "?child owl:equivalentClass ?ec ." +
-                    "FILTER (REGEX(STR(?child), \"http://dbpedia.org/class/yago\", \"i\")) ." +
-                    "FILTER (REGEX(STR(?ec), \"http://yago-knowledge.org\", \"i\")) . " +
-                    "OPTIONAL {" +
-                    "?child rdfs:subClassOf ?parent . " +
-                    "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/class/yago\", \"i\")) } }"
-            );
+        for(String suffix : QUERY_SUFFIXES) {
+            boolean done = false;
 
-            for(SparqlRecord r : response.getRecords()) {
-                SparqlValue child = r.getFields().get("child");
+            while(!done) {
+                try {
+                    SparqlResponse response = (new ServerQuerier()).runQuery(
+                        "PREFIX owl:<http://www.w3.org/2002/07/owl#> " +
+                        "select distinct ?yagoClass where {" +
+                        "?yagoClass owl:equivalentClass ?ec ." +
+                        "FILTER (REGEX(STR(?yagoClass), \"http://dbpedia.org/class/yago:" + suffix + "\", \"i\")) ." +
+                        "FILTER (REGEX(STR(?ec), \"http://yago-knowledge.org\", \"i\")) . }"
+                    );
 
-                if(!yagoClasses.containsKey(child.getValue())) {
-                    yagoClasses.put(child.getValue(), new YagoClass(child.getValue()));
-                }
+                    for(SparqlRecord r : response.getRecords()) {
+                        SparqlValue yagoClassUri = r.getFields().get("yagoClass");
 
-                SparqlValue parent = r.getFields().get("parent");
-                if(parent != null) {
-                    if(!yagoClasses.containsKey(parent.getValue())) {
-                        yagoClasses.put(parent.getValue(), new YagoClass(parent.getValue()));
+                        if(yagoClassUri != null && !yagoClasses.containsKey(yagoClassUri.getValue())) {
+                            yagoClasses.put(yagoClassUri.getValue(), new YagoClass(yagoClassUri.getValue()));
+                        }
                     }
 
-                    YagoClass childYago = yagoClasses.get(child.getValue());
-                    YagoClass parentYago = yagoClasses.get(parent.getValue());
+                    done = true;
+                }
 
-                    childYago.addParent(parentYago);
-                    parentYago.addChild(childYago);
+                catch(IOException e) {
+                    System.err.println("Exception while querying yago classes... New try... (" + e.getMessage() + ")");
                 }
             }
         }
 
-        catch(IOException e) {
-            System.err.println("An exception was caught during yago classes hierarchy creation. Consequently, an " +
-                    "empty hierarchy was created");
-            System.err.println("Caused by:\n" + e.getMessage());
+        for(Map.Entry<String, YagoClass> entry : yagoClasses.entrySet()) {
+            boolean done = false;
+
+            while(!done) {
+                try {
+                    SparqlResponse response = (new ServerQuerier()).runQuery(
+                        "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+                        "select distinct ?parent where {" +
+                        "<" + entry.getKey() + "> rdfs:subClassOf ?parent . " +
+                        "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/class/yago\", \"i\")) . }"
+                    );
+
+                    for(SparqlRecord r : response.getRecords()) {
+                        SparqlValue parentUri = r.getFields().get("parent");
+
+                        if(parentUri != null) {
+                            if(!yagoClasses.containsKey(parentUri.getValue())) {
+                                System.err.println(parentUri.getValue() + " was discovered as parent but not found in " +
+                                        "all yago classes");
+                                yagoClasses.put(parentUri.getValue(), new YagoClass(parentUri.getValue()));
+                            }
+
+                            YagoClass parent = yagoClasses.get(parentUri.getValue());
+                            YagoClass child = entry.getValue();
+
+                            child.addParent(parent);
+                            parent.addChild(child);
+                        }
+                    }
+
+                    done = true;
+                }
+
+                catch(IOException e) {
+                    System.err.println("Exception while querying yago classes parents... New try... (" +
+                            e.getMessage() + ")");
+                }
+            }
         }
 
         return yagoClasses;
