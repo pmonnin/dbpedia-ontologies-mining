@@ -73,7 +73,6 @@ public class HierarchiesFactory {
                         "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
                         "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> " +
                         "select distinct ?parent where {" +
-                        "?parent rdf:type skos:Concept . " +
                         "<" + entry.getKey() + "> skos:broader ?parent . " +
                         "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/resource/Category\", \"i\")) . }"
                     );
@@ -153,7 +152,6 @@ public class HierarchiesFactory {
                         "PREFIX owl:<http://www.w3.org/2002/07/owl#> " +
                         "select distinct ?parent where { " +
                         "<" + entry.getKey() + "> rdfs:subClassOf ?parent . " +
-                        "?parent rdf:type owl:Class . " +
                         "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/ontology\", \"i\")) . }"
                     );
 
