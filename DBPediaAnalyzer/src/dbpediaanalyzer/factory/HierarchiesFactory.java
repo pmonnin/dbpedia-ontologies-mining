@@ -20,6 +20,8 @@ import java.util.Map;
  *
  */
 public class HierarchiesFactory {
+    private static final String[] QUERY_SUFFIXES = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+            "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "[^a-z]"};
 
     /**
      * TODO JAVADOC
@@ -33,35 +35,50 @@ public class HierarchiesFactory {
         HashMap<String, Category> categories = new HashMap<>();
 
         try {
-            SparqlResponse response = (new ServerQuerier()).runQuery(
+            for(String suffix : QUERY_SUFFIXES) {
+                SparqlResponse response = (new ServerQuerier()).runQuery(
                     "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
                     "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> " +
-                    "select distinct ?child ?parent where {" +
-                    "?child rdf:type skos:Concept . " +
-                    "FILTER (REGEX(STR(?child), \"http://dbpedia.org/resource/Category\", \"i\")) . " +
-                    "OPTIONAL {" +
-                    "?child skos:broader ?parent . " +
-                    "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/resource/Category\", \"i\")) } }"
-            );
+                    "select distinct ?category where {" +
+                    "?category rdf:type skos:Concept . " +
+                    "FILTER (REGEX(STR(?category), \"http://dbpedia.org/resource/Category:" + suffix + "\", \"i\")) . }"
+                );
 
-            for(SparqlRecord r : response.getRecords()) {
-                SparqlValue child = r.getFields().get("child");
+                for(SparqlRecord r : response.getRecords()) {
+                    SparqlValue value = r.getFields().get("category");
 
-                if(!categories.containsKey(child.getValue())) {
-                    categories.put(child.getValue(), new Category(child.getValue()));
-                }
-
-                SparqlValue parent = r.getFields().get("parent");
-                if(parent != null) {
-                    if(!categories.containsKey(parent.getValue())) {
-                        categories.put(parent.getValue(), new Category(parent.getValue()));
+                    if(value != null && !categories.containsKey(value.getValue())) {
+                        categories.put(value.getValue(), new Category(value.getValue()));
                     }
+                }
+            }
 
-                    Category childCategory = categories.get(child.getValue());
-                    Category parentCategory = categories.get(parent.getValue());
+            for(Map.Entry<String, Category> entry : categories.entrySet()) {
+                SparqlResponse response = (new ServerQuerier()).runQuery(
+                    "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                    "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> " +
+                    "select distinct ?parent where {" +
+                    "?parent rdf:type skos:Concept . " +
+                    "<" + entry.getKey() + "> skos:broader ?parent . " +
+                    "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/resource/Category\", \"i\")) . }"
+                );
 
-                    childCategory.addParent(parentCategory);
-                    parentCategory.addChild(childCategory);
+                for(SparqlRecord r : response.getRecords()) {
+                    SparqlValue value = r.getFields().get("parent");
+
+                    if(value != null) {
+                        if(!categories.containsKey(value.getValue())) {
+                            System.err.println(value.getValue() + " was discovered as parent but not found in all " +
+                                    "categories");
+                            categories.put(value.getValue(), new Category(value.getValue()));
+                        }
+
+                        Category parent = categories.get(value.getValue());
+                        Category child = entry.getValue();
+
+                        child.addParent(parent);
+                        parent.addChild(child);
+                    }
                 }
             }
         }
