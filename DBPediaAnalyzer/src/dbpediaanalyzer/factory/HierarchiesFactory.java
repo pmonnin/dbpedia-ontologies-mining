@@ -122,7 +122,7 @@ public class HierarchiesFactory {
                         "PREFIX owl:<http://www.w3.org/2002/07/owl#> " +
                         "select distinct ?ontologyClass where { " +
                         "?ontologyClass rdf:type owl:Class . " +
-                        "FILTER (REGEX(STR(?ontologyClass), \"http://dbpedia.org/ontology:" + suffix + "\", \"i\")) . }"
+                        "FILTER (REGEX(STR(?ontologyClass), \"http://dbpedia.org/ontology/" + suffix + "\", \"i\")) . }"
                     );
 
                     for(SparqlRecord r : response.getRecords()) {
@@ -200,7 +200,7 @@ public class HierarchiesFactory {
                         "PREFIX owl:<http://www.w3.org/2002/07/owl#> " +
                         "select distinct ?yagoClass where {" +
                         "?yagoClass owl:equivalentClass ?ec ." +
-                        "FILTER (REGEX(STR(?yagoClass), \"http://dbpedia.org/class/yago:" + suffix + "\", \"i\")) ." +
+                        "FILTER (REGEX(STR(?yagoClass), \"http://dbpedia.org/class/yago/" + suffix + "\", \"i\")) ." +
                         "FILTER (REGEX(STR(?ec), \"http://yago-knowledge.org\", \"i\")) . }"
                     );
 
