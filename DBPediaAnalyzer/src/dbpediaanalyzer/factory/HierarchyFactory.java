@@ -122,7 +122,7 @@ class HierarchyFactory<T extends HierarchyElement> {
         }
 
         if(missingElements.size() != 0) {
-            System.err.println(missingElements.size() + " " + this.hierarchyElementsName + " where discovered as " +
+            System.err.println(missingElements.size() + " " + this.hierarchyElementsName + " were discovered as " +
                     "parents but not found in all " + hierarchyElementsName);
         }
 

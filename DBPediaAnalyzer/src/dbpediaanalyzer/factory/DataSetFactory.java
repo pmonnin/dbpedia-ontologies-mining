@@ -158,7 +158,7 @@ public class DataSetFactory {
 
     private static void displayMissingHierarchyElementsMessage(Map<String, Boolean> missingElements, String hierarchyElementsName) {
         if(missingElements.size() != 0) {
-            System.err.println(missingElements.size() + " " + hierarchyElementsName + " where discovered during pages " +
+            System.err.println(missingElements.size() + " " + hierarchyElementsName + " were discovered during pages " +
                     "analysis but not found in all " + hierarchyElementsName);
         }
     }
