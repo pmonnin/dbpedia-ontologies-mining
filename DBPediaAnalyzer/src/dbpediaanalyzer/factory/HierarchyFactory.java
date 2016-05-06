@@ -50,7 +50,7 @@ class HierarchyFactory<T extends HierarchyElement> {
                         queryPrefixes +
                         "select distinct ?class where { " +
                         whereClause +
-                        "FILTER (REGEX(STR(?category), \"" + uriPrefix + suffix + "\", \"i\")) ." +
+                        "FILTER (REGEX(STR(?class), \"" + uriPrefix + suffix + "\", \"i\")) ." +
                         "}"
                     );
 
