@@ -1,7 +1,6 @@
 package dbpediaanalyzer.factory;
 
-import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
-import dbpediaanalyzer.dbpediaobject.Page;
+import dbpediaanalyzer.dbpediaobject.*;
 import dbpediaanalyzer.io.ServerQuerier;
 import dbpediaanalyzer.io.SparqlRecord;
 import dbpediaanalyzer.io.SparqlResponse;
@@ -25,6 +24,9 @@ public class DataSetFactory {
      */
     public static Map<String, Page> createDataSet(String minDeathDate, String maxDeathDate, HierarchiesManager hierarchiesManager) {
         HashMap<String, Page> dataSet = new HashMap<>();
+        HashMap<String, Boolean> missingCategories = new HashMap<>();
+        HashMap<String, Boolean> missingOntologyClasses = new HashMap<>();
+        HashMap<String, Boolean> missingYagoClasses = new HashMap<>();
 
         try {
             SparqlResponse response = (new ServerQuerier()).runQuery(
@@ -56,7 +58,7 @@ public class DataSetFactory {
                                         "<" + page.getURI() + "> ?r ?other }"
                         );
 
-                        for (SparqlRecord record : responseRelationships.getRecords()) {
+                        for(SparqlRecord record : responseRelationships.getRecords()) {
                             page.addRelationship(record.getFields().get("r").getValue());
                         }
 
@@ -68,8 +70,20 @@ public class DataSetFactory {
                                         "FILTER (REGEX(STR(?c), \"http://dbpedia.org/resource/Category\", \"i\")) }"
                         );
 
-                        for (SparqlRecord record : responseCategories.getRecords()) {
-                            page.addCategory(hierarchiesManager.getCategoryFromUri(record.getFields().get("c").getValue()));
+                        for(SparqlRecord record : responseCategories.getRecords()) {
+                            String categoryUri = record.getFields().get("c").getValue();
+
+                            if(categoryUri != null) {
+                                Category category = hierarchiesManager.getCategoryFromUri(categoryUri);
+
+                                if(category != null) {
+                                    page.addCategory(category);
+                                }
+
+                                else {
+                                    missingCategories.put(categoryUri, true);
+                                }
+                            }
                         }
 
                         // Ontology classes
@@ -80,8 +94,20 @@ public class DataSetFactory {
                                         "FILTER(REGEX(STR(?o), \"http://dbpedia.org/ontology\", \"i\")) }"
                         );
 
-                        for (SparqlRecord record : responseOntologyClasses.getRecords()) {
-                            page.addOntologyClass(hierarchiesManager.getOntologyClassFromUri(record.getFields().get("o").getValue()));
+                        for(SparqlRecord record : responseOntologyClasses.getRecords()) {
+                            String ontologyClassUri = record.getFields().get("o").getValue();
+
+                            if(ontologyClassUri != null) {
+                                OntologyClass ontologyClass = hierarchiesManager.getOntologyClassFromUri(ontologyClassUri);
+
+                                if(ontologyClass != null) {
+                                    page.addOntologyClass(ontologyClass);
+                                }
+
+                                else {
+                                    missingOntologyClasses.put(ontologyClassUri, true);
+                                }
+                            }
                         }
 
                         // Yago classes
@@ -92,8 +118,20 @@ public class DataSetFactory {
                                         "FILTER(REGEX(STR(?y), \"http://dbpedia.org/class/yago\", \"i\")) }"
                         );
 
-                        for (SparqlRecord record : responseYagoClasses.getRecords()) {
-                            page.addYagoClass(hierarchiesManager.getYagoClassFromUri(record.getFields().get("y").getValue()));
+                        for(SparqlRecord record : responseYagoClasses.getRecords()) {
+                            String yagoClassUri = record.getFields().get("y").getValue();
+
+                            if(yagoClassUri != null) {
+                                YagoClass yagoClass = hierarchiesManager.getYagoClassFromUri(yagoClassUri);
+
+                                if(yagoClass != null) {
+                                    page.addYagoClass(yagoClass);
+                                }
+
+                                else {
+                                    missingYagoClasses.put(yagoClassUri, true);
+                                }
+                            }
                         }
                     }
 
@@ -103,6 +141,10 @@ public class DataSetFactory {
                     }
                 }
             }
+
+            displayMissingHierarchyElementsMessage(missingCategories, "categories");
+            displayMissingHierarchyElementsMessage(missingOntologyClasses, "ontology classes");
+            displayMissingHierarchyElementsMessage(missingYagoClasses, "yago classes");
         }
 
         catch(IOException e) {
@@ -112,5 +154,12 @@ public class DataSetFactory {
         }
 
         return dataSet;
+    }
+
+    private static void displayMissingHierarchyElementsMessage(Map<String, Boolean> missingElements, String hierarchyElementsName) {
+        if(missingElements.size() != 0) {
+            System.err.println(missingElements.size() + " " + hierarchyElementsName + " where discovered during pages " +
+                    "analysis but not found in all " + hierarchyElementsName);
+        }
     }
 }
