@@ -1,9 +1,6 @@
 package dbpediaanalyzer.factory;
 
-import dbpediaanalyzer.dbpediaobject.Category;
-import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
-import dbpediaanalyzer.dbpediaobject.OntologyClass;
-import dbpediaanalyzer.dbpediaobject.YagoClass;
+import dbpediaanalyzer.dbpediaobject.*;
 import dbpediaanalyzer.io.ServerQuerier;
 import dbpediaanalyzer.io.SparqlRecord;
 import dbpediaanalyzer.io.SparqlResponse;
@@ -20,8 +17,6 @@ import java.util.Map;
  *
  */
 public class HierarchiesFactory {
-    private static final String[] QUERY_SUFFIXES = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
-            "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "[^a-z]"};
 
     /**
      * TODO JAVADOC
@@ -32,236 +27,62 @@ public class HierarchiesFactory {
     }
 
     private static Map<String, Category> createCategoriesHierarchy() {
-        HashMap<String, Category> categories = new HashMap<>();
-
-        for(String suffix : QUERY_SUFFIXES) {
-            boolean done = false;
-
-            while(!done) {
-                try {
-                    SparqlResponse response = (new ServerQuerier()).runQuery(
-                        "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                        "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> " +
-                        "select distinct ?category where {" +
-                        "?category rdf:type skos:Concept . " +
-                        "FILTER (REGEX(STR(?category), \"http://dbpedia.org/resource/Category:" + suffix + "\", \"i\")) . }"
-                    );
-
-                    for(SparqlRecord r : response.getRecords()) {
-                        SparqlValue categoryUri = r.getFields().get("category");
-
-                        if(categoryUri != null && !categories.containsKey(categoryUri.getValue())) {
-                            categories.put(categoryUri.getValue(), new Category(categoryUri.getValue()));
-                        }
-                    }
-
-                    done = true;
-                }
-
-                catch(IOException e) {
-                    System.err.println("Exception while querying categories... New try... (" + e.getMessage() + ")");
-                }
+        HierarchyFactory<Category> factory = new HierarchyFactory<>(new HierarchyElementFactory<Category>() {
+            @Override
+            public Category createHierarchyElement(String uri) {
+                return new Category(uri);
             }
-        }
+        }, "categories");
 
-        for(Map.Entry<String, Category> entry : categories.entrySet()) {
-            boolean done = false;
+        String creationQueryPrefixes = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> ";
+        String creationQueryWhereClause = "?class rdf:type skos:Concept . ";
+        String creationQueryUriPrefix = "http://dbpedia.org/resource/Category:";
+        String parentsQueryPrefixes = "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> ";
+        String parentRelationship = "skos:broader";
+        String parentsQueryUriPrefix = "http://dbpedia.org/resource/Category";
 
-            while(!done) {
-                try  {
-                    SparqlResponse response = (new ServerQuerier()).runQuery(
-                        "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                        "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> " +
-                        "select distinct ?parent where {" +
-                        "<" + entry.getKey() + "> skos:broader ?parent . " +
-                        "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/resource/Category\", \"i\")) . }"
-                    );
-
-                    for(SparqlRecord r : response.getRecords()) {
-                        SparqlValue parentUri = r.getFields().get("parent");
-
-                        if(parentUri != null) {
-                            if(!categories.containsKey(parentUri.getValue())) {
-                                System.err.println(parentUri.getValue() + " was discovered as parent but not found in " +
-                                        "all categories");
-                            }
-
-                            else {
-                                Category parent = categories.get(parentUri.getValue());
-                                Category child = entry.getValue();
-
-                                child.addParent(parent);
-                                parent.addChild(child);
-                            }
-                        }
-                    }
-
-                    done = true;
-                }
-
-                catch(IOException e) {
-                    System.err.println("Exception while querying categories parents... New try... (" +
-                            e.getMessage() + ")");
-                }
-            }
-        }
-
-        return categories;
+        return factory.createHierarchy(creationQueryPrefixes, creationQueryWhereClause, creationQueryUriPrefix,
+                parentsQueryPrefixes, parentRelationship, parentsQueryUriPrefix);
     }
 
     private static Map<String, OntologyClass> createOntologyClassesHierarchy() {
-        HashMap<String, OntologyClass> ontologyClasses = new HashMap<>();
-
-        for(String suffix : QUERY_SUFFIXES) {
-            boolean done = false;
-
-            while(!done) {
-                try {
-                    SparqlResponse response = (new ServerQuerier()).runQuery(
-                        "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                        "PREFIX owl:<http://www.w3.org/2002/07/owl#> " +
-                        "select distinct ?ontologyClass where { " +
-                        "?ontologyClass rdf:type owl:Class . " +
-                        "FILTER (REGEX(STR(?ontologyClass), \"http://dbpedia.org/ontology/" + suffix + "\", \"i\")) . }"
-                    );
-
-                    for(SparqlRecord r : response.getRecords()) {
-                        SparqlValue ontologyClassUri = r.getFields().get("ontologyClass");
-
-                        if(ontologyClassUri != null && !ontologyClasses.containsKey(ontologyClassUri.getValue())) {
-                            ontologyClasses.put(ontologyClassUri.getValue(), new OntologyClass(ontologyClassUri.getValue()));
-                        }
-                    }
-
-                    done = true;
-                }
-
-                catch(IOException e) {
-                    System.err.println("Exception while querying ontology classes... New try... (" + e.getMessage() + ")");
-                }
+        HierarchyFactory<OntologyClass> factory = new HierarchyFactory<>(new HierarchyElementFactory<OntologyClass>() {
+            @Override
+            public OntologyClass createHierarchyElement(String uri) {
+                return new OntologyClass(uri);
             }
-        }
+        }, "ontology classes");
 
-        for(Map.Entry<String, OntologyClass> entry : ontologyClasses.entrySet()) {
-            boolean done = false;
+        String creationQueryPrefixes = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                "PREFIX owl:<http://www.w3.org/2002/07/owl#> ";
+        String creationQueryWhereClause = "?class rdf:type owl:Class . ";
+        String creationQueryUriPrefix = "http://dbpedia.org/ontology/";
+        String parentsQueryPrefixes = "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> ";
+        String parentRelationship = "rdfs:subClassOf";
+        String parentsQueryUriPrefix = "http://dbpedia.org/ontology";
 
-            while(!done) {
-                try {
-                    SparqlResponse response = (new ServerQuerier()).runQuery(
-                        "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                        "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>  " +
-                        "PREFIX owl:<http://www.w3.org/2002/07/owl#> " +
-                        "select distinct ?parent where { " +
-                        "<" + entry.getKey() + "> rdfs:subClassOf ?parent . " +
-                        "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/ontology\", \"i\")) . }"
-                    );
-
-                    for(SparqlRecord r : response.getRecords()) {
-                        SparqlValue parentUri = r.getFields().get("parent");
-
-                        if(parentUri != null) {
-                            if(!ontologyClasses.containsKey(parentUri.getValue())) {
-                                System.err.println(parentUri.getValue() + " was discovered as parent but not found in " +
-                                        "all ontology classes");
-                            }
-
-                            else {
-                                OntologyClass parent = ontologyClasses.get(parentUri.getValue());
-                                OntologyClass child = entry.getValue();
-
-                                parent.addChild(child);
-                                child.addParent(parent);
-                            }
-                        }
-                    }
-
-                    done = true;
-                }
-
-                catch(IOException e) {
-                    System.err.println("Exception while querying ontology classes parents... New try... (" +
-                            e.getMessage() + ")");
-                }
-            }
-        }
-
-        return ontologyClasses;
+        return factory.createHierarchy(creationQueryPrefixes, creationQueryWhereClause, creationQueryUriPrefix,
+                parentsQueryPrefixes, parentRelationship, parentsQueryUriPrefix);
     }
 
     private static Map<String, YagoClass> createYagoClassesHierarchy() {
-        HashMap<String, YagoClass> yagoClasses = new HashMap<>();
-
-        for(String suffix : QUERY_SUFFIXES) {
-            boolean done = false;
-
-            while(!done) {
-                try {
-                    SparqlResponse response = (new ServerQuerier()).runQuery(
-                        "PREFIX owl:<http://www.w3.org/2002/07/owl#> " +
-                        "select distinct ?yagoClass where {" +
-                        "?yagoClass owl:equivalentClass ?ec ." +
-                        "FILTER (REGEX(STR(?yagoClass), \"http://dbpedia.org/class/yago/" + suffix + "\", \"i\")) ." +
-                        "FILTER (REGEX(STR(?ec), \"http://yago-knowledge.org\", \"i\")) . }"
-                    );
-
-                    for(SparqlRecord r : response.getRecords()) {
-                        SparqlValue yagoClassUri = r.getFields().get("yagoClass");
-
-                        if(yagoClassUri != null && !yagoClasses.containsKey(yagoClassUri.getValue())) {
-                            yagoClasses.put(yagoClassUri.getValue(), new YagoClass(yagoClassUri.getValue()));
-                        }
-                    }
-
-                    done = true;
-                }
-
-                catch(IOException e) {
-                    System.err.println("Exception while querying yago classes... New try... (" + e.getMessage() + ")");
-                }
+        HierarchyFactory<YagoClass> factory = new HierarchyFactory<>(new HierarchyElementFactory<YagoClass>() {
+            @Override
+            public YagoClass createHierarchyElement(String uri) {
+                return new YagoClass(uri);
             }
-        }
+        }, "yago classes");
 
-        for(Map.Entry<String, YagoClass> entry : yagoClasses.entrySet()) {
-            boolean done = false;
+        String creationQueryPrefixes = "PREFIX owl:<http://www.w3.org/2002/07/owl#> ";
+        String creationQueryWhereClause = "?class owl:equivalentClass ?ec . " +
+                "FILTER (REGEX(STR(?ec), \"http://yago-knowledge.org\", \"i\")) . ";
+        String creationQueryUriPrefix = "http://dbpedia.org/class/yago/";
+        String parentsQueryPrefixes = "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> ";
+        String parentRelationship = "rdfs:subClassOf";
+        String parentsQueryUriPrefix = "http://dbpedia.org/class/yago";
 
-            while(!done) {
-                try {
-                    SparqlResponse response = (new ServerQuerier()).runQuery(
-                        "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
-                        "select distinct ?parent where {" +
-                        "<" + entry.getKey() + "> rdfs:subClassOf ?parent . " +
-                        "FILTER (REGEX(STR(?parent), \"http://dbpedia.org/class/yago\", \"i\")) . }"
-                    );
-
-                    for(SparqlRecord r : response.getRecords()) {
-                        SparqlValue parentUri = r.getFields().get("parent");
-
-                        if(parentUri != null) {
-                            if(!yagoClasses.containsKey(parentUri.getValue())) {
-                                System.err.println(parentUri.getValue() + " was discovered as parent but not found in " +
-                                        "all yago classes");
-                            }
-
-                            else {
-                                YagoClass parent = yagoClasses.get(parentUri.getValue());
-                                YagoClass child = entry.getValue();
-
-                                child.addParent(parent);
-                                parent.addChild(child);
-                            }
-                        }
-                    }
-
-                    done = true;
-                }
-
-                catch(IOException e) {
-                    System.err.println("Exception while querying yago classes parents... New try... (" +
-                            e.getMessage() + ")");
-                }
-            }
-        }
-
-        return yagoClasses;
+        return factory.createHierarchy(creationQueryPrefixes, creationQueryWhereClause, creationQueryUriPrefix,
+                parentsQueryPrefixes, parentRelationship, parentsQueryUriPrefix);
     }
 }
