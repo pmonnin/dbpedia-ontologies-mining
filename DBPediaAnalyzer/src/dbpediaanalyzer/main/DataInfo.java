@@ -32,10 +32,15 @@ public class DataInfo {
             switch(scanner.nextInt()) {
                 case 1:
                     scannerClear(scanner);
-                    displayHierarchyElement(scanner, hm);
+                    displayHierarchyElementInfo(scanner, hm);
                     break;
 
                 case 2:
+                    scannerClear(scanner);
+                    findPathBetweenTwoElements();
+                    break;
+
+                case 3:
                     System.out.println("Bye!");
                     exit = true;
                     break;
@@ -47,15 +52,16 @@ public class DataInfo {
 
     private static void displayMenu() {
         System.out.println("=== DATA INFO MAIN MENU ===");
-        System.out.println("1. Display Hierarchy Element");
-        System.out.println("2. Quit");
+        System.out.println("1. Display hierarchy element info");
+        System.out.println("2. Find path between two hierarchy elements");
+        System.out.println("3. Quit");
     }
 
     private static void scannerClear(Scanner scanner) {
         scanner.nextLine();
     }
 
-    private static void displayHierarchyElement(Scanner scanner, HierarchiesManager hm) {
+    private static void displayHierarchyElementInfo(Scanner scanner, HierarchiesManager hm) {
         System.out.println("--- Display Hierarchy Element ---");
         System.out.println("Enter the hierarchy element URI");
 
@@ -92,5 +98,9 @@ public class DataInfo {
         else {
             System.out.println("Element " + uri + " wasn't found...");
         }
+    }
+
+    private static void findPathBetweenTwoElements() {
+
     }
 }
