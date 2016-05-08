@@ -147,6 +147,10 @@ public abstract class HierarchyElement {
 
         for(HierarchyElement element : fromSubset) {
             accessibleElements.put(element, 0);
+
+            if(element.ancestorsAndDistances == null) {
+                element.computeAncestorsAndDistances();
+            }
             accessibleElements.putAll(element.ancestorsAndDistances);
         }
 
