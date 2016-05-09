@@ -156,4 +156,42 @@ public abstract class HierarchyElement {
 
         return new ArrayList<>(accessibleElements.keySet());
     }
+
+    public List<HierarchyElement> findPathTo(HierarchyElement ancestor) {
+        if(!hasAncestor(ancestor)) {
+            return new ArrayList<>();
+        }
+
+        Map<HierarchyElement, HierarchyElement> predecessors = new HashMap<>();
+
+        Queue<HierarchyElement> queue = new LinkedList<>();
+        queue.add(this);
+
+        boolean found = false;
+        while(!queue.isEmpty() && !found) {
+            HierarchyElement element = queue.poll();
+
+            for(HierarchyElement parent : element.getParents()) {
+                if(!predecessors.containsKey(parent)) {
+                    predecessors.put(parent, element);
+                    queue.add(parent);
+                }
+
+                if(parent == ancestor) {
+                    found = true;
+                }
+            }
+        }
+
+        ArrayList<HierarchyElement> path = new ArrayList<>();
+        HierarchyElement current = ancestor;
+        path.add(current);
+
+        do {
+            current = predecessors.get(current);
+            path.add(0, current);
+        } while(current != this);
+
+        return path;
+    }
 }

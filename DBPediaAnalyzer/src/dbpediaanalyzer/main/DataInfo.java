@@ -1,9 +1,9 @@
 package dbpediaanalyzer.main;
 
-import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
-import dbpediaanalyzer.dbpediaobject.HierarchyElement;
+import dbpediaanalyzer.dbpediaobject.*;
 import dbpediaanalyzer.factory.HierarchiesFactory;
 
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -37,7 +37,7 @@ public class DataInfo {
 
                 case 2:
                     scannerClear(scanner);
-                    findPathBetweenTwoElements();
+                    findPathBetweenTwoElements(scanner, hm);
                     break;
 
                 case 3:
@@ -62,7 +62,7 @@ public class DataInfo {
     }
 
     private static void displayHierarchyElementInfo(Scanner scanner, HierarchiesManager hm) {
-        System.out.println("--- Display Hierarchy Element ---");
+        System.out.println("--- Display hierarchy element info ---");
         System.out.println("Enter the hierarchy element URI");
 
         String uri = scanner.nextLine();
@@ -100,7 +100,51 @@ public class DataInfo {
         }
     }
 
-    private static void findPathBetweenTwoElements() {
+    private static void findPathBetweenTwoElements(Scanner scanner, HierarchiesManager hm) {
+        System.out.println("--- Find path between two hierarchy element ---");
+        System.out.println("Enter the bottom hierarchy element URI");
+        String uriBottom = scanner.nextLine();
+        System.out.println("Enter the top hierarchy element URI");
+        String uriTop = scanner.nextLine();
 
+        HierarchyElement top = null, bottom = null;
+
+        if(hm.getCategoryFromUri(uriBottom) != null && hm.getCategoryFromUri(uriTop) != null) {
+            bottom = hm.getCategoryFromUri(uriBottom);
+            top = hm.getCategoryFromUri(uriTop);
+        }
+
+        else if(hm.getOntologyClassFromUri(uriBottom) != null && hm.getOntologyClassFromUri(uriTop) != null) {
+            bottom = hm.getOntologyClassFromUri(uriBottom);
+            top = hm.getOntologyClassFromUri(uriTop);
+        }
+
+        else if(hm.getYagoClassFromUri(uriBottom) != null && hm.getYagoClassFromUri(uriTop) != null) {
+            bottom = hm.getYagoClassFromUri(uriBottom);
+            top = hm.getYagoClassFromUri(uriTop);
+        }
+
+        if(top == null || bottom == null) {
+            System.out.println("Elements weren't found or weren't from the same hierarchy");
+        }
+
+        else {
+            List<HierarchyElement> path = bottom.findPathTo(top);
+
+            if(path.isEmpty()) {
+                System.out.println("Path couldn't be found. Top element isn't an ancestor of bottom element.");
+            }
+
+            else {
+                System.out.println("Path:");
+                for(int i = 0 ; i < path.size() ; i++) {
+                    System.out.print(path.get(i).getUri());
+
+                    if(i < path.size() - 1) {
+                        System.out.print(" -> ");
+                    }
+                }
+            }
+        }
     }
 }
