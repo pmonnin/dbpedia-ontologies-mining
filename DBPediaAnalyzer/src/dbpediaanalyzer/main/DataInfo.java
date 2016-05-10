@@ -14,14 +14,14 @@ import java.util.Scanner;
  */
 public class DataInfo {
 
-
     public static void main(String[] args) {
         System.out.println("=== DATA INFO ===");
-        System.out.println("Please wait... Setting up... Querying hierarchies from server...");
+        System.out.println("Please wait... Setting up...");
+        System.out.println("\t Querying and parsing DBPedia hierarchies...");
         HierarchiesManager hm = HierarchiesFactory.createHierarchies();
-        System.out.println("Loaded " + hm.getCategoriesNumber() + " DBPedia categories");
-        System.out.println("Loaded " + hm.getOntologyClassesNumber() + " DBPedia ontology classes");
-        System.out.println("Loaded " + hm.getYagoClassesNumber() + " DBPedia yago classes");
+        System.out.println("\t Loaded " + hm.getCategoriesNumber() + " DBPedia categories");
+        System.out.println("\t Loaded " + hm.getOntologyClassesNumber() + " DBPedia ontology classes");
+        System.out.println("\t Loaded " + hm.getYagoClassesNumber() + " DBPedia yago classes");
 
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
