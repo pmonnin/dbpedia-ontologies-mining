@@ -1,11 +1,13 @@
 package dbpediaanalyzer.io;
 
+import dbpediaanalyzer.dbpediaobject.HierarchyElement;
 import dbpediaanalyzer.statistic.HierarchyStatistics;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * TODO JAVADOC
@@ -33,6 +35,22 @@ public class HierarchiesStatisticsWriter {
         this.writer.println("Depth: " + hs.getDepth());
         this.writer.println("Direct subsumptions number: " + hs.getDirectSubsumptions());
         this.writer.println("Inferred subsumptions number: " + hs.getInferredSubsumptions());
+
+        List<List<HierarchyElement>> cycles = hs.getCycles();
+        this.writer.println("Cycles number: " + cycles.size());
+        for(List<HierarchyElement> cycle : cycles) {
+            this.writer.print("[ ");
+
+            for(int i = 0 ; i < cycle.size() ; i++) {
+                this.writer.print(cycle.get(i).getUri());
+
+                if(i < cycle.size() - 1) {
+                    this.writer.print(" -> ");
+                }
+            }
+
+            this.writer.println(" ]");
+        }
     }
 
     public void close() {

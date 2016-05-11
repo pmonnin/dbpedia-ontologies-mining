@@ -16,6 +16,7 @@ public class HierarchyStatistics {
     private int depth;
     private int directSubsumptions;
     private int inferredSubsumptions;
+    private List<List<HierarchyElement>> cycles;
 
     public HierarchyStatistics(Map<String, ? extends HierarchyElement> hierarchy) {
         this.elementsNumber= -1;
@@ -23,6 +24,7 @@ public class HierarchyStatistics {
         this.depth = -1;
         this.directSubsumptions = -1;
         this.inferredSubsumptions = -1;
+        this.cycles = new ArrayList<>();
 
         computeStatistics(hierarchy);
     }
@@ -44,6 +46,7 @@ public class HierarchyStatistics {
 
         computeDepth(hierarchy, orphans);
         computeInferredSubsumptions(hierarchy);
+        computeCycles(hierarchy);
     }
 
     private void computeDepth(Map<String, ? extends HierarchyElement> hierarchy, ArrayList<HierarchyElement> orphans) {
@@ -107,6 +110,44 @@ public class HierarchyStatistics {
         }
     }
 
+    private void computeCycles(Map<String, ? extends HierarchyElement> hierarchy) {
+        for(String entryUri : hierarchy.keySet()) {
+            HierarchyElement origin = hierarchy.get(entryUri);
+
+            Map<HierarchyElement, HierarchyElement> predecessors = new HashMap<>();
+            Queue<HierarchyElement> queue = new LinkedList<>();
+            queue.add(origin);
+
+            // Cycle detection with parent relationship
+            while(!queue.isEmpty()) {
+                HierarchyElement element = queue.poll();
+
+                for(HierarchyElement parent : element.getParents()) {
+                    if(parent == origin) {
+                        // Cycle detected
+                        List<HierarchyElement> cycle = new ArrayList<>();
+                        cycle.add(origin);
+                        HierarchyElement current = element;
+
+                        do {
+                            cycle.add(0, current);
+                            current = predecessors.get(current);
+                        } while(current != null);
+
+                        cycles.add(cycle);
+                    }
+
+                    else {
+                        if(!predecessors.containsKey(parent)) {
+                            predecessors.put(parent, element);
+                            queue.add(parent);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public int getElementsNumber() {
         return this.elementsNumber;
     }
@@ -125,5 +166,15 @@ public class HierarchyStatistics {
 
     public int getInferredSubsumptions() {
         return this.inferredSubsumptions;
+    }
+
+    public List<List<HierarchyElement>> getCycles() {
+        List<List<HierarchyElement>> retVal = new ArrayList<>();
+
+        for(List<HierarchyElement> cycle : cycles) {
+            retVal.add(new ArrayList<>(cycle));
+        }
+
+        return retVal;
     }
 }
