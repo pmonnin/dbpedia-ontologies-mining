@@ -41,8 +41,22 @@ public class DataInfo {
                     break;
 
                 case 3:
+                    scannerClear(scanner);
+                    displayLCAOfTwoHelements(scanner, hm);
+                    break;
+
+                case 4:
+                    scannerClear(scanner);
+                    displayDistanceFromClosestTopLevelClass(scanner, hm);
+                    break;
+
+                case 5:
                     System.out.println("Bye!");
                     exit = true;
+                    break;
+
+                default:
+                    System.out.println("Choice not available");
                     break;
             }
         }
@@ -54,7 +68,9 @@ public class DataInfo {
         System.out.println("=== DATA INFO MAIN MENU ===");
         System.out.println("1. Display hierarchy element info");
         System.out.println("2. Find path between two hierarchy elements");
-        System.out.println("3. Quit");
+        System.out.println("3. Display Lower Common Ancestor of two hierarchy elements");
+        System.out.println("4. Display distance from closest top level class of a hierarchy element");
+        System.out.println("5. Quit");
     }
 
     private static void scannerClear(Scanner scanner) {
@@ -66,19 +82,7 @@ public class DataInfo {
         System.out.println("Enter the hierarchy element URI");
 
         String uri = scanner.nextLine();
-        HierarchyElement element = null;
-
-        if(hm.getCategoryFromUri(uri) != null) {
-            element = hm.getCategoryFromUri(uri);
-        }
-
-        else if(hm.getOntologyClassFromUri(uri) != null) {
-            element = hm.getOntologyClassFromUri(uri);
-        }
-
-        else if(hm.getYagoClassFromUri(uri) != null) {
-            element = hm.getYagoClassFromUri(uri);
-        }
+        HierarchyElement element = fromURIToHierarchyElement(uri, hm);
 
         if(element != null) {
             System.out.println("Result: ");
@@ -148,5 +152,41 @@ public class DataInfo {
                 System.out.print("\n");
             }
         }
+    }
+
+    private static void displayLCAOfTwoHelements(Scanner scanner, HierarchiesManager hm) {
+
+    }
+
+    private static void displayDistanceFromClosestTopLevelClass(Scanner scanner, HierarchiesManager hm) {
+        System.out.println("--- Display distance from closest top level class ---");
+        System.out.println("Enter the origin hierarchy element URI");
+        String elementURI = scanner.nextLine();
+
+        HierarchyElement element = fromURIToHierarchyElement(elementURI, hm);
+
+        if(element != null) {
+            System.out.println("Distance from closest top level class: " + element.getDistanceFromClosestTopLevelClass());
+        }
+
+        else {
+            System.out.println("Element " + elementURI + " wasn't found...");
+        }
+    }
+
+    private static HierarchyElement fromURIToHierarchyElement(String elementURI, HierarchiesManager hm) {
+        if(hm.getCategoryFromUri(elementURI) != null) {
+            return hm.getCategoryFromUri(elementURI);
+        }
+
+        if(hm.getOntologyClassFromUri(elementURI) != null) {
+            return hm.getOntologyClassFromUri(elementURI);
+        }
+
+        if(hm.getYagoClassFromUri(elementURI) != null) {
+            return hm.getYagoClassFromUri(elementURI);
+        }
+
+        return null;
     }
 }
