@@ -16,10 +16,12 @@ import java.util.List;
  *
  */
 public class HierarchiesStatisticsWriter {
+    private String fileName;
     private PrintWriter writer;
 
     public HierarchiesStatisticsWriter(String fileName) {
         try {
+            this.fileName = fileName;
             this.writer = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
         }
 
@@ -38,18 +40,32 @@ public class HierarchiesStatisticsWriter {
 
         List<List<HierarchyElement>> cycles = hs.getCycles();
         this.writer.println("Cycles number: " + cycles.size());
-        for(List<HierarchyElement> cycle : cycles) {
-            this.writer.print("[ ");
 
-            for(int i = 0 ; i < cycle.size() ; i++) {
-                this.writer.print(cycle.get(i).getUri());
+        if(!cycles.isEmpty()) {
+            try {
+                PrintWriter cyclesWriter = new PrintWriter(new BufferedWriter(new FileWriter(this.fileName + "-" +
+                        hierarchyName.replace(" ", "-") + "-cycles")));
 
-                if(i < cycle.size() - 1) {
-                    this.writer.print(" -> ");
+                for(List<HierarchyElement> cycle : cycles) {
+                    cyclesWriter.print("[ ");
+
+                    for(int i = 0; i < cycle.size(); i++) {
+                        cyclesWriter.print(cycle.get(i).getUri());
+
+                        if(i < cycle.size() - 1) {
+                            cyclesWriter.print(" -> ");
+                        }
+                    }
+
+                    cyclesWriter.println(" ]");
                 }
+
+                cyclesWriter.close();
             }
 
-            this.writer.println(" ]");
+            catch(IOException e) {
+                System.err.println("Error while trying to save cycles for " + hierarchyName + "");
+            }
         }
     }
 

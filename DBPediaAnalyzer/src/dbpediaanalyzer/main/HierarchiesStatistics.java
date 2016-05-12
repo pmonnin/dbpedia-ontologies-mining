@@ -22,6 +22,8 @@ public class HierarchiesStatistics {
         if(args.length != 1) {
             System.out.println("Usage:\n java HierarchiesStatistics output");
             System.out.println("\t output\n\t\t file used to store computed hierarchies statistics");
+            System.out.println("\t\t If cycles are detected within a hierarchy, they will be stored inside a file " +
+                    "named output-hierarchy-name-cycles");
         }
 
         else {
