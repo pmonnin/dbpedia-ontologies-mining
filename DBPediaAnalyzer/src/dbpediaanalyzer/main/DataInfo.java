@@ -105,36 +105,20 @@ public class DataInfo {
     }
 
     private static void findPathBetweenTwoElements(Scanner scanner, HierarchiesManager hm) {
-        System.out.println("--- Find path between two hierarchy element ---");
+        System.out.println("--- Find path between two hierarchy elements ---");
         System.out.println("Enter the bottom hierarchy element URI");
         String uriBottom = scanner.nextLine();
         System.out.println("Enter the top hierarchy element URI");
         String uriTop = scanner.nextLine();
 
-        HierarchyElement top = null, bottom = null;
+        HierarchyElement top = fromURIToHierarchyElement(uriTop, hm), bottom = fromURIToHierarchyElement(uriBottom, hm);
 
-        if(hm.getCategoryFromUri(uriBottom) != null && hm.getCategoryFromUri(uriTop) != null) {
-            bottom = hm.getCategoryFromUri(uriBottom);
-            top = hm.getCategoryFromUri(uriTop);
-        }
-
-        else if(hm.getOntologyClassFromUri(uriBottom) != null && hm.getOntologyClassFromUri(uriTop) != null) {
-            bottom = hm.getOntologyClassFromUri(uriBottom);
-            top = hm.getOntologyClassFromUri(uriTop);
-        }
-
-        else if(hm.getYagoClassFromUri(uriBottom) != null && hm.getYagoClassFromUri(uriTop) != null) {
-            bottom = hm.getYagoClassFromUri(uriBottom);
-            top = hm.getYagoClassFromUri(uriTop);
-        }
-
-        if(top == null || bottom == null) {
+        if(!checkElementsNotNullAndSameType(top, bottom)) {
             System.out.println("Elements weren't found or weren't from the same hierarchy");
         }
 
         else {
             List<HierarchyElement> path = bottom.findPathTo(top);
-
             if(path.isEmpty()) {
                 System.out.println("Path couldn't be found. Top element isn't an ancestor of bottom element.");
             }
@@ -155,7 +139,30 @@ public class DataInfo {
     }
 
     private static void displayLCAOfTwoHelements(Scanner scanner, HierarchiesManager hm) {
+        System.out.println("--- Display LCA of two hierarchy elements ---");
+        System.out.println("Enter first hierarchy element URI");
+        String uri1 = scanner.nextLine();
+        System.out.println("Enter second hierarchy element URI");
+        String uri2 = scanner.nextLine();
 
+        HierarchyElement element1 = fromURIToHierarchyElement(uri1, hm);
+        HierarchyElement element2 = fromURIToHierarchyElement(uri2, hm);
+
+        if(checkElementsNotNullAndSameType(element1, element2)) {
+            HierarchyElement lca = element1.getLowestCommonAncestor(element2);
+
+            if(lca != null) {
+                System.out.println("LCA: " + lca.getUri());
+            }
+
+            else {
+                System.out.println("LCA: owl:Thing");
+            }
+        }
+
+        else {
+            System.out.println("Elements weren't found or weren't from the same hierarchy");
+        }
     }
 
     private static void displayDistanceFromClosestTopLevelClass(Scanner scanner, HierarchiesManager hm) {
@@ -188,5 +195,25 @@ public class DataInfo {
         }
 
         return null;
+    }
+
+    private static boolean checkElementsNotNullAndSameType(HierarchyElement element1, HierarchyElement element2) {
+        if(element1 == null || element2 == null) {
+            return false;
+        }
+
+        if(element1 instanceof Category && element2 instanceof Category) {
+            return true;
+        }
+
+        if(element1 instanceof OntologyClass && element2 instanceof OntologyClass) {
+            return true;
+        }
+
+        if(element1 instanceof YagoClass && element2 instanceof YagoClass) {
+            return true;
+        }
+
+        return false;
     }
 }
