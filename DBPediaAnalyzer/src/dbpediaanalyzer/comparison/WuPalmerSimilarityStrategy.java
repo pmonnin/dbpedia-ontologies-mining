@@ -29,6 +29,12 @@ public class WuPalmerSimilarityStrategy extends EvaluationStrategy {
         }
 
         int rootDistanceFromLca = lca.getDistanceFromClosestTopLevelClass() + 1;
+
+        // If rootDistanceFromLca = 0 that means there is a cycle in LCA ancestors which are top level classes...
+        if(rootDistanceFromLca == 0) {
+            return INVALID_RESULT_VALUE;
+        }
+
         int lcaDistanceFromBottom = (lca == subsumption.getBottom()) ? 0 : subsumption.getBottom().getDistanceFromAncestor(lca);
         int lcaDistanceFromTop = (lca == subsumption.getTop()) ? 0 : subsumption.getTop().getDistanceFromAncestor(lca);
 
