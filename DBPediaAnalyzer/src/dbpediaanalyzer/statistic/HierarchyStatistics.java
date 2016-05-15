@@ -14,6 +14,7 @@ public class HierarchyStatistics {
     private int elementsNumber;
     private int orphansNumber;
     private int depth;
+    private int depthInaccessibleElements;
     private int directSubsumptions;
     private int inferredSubsumptions;
     private List<List<HierarchyElement>> cycles;
@@ -22,6 +23,7 @@ public class HierarchyStatistics {
         this.elementsNumber= -1;
         this.orphansNumber = -1;
         this.depth = -1;
+        this.depthInaccessibleElements = -1;
         this.directSubsumptions = -1;
         this.inferredSubsumptions = -1;
         this.cycles = new ArrayList<>();
@@ -44,38 +46,49 @@ public class HierarchyStatistics {
             this.directSubsumptions += hierarchy.get(key).getParents().size();
         }
 
+        computeCycles(hierarchy);
         computeDepth(hierarchy, orphans);
         computeInferredSubsumptions(hierarchy);
-        computeCycles(hierarchy);
     }
 
     private void computeDepth(Map<String, ? extends HierarchyElement> hierarchy, ArrayList<HierarchyElement> orphans) {
-        HashMap<String, Integer> elementsDepth = new HashMap<>();
-        Queue<HierarchyElement> queue = new LinkedList<>();
+        HashMap<HierarchyElement, ArrayList<HierarchyElement>> elementsMaxDepthPath = new HashMap<>();
+        Queue<ArrayList<HierarchyElement>> queue = new LinkedList<>();
 
-        for(String key : hierarchy.keySet()) {
-            elementsDepth.put(key, -1);
+        for(HierarchyElement element : hierarchy.values()) {
+            elementsMaxDepthPath.put(element, new ArrayList<>());
         }
 
-        for(HierarchyElement he : orphans) {
-            elementsDepth.put(he.getUri(), 1);
-            queue.add(he);
+        for(HierarchyElement orphan : orphans) {
+            ArrayList<HierarchyElement> path = new ArrayList<>();
+            path.add(orphan);
+
+            elementsMaxDepthPath.put(orphan, path);
+            queue.add(path);
         }
-        
-        this.depth = -1;
+
         while(!queue.isEmpty()) {
-            HierarchyElement he = queue.poll();
-            int currentDepth = elementsDepth.get(he.getUri());
+            ArrayList<HierarchyElement> path = queue.poll();
 
-            if(currentDepth > this.depth) {
-                this.depth = currentDepth;
+            for(HierarchyElement child : path.get(path.size() - 1).getChildren()) {
+                if(!path.contains(child) && path.size() + 1 > elementsMaxDepthPath.get(child).size()) {
+                    ArrayList<HierarchyElement> childPath = new ArrayList<>(path);
+                    childPath.add(child);
+                    elementsMaxDepthPath.put(child, childPath);
+                    queue.add(childPath);
+                }
+            }
+        }
+
+        this.depth = -1;
+        this.depthInaccessibleElements = 0;
+        for(ArrayList<HierarchyElement> path : elementsMaxDepthPath.values()) {
+            if(path.size() == 0) {
+                this.depthInaccessibleElements++;
             }
 
-            for(HierarchyElement child : he.getChildren()) {
-                if(elementsDepth.get(child.getUri()) == -1) {
-                    elementsDepth.put(child.getUri(), currentDepth + 1);
-                    queue.add(child);
-                }
+            else if(path.get(path.size() - 1).getChildren().isEmpty() && path.size() > this.depth) {
+                this.depth = path.size();
             }
         }
     }
@@ -160,6 +173,10 @@ public class HierarchyStatistics {
         return this.depth;
     }
 
+    public int getDepthInaccessibleElements() {
+        return this.depthInaccessibleElements;
+    }
+
     public int getDirectSubsumptions() {
         return this.directSubsumptions;
     }
@@ -171,7 +188,7 @@ public class HierarchyStatistics {
     public List<List<HierarchyElement>> getCycles() {
         List<List<HierarchyElement>> retVal = new ArrayList<>();
 
-        for(List<HierarchyElement> cycle : cycles) {
+        for(List<HierarchyElement> cycle : this.cycles) {
             retVal.add(new ArrayList<>(cycle));
         }
 

@@ -35,6 +35,7 @@ public class HierarchiesStatisticsWriter {
         this.writer.println("Elements number: " + hs.getElementsNumber());
         this.writer.println("Orphans number: " + hs.getOrphansNumber());
         this.writer.println("Depth: " + hs.getDepth());
+        this.writer.println("Inaccessible elements during depth calculation: " + hs.getDepthInaccessibleElements());
         this.writer.println("Direct subsumptions number: " + hs.getDirectSubsumptions());
         this.writer.println("Inferred subsumptions number: " + hs.getInferredSubsumptions());
 
