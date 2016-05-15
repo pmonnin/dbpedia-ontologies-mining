@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 import sys
-import json
 from pymongo import MongoClient
 import matplotlib
 # Use this only if your are on SSH session and don't have a graphic environment
