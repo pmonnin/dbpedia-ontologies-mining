@@ -19,8 +19,8 @@ strategies = ["NumberOfSubmissions", "AverageExtensionsRatio", "DistanceViaLCA",
 
 histograms_targets = {"NumberOfSubmissions": ["range"],
                       "AverageExtensionsRatio": ["default"],
-                      "DistanceViaLCA": ["default", "exclude-0-values"],
-                      "WuPalmerSimilarity": ["default", "exclude-0-values"]}
+                      "DistanceViaLCA": ["default", "exclude-negative-null-values"],
+                      "WuPalmerSimilarity": ["default", "exclude-negative-null-values"]}
 
 
 def print_usage():
@@ -62,8 +62,8 @@ def histogram_target_to_bins(histogram_target, values):
 
 
 def histogram_target_to_values(histogram_target, values):
-    if histogram_target == "exclude-0-values":
-        return [x for x in values if x != 0.0]
+    if histogram_target == "exclude-negative-null-values":
+        return [x for x in values if x > 0.0]
 
     return values
 
