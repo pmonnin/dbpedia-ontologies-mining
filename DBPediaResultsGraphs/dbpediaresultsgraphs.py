@@ -91,9 +91,9 @@ def main():
                             title = "Values for " + type + " relationships on " + class_name + "\nStrategy " + strategy
                             file_name = sys.argv[3] + "-" + class_name + "-" + type + "-" + strategy
 
-                            if histogram_target == "exclude-0-values":
-                                title += " (0 values excluded)"
-                                file_name += "-0-excluded"
+                            if histogram_target == "exclude-negative-null-values":
+                                title += " (<= 0 values excluded)"
+                                file_name += "-negative-0-excluded"
 
                             plot_histogram_to_file(filtered_values, histogram_target, title, file_name)
 
