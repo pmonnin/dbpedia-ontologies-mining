@@ -78,7 +78,6 @@ python dbpediaresultsgraphs.py mongodb mongocollection output-prefix
 * *output-prefix*: prefix to be used for output files. Each output file will be named according to the following
    pattern: `output-prefix-class-type-strategy.png`
 
-
 ### Hierarchies statistics
 
 Computes and saves statistics about DBPedia hierarchies used to classify pages (categories, ontology classes and yago classes)
@@ -90,6 +89,24 @@ java dbpediaanalyzer.main.HierarchiesStatistics output
 ```
 
 * *output*: file used to store computed hierarchies statistics
+
+If cycles are detected within a hierarchy, they will be stored inside a file named output-hierarchy-name-cycles.
+
+### Data Info
+
+This program can be used to display information or compute various results on hierarchy elements. It has the
+following features:
+
+* Display information about a hierarchy element (parents and children)
+* Find path between two hierarchy elements"
+* Display Lower Common Ancestor of two hierarchy elements
+* Display distance from closest top level class of a hierarchy element
+
+Can be executed with the following command:
+
+```shell
+java dbpediaanalyzer.main.DataInfo
+```
 
 ## Dependencies
 
