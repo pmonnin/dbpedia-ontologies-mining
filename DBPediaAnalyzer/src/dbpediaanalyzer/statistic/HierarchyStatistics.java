@@ -56,7 +56,7 @@ public class HierarchyStatistics {
         Queue<ArrayList<HierarchyElement>> queue = new LinkedList<>();
 
         for(HierarchyElement element : hierarchy.values()) {
-            elementsMaxDepthPath.put(element, new ArrayList<>());
+            elementsMaxDepthPath.put(element, new ArrayList<HierarchyElement>());
         }
 
         for(HierarchyElement orphan : orphans) {
