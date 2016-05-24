@@ -34,6 +34,11 @@ public class DistanceViaLCAStrategy extends EvaluationStrategy {
 
         // owl:Thing is the lca
         else {
+            if(subsumption.getBottom().getDistanceFromClosestTopLevelClass() == -1 ||
+                    subsumption.getTop().getDistanceFromClosestTopLevelClass() == -1) {
+                return INVALID_RESULT_VALUE;
+            }
+
             distanceViaLCA = subsumption.getBottom().getDistanceFromClosestTopLevelClass() + 1
                     + subsumption.getTop().getDistanceFromClosestTopLevelClass() + 1;
         }
