@@ -15,7 +15,7 @@ hierarchies (DBPedia categories, ontology classes and yago classes)
 
 ## Execution
 
-### Lattice creation
+### Lattice generation
 
 Creates a lattice based on a set of pages linked to the dbo:Person ontology class and having a death date.
 
@@ -107,6 +107,18 @@ Can be executed with the following command:
 ```shell
 java dbpediaanalyzer.main.DataInfo
 ```
+
+### Lattice Statistics
+
+It is possible to (re)compute statistics on a lattice that has previously been generated with the lattice greation
+program. To execute this program, use the following command:
+
+```shell
+java dbpediaanalyzer.main.LatticeStatisticsComputation lattice output
+```
+
+* *lattice*: the lattice on which statistics will be computed (previsouly generated with lattice greation program)
+* *output*: file used to store computed lattice statistics
 
 ## Dependencies
 
