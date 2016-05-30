@@ -55,8 +55,10 @@ public class LatticeAnalysis {
             System.out.println("Lattice analysis...");
             System.out.println("\t Extracting knowledge from lattice");
             Collection<DataBasedSubsumption> dataBasedKnowledge = DataBasedKnowledgeFactory.createDataBasedKnowledge(lattice);
+            lattice = null;
             System.out.println("\t Computing comparison results...");
             List<ComparisonResult> comparisonResults = KnowledgesComparisonResultFactory.createKnowledgesComparisonResults(dataBasedKnowledge);
+            dataBasedKnowledge = null;
             System.out.println("\t Computing comparison statistics...");
             List<ComparisonResultsStatistics> statistics = new ArrayList<>();
             statistics.add(new ComparisonResultsStatistics(comparisonResults, ComparisonResultType.CONFIRMED_DIRECT,
