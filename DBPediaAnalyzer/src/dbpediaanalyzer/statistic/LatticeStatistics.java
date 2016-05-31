@@ -179,6 +179,18 @@ public class LatticeStatistics {
         return this.conceptsWithoutYagoClassesNumber;
     }
 
+    public int getGapConceptsInCategories() {
+        return this.gapConceptsInCategories;
+    }
+
+    public int getGapConceptsInOntologyClasses() {
+        return this.gapConceptsInOntologyClasses;
+    }
+
+    public int getGapConceptsInYagoClasses() {
+        return this.gapConceptsInYagoClasses;
+    }
+
     public double getAverageCategoriesNumberPerConcept() {
         return this.averageCategoriesNumberPerConcept;
     }

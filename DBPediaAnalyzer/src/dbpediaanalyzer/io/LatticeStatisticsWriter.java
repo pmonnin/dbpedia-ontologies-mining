@@ -34,6 +34,9 @@ public class LatticeStatisticsWriter {
         this.writer.println("Number of concepts without categories: " + statistics.getConceptsWithoutCategoriesNumber());
         this.writer.println("Number of concepts without ontology classes: " + statistics.getConceptsWithoutOntologyClassesNumber());
         this.writer.println("Number of concepts without yago classes: " + statistics.getConceptsWithoutYagoClassesNumber());
+        this.writer.println("Number of gap concepts in categories: " + statistics.getGapConceptsInCategories());
+        this.writer.println("Number of gap concepts in ontology classes: " + statistics.getGapConceptsInOntologyClasses());
+        this.writer.println("Number of gap concepts in yago classes: " + statistics.getGapConceptsInYagoClasses());
         this.writer.println("Average number of categories per concept: " + statistics.getAverageCategoriesNumberPerConcept());
         this.writer.println("Average number of ontology classes per concept: " + statistics.getAverageOntologyClassesNumberPerConcept());
         this.writer.println("Average number of yago classes per concept: " + statistics.getAverageYagoClassesNumberPerConcept());
