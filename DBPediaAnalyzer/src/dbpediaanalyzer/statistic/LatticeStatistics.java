@@ -20,6 +20,9 @@ public class LatticeStatistics {
     private int conceptsWithoutCategoriesNumber;
     private int conceptsWithoutOntologyClassesNumber;
     private int conceptsWithoutYagoClassesNumber;
+    private int gapConceptsInCategories;
+    private int gapConceptsInOntologyClasses;
+    private int gapConceptsInYagoClasses;
     private double averageCategoriesNumberPerConcept;
     private double averageOntologyClassesNumberPerConcept;
     private double averageYagoClassesNumberPerConcept;
@@ -27,6 +30,20 @@ public class LatticeStatistics {
     private double averageRelationshipsNumberPerConcept;
 
     public LatticeStatistics(Lattice lattice) {
+        this.depth = -1;
+        this.edgesNumber = 0;
+        this.conceptsWithoutCategoriesNumber = 0;
+        this.conceptsWithoutOntologyClassesNumber = 0;
+        this.conceptsWithoutYagoClassesNumber = 0;
+        this.gapConceptsInCategories = 0;
+        this.gapConceptsInOntologyClasses = 0;
+        this.gapConceptsInYagoClasses = 0;
+        this.averageCategoriesNumberPerConcept = 0.0;
+        this.averageOntologyClassesNumberPerConcept = 0.0;
+        this.averageYagoClassesNumberPerConcept = 0.0;
+        this.averagePageNumberPerConcept = 0.0;
+        this.averageRelationshipsNumberPerConcept = 0.0;
+
         this.conceptsNumber = lattice.getConcepts().size();
 
         for(Concept concept : lattice.getConcepts()) {
@@ -38,16 +55,70 @@ public class LatticeStatistics {
             this.averagePageNumberPerConcept += concept.getObjects().size();
             this.averageRelationshipsNumberPerConcept += concept.getAttributes().size();
 
-            if(concept.getCategories().size() == 0) {
+            if(concept.getCategories().isEmpty()) {
                 this.conceptsWithoutCategoriesNumber++;
+
+                boolean parentsHaveClasses = false;
+                for(Concept parent : concept.getParents()) {
+                    if(!parent.getCategories().isEmpty()) {
+                        parentsHaveClasses = true;
+                    }
+                }
+
+                boolean childrenHaveClasses = false;
+                for(Concept child : concept.getChildren()) {
+                    if(!child.getCategories().isEmpty()) {
+                        childrenHaveClasses = true;
+                    }
+                }
+
+                if(parentsHaveClasses && childrenHaveClasses) {
+                    this.gapConceptsInCategories++;
+                }
             }
 
-            if(concept.getOntologyClasses().size() == 0) {
+            if(concept.getOntologyClasses().isEmpty()) {
                 this.conceptsWithoutOntologyClassesNumber++;
+
+                boolean parentsHaveClasses = false;
+                for(Concept parent : concept.getParents()) {
+                    if(!parent.getOntologyClasses().isEmpty()) {
+                        parentsHaveClasses = true;
+                    }
+                }
+
+                boolean childrenHaveClasses = false;
+                for(Concept child : concept.getChildren()) {
+                    if(!child.getOntologyClasses().isEmpty()) {
+                        childrenHaveClasses = true;
+                    }
+                }
+
+                if(parentsHaveClasses && childrenHaveClasses) {
+                    this.gapConceptsInOntologyClasses++;
+                }
             }
 
-            if(concept.getYagoClasses().size() == 0) {
+            if(concept.getYagoClasses().isEmpty()) {
                 this.conceptsWithoutYagoClassesNumber++;
+
+                boolean parentsHaveClasses = false;
+                for(Concept parent : concept.getParents()) {
+                    if(!parent.getYagoClasses().isEmpty()) {
+                        parentsHaveClasses = true;
+                    }
+                }
+
+                boolean childrenHaveClasses = false;
+                for(Concept child : concept.getChildren()) {
+                    if(!child.getYagoClasses().isEmpty()) {
+                        childrenHaveClasses = true;
+                    }
+                }
+
+                if(parentsHaveClasses && childrenHaveClasses) {
+                    this.gapConceptsInYagoClasses++;
+                }
             }
         }
 
