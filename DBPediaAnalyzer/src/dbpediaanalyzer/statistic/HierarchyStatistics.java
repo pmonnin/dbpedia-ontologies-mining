@@ -18,6 +18,7 @@ public class HierarchyStatistics {
     private int directSubsumptions;
     private int inferredSubsumptions;
     private List<List<HierarchyElement>> cycles;
+    private List<HierarchyElement> depthPath;
 
     public HierarchyStatistics(Map<String, ? extends HierarchyElement> hierarchy) {
         this.elementsNumber= -1;
@@ -27,6 +28,7 @@ public class HierarchyStatistics {
         this.directSubsumptions = -1;
         this.inferredSubsumptions = -1;
         this.cycles = new ArrayList<>();
+        this.depthPath = new ArrayList<>();
 
         computeStatistics(hierarchy);
     }
@@ -82,6 +84,7 @@ public class HierarchyStatistics {
 
         this.depth = -1;
         this.depthInaccessibleElements = 0;
+        this.depthPath = new ArrayList<>();
         for(ArrayList<HierarchyElement> path : elementsMaxDepthPath.values()) {
             if(path.size() == 0) {
                 this.depthInaccessibleElements++;
@@ -89,6 +92,7 @@ public class HierarchyStatistics {
 
             else if(path.get(path.size() - 1).getChildren().isEmpty() && path.size() > this.depth) {
                 this.depth = path.size();
+                this.depthPath = path;
             }
         }
     }
@@ -193,5 +197,9 @@ public class HierarchyStatistics {
         }
 
         return retVal;
+    }
+
+    public List<HierarchyElement> getDepthPath() {
+        return new ArrayList<>(this.depthPath);
     }
 }

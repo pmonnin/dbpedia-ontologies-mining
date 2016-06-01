@@ -59,6 +59,20 @@ public class HierarchiesStatisticsWriter extends AbstractStatisticsWriter {
                 System.err.println("Error while trying to save cycles for " + hierarchyName + "");
             }
         }
+
+        print("Depth path: ");
+        List<HierarchyElement> depthPath = hs.getDepthPath();
+        for(int i = 0 ; i < depthPath.size() ; i++) {
+            print(depthPath.get(i).getUri());
+
+            if(i != depthPath.size() - 1) {
+                print(" -> ");
+            }
+
+            else {
+                print("\n");
+            }
+        }
     }
 
 }

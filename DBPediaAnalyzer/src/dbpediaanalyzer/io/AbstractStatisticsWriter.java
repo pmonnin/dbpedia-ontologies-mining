@@ -31,6 +31,10 @@ public abstract class AbstractStatisticsWriter {
         this.writer.println(str);
     }
 
+    protected void print(String str) {
+        this.writer.print(str);
+    }
+
     protected String getFileName() {
         return this.fileName;
     }
