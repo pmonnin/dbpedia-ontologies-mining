@@ -15,36 +15,27 @@ import java.util.List;
  * @author Pierre Monnin
  *
  */
-public class HierarchiesStatisticsWriter {
-    private String fileName;
-    private PrintWriter writer;
+public class HierarchiesStatisticsWriter extends AbstractStatisticsWriter {
 
     public HierarchiesStatisticsWriter(String fileName) {
-        try {
-            this.fileName = fileName;
-            this.writer = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
-        }
-
-        catch(IOException e) {
-            System.err.println("Error while trying to open file " + fileName + " to save hierarchies statistics");
-        }
+        super(fileName, "hierarchies");
     }
 
     public void writeHierarchyStatistics(HierarchyStatistics hs, String hierarchyName) {
-        this.writer.println("--- " + hierarchyName + " statistics ---");
-        this.writer.println("Elements number: " + hs.getElementsNumber());
-        this.writer.println("Orphans number: " + hs.getOrphansNumber());
-        this.writer.println("Depth: " + hs.getDepth());
-        this.writer.println("Inaccessible elements during depth calculation: " + hs.getDepthInaccessibleElements());
-        this.writer.println("Direct subsumptions number: " + hs.getDirectSubsumptions());
-        this.writer.println("Inferred subsumptions number: " + hs.getInferredSubsumptions());
+        println("--- " + hierarchyName + " statistics ---");
+        println("Elements number: " + hs.getElementsNumber());
+        println("Orphans number: " + hs.getOrphansNumber());
+        println("Depth: " + hs.getDepth());
+        println("Inaccessible elements during depth calculation: " + hs.getDepthInaccessibleElements());
+        println("Direct subsumptions number: " + hs.getDirectSubsumptions());
+        println("Inferred subsumptions number: " + hs.getInferredSubsumptions());
 
         List<List<HierarchyElement>> cycles = hs.getCycles();
-        this.writer.println("Cycles number: " + cycles.size());
+        println("Cycles number: " + cycles.size());
 
         if(!cycles.isEmpty()) {
             try {
-                PrintWriter cyclesWriter = new PrintWriter(new BufferedWriter(new FileWriter(this.fileName + "-" +
+                PrintWriter cyclesWriter = new PrintWriter(new BufferedWriter(new FileWriter(getFileName() + "-" +
                         hierarchyName.replace(" ", "-") + "-cycles")));
 
                 for(List<HierarchyElement> cycle : cycles) {
@@ -68,10 +59,6 @@ public class HierarchiesStatisticsWriter {
                 System.err.println("Error while trying to save cycles for " + hierarchyName + "");
             }
         }
-    }
-
-    public void close() {
-        writer.close();
     }
 
 }

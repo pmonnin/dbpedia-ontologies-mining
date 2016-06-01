@@ -13,38 +13,26 @@ import java.io.PrintWriter;
  * @author Pierre Monnin
  *
  */
-public class LatticeStatisticsWriter {
-    private PrintWriter writer;
-
+public class LatticeStatisticsWriter extends AbstractStatisticsWriter {
     public LatticeStatisticsWriter(String fileName) {
-        try {
-            this.writer = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
-        }
-
-        catch(IOException e) {
-            System.err.println("Error while trying to open file " + fileName + " to save lattice statistics");
-        }
+        super(fileName, "lattice");
     }
 
     public void writeLatticeStatistics(LatticeStatistics statistics) {
-        this.writer.println("--- Lattice statistics ---");
-        this.writer.println("Depth: " + statistics.getDepth());
-        this.writer.println("Number of concepts: " + statistics.getConceptsNumber());
-        this.writer.println("Number of edges: " + statistics.getEdgesNumber());
-        this.writer.println("Number of concepts without categories: " + statistics.getConceptsWithoutCategoriesNumber());
-        this.writer.println("Number of concepts without ontology classes: " + statistics.getConceptsWithoutOntologyClassesNumber());
-        this.writer.println("Number of concepts without yago classes: " + statistics.getConceptsWithoutYagoClassesNumber());
-        this.writer.println("Number of gap concepts in categories: " + statistics.getGapConceptsInCategories());
-        this.writer.println("Number of gap concepts in ontology classes: " + statistics.getGapConceptsInOntologyClasses());
-        this.writer.println("Number of gap concepts in yago classes: " + statistics.getGapConceptsInYagoClasses());
-        this.writer.println("Average number of categories per concept: " + statistics.getAverageCategoriesNumberPerConcept());
-        this.writer.println("Average number of ontology classes per concept: " + statistics.getAverageOntologyClassesNumberPerConcept());
-        this.writer.println("Average number of yago classes per concept: " + statistics.getAverageYagoClassesNumberPerConcept());
-        this.writer.println("Average number of pages per concept: " + statistics.getAveragePageNumberPerConcept());
-        this.writer.println("Average number of relationships per concept: " + statistics.getAverageRelationshipsNumberPerConcept());
-    }
-
-    public void close() {
-        this.writer.close();
+        println("--- Lattice statistics ---");
+        println("Depth: " + statistics.getDepth());
+        println("Number of concepts: " + statistics.getConceptsNumber());
+        println("Number of edges: " + statistics.getEdgesNumber());
+        println("Number of concepts without categories: " + statistics.getConceptsWithoutCategoriesNumber());
+        println("Number of concepts without ontology classes: " + statistics.getConceptsWithoutOntologyClassesNumber());
+        println("Number of concepts without yago classes: " + statistics.getConceptsWithoutYagoClassesNumber());
+        println("Number of gap concepts in categories: " + statistics.getGapConceptsInCategories());
+        println("Number of gap concepts in ontology classes: " + statistics.getGapConceptsInOntologyClasses());
+        println("Number of gap concepts in yago classes: " + statistics.getGapConceptsInYagoClasses());
+        println("Average number of categories per concept: " + statistics.getAverageCategoriesNumberPerConcept());
+        println("Average number of ontology classes per concept: " + statistics.getAverageOntologyClassesNumberPerConcept());
+        println("Average number of yago classes per concept: " + statistics.getAverageYagoClassesNumberPerConcept());
+        println("Average number of pages per concept: " + statistics.getAveragePageNumberPerConcept());
+        println("Average number of relationships per concept: " + statistics.getAverageRelationshipsNumberPerConcept());
     }
 }
