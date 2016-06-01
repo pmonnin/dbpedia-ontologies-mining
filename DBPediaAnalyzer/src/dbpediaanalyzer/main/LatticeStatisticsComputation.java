@@ -34,7 +34,7 @@ public class LatticeStatisticsComputation {
             System.out.println("\t Loading lattice from file...");
             Lattice lattice = (new LatticeReader()).readLattice(args[0], hm);
 
-            System.out.print("Lattice analysis...");
+            System.out.println("Lattice analysis...");
             System.out.println("\t Computing lattice statistics...");
             LatticeStatistics statistics = new LatticeStatistics(lattice);
             System.out.println("\t Saving lattice statistics...");
