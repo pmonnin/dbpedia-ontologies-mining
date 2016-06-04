@@ -15,16 +15,20 @@ public class DataBasedSubsumption {
     private HierarchyElement bottom;
     private HierarchyElement top;
     private List<Double> extensionsRatios;
+    private List<Double> intensionsRatios;
 
-    public DataBasedSubsumption(HierarchyElement bottom, HierarchyElement top, double extensionsRatio) {
+    public DataBasedSubsumption(HierarchyElement bottom, HierarchyElement top, double extensionsRatio, double intensionsRatio) {
         this.bottom = bottom;
         this.top = top;
         this.extensionsRatios = new ArrayList<>();
         this.extensionsRatios.add(extensionsRatio);
+        this.intensionsRatios = new ArrayList<>();
+        this.intensionsRatios.add(intensionsRatio);
     }
 
-    public void newSubmission(double extensionsRatio) {
+    public void newSubmission(double extensionsRatio, double intensionsRatio) {
         this.extensionsRatios.add(extensionsRatio);
+        this.intensionsRatios.add(intensionsRatio);
     }
 
     public HierarchyElement getBottom() {
@@ -41,5 +45,9 @@ public class DataBasedSubsumption {
 
     public List<Double> getExtensionsRatios() {
         return new ArrayList<>(this.extensionsRatios);
+    }
+
+    public List<Double> getIntensionsRatios() {
+        return new ArrayList<>(this.intensionsRatios);
     }
 }

@@ -49,41 +49,42 @@ public class DataBasedKnowledgeFactory {
 
     private static void analyzeEdge(Concept upper, Concept lower, HashMap<String, DataBasedSubsumption> dataBasedKnowledge) {
         double extensionsRatio = (double) lower.getObjects().size() / (double) upper.getObjects().size();
+        double intensionsRatio = (double) upper.getAttributes().size() / (double) lower.getAttributes().size();
 
         // Categories analysis
         for(Category lCategory : lower.getCategories()) {
             for(Category uCategory : upper.getCategories()) {
-                addSubsumption(lCategory, uCategory, extensionsRatio, dataBasedKnowledge);
+                addSubsumption(lCategory, uCategory, extensionsRatio, intensionsRatio, dataBasedKnowledge);
             }
         }
 
         // Ontology classes analysis
         for(OntologyClass lOntologyClass : lower.getOntologyClasses()) {
             for(OntologyClass uOntologyClass : upper.getOntologyClasses()) {
-                addSubsumption(lOntologyClass, uOntologyClass, extensionsRatio, dataBasedKnowledge);
+                addSubsumption(lOntologyClass, uOntologyClass, extensionsRatio, intensionsRatio, dataBasedKnowledge);
             }
         }
 
         // Yago classes analysis
         for(YagoClass lYagoClass : lower.getYagoClasses()) {
             for(YagoClass uYagoClass : upper.getYagoClasses()) {
-                addSubsumption(lYagoClass, uYagoClass, extensionsRatio, dataBasedKnowledge);
+                addSubsumption(lYagoClass, uYagoClass, extensionsRatio, intensionsRatio, dataBasedKnowledge);
             }
         }
     }
 
     private static void addSubsumption(HierarchyElement bottom, HierarchyElement top, double extensionsRatio,
-                                       HashMap<String, DataBasedSubsumption> dataBasedKnowledge) {
+                                       double intensionsRatio, HashMap<String, DataBasedSubsumption> dataBasedKnowledge) {
 
         DataBasedSubsumption dbs = dataBasedKnowledge.get(bottom.getUri() + top.getUri());
 
         if(dbs == null) {
-            dbs = new DataBasedSubsumption(bottom, top, extensionsRatio);
+            dbs = new DataBasedSubsumption(bottom, top, extensionsRatio, intensionsRatio);
             dataBasedKnowledge.put(bottom.getUri() + top.getUri(), dbs);
         }
 
         else {
-            dbs.newSubmission(extensionsRatio);
+            dbs.newSubmission(extensionsRatio, intensionsRatio);
         }
     }
 

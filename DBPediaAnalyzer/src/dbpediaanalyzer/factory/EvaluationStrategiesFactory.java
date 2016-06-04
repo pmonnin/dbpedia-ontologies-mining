@@ -18,6 +18,7 @@ public class EvaluationStrategiesFactory {
 
         strategies.add(new NumberOfSubmissionsStrategy());
         strategies.add(new AverageExtensionsRatioStrategy());
+        strategies.add(new AverageIntensionsRatioStrategy());
         strategies.add(new DistanceViaLCAStrategy());
         strategies.add(new WuPalmerSimilarityStrategy());
 
