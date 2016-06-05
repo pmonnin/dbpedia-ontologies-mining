@@ -6,7 +6,6 @@ import dbpediaanalyzer.comparison.EvaluationStrategy;
 import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -17,11 +16,12 @@ import java.util.List;
  */
 public class KnowledgesComparisonResultFactory {
 
-    public static List<ComparisonResult> createKnowledgesComparisonResults(Collection<DataBasedSubsumption> dataBasedKnowledge) {
+    public static List<ComparisonResult> createKnowledgesComparisonResults(List<DataBasedSubsumption> dataBasedKnowledge) {
 
         List<ComparisonResult> results = new ArrayList<>();
 
-        for(DataBasedSubsumption dbs : dataBasedKnowledge) {
+        while(!dataBasedKnowledge.isEmpty()) {
+            DataBasedSubsumption dbs = dataBasedKnowledge.remove(0);
 
             // Is this an already existing direct relationship?
             if(dbs.getBottom().getParents().contains(dbs.getTop())) {
@@ -37,7 +37,6 @@ public class KnowledgesComparisonResultFactory {
             else {
                 results.add(createComparisonResult(ComparisonResultType.PROPOSED_NEW, dbs));
             }
-
         }
 
         return results;
