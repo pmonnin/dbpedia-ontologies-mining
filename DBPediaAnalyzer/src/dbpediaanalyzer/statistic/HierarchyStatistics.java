@@ -13,7 +13,8 @@ import java.util.*;
 public class HierarchyStatistics {
     private int elementsNumber;
     private int orphansNumber;
-    private int depth;
+    private int depthOneTraversal;
+    private int depthMultipleTraversals;
     private int depthInaccessibleElements;
     private int directSubsumptions;
     private int inferredSubsumptions;
@@ -23,7 +24,8 @@ public class HierarchyStatistics {
     public HierarchyStatistics(Map<String, ? extends HierarchyElement> hierarchy) {
         this.elementsNumber= -1;
         this.orphansNumber = -1;
-        this.depth = -1;
+        this.depthOneTraversal = -1;
+        this.depthMultipleTraversals = -1;
         this.depthInaccessibleElements = -1;
         this.directSubsumptions = -1;
         this.inferredSubsumptions = -1;
@@ -49,11 +51,43 @@ public class HierarchyStatistics {
         }
 
         computeCycles(hierarchy);
-        computeDepth(hierarchy, orphans);
+        computeDepthOneTraversal(hierarchy, orphans);
+        computeDepthMultipleTraversals(hierarchy, orphans);
         computeInferredSubsumptions(hierarchy);
     }
 
-    private void computeDepth(Map<String, ? extends HierarchyElement> hierarchy, ArrayList<HierarchyElement> orphans) {
+    private void computeDepthOneTraversal(Map<String, ? extends HierarchyElement> hierarchy, ArrayList<HierarchyElement> orphans) {
+        HashMap<HierarchyElement, Integer> elementsDepth = new HashMap<>();
+        Queue<HierarchyElement> queue = new LinkedList<>();
+
+        for(HierarchyElement element : hierarchy.values()) {
+            elementsDepth.put(element, -1);
+        }
+
+        for(HierarchyElement orphan : orphans) {
+            elementsDepth.put(orphan, 1);
+            queue.add(orphan);
+        }
+
+        this.depthOneTraversal = 1;
+        while(!queue.isEmpty()) {
+            HierarchyElement element = queue.poll();
+            int currentDepth = elementsDepth.get(element);
+
+            if(currentDepth > this.depthOneTraversal) {
+                this.depthOneTraversal = currentDepth;
+            }
+
+            for(HierarchyElement child : element.getChildren()) {
+                if(elementsDepth.get(child) == -1) {
+                    elementsDepth.put(child, currentDepth + 1);
+                    queue.add(child);
+                }
+            }
+        }
+    }
+
+    private void computeDepthMultipleTraversals(Map<String, ? extends HierarchyElement> hierarchy, ArrayList<HierarchyElement> orphans) {
         HashMap<HierarchyElement, ArrayList<HierarchyElement>> elementsMaxDepthPath = new HashMap<>();
         Queue<ArrayList<HierarchyElement>> queue = new LinkedList<>();
 
@@ -82,7 +116,7 @@ public class HierarchyStatistics {
             }
         }
 
-        this.depth = -1;
+        this.depthMultipleTraversals = -1;
         this.depthInaccessibleElements = 0;
         this.depthPath = new ArrayList<>();
         for(ArrayList<HierarchyElement> path : elementsMaxDepthPath.values()) {
@@ -90,8 +124,8 @@ public class HierarchyStatistics {
                 this.depthInaccessibleElements++;
             }
 
-            else if(path.get(path.size() - 1).getChildren().isEmpty() && path.size() > this.depth) {
-                this.depth = path.size();
+            else if(path.get(path.size() - 1).getChildren().isEmpty() && path.size() > this.depthMultipleTraversals) {
+                this.depthMultipleTraversals = path.size();
                 this.depthPath = path;
             }
         }
@@ -173,8 +207,12 @@ public class HierarchyStatistics {
         return this.orphansNumber;
     }
 
-    public int getDepth() {
-        return this.depth;
+    public int getDepthMultipleTraversals() {
+        return this.depthMultipleTraversals;
+    }
+
+    public int getDepthOneTraversal() {
+        return this.depthOneTraversal;
     }
 
     public int getDepthInaccessibleElements() {

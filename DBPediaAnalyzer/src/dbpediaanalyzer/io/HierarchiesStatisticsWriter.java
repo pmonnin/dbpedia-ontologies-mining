@@ -25,7 +25,8 @@ public class HierarchiesStatisticsWriter extends AbstractStatisticsWriter {
         println("--- " + hierarchyName + " statistics ---");
         println("Elements number: " + hs.getElementsNumber());
         println("Orphans number: " + hs.getOrphansNumber());
-        println("Depth: " + hs.getDepth());
+        println("Depth (multiple traversals): " + hs.getDepthMultipleTraversals());
+        println("Depth (one traversal): " + hs.getDepthOneTraversal());
         println("Inaccessible elements during depth calculation: " + hs.getDepthInaccessibleElements());
         println("Direct subsumptions number: " + hs.getDirectSubsumptions());
         println("Inferred subsumptions number: " + hs.getInferredSubsumptions());
