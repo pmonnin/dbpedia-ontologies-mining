@@ -17,6 +17,8 @@ public class LatticeStatistics {
     private int depth;
     private int conceptsNumber;
     private int edgesNumber;
+    private int topAttributesNumber;
+    private int bottomAttributesNumber;
     private int conceptsWithoutCategoriesNumber;
     private int conceptsWithoutOntologyClassesNumber;
     private int conceptsWithoutYagoClassesNumber;
@@ -45,6 +47,8 @@ public class LatticeStatistics {
         this.averageRelationshipsNumberPerConcept = 0.0;
 
         this.conceptsNumber = lattice.getConcepts().size();
+        this.topAttributesNumber = lattice.getTop().getAttributes().size();
+        this.bottomAttributesNumber = lattice.getBottom().getAttributes().size();
 
         for(Concept concept : lattice.getConcepts()) {
             this.edgesNumber += concept.getParents().size();
@@ -209,5 +213,13 @@ public class LatticeStatistics {
 
     public double getAverageRelationshipsNumberPerConcept() {
         return this.averageRelationshipsNumberPerConcept;
+    }
+
+    public int getTopAttributesNumber() {
+        return topAttributesNumber;
+    }
+
+    public int getBottomAttributesNumber() {
+        return bottomAttributesNumber;
     }
 }

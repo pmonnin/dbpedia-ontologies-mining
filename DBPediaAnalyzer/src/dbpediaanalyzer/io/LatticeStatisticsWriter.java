@@ -23,6 +23,8 @@ public class LatticeStatisticsWriter extends AbstractStatisticsWriter {
         println("Depth: " + statistics.getDepth());
         println("Number of concepts: " + statistics.getConceptsNumber());
         println("Number of edges: " + statistics.getEdgesNumber());
+        println("Number of attributes in Top concept: " + statistics.getTopAttributesNumber());
+        println("Number of attributes in Bottom concept: " + statistics.getBottomAttributesNumber());
         println("Number of concepts without categories: " + statistics.getConceptsWithoutCategoriesNumber());
         println("Number of concepts without ontology classes: " + statistics.getConceptsWithoutOntologyClassesNumber());
         println("Number of concepts without yago classes: " + statistics.getConceptsWithoutYagoClassesNumber());
