@@ -47,7 +47,7 @@ public class LatticeGeneration {
         else {
             // TODO Improve this pattern
             Pattern pattern = Pattern.compile("[0-9][0-9][0-9][0-9]-(1[0-2]|0[0-9])-(3[0-1]|[0-2][0-9])");
-            incorrectParams = !pattern.matcher(args[0]).find() && !pattern.matcher(args[1]).find();
+            incorrectParams = !pattern.matcher(args[0]).find() || !pattern.matcher(args[1]).find();
         }
 
         if(incorrectParams) {

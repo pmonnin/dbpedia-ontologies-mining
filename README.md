@@ -120,6 +120,20 @@ java dbpediaanalyzer.main.LatticeStatisticsComputation lattice output
 * *lattice*: the lattice on which statistics will be computed (previsouly generated with lattice greation program)
 * *output*: file used to store computed lattice statistics
 
+### Data Set Statistics
+
+It is possible to compute statistics on a data set without generating the associate lattice. This can be helpful
+to recompute statistics while avoiding lattice generation (which takes a lot of time). To execute this program, use the
+following command:
+
+```shell
+java dbpediaanalyzer.main.DataSetStatisticsComputation minimalDeathDate maximalDeathDate output
+```
+
+* *minimalDeathDate*: minimal death date for person's pages to be selected (YYYY-MM-DD, inclusive)
+* *maximalDeathDate*: maximal death date for person's pages to be selected (YYYY-MM-DD, exclusive)
+* *output*: file used to store data set statistics
+
 ## Dependencies
 
 ### Java dependencies
