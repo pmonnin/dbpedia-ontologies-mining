@@ -4,13 +4,8 @@ import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
 import dbpediaanalyzer.dbpediaobject.Page;
 import dbpediaanalyzer.factory.DataSetFactory;
 import dbpediaanalyzer.factory.HierarchiesFactory;
-import dbpediaanalyzer.factory.LatticeFactory;
 import dbpediaanalyzer.io.DataSetStatisticsWriter;
-import dbpediaanalyzer.io.LatticeStatisticsWriter;
-import dbpediaanalyzer.io.LatticeWriter;
-import dbpediaanalyzer.lattice.Lattice;
 import dbpediaanalyzer.statistic.DataSetStatistics;
-import dbpediaanalyzer.statistic.LatticeStatistics;
 import dbpediaanalyzer.util.TimeMeasurer;
 
 import java.util.Map;
