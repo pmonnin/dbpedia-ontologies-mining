@@ -1,7 +1,6 @@
 package dbpediaanalyzer.statistic;
 
 import dbpediaanalyzer.dbpediaobject.HierarchyElement;
-import jdk.nashorn.internal.runtime.arrays.ArrayLikeIterator;
 
 import java.util.*;
 
