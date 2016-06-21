@@ -1,6 +1,7 @@
 package dbpediaanalyzer.statistic;
 
 import dbpediaanalyzer.dbpediaobject.HierarchyElement;
+import jdk.nashorn.internal.runtime.arrays.ArrayLikeIterator;
 
 import java.util.*;
 
@@ -38,16 +39,27 @@ public class HierarchyStatistics {
     private void computeStatistics(Map<String, ? extends HierarchyElement> hierarchy) {
         this.elementsNumber = hierarchy.size();
 
+        // Orphans & direct subsumptions number
         this.orphansNumber = 0;
         this.directSubsumptions = 0;
         ArrayList<HierarchyElement> orphans = new ArrayList<>();
+
         for(String key : hierarchy.keySet()) {
-            if(hierarchy.get(key).getParents().size() == 0) {
-                this.orphansNumber++;
-                orphans.add(hierarchy.get(key));
+            HierarchyElement element = hierarchy.get(key);
+
+            ArrayList<HierarchyElement> parentsInHierarchy = new ArrayList<>();
+            for(HierarchyElement parent : element.getParents()) {
+                if(hierarchy.containsKey(parent.getUri())) {
+                    parentsInHierarchy.add(parent);
+                }
             }
 
-            this.directSubsumptions += hierarchy.get(key).getParents().size();
+            if(parentsInHierarchy.size() == 0) {
+                this.orphansNumber++;
+                orphans.add(element);
+            }
+
+            this.directSubsumptions += parentsInHierarchy.size();
         }
 
         computeCycles(hierarchy);
@@ -69,22 +81,34 @@ public class HierarchyStatistics {
             queue.add(orphan);
         }
 
-        this.depthOneTraversal = 1;
         while(!queue.isEmpty()) {
             HierarchyElement element = queue.poll();
             int currentDepth = elementsDepth.get(element);
 
-            if(currentDepth > this.depthOneTraversal) {
-                this.depthOneTraversal = currentDepth;
-            }
-
             for(HierarchyElement child : element.getChildren()) {
-                if(elementsDepth.get(child) == -1) {
+                if(hierarchy.containsKey(child.getUri()) && elementsDepth.get(child) == -1) {
                     elementsDepth.put(child, currentDepth + 1);
                     queue.add(child);
                 }
             }
         }
+
+        this.depthOneTraversal = -1;
+        for(HierarchyElement element : elementsDepth.keySet()) {
+            if(isLeaf(element, hierarchy) && elementsDepth.get(element) > this.depthOneTraversal) {
+                this.depthOneTraversal = elementsDepth.get(element);
+            }
+        }
+    }
+
+    private boolean isLeaf(HierarchyElement element, Map<String, ? extends HierarchyElement> hierarchy) {
+        for(HierarchyElement child : element.getChildren()) {
+            if(hierarchy.containsKey(child.getUri())) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void computeDepthMultipleTraversals(Map<String, ? extends HierarchyElement> hierarchy, ArrayList<HierarchyElement> orphans) {
@@ -107,7 +131,7 @@ public class HierarchyStatistics {
             ArrayList<HierarchyElement> path = queue.poll();
 
             for(HierarchyElement child : path.get(path.size() - 1).getChildren()) {
-                if(!path.contains(child) && path.size() + 1 > elementsMaxDepthPath.get(child).size()) {
+                if(hierarchy.containsKey(child.getUri()) && !path.contains(child) && path.size() + 1 > elementsMaxDepthPath.get(child).size()) {
                     ArrayList<HierarchyElement> childPath = new ArrayList<>(path);
                     childPath.add(child);
                     elementsMaxDepthPath.put(child, childPath);
@@ -124,9 +148,11 @@ public class HierarchyStatistics {
                 this.depthInaccessibleElements++;
             }
 
-            else if(path.get(path.size() - 1).getChildren().isEmpty() && path.size() > this.depthMultipleTraversals) {
-                this.depthMultipleTraversals = path.size();
-                this.depthPath = path;
+            else {
+                if(isLeaf(path.get(path.size() - 1), hierarchy) && path.size() > this.depthMultipleTraversals) {
+                    this.depthMultipleTraversals = path.size();
+                    this.depthPath = path;
+                }
             }
         }
     }
@@ -143,15 +169,17 @@ public class HierarchyStatistics {
             Queue<HierarchyElement> queue = new LinkedList<>();
             seen.put(key, true);
             for(HierarchyElement he : hierarchy.get(key).getParents()) {
-                seen.put(he.getUri(), true);
-                queue.add(he);
+                if(hierarchy.containsKey(he.getUri())) {
+                    seen.put(he.getUri(), true);
+                    queue.add(he);
+                }
             }
 
             while(!queue.isEmpty()) {
                 HierarchyElement he = queue.poll();
 
                 for(HierarchyElement parent : he.getParents()) {
-                    if(!seen.get(parent.getUri())) {
+                    if(hierarchy.containsKey(parent.getUri()) && !seen.get(parent.getUri())) {
                         this.inferredSubsumptions++;
                         queue.add(parent);
                         seen.put(parent.getUri(), true);
@@ -174,24 +202,26 @@ public class HierarchyStatistics {
                 HierarchyElement element = queue.poll();
 
                 for(HierarchyElement parent : element.getParents()) {
-                    if(parent == origin) {
-                        // Cycle detected
-                        List<HierarchyElement> cycle = new ArrayList<>();
-                        cycle.add(origin);
-                        HierarchyElement current = element;
+                    if(hierarchy.containsKey(parent.getUri())) {
+                        if (parent == origin) {
+                            // Cycle detected
+                            List<HierarchyElement> cycle = new ArrayList<>();
+                            cycle.add(origin);
+                            HierarchyElement current = element;
 
-                        do {
-                            cycle.add(0, current);
-                            current = predecessors.get(current);
-                        } while(current != null);
+                            do {
+                                cycle.add(0, current);
+                                current = predecessors.get(current);
+                            } while (current != null);
 
-                        cycles.add(cycle);
-                    }
+                            cycles.add(cycle);
+                        }
 
-                    else {
-                        if(!predecessors.containsKey(parent)) {
-                            predecessors.put(parent, element);
-                            queue.add(parent);
+                        else {
+                            if (!predecessors.containsKey(parent)) {
+                                predecessors.put(parent, element);
+                                queue.add(parent);
+                            }
                         }
                     }
                 }
