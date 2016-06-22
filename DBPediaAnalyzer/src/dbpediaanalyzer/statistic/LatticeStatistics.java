@@ -69,14 +69,14 @@ public class LatticeStatistics {
                     }
                 }
 
-                boolean childrenHaveClasses = false;
-                for(Concept child : concept.getChildren()) {
-                    if(!child.getCategories().isEmpty()) {
-                        childrenHaveClasses = true;
+                boolean descendantsHaveClasses = false;
+                for(Concept descendant : concept.getDescendants()) {
+                    if(!descendant.getCategories().isEmpty()) {
+                        descendantsHaveClasses = true;
                     }
                 }
 
-                if(parentsHaveClasses && childrenHaveClasses) {
+                if(parentsHaveClasses && descendantsHaveClasses) {
                     this.gapConceptsInCategories++;
                 }
             }
@@ -91,14 +91,14 @@ public class LatticeStatistics {
                     }
                 }
 
-                boolean childrenHaveClasses = false;
-                for(Concept child : concept.getChildren()) {
-                    if(!child.getOntologyClasses().isEmpty()) {
-                        childrenHaveClasses = true;
+                boolean descendantsHaveClasses = false;
+                for(Concept descendant : concept.getDescendants()) {
+                    if(!descendant.getOntologyClasses().isEmpty()) {
+                        descendantsHaveClasses = true;
                     }
                 }
 
-                if(parentsHaveClasses && childrenHaveClasses) {
+                if(parentsHaveClasses && descendantsHaveClasses) {
                     this.gapConceptsInOntologyClasses++;
                 }
             }
@@ -113,14 +113,14 @@ public class LatticeStatistics {
                     }
                 }
 
-                boolean childrenHaveClasses = false;
-                for(Concept child : concept.getChildren()) {
-                    if(!child.getYagoClasses().isEmpty()) {
-                        childrenHaveClasses = true;
+                boolean descendantsHaveClasses = false;
+                for(Concept descendant : concept.getDescendants()) {
+                    if(!descendant.getYagoClasses().isEmpty()) {
+                        descendantsHaveClasses = true;
                     }
                 }
 
-                if(parentsHaveClasses && childrenHaveClasses) {
+                if(parentsHaveClasses && descendantsHaveClasses) {
                     this.gapConceptsInYagoClasses++;
                 }
             }
