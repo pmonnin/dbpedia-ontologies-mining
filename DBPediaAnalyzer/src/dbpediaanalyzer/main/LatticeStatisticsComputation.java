@@ -9,7 +9,7 @@ import dbpediaanalyzer.statistic.LatticeStatistics;
 import dbpediaanalyzer.util.TimeMeasurer;
 
 /**
- * TODO JAVADOC
+ * Compute statistics over a generated lattice
  *
  * @author Pierre Monnin
  *

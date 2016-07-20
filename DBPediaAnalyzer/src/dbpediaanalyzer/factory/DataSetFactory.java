@@ -10,18 +10,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * TODO JAVADOC
+ * Built the data set from DBpedia pages selected with min and max death date
  *
  * @author Pierre Monnin
  *
  */
 public class DataSetFactory {
 
-    /**
-     * TODO JAVADOC
-     * @param minDeathDate
-     * @param maxDeathDate
-     */
     public static Map<String, Page> createDataSet(String minDeathDate, String maxDeathDate, HierarchiesManager hierarchiesManager) {
         HashMap<String, Page> dataSet = new HashMap<>();
         HashMap<String, Boolean> missingCategories = new HashMap<>();

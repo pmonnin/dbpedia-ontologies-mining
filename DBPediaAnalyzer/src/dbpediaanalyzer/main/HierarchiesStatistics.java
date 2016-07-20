@@ -7,7 +7,7 @@ import dbpediaanalyzer.statistic.HierarchyStatistics;
 import dbpediaanalyzer.util.TimeMeasurer;
 
 /**
- * TODO JAVADOC
+ * Computes and saves statistics about DBpedia ontologies used to classify pages
  *
  * @author Pierre Monnin
  *

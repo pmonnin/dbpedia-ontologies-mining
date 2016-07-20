@@ -11,7 +11,7 @@ import dbpediaanalyzer.lattice.Lattice;
 import java.util.*;
 
 /**
- * TODO JAVADOC
+ * Extracts the axioms from the annotated lattice
  *
  * @author Pierre Monnin
  *

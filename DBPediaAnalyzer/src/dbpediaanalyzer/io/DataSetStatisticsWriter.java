@@ -4,7 +4,7 @@ import dbpediaanalyzer.statistic.DataSetStatistics;
 import dbpediaanalyzer.statistic.HierarchyStatistics;
 
 /**
- * TODO JAVADOC
+ * Saves statistics about a data set in a file
  *
  * @author Pierre Monnin
  *

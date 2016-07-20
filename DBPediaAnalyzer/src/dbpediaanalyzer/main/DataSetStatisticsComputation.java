@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
- * TODO JAVADOC
+ * Compute statistics over a selected data set
  *
  * @author Pierre Monnin
  *

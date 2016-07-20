@@ -8,7 +8,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 /**
- * TODO JAVADOC
+ * Used to query the SPARQL endpoint where all DBpedia data is stored
  *
  * @author Pierre Monnin
  */
@@ -32,10 +32,10 @@ public class ServerQuerier {
     }
 
     /**
-     * TODO JAVADOC
-     * @param query
-     * @return
-     * @throws IOException
+     * Runs a SPARQL query on the server
+     * @param query SPARQL query to run on the server
+     * @return the SPARQL response to the given query
+     * @throws IOException when there is a communication problem with the server
      */
     public SparqlResponse runQuery(String query) throws IOException {
         return mapper.readValue(new URL(ServerQuerier.SERVER_BASE_URL + URLEncoder.encode(query, "UTF-8")), SparqlResponse.class);

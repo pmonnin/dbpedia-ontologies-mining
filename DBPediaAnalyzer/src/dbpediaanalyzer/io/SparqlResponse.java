@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 
 /**
- * TODO JAVADOC
+ * Object built from the JSON of the SPARQL response
  *
  * @author Thomas Herbeth
  * @author Pierre Monnin

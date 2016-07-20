@@ -3,7 +3,7 @@ package dbpediaanalyzer.comparison;
 import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 
 /**
- * TODO JAVADOC
+ * Class representing an abstract strategy evaluating an axiom suggested by the annotated lattice
  *
  * @author Pierre Monnin
  *

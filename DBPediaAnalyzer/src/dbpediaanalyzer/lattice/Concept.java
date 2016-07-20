@@ -7,7 +7,7 @@ import dbpediaanalyzer.dbpediaobject.YagoClass;
 import java.util.*;
 
 /**
- * TODO JAVADOC
+ * Concept of the annotated lattice
  *
  * @author Pierre Monnin
  *

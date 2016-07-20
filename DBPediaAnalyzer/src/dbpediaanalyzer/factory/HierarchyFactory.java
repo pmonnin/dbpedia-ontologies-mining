@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * TODO JAVADOC
+ * Builds one ontology among the three considered
  *
  * @author Pierre Monnin
  *

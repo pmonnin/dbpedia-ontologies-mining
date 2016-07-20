@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 import java.util.Map;
 
 /**
- * TODO JAVADOC
+ * Saves comparison results statistics in a file (JSON format)
  *
  * @author Pierre Monnin
  *

@@ -7,8 +7,12 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * TODO JAVADOC
- *
+ * This program can be used to display information or compute various results on ontology classes. It has the
+ * following features:
+ * - Display information about an ontology (parents and children)
+ * - Find path between two ontology classes
+ * - Display Lower Common Ancestor of two ontology classes
+ * - Display distance from closest top level class of an ontology class
  * @author Pierre Monnin
  *
  */

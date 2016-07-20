@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * TODO JAVADOC
+ * Abstract writer for statistics providing basic methods as well as the handling of the print writer object
  *
  * @author Pierre Monnin
  *

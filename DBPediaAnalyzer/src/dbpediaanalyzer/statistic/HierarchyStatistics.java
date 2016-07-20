@@ -5,7 +5,7 @@ import dbpediaanalyzer.dbpediaobject.HierarchyElement;
 import java.util.*;
 
 /**
- * TODO JAVADOC
+ * Computes statistics over a given ontology
  *
  * @author Pierre Monnin
  *

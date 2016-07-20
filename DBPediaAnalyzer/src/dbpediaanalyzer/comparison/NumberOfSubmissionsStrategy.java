@@ -3,7 +3,7 @@ package dbpediaanalyzer.comparison;
 import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 
 /**
- * TODO JAVADOC
+ * Evaluates an axiom based on the number of times it is suggested by the anntated lattice
  *
  * @author Pierre Monnin
  *

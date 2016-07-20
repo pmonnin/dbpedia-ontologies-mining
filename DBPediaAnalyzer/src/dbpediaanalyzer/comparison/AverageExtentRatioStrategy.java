@@ -5,12 +5,12 @@ import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 import java.util.List;
 
 /**
- * TODO JAVADOC
+ * Evaluates an axiom suggested by the annotated lattice computing the average extent ratio
  *
  * @author Pierre Monnin
  *
  */
-public class AverageExtensionsRatioStrategy extends EvaluationStrategy {
+public class AverageExtentRatioStrategy extends EvaluationStrategy {
 
     @Override
     public String getName() {

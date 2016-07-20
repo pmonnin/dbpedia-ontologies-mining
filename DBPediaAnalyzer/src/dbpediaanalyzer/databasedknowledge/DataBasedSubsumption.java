@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO JAVADOC
+ * Represents a subsumption suggested by the annotated lattice based on data
  *
  * @author Pierre Monnin
  *

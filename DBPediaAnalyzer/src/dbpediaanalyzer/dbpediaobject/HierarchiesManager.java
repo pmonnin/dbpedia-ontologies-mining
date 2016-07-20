@@ -5,7 +5,7 @@ import dbpediaanalyzer.statistic.HierarchyStatistics;
 import java.util.*;
 
 /**
- * TODO JAVADOC
+ * Manager of the selected ontologies (DBpedia categories, DBpedia Ontology and YAGO)
  *
  * @author Pierre Monnin
  *

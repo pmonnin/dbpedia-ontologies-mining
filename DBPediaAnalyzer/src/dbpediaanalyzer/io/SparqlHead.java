@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * TODO JAVADOC
+ * Header of a SPARQL response
  *
  * @author Thomas Herbeth
  * @author Pierre Monnin

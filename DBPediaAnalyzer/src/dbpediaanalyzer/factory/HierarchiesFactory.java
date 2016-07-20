@@ -11,16 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * TODO JAVADOC
+ * Builds the three considered ontologies from the SPARQL endpoint
  *
  * @author Pierre Monnin
  *
  */
 public class HierarchiesFactory {
 
-    /**
-     * TODO JAVADOC
-     */
     public static HierarchiesManager createHierarchies() {
         return new HierarchiesManager(createCategoriesHierarchy(), createOntologyClassesHierarchy(),
                 createYagoClassesHierarchy());

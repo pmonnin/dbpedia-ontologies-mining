@@ -22,17 +22,13 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * TODO JAVADOC
+ * Extracts knowledge from lattice and compares it with the existing DBpedia ontologies, evaluating each proposal
  *
  * @author Pierre Monnin
  *
  */
 public class LatticeAnalysis {
 
-    /**
-     * TODO JAVADOC
-     * @param args
-     */
     public static void main(String[] args) {
         if(args.length != 3) {
             System.out.println("Usage:\n java LatticeAnalysis lattice output comparison-statistics");

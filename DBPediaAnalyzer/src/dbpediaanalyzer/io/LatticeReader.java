@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * TODO JAVADOC
+ * Reads an annotated lattice from a file
  *
  * @author Pierre Monnin
  *

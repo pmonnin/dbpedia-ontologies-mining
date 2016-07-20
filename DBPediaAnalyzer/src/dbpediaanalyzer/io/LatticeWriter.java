@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * TODO JAVADOC
+ * Saves the annotated lattice to a file
  *
  * @author Pierre Monnin
  *

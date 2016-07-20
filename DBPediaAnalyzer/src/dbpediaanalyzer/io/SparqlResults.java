@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * TODO JAVADOC
+ * Body of a SPARQL response
  *
  * @author Thomas Herbeth
  * @author Pierre Monnin

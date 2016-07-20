@@ -14,7 +14,7 @@ import dbpediaanalyzer.lattice.Lattice;
 import java.util.*;
 
 /**
- * TODO JAVADOC
+ * Builds the lattice from data set
  *
  * @author Pierre Monnin
  *

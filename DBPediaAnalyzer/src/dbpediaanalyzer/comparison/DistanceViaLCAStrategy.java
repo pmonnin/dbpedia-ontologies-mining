@@ -4,7 +4,7 @@ import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 import dbpediaanalyzer.dbpediaobject.HierarchyElement;
 
 /**
- * TODO JAVADOC
+ * Values an axiom with the distance via Least Common Ancestor
  *
  * @author Pierre Monnin
  *

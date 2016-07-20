@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * TODO JAVADOC
+ * Represents a class of the ontology DBpedia ontology
  *
  * @author Pierre Monnin
  *

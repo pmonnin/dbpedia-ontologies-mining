@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 /**
- * TODO JAVADOC
+ * Saves Ontologies statistics in a file
  *
  * @author Pierre Monnin
  *

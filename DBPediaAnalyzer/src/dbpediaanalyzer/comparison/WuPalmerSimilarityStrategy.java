@@ -4,7 +4,7 @@ import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 import dbpediaanalyzer.dbpediaobject.HierarchyElement;
 
 /**
- * TODO JAVADOC
+ * Evaluates an axiom suggested by the annotated lattice with the Wu-Palmer similarity
  *
  * Value = (2*dist(lca, root)) / (dist(lca, subsumption.top) + dist(lca, subsumption.bottom) + 2*dist(lca, root))
  * where root is owl:Thing

@@ -5,12 +5,12 @@ import dbpediaanalyzer.databasedknowledge.DataBasedSubsumption;
 import java.util.List;
 
 /**
- * TODO JAVADOC
+ * Evaluates an axiom suggested by the annotated lattice computing the average intent ratio
  *
  * @author Pierre Monnin
  *
  */
-public class AverageIntensionsRatioStrategy extends EvaluationStrategy {
+public class AverageIntentRatioStrategy extends EvaluationStrategy {
     @Override
     public String getName() {
         return "AverageIntensionsRatio";

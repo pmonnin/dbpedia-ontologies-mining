@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * TODO JAVADOC
+ * Result of a comparison between the annotated lattice axioms and the axiom of the existing ontologies
  *
  * @author Pierre Monnin
  */

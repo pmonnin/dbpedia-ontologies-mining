@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO JAVADOC
+ * Compares the axioms from the annotated lattice with the existing ontologies
  *
  * @author Pierre Monnin
  *

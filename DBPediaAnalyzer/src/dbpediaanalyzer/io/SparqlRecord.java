@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.HashMap;
 
 /**
- * TODO JAVADOC
+ * Row of the body of a SPARQL answer
  *
  * @author Pierre Monnin
  *

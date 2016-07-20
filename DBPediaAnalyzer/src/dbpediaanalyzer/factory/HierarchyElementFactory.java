@@ -3,7 +3,7 @@ package dbpediaanalyzer.factory;
 import dbpediaanalyzer.dbpediaobject.HierarchyElement;
 
 /**
- * TODO JAVADOC
+ * Builds an ontology class
  *
  * @author Pierre Monnin
  *

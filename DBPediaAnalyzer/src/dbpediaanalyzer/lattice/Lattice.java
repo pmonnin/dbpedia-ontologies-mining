@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO JAVADOC
+ * Annotated lattice
  *
  * @author Pierre Monnin
  *

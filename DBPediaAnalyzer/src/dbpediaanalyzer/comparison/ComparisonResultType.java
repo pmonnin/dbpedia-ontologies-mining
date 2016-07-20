@@ -1,7 +1,7 @@
 package dbpediaanalyzer.comparison;
 
 /**
- * TODO JAVADOC
+ * Type of a comparison result between the annotated lattice axioms and the existing ontologies
  *
  * @author Pierre Monnin
  *

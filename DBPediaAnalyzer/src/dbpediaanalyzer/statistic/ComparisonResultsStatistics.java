@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * TODO JAVADOC
+ * Computes statistics over comparison results between annotated lattice axioms and existing ontologies axioms
  *
  * @author Pierre Monnin
  *

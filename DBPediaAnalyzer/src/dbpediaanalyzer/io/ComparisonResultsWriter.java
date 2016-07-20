@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * TODO JAVADOC
+ * Saves comparison results in a file (JSON format)
  *
  * @author Pierre Monnin
  *

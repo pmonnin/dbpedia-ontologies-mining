@@ -3,7 +3,7 @@ package dbpediaanalyzer.dbpediaobject;
 import java.util.*;
 
 /**
- * TODO JAVADOC
+ * Represents an abstract class of an ontology
  *
  * @author Pierre Monnin
  *

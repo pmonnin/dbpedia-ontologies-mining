@@ -3,7 +3,7 @@ package dbpediaanalyzer.io;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * TODO JAVADOC
+ * SPARQL value
  *
  * @author Thomas Herbeth
  * @author Pierre Monnin
