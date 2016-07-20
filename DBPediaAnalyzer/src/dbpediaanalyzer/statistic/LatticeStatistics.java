@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * TODO JAVADOC
+ * Computes statistics about the generated lattice
  *
  * @author Pierre Monnin
  *
@@ -23,8 +23,11 @@ public class LatticeStatistics {
     private int conceptsWithoutOntologyClassesNumber;
     private int conceptsWithoutYagoClassesNumber;
     private int gapConceptsInCategories;
+    private int gapConceptsInCategories2;
     private int gapConceptsInOntologyClasses;
+    private int gapConceptsInOntologyClasses2;
     private int gapConceptsInYagoClasses;
+    private int gapConceptsInYagoClasses2;
     private double averageCategoriesNumberPerConcept;
     private double averageOntologyClassesNumberPerConcept;
     private double averageYagoClassesNumberPerConcept;
@@ -38,8 +41,11 @@ public class LatticeStatistics {
         this.conceptsWithoutOntologyClassesNumber = 0;
         this.conceptsWithoutYagoClassesNumber = 0;
         this.gapConceptsInCategories = 0;
+        this.gapConceptsInCategories2 = 0;
         this.gapConceptsInOntologyClasses = 0;
+        this.gapConceptsInOntologyClasses2 = 0;
         this.gapConceptsInYagoClasses = 0;
+        this.gapConceptsInYagoClasses2 = 0;
         this.averageCategoriesNumberPerConcept = 0.0;
         this.averageOntologyClassesNumberPerConcept = 0.0;
         this.averageYagoClassesNumberPerConcept = 0.0;
@@ -79,6 +85,10 @@ public class LatticeStatistics {
                 if(parentsHaveClasses && descendantsHaveClasses) {
                     this.gapConceptsInCategories++;
                 }
+
+                if(parentsHaveClasses && concept.getParents().size() == 1) {
+                    this.gapConceptsInCategories2++;
+                }
             }
 
             if(concept.getOntologyClasses().isEmpty()) {
@@ -101,6 +111,10 @@ public class LatticeStatistics {
                 if(parentsHaveClasses && descendantsHaveClasses) {
                     this.gapConceptsInOntologyClasses++;
                 }
+
+                if(parentsHaveClasses && concept.getParents().size() == 1) {
+                    this.gapConceptsInOntologyClasses2++;
+                }
             }
 
             if(concept.getYagoClasses().isEmpty()) {
@@ -122,6 +136,10 @@ public class LatticeStatistics {
 
                 if(parentsHaveClasses && descendantsHaveClasses) {
                     this.gapConceptsInYagoClasses++;
+                }
+
+                if(parentsHaveClasses && concept.getParents().size() == 1) {
+                    this.gapConceptsInYagoClasses2++;
                 }
             }
         }
@@ -222,4 +240,17 @@ public class LatticeStatistics {
     public int getBottomAttributesNumber() {
         return bottomAttributesNumber;
     }
+
+    public int getGapConceptsInCategories2() {
+        return gapConceptsInCategories2;
+    }
+
+    public int getGapConceptsInOntologyClasses2() {
+        return gapConceptsInOntologyClasses2;
+    }
+
+    public int getGapConceptsInYagoClasses2() {
+        return gapConceptsInYagoClasses2;
+    }
+
 }

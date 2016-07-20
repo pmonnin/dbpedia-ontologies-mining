@@ -3,7 +3,7 @@ package dbpediaanalyzer.util;
 import java.util.concurrent.TimeUnit;
 
 /**
- * TODO JAVADOC
+ * A helper object to measure processing time
  *
  * @author Pierre Monnin
  *

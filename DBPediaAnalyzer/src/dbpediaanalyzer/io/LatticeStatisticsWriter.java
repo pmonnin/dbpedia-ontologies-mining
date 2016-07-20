@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * TODO JAVADOC
+ * Writes statistics computed over the lattice in a file passed to the constructor
  *
  * @author Pierre Monnin
  *
@@ -29,8 +29,11 @@ public class LatticeStatisticsWriter extends AbstractStatisticsWriter {
         println("Number of concepts without ontology classes: " + statistics.getConceptsWithoutOntologyClassesNumber());
         println("Number of concepts without yago classes: " + statistics.getConceptsWithoutYagoClassesNumber());
         println("Number of gap concepts in categories: " + statistics.getGapConceptsInCategories());
+        println("Number of gap (2) concepts in categories: " + statistics.getGapConceptsInCategories2());
         println("Number of gap concepts in ontology classes: " + statistics.getGapConceptsInOntologyClasses());
+        println("Number of gap (2) concepts in ontology classes: " + statistics.getGapConceptsInOntologyClasses2());
         println("Number of gap concepts in yago classes: " + statistics.getGapConceptsInYagoClasses());
+        println("Number of gap (2) concepts in yago classes: " + statistics.getGapConceptsInYagoClasses2());
         println("Average number of categories per concept: " + statistics.getAverageCategoriesNumberPerConcept());
         println("Average number of ontology classes per concept: " + statistics.getAverageOntologyClassesNumberPerConcept());
         println("Average number of yago classes per concept: " + statistics.getAverageYagoClassesNumberPerConcept());
