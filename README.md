@@ -4,14 +4,17 @@
 
 Work started as a project at [TELECOM Nancy](http://telecomnancy.univ-lorraine.fr/) (Knowledge based system - SBC class)
 
-It aims at mining DBPedia data by comparing data-based classification with existing classifications
-hierarchies (DBPedia categories, ontology classes and yago classes)
+It aims at checking the soundness and completeness of DBpedia ontologies (DBpedia categories, DBpedia Ontology and
+YAGO) w.r.t. data. To do so, we classify DBpedia pages w.r.t. page properties in a concept lattice using FCA
+(Formal Concept Analysis). Then, we define the annotation of a concept lattice to associate ontology classes to a
+concept. Finally, implications are extracted from the lattice and compared with the axioms of the three considered
+ontologies.
 
 ## Ontology files analyzed
 
-* http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/en/ : english data of DBPedia (warning: big files)
+* http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/en/ : english data of DBpedia
 * http://wiki.dbpedia.org/services-resources/ontology : ontologies (some files are also available on previous link)
-* http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/links/ : files of the Yago hierarchy
+* http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/links/ : files of the YAGO ontology
 
 ## Execution
 
@@ -19,7 +22,7 @@ hierarchies (DBPedia categories, ontology classes and yago classes)
 
 Creates a lattice based on a set of pages linked to the dbo:Person ontology class and having a death date.
 
-Crawls objects from Virtuoso server (DBPedia information), computes the lattice and stores it in a file using
+Crawls objects from Virtuoso server (DBpedia information), computes the lattice and stores it in a file using
 JSON format. Statistics are calculated on data set and lattice and saved in files.
 
 Can be executed with the following command:
@@ -36,7 +39,7 @@ java dbpediaanalyzer.main.LatticeGeneration minimalDeathDate maximalDeathDate ou
 
 ### Lattice analysis
 
-Extracts knowledge from lattice and compares it with the existing DBPedia hierarchies, evaluating each proposal.
+Extracts knowledge from lattice and compares it with the existing DBpedia ontologies, evaluating each proposal.
 
 Can be executed with the following command:
 
@@ -50,7 +53,7 @@ java dbpediaanalyzer.main.LatticeAnalysis lattice output comparison-statistics
     * *type* (string): type of the relationship. Possible values:
         * *CONFIRMED_DIRECT*: direct relationship already existing
         * *PROPOSED_INFERRED_TO_DIRECT*: relationship already existing as inferred, proposed to be changed to direct subsumption
-        * *PROPOSED_NEW*: relationship not existing inside DBPedia hierarchies
+        * *PROPOSED_NEW*: relationship not existing inside DBpedia ontologies
     * *bottom* (string): URI of the bottom object of the proposed subsumption
     * *top* (string): URI of the top object of the proposed subsumption
     * *values* (object): values of the proposed subsumption according to available evaluation strategies. Object written
@@ -59,10 +62,10 @@ java dbpediaanalyzer.main.LatticeAnalysis lattice output comparison-statistics
 
 ### Comparison results statistics histograms
 
-Generates histograms of values of knowledge comparison results. One histogram will be generated per ontology class
-(Categories, Ontology classes, Yago classes), comparison result type and evaluation strategy.
+Generates histograms of values of knowledge comparison results. One histogram will be generated per ontology
+(Categories, Ontology classes, YAGO classes), comparison result type and evaluation strategy.
 
-If there are 0 values for a class, a type and a strategy, related histogram is not produced.
+If there are 0 values for an ontology, a type and a strategy, related histogram is not produced.
 
 This script fetches comparison results from a MongoDB database. The latter has to be set up with the output file
 of the lattice analysis program.
@@ -80,7 +83,7 @@ python dbpediaresultsgraphs.py mongodb mongocollection output-prefix
 
 ### Hierarchies statistics
 
-Computes and saves statistics about DBPedia hierarchies used to classify pages (categories, ontology classes and yago classes)
+Computes and saves statistics about DBpedia ontologies used to classify pages (categories, ontology classes and YAGO classes)
 
 Can be executed with the following command:
 
@@ -90,17 +93,17 @@ java dbpediaanalyzer.main.HierarchiesStatistics output
 
 * *output*: file used to store computed hierarchies statistics
 
-If cycles are detected within a hierarchy, they will be stored inside a file named output-hierarchy-name-cycles.
+If cycles are detected within an ontology, they will be stored inside a file named output-ontology-name-cycles.
 
 ### Data Info
 
 This program can be used to display information or compute various results on hierarchy elements. It has the
 following features:
 
-* Display information about a hierarchy element (parents and children)
-* Find path between two hierarchy elements"
-* Display Lower Common Ancestor of two hierarchy elements
-* Display distance from closest top level class of a hierarchy element
+* Display information about an ontology (parents and children)
+* Find path between two ontology classes
+* Display Lower Common Ancestor of two ontology classes
+* Display distance from closest top level class of an ontology class
 
 Can be executed with the following command:
 
@@ -110,14 +113,14 @@ java dbpediaanalyzer.main.DataInfo
 
 ### Lattice Statistics
 
-It is possible to (re)compute statistics on a lattice that has previously been generated with the lattice greation
+It is possible to (re)compute statistics on a lattice that has previously been generated with the lattice generation
 program. To execute this program, use the following command:
 
 ```shell
 java dbpediaanalyzer.main.LatticeStatisticsComputation lattice output
 ```
 
-* *lattice*: the lattice on which statistics will be computed (previsouly generated with lattice greation program)
+* *lattice*: the lattice on which statistics will be computed (previously generated with lattice generation program)
 * *output*: file used to store computed lattice statistics
 
 ### Data Set Statistics
@@ -167,6 +170,11 @@ To do so, you can use the following command:
 ```shell
 mongoimport --jsonArray --db dbName --collection collectionName --file outputFromLatticeAnalysis
 ```
+
+
+## License
+
+This program is under GNU GPL v3 (see LICENSE file for more info).
 
 ## Authors
 
