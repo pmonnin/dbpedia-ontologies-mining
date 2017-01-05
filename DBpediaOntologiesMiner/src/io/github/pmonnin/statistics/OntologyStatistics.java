@@ -106,7 +106,8 @@ public class OntologyStatistics {
 
         for (OntologyClass ontologyClass : ontology.values()) {
             Queue<List<OntologyClass>> queue = new LinkedList<>();
-            queue.add(new ArrayList<OntologyClass>() {{add(ontologyClass);}});
+            queue.add(new ArrayList<>());
+            queue.peek().add(ontologyClass);
 
             while (!queue.isEmpty()) {
                 List<OntologyClass> current = queue.poll();
