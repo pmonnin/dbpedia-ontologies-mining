@@ -1,9 +1,11 @@
 package io.github.pmonnin.main;
 
 import io.github.pmonnin.factories.OntologyFactory;
+import io.github.pmonnin.io.OntologyStatisticsWriter;
 import io.github.pmonnin.semanticwebobjects.OntologyClass;
 import io.github.pmonnin.settings.OntologySettings;
 import io.github.pmonnin.settings.Settings;
+import io.github.pmonnin.statistics.OntologyStatistics;
 
 import java.util.Map;
 
@@ -37,6 +39,12 @@ public class OntologyStatisticsCalculator {
             Map<String, OntologyClass> ontology = (new OntologyFactory()).buildOntology(settings.getUriPrefix(),
                     settings.getCreationPrefixes(), settings.getCreationWhereConditions(),
                     settings.getParentsPrefixes(), settings.getParentsPredicate());
+
+            OntologyStatistics statistics = new OntologyStatistics(ontology);
+            OntologyStatisticsWriter writer = new OntologyStatisticsWriter();
+            writer.open(args[1]);
+            writer.writeStatistics(statistics);
+            writer.close();
         }
     }
 }
