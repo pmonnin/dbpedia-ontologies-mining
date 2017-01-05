@@ -118,5 +118,10 @@ public class OntologyFactory {
                 }
             }
         }
+
+        if(missingElements.size() != 0) {
+            System.err.println(missingElements.size() + " " + uriPrefix + " were discovered as " +
+                    "parents but not found in the ontology");
+        }
     }
 }
