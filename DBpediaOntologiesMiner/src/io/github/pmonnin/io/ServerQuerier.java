@@ -1,5 +1,6 @@
 package io.github.pmonnin.io;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -29,6 +30,7 @@ public class ServerQuerier {
 
     public ServerQuerier() {
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        mapper.configure((JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true))
     }
 
     /**
