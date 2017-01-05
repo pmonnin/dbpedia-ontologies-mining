@@ -57,7 +57,7 @@ public class OntologyFactory {
                 }
 
                 catch(IOException e) {
-                    System.err.println("Exception while querying " + uriPrefix + " ontology... New " +
+                    System.err.println("[ERROR] Exception while querying " + uriPrefix + " ontology... New " +
                             "try... (" + e.getMessage() + ")");
                 }
             }
@@ -106,12 +106,13 @@ public class OntologyFactory {
                 catch(IOException e) {
                     if (ontologyClass.getName().contains("\"")) {
                         done = true;
-                        System.err.println("Quote inside ontology class name... Aborting getting parents for it.");
+                        System.err.println("[ERROR] Quote inside ontology class name (" + ontologyClass.getName() +
+                                "). Aborting getting parents for it.");
                         // Hack for the case of http://dbpedia.org/class/yago/WikicatAlbumsProducedByDonald"Duck"Dunn
                     }
 
                     else {
-                        System.err.println("Exception while querying " + uriPrefix + " parents... New " +
+                        System.err.println("[ERROR] Exception while querying " + uriPrefix + " parents... New " +
                                 "try... (" + e.getMessage() + ")");
                     }
                 }
