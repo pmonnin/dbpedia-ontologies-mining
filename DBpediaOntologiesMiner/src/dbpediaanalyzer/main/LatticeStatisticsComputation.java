@@ -6,7 +6,7 @@ import dbpediaanalyzer.io.LatticeReader;
 import dbpediaanalyzer.io.LatticeStatisticsWriter;
 import dbpediaanalyzer.lattice.Lattice;
 import dbpediaanalyzer.statistic.LatticeStatistics;
-import dbpediaanalyzer.util.TimeMeasurer;
+import io.github.pmonnin.util.TimeMeasurer;
 
 /**
  * Compute statistics over a generated lattice

@@ -4,7 +4,7 @@ import dbpediaanalyzer.dbpediaobject.HierarchiesManager;
 import dbpediaanalyzer.factory.HierarchiesFactory;
 import dbpediaanalyzer.io.HierarchiesStatisticsWriter;
 import dbpediaanalyzer.statistic.HierarchyStatistics;
-import dbpediaanalyzer.util.TimeMeasurer;
+import io.github.pmonnin.util.TimeMeasurer;
 
 /**
  * Computes and saves statistics about DBpedia ontologies used to classify pages

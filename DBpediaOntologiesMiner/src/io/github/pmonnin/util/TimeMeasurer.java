@@ -1,12 +1,11 @@
-package dbpediaanalyzer.util;
+package io.github.pmonnin.util;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * A helper object to measure processing time
+ * A helper class to measure processing time
  *
  * @author Pierre Monnin
- *
  */
 public class TimeMeasurer {
     private long beginTime;

@@ -15,10 +15,9 @@ import dbpediaanalyzer.io.ComparisonResultsWriter;
 import dbpediaanalyzer.io.LatticeReader;
 import dbpediaanalyzer.lattice.Lattice;
 import dbpediaanalyzer.statistic.ComparisonResultsStatistics;
-import dbpediaanalyzer.util.TimeMeasurer;
+import io.github.pmonnin.util.TimeMeasurer;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**

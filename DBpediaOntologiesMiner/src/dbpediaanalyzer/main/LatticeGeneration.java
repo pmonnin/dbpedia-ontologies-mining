@@ -11,9 +11,8 @@ import dbpediaanalyzer.factory.LatticeFactory;
 import dbpediaanalyzer.io.DataSetStatisticsWriter;
 import dbpediaanalyzer.statistic.DataSetStatistics;
 import dbpediaanalyzer.statistic.LatticeStatistics;
-import dbpediaanalyzer.util.TimeMeasurer;
+import io.github.pmonnin.util.TimeMeasurer;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 

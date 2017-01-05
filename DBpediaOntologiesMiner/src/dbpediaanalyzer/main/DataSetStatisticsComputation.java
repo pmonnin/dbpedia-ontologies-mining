@@ -6,7 +6,7 @@ import dbpediaanalyzer.factory.DataSetFactory;
 import dbpediaanalyzer.factory.HierarchiesFactory;
 import dbpediaanalyzer.io.DataSetStatisticsWriter;
 import dbpediaanalyzer.statistic.DataSetStatistics;
-import dbpediaanalyzer.util.TimeMeasurer;
+import io.github.pmonnin.util.TimeMeasurer;
 
 import java.util.Map;
 import java.util.regex.Pattern;
