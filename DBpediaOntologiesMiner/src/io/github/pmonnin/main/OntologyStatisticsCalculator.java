@@ -32,7 +32,7 @@ public class OntologyStatisticsCalculator {
         }
 
         else {
-            OntologySettings settings = Settings.ontologySettings.get(args[1]);
+            OntologySettings settings = Settings.ontologySettings.get(args[0]);
 
             Map<String, OntologyClass> ontology = (new OntologyFactory()).buildOntology(settings.getUriPrefix(),
                     settings.getCreationPrefixes(), settings.getCreationWhereConditions(),
