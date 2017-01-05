@@ -1,7 +1,7 @@
 package io.github.pmonnin.settings;
 
 /**
- *
+ * Settings to query an ontology from a SPARQL Endpoint
  * @author Pierre Monnin
  */
 public class OntologySettings {
