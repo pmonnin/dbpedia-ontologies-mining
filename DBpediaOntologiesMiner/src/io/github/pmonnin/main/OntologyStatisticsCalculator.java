@@ -6,6 +6,7 @@ import io.github.pmonnin.semanticwebobjects.OntologyClass;
 import io.github.pmonnin.settings.OntologySettings;
 import io.github.pmonnin.settings.Settings;
 import io.github.pmonnin.statistics.OntologyStatistics;
+import io.github.pmonnin.util.TimeMeasurer;
 
 import java.util.Map;
 
@@ -34,6 +35,10 @@ public class OntologyStatisticsCalculator {
         }
 
         else {
+            System.out.println("[INFO] OntologyStatisticsCalculator begin on " + args[0]);
+            TimeMeasurer tm = new TimeMeasurer();
+            tm.begin();
+
             OntologySettings settings = Settings.ontologySettings.get(args[0]);
 
             Map<String, OntologyClass> ontology = (new OntologyFactory()).buildOntology(settings.getUriPrefix(),
@@ -45,6 +50,9 @@ public class OntologyStatisticsCalculator {
             writer.open(args[1]);
             writer.writeStatistics(statistics);
             writer.close();
+
+            tm.stop();
+            System.out.println("[INFO] OntologyStatisticsCalculator on " + args[0] + " finished in " + tm);
         }
     }
 }
