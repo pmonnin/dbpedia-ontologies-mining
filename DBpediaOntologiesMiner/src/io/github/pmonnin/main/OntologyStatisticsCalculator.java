@@ -12,7 +12,6 @@ import java.util.Map;
 
 /**
  * Main class to compute statistics on one ontology
- *
  * @author Pierre Monnin
  */
 public class OntologyStatisticsCalculator {
@@ -41,9 +40,7 @@ public class OntologyStatisticsCalculator {
 
             OntologySettings settings = Settings.ontologySettings.get(args[0]);
 
-            Map<String, OntologyClass> ontology = (new OntologyFactory()).buildOntology(settings.getUriPrefix(),
-                    settings.getCreationPrefixes(), settings.getCreationWhereConditions(),
-                    settings.getParentsPrefixes(), settings.getParentsPredicate());
+            Map<String, OntologyClass> ontology = (new OntologyFactory()).buildOntology(settings);
 
             OntologyStatistics statistics = new OntologyStatistics(ontology);
             OntologyStatisticsWriter writer = new OntologyStatisticsWriter();

@@ -5,6 +5,7 @@ import io.github.pmonnin.io.ServerQuerier;
 import io.github.pmonnin.io.SparqlRecord;
 import io.github.pmonnin.io.SparqlResponse;
 import io.github.pmonnin.io.SparqlValue;
+import io.github.pmonnin.settings.OntologySettings;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -18,12 +19,11 @@ public class OntologyFactory {
     private static final String[] QUERY_FILTER_SUFFIXES = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l",
             "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "[^a-z]"};
 
-    public Map<String, OntologyClass> buildOntology(String ontologyUriPrefix, String creationPrefixes,
-                                                    String creationWhereConditions, String parentsPrefixes,
-                                                    String parentsPredicate) {
-        Map<String, OntologyClass> ontology = queryOntologyClasses(creationPrefixes, creationWhereConditions,
-                ontologyUriPrefix);
-        queryClassesParents(parentsPrefixes, parentsPredicate, ontologyUriPrefix, ontology);
+    public Map<String, OntologyClass> buildOntology(OntologySettings settings) {
+        Map<String, OntologyClass> ontology = queryOntologyClasses(settings.getCreationPrefixes(),
+                settings.getCreationWhereConditions(), settings.getUriPrefix());
+        queryClassesParents(settings.getParentsPrefixes(), settings.getParentsPredicate(), settings.getUriPrefix(),
+                ontology);
         return ontology;
     }
 
