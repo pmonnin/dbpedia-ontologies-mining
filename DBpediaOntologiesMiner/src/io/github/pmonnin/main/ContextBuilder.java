@@ -2,8 +2,10 @@ package io.github.pmonnin.main;
 
 import io.github.pmonnin.factories.FormalContextFactory;
 import io.github.pmonnin.fca.FormalContext;
+import io.github.pmonnin.io.FormalContextStatisticsWriter;
 import io.github.pmonnin.io.FormalContextWriter;
 import io.github.pmonnin.settings.Settings;
+import io.github.pmonnin.statistics.FormalContextStatistics;
 import io.github.pmonnin.util.TimeMeasurer;
 
 /**
@@ -41,6 +43,12 @@ public class ContextBuilder {
             writer.open(args[1]);
             writer.writeFormalContext(fc);
             writer.close();
+
+            FormalContextStatistics stats = new FormalContextStatistics(fc);
+            FormalContextStatisticsWriter fcsw = new FormalContextStatisticsWriter();
+            fcsw.open(args[2]);
+            fcsw.writeFormalContextStatistics(stats);
+            fcsw.close();
 
             tm.stop();
             System.out.println("[INFO] ContextBuilder on " + args[0] + " finished in " + tm);
