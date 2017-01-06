@@ -105,12 +105,12 @@ public class OntologyStatistics {
         this.cycles = new ArrayList<>();
 
         for (OntologyClass ontologyClass : ontology.values()) {
-            Queue<List<OntologyClass>> queue = new LinkedList<>();
-            queue.add(new ArrayList<OntologyClass>());
-            queue.peek().add(ontologyClass);
+            Stack<List<OntologyClass>> stack = new Stack<>();
+            stack.add(new ArrayList<OntologyClass>());
+            stack.peek().add(ontologyClass);
 
-            while (!queue.isEmpty()) {
-                List<OntologyClass> current = queue.poll();
+            while (!stack.isEmpty()) {
+                List<OntologyClass> current = stack.pop();
 
                 for (OntologyClass child : current.get(current.size() - 1).getChildren()) {
                     if (child == ontologyClass) {
@@ -122,7 +122,7 @@ public class OntologyStatistics {
                     else if (!current.contains(child)) {
                         List<OntologyClass> toInvestigate = new ArrayList<>(current);
                         toInvestigate.add(child);
-                        queue.add(toInvestigate);
+                        stack.add(toInvestigate);
                     }
                 }
             }
