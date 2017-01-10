@@ -15,7 +15,10 @@ public class Settings {
                         "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> ",
                 "?class rdf:type skos:Concept . ",
                 "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> ",
-                "skos:broader"
+                "skos:broader",
+                "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> " +
+                        "PREFIX dcterms:<http://purl.org/dc/terms/>",
+                "dcterms:subject"
         ));
 
         ontologySettings.put("dbo", new OntologySettings("http://dbpedia.org/ontology/",
@@ -23,7 +26,9 @@ public class Settings {
                         "PREFIX owl:<http://www.w3.org/2002/07/owl#> ",
                 "?class rdf:type owl:Class . ",
                 "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> ",
-                "rdfs:subClassOf"
+                "rdfs:subClassOf",
+                "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> ",
+                "rdf:type"
         ));
 
         ontologySettings.put("yago", new OntologySettings("http://dbpedia.org/class/yago/",
@@ -31,7 +36,9 @@ public class Settings {
                 "?class owl:equivalentClass ?ec . " +
                         "FILTER (REGEX(STR(?ec), \"http://yago-knowledge.org\", \"i\")) . ",
                 "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> ",
-                "rdfs:subClassOf"
+                "rdfs:subClassOf",
+                "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> ",
+                "rdf:type"
         ));
     }
 

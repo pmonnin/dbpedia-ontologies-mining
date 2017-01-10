@@ -12,6 +12,8 @@ public class FormalLattice {
     private FormalConcept[] concepts;
     private Map<Integer, String> objects;
     private Map<Integer, String> attributes;
+    private Map<Integer, String> annotationsObjects;
+    private Map<String, Integer> rAnnotationsObjects;
     private int indexTop;
     private int indexBottom;
 
@@ -21,6 +23,8 @@ public class FormalLattice {
         this.indexBottom = indexBottom;
         this.objects = new HashMap<>();
         this.attributes = new HashMap<>();
+        this.annotationsObjects = new HashMap<>();
+        this.rAnnotationsObjects = new HashMap<>();
     }
 
     public void addConcept(int index, FormalConcept concept) {
@@ -71,5 +75,25 @@ public class FormalLattice {
             return attributes.get(index);
 
         return "";
+    }
+
+    public int getConceptsNumber() {
+        return concepts.length;
+    }
+
+    public FormalConcept getConcept(int index) {
+        if (index >= 0 && index < concepts.length)
+            return concepts[index];
+
+        return null;
+    }
+
+    public int getAnnotationObjectIndex(String annotationObject) {
+        if (!rAnnotationsObjects.containsKey(annotationObject)) {
+            annotationsObjects.put(annotationsObjects.size(), annotationObject);
+            rAnnotationsObjects.put(annotationObject, rAnnotationsObjects.size());
+        }
+
+        return rAnnotationsObjects.get(annotationObject);
     }
 }
