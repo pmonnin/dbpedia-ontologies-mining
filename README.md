@@ -1,4 +1,4 @@
-﻿# Repository sbc-treillis
+﻿# Repository DBpedia Ontologies Mining
 
 ## Context
 
@@ -30,23 +30,17 @@ TBC
 * [Matplotlib](http://matplotlib.org/) - [license](http://matplotlib.org/users/license.html)
 * [Pymongo](https://docs.mongodb.org/getting-started/python/query/)
 
+### Program dependencies
+
+* [SOFIA](https://github.com/AlekseyBuzmakov/FCAPS) - FCA program to generate the lattice. Available also through
+a [docker](https://hub.docker.com/r/ecirtap/sofia/).
+
 ### Access to a SPARQL endpoint
 
 To execute Java programs, an access to a SPARQL endpoint is needed. Its access can be configured 
 in the ServerQuerier class by changing `SERVER_BASE_URL`
 
 For our work, a Virtuoso server has been used. It is not available for outside queries.
-
-### Access to a MongoDB database
-
-To execute the Python script generating histograms on comparison results' values, a
-MongoDB database must be set up and loaded with the output file of the lattice analysis program.
-To do so, you can use the following command:
-
-```shell
-mongoimport --jsonArray --db dbName --collection collectionName --file outputFromLatticeAnalysis
-```
-
 
 ## License
 
