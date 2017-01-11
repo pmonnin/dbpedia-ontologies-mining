@@ -1,6 +1,7 @@
 package io.github.pmonnin.io;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,8 @@ import java.util.ArrayList;
 public class SparqlResponse {
     private SparqlHead head;
     private SparqlResults results;
+    @JsonProperty(value="boolean")
+    private boolean askResult;
 
     public SparqlHead getHead() {
         return this.head;
@@ -37,5 +40,13 @@ public class SparqlResponse {
         }
 
         return new ArrayList<>();
+    }
+
+    public boolean getAskResult() {
+        return askResult;
+    }
+
+    public void setAskResult(boolean askResult) {
+        this.askResult = askResult;
     }
 }

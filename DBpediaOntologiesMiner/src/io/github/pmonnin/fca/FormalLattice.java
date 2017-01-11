@@ -96,4 +96,8 @@ public class FormalLattice {
 
         return rAnnotationsObjects.get(annotationObject);
     }
+
+    public String getAnnotationObject(int index) {
+        return annotationsObjects.get(index);
+    }
 }

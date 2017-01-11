@@ -54,5 +54,16 @@ public class Settings {
                         "FILTER(?deathDate >= \"2000-01-01\"^^xsd:date) . " +
                         "FILTER(?deathDate <= \"2000-01-31\"^^xsd:date) . "
         ));
+
+        contextSettings.put("dead-actors-1990-2017", new ContextSettings(
+                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+                        "PREFIX dbo:<http://dbpedia.org/ontology/> ",
+                "?object dbo:wikiPageID ?pageId . " +
+                        "?object rdf:type/rdfs:subClassOf* dbo:Actor . " +
+                        "?object dbo:deathDate ?deathDate . " +
+                        "FILTER(?deathDate >= \"1990-01-01\"^^xsd:date) . " +
+                        "FILTER(?deathDate <= \"2017-12-31\"^^xsd:date) . "
+        ));
     }
 }

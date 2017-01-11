@@ -57,6 +57,10 @@ public class FormalConcept {
         return children.size();
     }
 
+    public List<FormalConcept> getChildren() {
+        return new ArrayList<>(children);
+    }
+
     public int getExtentSize() {
         return extent.size();
     }
