@@ -12,6 +12,9 @@ import java.util.List;
 public class MiningStatistics {
     private int commonPredicates;
     private int conceptsNumber;
+    private int latticeDepth;
+    private int emptyAnnotations;
+    private double avgClassesPerProperAnnotation;
     private int newNumber;
     private int inferredNumber;
     private int directNumber;
@@ -20,6 +23,20 @@ public class MiningStatistics {
     public MiningStatistics(FormalLattice lattice, List<Subsumption> results) {
         conceptsNumber = lattice.getConceptsNumber();
         commonPredicates = lattice.getTop().getIntentSize();
+        latticeDepth = lattice.getBottom().getDepth();
+
+        emptyAnnotations = 0;
+        avgClassesPerProperAnnotation = 0;
+        for (int i = 0 ; i < lattice.getConceptsNumber() ; i++) {
+            if (lattice.getConcept(i).getAnnotation("proper-annotation").isEmpty())
+                emptyAnnotations++;
+
+            else {
+                avgClassesPerProperAnnotation += lattice.getConcept(i).getAnnotation("proper-annotation").size();
+            }
+        }
+
+        avgClassesPerProperAnnotation /= (double) conceptsNumber;
 
         newNumber = 0;
         inferredNumber = 0;

@@ -16,6 +16,7 @@ public class FormalConcept {
     private List<FormalConcept> parents;
     private List<FormalConcept> children;
     private Map<String, List<Integer>> annotations;
+    private int depth;
 
     public FormalConcept() {
         this.extent = new ArrayList<>();
@@ -23,6 +24,7 @@ public class FormalConcept {
         this.parents = new ArrayList<>();
         this.children = new ArrayList<>();
         this.annotations = new HashMap<>();
+        this.depth = -1;
     }
 
     public void addParent(FormalConcept parent) {
@@ -95,4 +97,11 @@ public class FormalConcept {
         return new ArrayList<>(annotations.get(annotation));
     }
 
+    public int getDepth() {
+        return depth;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
 }

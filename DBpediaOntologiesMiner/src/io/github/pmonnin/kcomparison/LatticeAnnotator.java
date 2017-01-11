@@ -9,11 +9,10 @@ import io.github.pmonnin.io.SparqlValue;
 import io.github.pmonnin.settings.OntologySettings;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
- * Annotate the lattice with classes from an ontology
+ * Annotate the lattice with classes from an ontology and depth
  * @author Pierre Monnin
  */
 public class LatticeAnnotator {
@@ -54,6 +53,26 @@ public class LatticeAnnotator {
             c.addAnnotation("proper-annotation");
             for (Integer properClass : properAnnotation) {
                 c.addAnnotationObject("proper-annotation", properClass);
+            }
+        }
+
+        // Third traversal: depth
+        computeLatticeDepth(lattice);
+    }
+
+    private void computeLatticeDepth(FormalLattice lattice) {
+        lattice.getTop().setDepth(0);
+        Queue<FormalConcept> queue = new LinkedList<>();
+        queue.add(lattice.getTop());
+
+        while (!queue.isEmpty()) {
+            FormalConcept c = queue.poll();
+
+            for (FormalConcept child : c.getChildren()) {
+                if (child.getDepth() < c.getDepth() + 1) {
+                    child.setDepth(c.getDepth() + 1);
+                    queue.add(child);
+                }
             }
         }
     }

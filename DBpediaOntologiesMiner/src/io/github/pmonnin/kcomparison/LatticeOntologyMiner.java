@@ -18,9 +18,6 @@ public class LatticeOntologyMiner {
     public List<Subsumption> mineLatticeWrtOntology(FormalLattice lattice, OntologySettings ontologySettings) {
         Map<String, Subsumption> results = new HashMap<>();
 
-        // Compute lattice depth
-        Map<FormalConcept, Integer> depths = computeLatticeDepth(lattice);
-
         // Compare lattice and ontologies
         for (int i = 0 ; i < lattice.getConceptsNumber() ; i++) {
             FormalConcept current = lattice.getConcept(i);
@@ -29,7 +26,7 @@ public class LatticeOntologyMiner {
                 for (Integer currentClass : current.getAnnotation("proper-annotation")) {
                     for (Integer parentClass : parent.getAnnotation("proper-annotation")) {
                         compareClasses(lattice.getAnnotationObject(currentClass),
-                                lattice.getAnnotationObject(parentClass), current, depths.get(current), parent, results,
+                                lattice.getAnnotationObject(parentClass), current, parent, results,
                                 ontologySettings);
                     }
                 }
@@ -43,45 +40,20 @@ public class LatticeOntologyMiner {
         return retVal;
     }
 
-    private Map<FormalConcept, Integer> computeLatticeDepth(FormalLattice lattice) {
-        HashMap<FormalConcept, Integer> depths = new HashMap<>();
-        for (int i = 0 ; i < lattice.getConceptsNumber() ; i++)
-            depths.put(lattice.getConcept(i), -1);
-
-        depths.put(lattice.getTop(), 0);
-        Queue<FormalConcept> queue = new LinkedList<>();
-        queue.add(lattice.getTop());
-
-        while (!queue.isEmpty()) {
-            FormalConcept c = queue.poll();
-            int currentDepth = depths.get(c);
-
-            for (FormalConcept child : c.getChildren()) {
-                if (depths.get(child) < currentDepth + 1) {
-                    depths.put(child, currentDepth + 1);
-                    queue.add(child);
-                }
-            }
-        }
-
-        return depths;
-    }
-
-    private void compareClasses(String bottomClass, String topClass, FormalConcept concept, int conceptDepth,
-                                FormalConcept parent, Map<String, Subsumption> results,
-                                OntologySettings ontologySettings) {
+    private void compareClasses(String bottomClass, String topClass, FormalConcept concept, FormalConcept parent,
+                                Map<String, Subsumption> results, OntologySettings ontologySettings) {
 
         double extentRatio = (double) concept.getExtentSize() / (double) parent.getExtentSize();
         double intentRatio = (double) parent.getIntentSize() / (double) concept.getIntentSize();
 
         if (results.containsKey(bottomClass + " C " + topClass)) {
             Subsumption s = results.get(bottomClass + " C " + topClass);
-            s.found(extentRatio, intentRatio, conceptDepth);
+            s.found(extentRatio, intentRatio, concept.getDepth());
         }
 
         else {
             Subsumption.Type type = determineSubsumptionType(bottomClass, topClass, ontologySettings);
-            Subsumption s = new Subsumption(type, topClass, bottomClass, extentRatio, intentRatio, conceptDepth);
+            Subsumption s = new Subsumption(type, topClass, bottomClass, extentRatio, intentRatio, concept.getDepth());
             results.put(bottomClass + " C " + topClass, s);
         }
 
