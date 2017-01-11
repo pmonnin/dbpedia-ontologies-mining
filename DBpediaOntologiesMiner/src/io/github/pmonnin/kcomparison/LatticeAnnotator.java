@@ -31,7 +31,7 @@ public class LatticeAnnotator {
                     commonClasses.retainAll(currentClasses);
                 }
 
-                for(String annotationClass : commonClasses) {
+                for (String annotationClass : commonClasses) {
                     c.addAnnotationObject("annotation", lattice.getAnnotationObjectIndex(annotationClass));
                 }
             }
@@ -52,7 +52,7 @@ public class LatticeAnnotator {
             }
 
             c.addAnnotation("proper-annotation");
-            for(Integer properClass : properAnnotation) {
+            for (Integer properClass : properAnnotation) {
                 c.addAnnotationObject("proper-annotation", properClass);
             }
         }
