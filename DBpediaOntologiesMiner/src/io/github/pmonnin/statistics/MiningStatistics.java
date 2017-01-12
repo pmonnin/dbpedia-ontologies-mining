@@ -13,7 +13,8 @@ public class MiningStatistics {
     private int commonPredicates;
     private int conceptsNumber;
     private int latticeDepth;
-    private int emptyAnnotations;
+    private int emptyProperAnnotations;
+    private double avgClassesPerAnnotation;
     private double avgClassesPerProperAnnotation;
     private int newNumber;
     private int inferredNumber;
@@ -25,17 +26,21 @@ public class MiningStatistics {
         commonPredicates = lattice.getTop().getIntentSize();
         latticeDepth = lattice.getBottom().getDepth();
 
-        emptyAnnotations = 0;
-        avgClassesPerProperAnnotation = 0;
+        emptyProperAnnotations = 0;
+        avgClassesPerAnnotation = 0.0;
+        avgClassesPerProperAnnotation = 0.0;
         for (int i = 0 ; i < lattice.getConceptsNumber() ; i++) {
             if (lattice.getConcept(i).getAnnotation("proper-annotation").isEmpty())
-                emptyAnnotations++;
+                emptyProperAnnotations++;
 
             else {
                 avgClassesPerProperAnnotation += lattice.getConcept(i).getAnnotation("proper-annotation").size();
             }
+
+            avgClassesPerAnnotation += lattice.getConcept(i).getAnnotation("annotation").size();
         }
 
+        avgClassesPerAnnotation /= (double) conceptsNumber;
         avgClassesPerProperAnnotation /= (double) conceptsNumber;
 
         newNumber = 0;
@@ -62,5 +67,45 @@ public class MiningStatistics {
                     break;
             }
         }
+    }
+
+    public int getCommonPredicates() {
+        return commonPredicates;
+    }
+
+    public int getConceptsNumber() {
+        return conceptsNumber;
+    }
+
+    public int getLatticeDepth() {
+        return latticeDepth;
+    }
+
+    public int getEmptyProperAnnotations() {
+        return emptyProperAnnotations;
+    }
+
+    public double getAvgClassesPerAnnotation() {
+        return avgClassesPerAnnotation;
+    }
+
+    public double getAvgClassesPerProperAnnotation() {
+        return avgClassesPerProperAnnotation;
+    }
+
+    public int getNewNumber() {
+        return newNumber;
+    }
+
+    public int getInferredNumber() {
+        return inferredNumber;
+    }
+
+    public int getDirectNumber() {
+        return directNumber;
+    }
+
+    public int getReversedNumber() {
+        return reversedNumber;
     }
 }

@@ -20,25 +20,37 @@ public class MiningStatisticsWriter {
 
     public void open(String fileName) {
         try {
-            this.writer = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
+            writer = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
         }
 
         catch(IOException e) {
             System.err.println("Error while trying to open file " + fileName);
-            this.writer = null;
+            writer = null;
         }
     }
 
     public void writeStatistics(MiningStatistics statistics) {
-        if (this.writer != null) {
-            this.writer.println("--- Mining statistics ---");
+        if (writer != null) {
+            writer.println("--- Mining statistics ---");
+            writer.println("--- Lattice");
+            writer.println("Common predicates: " + statistics.getCommonPredicates());
+            writer.println("Concepts: " + statistics.getConceptsNumber());
+            writer.println("Lattice depth: " + statistics.getLatticeDepth());
+            writer.println("Empty proper annotations: " + statistics.getEmptyProperAnnotations());
+            writer.println("Average classes / annotation: " + statistics.getAvgClassesPerAnnotation());
+            writer.println("Averages classes / proper annotation: " + statistics.getAvgClassesPerProperAnnotation());
+            writer.println("--- Mining results");
+            writer.println("Number of new axioms: " + statistics.getNewNumber());
+            writer.println("Number of direct axioms: " + statistics.getDirectNumber());
+            writer.println("Number of inferred axioms: " + statistics.getInferredNumber());
+            writer.println("Number of reversed axioms: " + statistics.getReversedNumber());
         }
     }
 
     public void close() {
-        if (this.writer != null) {
-            this.writer.close();
-            this.writer = null;
+        if (writer != null) {
+            writer.close();
+            writer = null;
         }
     }
 }
