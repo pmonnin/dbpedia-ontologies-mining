@@ -9,6 +9,45 @@ import java.util.*;
  * @author Pierre Monnin
  */
 public class OntologyStatistics {
+    /**
+     * Represent a path in the ontology hierarchy
+     * @author Pierre Monnin
+     */
+    private class OntologyPath {
+        private Map<OntologyClass, Boolean> seen;
+        private List<OntologyClass> path;
+
+        OntologyPath(OntologyClass root) {
+            seen = new HashMap<>();
+            path = new ArrayList<>();
+
+            seen.put(root, true);
+            path.add(root);
+        }
+
+        OntologyPath(OntologyPath p) {
+            seen = new HashMap<>(p.seen);
+            path = new ArrayList<>(p.path);
+        }
+
+        OntologyClass getLastClass() {
+            return path.get(path.size() - 1);
+        }
+
+        List<OntologyClass> getPath() {
+            return new ArrayList<>(path);
+        }
+
+        boolean contains(OntologyClass c) {
+            return seen.containsKey(c);
+        }
+
+        void add(OntologyClass c) {
+            seen.put(c, true);
+            path.add(c);
+        }
+    }
+
     private long elementsNumber;
     private long topLevelClassesNumber;
     private long depth;
@@ -105,22 +144,21 @@ public class OntologyStatistics {
         this.cycles = new ArrayList<>();
 
         for (OntologyClass ontologyClass : ontology.values()) {
-            Stack<List<OntologyClass>> stack = new Stack<>();
-            stack.add(new ArrayList<OntologyClass>());
-            stack.peek().add(ontologyClass);
+            Stack<OntologyPath> stack = new Stack<>();
+            stack.add(new OntologyPath(ontologyClass));
 
             while (!stack.isEmpty()) {
-                List<OntologyClass> current = stack.pop();
+                OntologyPath current = stack.pop();
 
-                for (OntologyClass child : current.get(current.size() - 1).getChildren()) {
+                for (OntologyClass child : current.getLastClass().getChildren()) {
                     if (child == ontologyClass) {
-                        List<OntologyClass> cycle = new ArrayList<>(current);
+                        List<OntologyClass> cycle = new ArrayList<>(current.getPath());
                         cycle.add(ontologyClass);
                         this.cycles.add(cycle);
                     }
 
                     else if (!current.contains(child)) {
-                        List<OntologyClass> toInvestigate = new ArrayList<>(current);
+                        OntologyPath toInvestigate = new OntologyPath(current);
                         toInvestigate.add(child);
                         stack.add(toInvestigate);
                     }
