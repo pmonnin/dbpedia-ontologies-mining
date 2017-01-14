@@ -32,6 +32,7 @@ public class OntologyFactory {
         Map<String, OntologyClass> ontology = new HashMap<>();
 
         for(String suffix : QUERY_FILTER_SUFFIXES) {
+            System.out.println("[INFO] Getting ontology classes with suffix " + suffix);
             boolean done = false;
 
             while (!done) {
@@ -70,7 +71,14 @@ public class OntologyFactory {
                                      Map<String, OntologyClass> ontology) {
         Map<String, Boolean> missingElements = new HashMap<>();
 
+        int i = 1;
+        int percentage = -1;
+        System.out.println("[INFO] " + ontology.values().size() + " ontology classes selected");
         for (OntologyClass ontologyClass : ontology.values()) {
+            if((int) ((double) i / (double) ontology.values().size() * 100.0) > percentage) {
+                percentage = (int) ((double) i / (double) ontology.values().size() * 100.0);
+                System.out.println("[INFO] Getting parent: " + percentage + " % ");
+            }
             boolean done = false;
 
             while (!done) {
@@ -117,6 +125,7 @@ public class OntologyFactory {
                     }
                 }
             }
+            i++;
         }
 
         if(missingElements.size() != 0) {

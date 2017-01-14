@@ -143,12 +143,14 @@ public class OntologyStatistics {
     private void computeCycles(Map<String, OntologyClass> ontology) {
         this.cycles = new ArrayList<>();
 
+        int i = 1;
         for (OntologyClass ontologyClass : ontology.values()) {
-            Stack<OntologyPath> stack = new Stack<>();
-            stack.add(new OntologyPath(ontologyClass));
+            System.out.println("[INFO] Cycle computation on " + ontologyClass.getName() + " " + i + " / " + ontology.values().size() + ")");
+            Queue<OntologyPath> queue = new LinkedList<>();
+            queue.add(new OntologyPath(ontologyClass));
 
-            while (!stack.isEmpty()) {
-                OntologyPath current = stack.pop();
+            while (!queue.isEmpty()) {
+                OntologyPath current = queue.poll();
 
                 for (OntologyClass child : current.getLastClass().getChildren()) {
                     if (child == ontologyClass) {
@@ -160,10 +162,11 @@ public class OntologyStatistics {
                     else if (!current.contains(child)) {
                         OntologyPath toInvestigate = new OntologyPath(current);
                         toInvestigate.add(child);
-                        stack.add(toInvestigate);
+                        queue.add(toInvestigate);
                     }
                 }
             }
+            i++;
         }
     }
 
