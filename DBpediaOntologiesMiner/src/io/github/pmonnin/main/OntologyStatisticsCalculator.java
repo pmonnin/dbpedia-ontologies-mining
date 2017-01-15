@@ -29,7 +29,7 @@ public class OntologyStatisticsCalculator {
         }
 
         else if (!Settings.ontologySettings.containsKey(args[0])){
-            System.out.println("[ERROR] Ontology " + args[0] + "unknown.");
+            System.out.println("[ERROR] Ontology " + args[0] + " unknown.");
             System.out.println("[ERROR] Possible values are: " + Settings.ontologySettings.keySet());
         }
 
