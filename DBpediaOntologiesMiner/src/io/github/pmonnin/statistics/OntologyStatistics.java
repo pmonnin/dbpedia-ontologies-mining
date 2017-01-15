@@ -14,37 +14,45 @@ public class OntologyStatistics {
      * @author Pierre Monnin
      */
     private class OntologyPath {
-        private Map<OntologyClass, Boolean> seen;
-        private List<OntologyClass> path;
+        private Map<OntologyClass, OntologyClass> predecessors;
+        private OntologyClass last;
+        private OntologyClass root;
 
         OntologyPath(OntologyClass root) {
-            seen = new HashMap<>();
-            path = new ArrayList<>();
-
-            seen.put(root, true);
-            path.add(root);
+            predecessors = new HashMap<>();
+            last = root;
+            this.root = root;
         }
 
         OntologyPath(OntologyPath p) {
-            seen = new HashMap<>(p.seen);
-            path = new ArrayList<>(p.path);
-        }
-
-        OntologyClass getLastClass() {
-            return path.get(path.size() - 1);
-        }
-
-        List<OntologyClass> getPath() {
-            return new ArrayList<>(path);
-        }
-
-        boolean contains(OntologyClass c) {
-            return seen.containsKey(c);
+            predecessors = new HashMap<>(p.predecessors);
+            last = p.last;
+            root = p.root;
         }
 
         void add(OntologyClass c) {
-            seen.put(c, true);
-            path.add(c);
+            predecessors.put(c, last);
+            last = c;
+        }
+
+        OntologyClass getLast() {
+            return last;
+        }
+
+        boolean contains(OntologyClass c) {
+            return c == root || predecessors.containsKey(c);
+        }
+
+        List<OntologyClass> getPath() {
+            ArrayList<OntologyClass> path = new ArrayList<>();
+
+            OntologyClass temp = last;
+            while (temp != null) {
+                path.add(0, temp);
+                temp = predecessors.get(temp);
+            }
+
+            return path;
         }
     }
 
@@ -146,26 +154,71 @@ public class OntologyStatistics {
         int i = 1;
         for (OntologyClass ontologyClass : ontology.values()) {
             System.out.println("[INFO] Cycle computation on " + ontologyClass.getName() + " " + i + " / " + ontology.values().size() + ")");
-            Queue<OntologyPath> queue = new LinkedList<>();
-            queue.add(new OntologyPath(ontologyClass));
 
+            HashMap<OntologyClass, Boolean> ancestors = new HashMap<>();
+            HashMap<OntologyClass, Boolean> descendants = new HashMap<>();
+            Queue<OntologyClass> queue = new LinkedList<>();
+
+            System.out.println("[INFO] Computing ancestors");
+            queue.add(ontologyClass);
             while (!queue.isEmpty()) {
-                OntologyPath current = queue.poll();
+                OntologyClass c = queue.poll();
 
-                for (OntologyClass child : current.getLastClass().getChildren()) {
-                    if (child == ontologyClass) {
-                        List<OntologyClass> cycle = new ArrayList<>(current.getPath());
-                        cycle.add(ontologyClass);
-                        this.cycles.add(cycle);
-                    }
-
-                    else if (!current.contains(child)) {
-                        OntologyPath toInvestigate = new OntologyPath(current);
-                        toInvestigate.add(child);
-                        queue.add(toInvestigate);
+                for (OntologyClass parent : c.getParents()) {
+                    if (!ancestors.containsKey(parent) && parent != ontologyClass) {
+                        ancestors.put(parent, true);
+                        queue.add(parent);
                     }
                 }
             }
+
+            System.out.println("[INFO] Computing descendants");
+            queue.add(ontologyClass);
+            while (!queue.isEmpty()) {
+                OntologyClass c = queue.poll();
+
+                for (OntologyClass child : c.getChildren()) {
+                    if (!descendants.containsKey(child) && child != ontologyClass) {
+                        descendants.put(child, true);
+                        queue.add(child);
+                    }
+                }
+            }
+
+            System.out.println("[INFO] Computing intersection");
+            HashMap<OntologyClass, Boolean> intersection = new HashMap<>();
+            for (OntologyClass ancestor : ancestors.keySet()) {
+                if (descendants.containsKey(ancestor))
+                    intersection.put(ancestor, true);
+            }
+            descendants.clear();
+            ancestors.clear();
+
+            if (!intersection.isEmpty()) {
+                System.out.println("[INFO] Computing cycles (intersection size: " + intersection.size() + ")");
+
+                Deque<OntologyPath> stack = new LinkedList<>();
+                stack.addFirst(new OntologyPath(ontologyClass));
+
+                while (!stack.isEmpty()) {
+                    OntologyPath p = stack.pollFirst();
+
+                    for (OntologyClass c : p.getLast().getChildren()) {
+                        if (c == ontologyClass) {
+                            List<OntologyClass> cycle = p.getPath();
+                            cycle.add(ontologyClass);
+                            cycles.add(cycle);
+                        }
+
+                        else if (intersection.containsKey(c) && !p.contains(c)) {
+                            OntologyPath toTest = new OntologyPath(p);
+                            toTest.add(c);
+                            stack.addFirst(toTest);
+                        }
+                    }
+                }
+            }
+
             i++;
         }
     }
