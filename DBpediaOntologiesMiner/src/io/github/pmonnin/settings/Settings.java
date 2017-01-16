@@ -77,6 +77,14 @@ public class Settings {
                         "FILTER(?deathDate <= \"2000-01-08\"^^xsd:date) . "
         ));
 
+        contextSettings.put("celestial-bodies", new ContextSettings(
+                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+                        "PREFIX dbo:<http://dbpedia.org/ontology/> ",
+                "?object dbo:wikiPageID ?pageId . " +
+                        "?object rdf:type/rdfs:subClassOf* dbo:CelestialBody . "
+        ));
+
         contextSettings.put("planets", new ContextSettings(
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
                         "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
@@ -85,12 +93,84 @@ public class Settings {
                         "?object rdf:type/rdfs:subClassOf* dbo:Planet . "
         ));
 
-        contextSettings.put("celestial-bodies", new ContextSettings(
+        contextSettings.put("asteroids", new ContextSettings(
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
                         "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
                         "PREFIX dbo:<http://dbpedia.org/ontology/> ",
                 "?object dbo:wikiPageID ?pageId . " +
-                        "?object rdf:type/rdfs:subClassOf* dbo:CelestialBody . "
+                        "?object rdf:type/rdfs:subClassOf* dbo:Asteroid . "
+        ));
+
+        contextSettings.put("constellations", new ContextSettings(
+                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+                        "PREFIX dbo:<http://dbpedia.org/ontology/> ",
+                "?object dbo:wikiPageID ?pageId . " +
+                        "?object rdf:type/rdfs:subClassOf* dbo:Constellation . "
+        ));
+
+        contextSettings.put("galaxies", new ContextSettings(
+                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+                        "PREFIX dbo:<http://dbpedia.org/ontology/> ",
+                "?object dbo:wikiPageID ?pageId . " +
+                        "?object rdf:type/rdfs:subClassOf* dbo:Galaxy . "
+        ));
+
+        contextSettings.put("satellites", new ContextSettings(
+                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+                        "PREFIX dbo:<http://dbpedia.org/ontology/> ",
+                "?object dbo:wikiPageID ?pageId . " +
+                        "?object rdf:type/rdfs:subClassOf* dbo:Satellite . "
+        ));
+
+        contextSettings.put("artificial-satellites", new ContextSettings(
+                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+                        "PREFIX dbo:<http://dbpedia.org/ontology/> ",
+                "?object dbo:wikiPageID ?pageId . " +
+                        "?object rdf:type/rdfs:subClassOf* dbo:ArtificialSatellite . "
+        ));
+
+        contextSettings.put("stars", new ContextSettings(
+                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+                        "PREFIX dbo:<http://dbpedia.org/ontology/> ",
+                "?object dbo:wikiPageID ?pageId . " +
+                        "?object rdf:type/rdfs:subClassOf* dbo:Star . "
+        ));
+
+        contextSettings.put("brown-dwarfs", new ContextSettings(
+                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+                        "PREFIX dbo:<http://dbpedia.org/ontology/> ",
+                "?object dbo:wikiPageID ?pageId . " +
+                        "?object rdf:type/rdfs:subClassOf* dbo:BrownDwarf . "
+        ));
+
+        contextSettings.put("swarms", new ContextSettings(
+                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+                        "PREFIX dbo:<http://dbpedia.org/ontology/> ",
+                "?object dbo:wikiPageID ?pageId . " +
+                        "?object rdf:type/rdfs:subClassOf* dbo:Swarm . "
+        ));
+
+        contextSettings.put("open-swarms", new ContextSettings(
+                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+                        "PREFIX dbo:<http://dbpedia.org/ontology/> ",
+                "?object dbo:wikiPageID ?pageId . " +
+                        "?object rdf:type/rdfs:subClassOf* dbo:Openswarm . "
+        ));
+
+        contextSettings.put("globular-swarms", new ContextSettings(
+                "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+                        "PREFIX dbo:<http://dbpedia.org/ontology/> ",
+                "?object dbo:wikiPageID ?pageId . " +
+                        "?object rdf:type/rdfs:subClassOf* dbo:Globularswarm . "
         ));
     }
 }
