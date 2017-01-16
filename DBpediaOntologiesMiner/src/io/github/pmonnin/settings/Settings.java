@@ -66,7 +66,7 @@ public class Settings {
                         "FILTER(?deathDate <= \"2017-12-31\"^^xsd:date) . "
         ));
 
-        contextSettings.put("dead-persons-01-07-01-2000", new ContextSettings(
+        contextSettings.put("dead-persons-01-08-01-2000", new ContextSettings(
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
                         "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
                         "PREFIX dbo:<http://dbpedia.org/ontology/> ",
